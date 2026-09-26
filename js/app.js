@@ -1,5 +1,8 @@
 const STORAGE_KEY = "central-estudos:last-project";
 const HEALTH_TIMEOUT_MS = 4500;
+const META_TIMEOUT_MS = 4500;
+const META_CACHE_KEY = "central-estudos:repo-meta";
+const META_CACHE_TTL_MS = 10 * 60 * 1000;
 
 const state = {
   config: null,
@@ -14,7 +17,9 @@ function byId(id) {
 function normalizeProject(project) {
   return {
     ...project,
-    health: "checking"
+    health: "checking",
+    repoUpdatedAt: null,
+    repoMetaState: "checking"
   };
 }
 
@@ -57,6 +62,145 @@ function getGreeting() {
   if (hour < 12) return "Bom dia, Rodrigo.";
   if (hour < 18) return "Boa tarde, Rodrigo.";
   return "Boa noite, Rodrigo.";
+}
+
+
+function readRepoMetaCache() {
+  const raw = localStorage.getItem(META_CACHE_KEY);
+  if (!raw) return {};
+
+  try {
+    return JSON.parse(raw) || {};
+  } catch {
+    return {};
+  }
+}
+
+function writeRepoMetaCache(cache) {
+  try {
+    localStorage.setItem(META_CACHE_KEY, JSON.stringify(cache));
+  } catch {
+    // Cache é opcional; a Central continua funcionando sem ele.
+  }
+}
+
+function githubApiUrl(project) {
+  try {
+    const url = new URL(project.repository);
+    const parts = url.pathname.split("/").filter(Boolean);
+    if (url.hostname !== "github.com" || parts.length < 2) return null;
+    return `https://api.github.com/repos/${parts[0]}/${parts[1]}`;
+  } catch {
+    return null;
+  }
+}
+
+function relativeTimeFromNow(isoDate) {
+  if (!isoDate) return null;
+  const date = new Date(isoDate);
+  if (Number.isNaN(date.getTime())) return null;
+
+  const diffMs = date.getTime() - Date.now();
+  const absMs = Math.abs(diffMs);
+  const rtf = new Intl.RelativeTimeFormat("pt-BR", { numeric: "auto" });
+
+  const minute = 60 * 1000;
+  const hour = 60 * minute;
+  const day = 24 * hour;
+
+  if (absMs < hour) return rtf.format(Math.round(diffMs / minute), "minute");
+  if (absMs < day) return rtf.format(Math.round(diffMs / hour), "hour");
+  return rtf.format(Math.round(diffMs / day), "day");
+}
+
+function repoFreshnessMarkup(project) {
+  if (project.repoMetaState === "checking") {
+    return '<span class="repo-freshness">Atualização: verificando…</span>';
+  }
+
+  if (!project.repoUpdatedAt) {
+    return '<span class="repo-freshness">Atualização técnica não verificada</span>';
+  }
+
+  const relative = relativeTimeFromNow(project.repoUpdatedAt);
+  const ageMs = Date.now() - new Date(project.repoUpdatedAt).getTime();
+  const className = ageMs <= 7 * 24 * 60 * 60 * 1000 ? "is-fresh" : "is-stale";
+  return `<span class="repo-freshness ${className}">Repositório atualizado ${relative || ""}</span>`;
+}
+
+function updatePulse() {
+  const projectCount = state.projects.length;
+  const onlineCount = state.projects.filter(project => project.health === "online").length;
+  const healthPending = state.projects.some(project => project.health === "checking");
+  const knownDates = state.projects
+    .map(project => project.repoUpdatedAt ? new Date(project.repoUpdatedAt) : null)
+    .filter(Boolean)
+    .sort((a, b) => b - a);
+
+  byId("pulse-projects").textContent = String(projectCount);
+  byId("pulse-online").textContent = healthPending
+    ? "Verificando"
+    : `${onlineCount}/${projectCount} online`;
+
+  if (knownDates.length) {
+    const latest = relativeTimeFromNow(knownDates[0].toISOString());
+    byId("pulse-freshness").textContent = latest ? `Atualizado ${latest}` : "Atualizado";
+  } else {
+    const metaPending = state.projects.some(project => project.repoMetaState === "checking");
+    byId("pulse-freshness").textContent = metaPending ? "Verificando" : "Não verificado";
+  }
+}
+
+async function fetchRepoMetadata(project) {
+  const cache = readRepoMetaCache();
+  const cached = cache[project.id];
+  const now = Date.now();
+
+  if (cached?.pushedAt && cached?.checkedAt && now - cached.checkedAt < META_CACHE_TTL_MS) {
+    project.repoUpdatedAt = cached.pushedAt;
+    project.repoMetaState = "cached";
+    return;
+  }
+
+  const apiUrl = githubApiUrl(project);
+  if (!apiUrl) {
+    project.repoMetaState = "unknown";
+    return;
+  }
+
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), META_TIMEOUT_MS);
+
+  try {
+    const response = await fetch(apiUrl, {
+      headers: { Accept: "application/vnd.github+json" },
+      cache: "no-store",
+      signal: controller.signal
+    });
+
+    if (!response.ok) throw new Error(`GitHub API ${response.status}`);
+    const data = await response.json();
+
+    project.repoUpdatedAt = data.pushed_at || data.updated_at || null;
+    project.repoMetaState = project.repoUpdatedAt ? "online" : "unknown";
+
+    if (project.repoUpdatedAt) {
+      cache[project.id] = {
+        pushedAt: project.repoUpdatedAt,
+        checkedAt: now
+      };
+      writeRepoMetaCache(cache);
+    }
+  } catch {
+    if (cached?.pushedAt) {
+      project.repoUpdatedAt = cached.pushedAt;
+      project.repoMetaState = "cached";
+    } else {
+      project.repoMetaState = "unknown";
+    }
+  } finally {
+    clearTimeout(timeout);
+  }
 }
 
 function healthLabel(status) {
@@ -113,6 +257,10 @@ function renderProjects() {
       <h3>${project.name}</h3>
       <p class="muted">${project.description}</p>
       <p class="project-phase">${project.phase}</p>
+      <div class="project-observability">
+        <span class="project-status-text">Abrir projeto</span>
+        <span data-repo="${project.id}">${repoFreshnessMarkup(project)}</span>
+      </div>
       <div class="project-actions">
         <a class="project-link" href="${project.url}">Abrir ambiente →</a>
         <span data-health="${project.id}">${healthMarkup(project.health)}</span>
@@ -195,6 +343,19 @@ async function updateHealth() {
       if (slot) slot.innerHTML = healthMarkup(project.health);
 
       if (state.focus?.id === project.id) renderFocus(project);
+      updatePulse();
+    })
+  );
+}
+
+async function updateRepositoryMetadata() {
+  await Promise.all(
+    state.projects.map(async project => {
+      await fetchRepoMetadata(project);
+
+      const slot = document.querySelector(`[data-repo="${project.id}"]`);
+      if (slot) slot.outerHTML = `<span data-repo="${project.id}">${repoFreshnessMarkup(project)}</span>`;
+      updatePulse();
     })
   );
 }
@@ -228,7 +389,9 @@ async function init() {
       version.textContent = `v${state.config.central.version}`;
     }
 
+    updatePulse();
     updateHealth();
+    updateRepositoryMetadata();
   } catch (error) {
     console.warn("Central em modo de fallback:", error);
     byId("focus-health").className = "health health-unknown";
