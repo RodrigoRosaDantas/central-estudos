@@ -148,8 +148,13 @@
 
   function diagnosis(item) {
     const notes = [];
+    const healthCached = item.healthMetaState === "cached" || item.healthMetaState === "stale-cache";
 
-    if (item.health === "online") {
+    if (healthCached && item.health === "online") {
+      notes.push("A última checagem conhecida indicou resposta acessível, mas está em cache e não confirma o estado neste instante.");
+    } else if (healthCached && item.health === "offline") {
+      notes.push("A última checagem conhecida registrou resposta com erro, mas está em cache; a Central não determina a causa nem o estado atual.");
+    } else if (item.health === "online") {
       notes.push("O site respondeu à verificação atual.");
     } else if (item.health === "offline") {
       notes.push("O site respondeu com erro. A Central não determina a causa; o acesso direto continua disponível para nova tentativa.");
@@ -188,7 +193,10 @@
         ? `publicação técnica ${relativeTime(item.repoUpdatedAt) || "em data conhecida"}`
         : "publicação técnica não verificada";
       const stale = item.repoMetaState === "stale-cache" || item.deployMetaState === "stale-cache";
-      const source = stale ? "GitHub público · dado em cache" : "site público + GitHub público";
+      const healthCached = item.healthMetaState === "cached" || item.healthMetaState === "stale-cache";
+      const source = stale || healthCached
+        ? "fontes públicas · há dado em cache"
+        : "site público + GitHub público";
 
       return `
         <div class="activity-item">
