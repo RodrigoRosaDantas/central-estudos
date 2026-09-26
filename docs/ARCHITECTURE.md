@@ -122,3 +122,17 @@ O pulso global usa somente:
 - quantidade de ambientes cadastrados;
 - disponibilidade dos sites;
 - publicação técnica mais recente conhecida.
+
+
+## Preferência de foco — v1.4
+
+O usuário pode trocar o foco diretamente na Central.
+
+A preferência:
+- é gravada apenas em `localStorage` neste aparelho;
+- não altera `projects.json`;
+- não modifica nenhum projeto-filho;
+- não altera o histórico de último acesso;
+- pode ser trocada a qualquer momento escolhendo outro card.
+
+Se não houver preferência local, a Central usa `central.defaultProject` como fallback.
