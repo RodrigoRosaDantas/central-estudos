@@ -2,14 +2,14 @@
 
 ## Estado da esteira
 
-- **Versão validada:** 6.0.0
+- **Versão validada:** 7.0.0
 - **Meta:** 10.0.0
-- **Next major:** 7.0.0
-- **Active major:** 7.0.0
-- **Stage:** VALIDATING
+- **Next major:** 8.0.0
+- **Active major:** none
+- **Stage:** READY
 - **Status:** IN PROGRESS
-- **Último deploy de release validado:** workflow run 36277789554 — success
-- **Commit de release validado:** `0c57c967e277764d1938f3a6fc91fc03f73a74e5`
+- **Último deploy de release validado:** workflow run 36278662494 — quality success + deploy success
+- **Commit de release validado:** `e47e94341c21219936133762bf3675a0251f4c79`
 - **Repositório:** RodrigoRosaDantas/central-estudos
 - **Projetos-filhos:** READ-ONLY / NO WRITES
 
@@ -27,18 +27,33 @@
 
 ## Snapshot da major ativa
 
-- **Major:** 7.0.0 — Qualidade e testes
-- **Started at:** 2026-09-26
-- **Source version:** 6.0.0
-- **Central HEAD inicial:** `c3a2cad65e974243113fa321dc57492b5bb4e874`
-- **Último deploy inicial:** workflow run `36277886863` — success — HEAD `c3a2cad65e974243113fa321dc57492b5bb4e874`
-- **Child SHAs no início:** TCE-GO `2986dabf2ddb3ed6b22fa58b9a5151981a678dbf`; SEEDF `bb006c3bc896534716e6b568849669a7fe4424c8`; TJDFT `8aa366c0068f6f705fb2d27a44b7a522f90003d9`
-- **Acceptance aplicável:** validação automatizada do registry; testes leves para JavaScript crítico; checagem de links/configuração; quality gate antes do deploy; falha de teste impede deploy; workflow legível/recuperável; testes sem dependência de write nos projetos-filhos; gates globais.
-- **Riscos:** quality gate frágil por regex; workflow bloquear deploy por falso positivo; testes dependerem de rede externa; duplicação entre auditoria manual e automática; Node/runtime incompatível.
-- **QA v7:** PASS no workflow real — suite `tests/quality.mjs` executada com sucesso; registry/fallback/manifest/assets/PWA validados; funções críticas `validateConfig`, `chooseFocus` e `readLastVisit` testadas em sandbox; URLs HTTP/IDs duplicados/estado local corrompido cobertos.
-- **CI gate:** PASS — workflow `Validate and deploy Central de Estudos` possui job `quality` e `deploy needs: quality`; quality real passou antes de o deploy ser enfileirado.
-- **Runtime:** `actions/setup-node@v7` com Node 22; sem dependências npm e sem rede externa nos testes.
-- **Estado da implementação:** concluída; aguardando deploy final da release 7.0.0 e pós-deploy.
+- **Major:** none
+- **Started at:** —
+- **Source version:** —
+- **Central HEAD inicial:** —
+- **Último deploy inicial:** —
+- **Child SHAs no início:** —
+- **Acceptance aplicável:** —
+- **Riscos:** —
+
+## Última major concluída — v7.0.0
+
+- **Origem:** v6.0.0
+- **Objetivo:** reduzir regressões com quality gate automatizado antes do deploy.
+- **Resultado:** PASS
+- **Acceptance v7:** PASS nos gates estruturais/lógicos verificáveis.
+- **Registry:** validação automatizada de schema básico, campos, IDs únicos, HTTPS e `defaultProject`.
+- **JavaScript crítico:** sintaxe de todos os scripts e testes reais de `validateConfig`, `chooseFocus` e `readLastVisit` em sandbox Node.
+- **Fallback/configuração:** referências locais, links diretos, `noscript`, manifest, ícones e app shell validados.
+- **PWA:** isolamento externo, cache versionado e contratos de atualização verificados.
+- **Segurança:** varredura simples de secrets/tokens no frontend.
+- **Workflow:** `quality` roda antes de `deploy`; `deploy needs: quality`; falha do gate impede publicação.
+- **Runtime:** `actions/setup-node@v7`, Node 22 e zero dependências npm.
+- **Rede:** testes não dependem de rede externa nem de escrita nos projetos-filhos.
+- **Quality run:** workflow run `36278662494` — quality `success` + deploy `success`.
+- **Projetos-filhos:** SHAs finais idênticos aos SHAs de preflight; zero writes nesta execução.
+- **Commit validado:** `e47e94341c21219936133762bf3675a0251f4c79`.
+- **Limitação registrada:** a suite leve não substitui inspeção visual, acessibilidade profunda, performance, segurança avançada ou teste offline real em navegador.
 
 ## Última major concluída — v6.0.0
 
@@ -108,6 +123,7 @@
 - 2026-09-26 — v4.0.0 — catálogo operacional — commit `42ee59a34ebb34ecaa858da77b03646f25c21304` — Pages `36271496568` — success
 - 2026-09-26 — v5.0.0 — personalização local — commit `cf8cdb818449d020923f50d63e67689b635abc96` — Pages `36272168251` — success
 - 2026-09-26 — v6.0.0 — PWA e resiliência — commit `0c57c967e277764d1938f3a6fc91fc03f73a74e5` — Pages `36277789554` — success
+- 2026-09-26 — v7.0.0 — qualidade e testes — commit `e47e94341c21219936133762bf3675a0251f4c79` — Pages `36278662494` — quality success + deploy success
 
 ## Regra de avanço
 Uma major só fecha após acceptance, audit protocol, quality gate, Pages `success`, post-deploy QA verificável, changelog e checkpoint.
