@@ -6,7 +6,7 @@
 - **Meta:** 10.0.0
 - **Next major:** 2.0.0
 - **Active major:** 2.0.0
-- **Stage:** IN_PROGRESS
+- **Stage:** VALIDATING
 - **Status:** IN PROGRESS
 - **Último deploy validado:** workflow run 36264051332 — success
 - **Repositório:** RodrigoRosaDantas/central-estudos
@@ -56,6 +56,8 @@ Esteira encerrada.
 - **Child SHAs no início:** TCE-GO `2986dabf...`; SEEDF `bb006c3b...`; TJDFT `8aa366c0...`
 - **Acceptance aplicável:** v2.0 — fundação consolidada + gates globais
 - **Riscos:** regressão no fallback estático; corrupção/indisponibilidade de localStorage; competição visual entre foco, pulso, retomada e catálogo; divergência entre fallback HTML e registry dinâmico.
+- **QA estrutural:** PASS — JS/JSON/manifest válidos; IDs únicos; HTTPS; fallback 3/3; hierarquia foco → retomada → ambientes → estado técnico; 404; sem secrets detectados.
+- **Estado da implementação:** fundação v2 concluída; aguardando promoção de versão, documentação, deploy e pós-deploy.
 
 ## Regra de avanço
 
