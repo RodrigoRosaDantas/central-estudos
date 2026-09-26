@@ -6,12 +6,13 @@
 - estratégia network-first para navegações e recursos conhecidos do shell;
 - cache versionado `central-shell-v6.0.0` com limpeza previsível de caches antigos;
 - atualização controlada via worker em espera e ação explícita **Atualizar agora**;
+- aviso de atualização separado do status geral; primeira instalação não força reload; escopo do worker validado também por pathname;
 - instalação permanece opcional e conduzida pelo navegador;
 - falha ou remoção do service worker preserva/restaura o comportamento web normal;
 - **Acceptance v6:** PASS nos gates estruturais/lógicos verificáveis; inspeção visual/offline em navegador real não foi inventada quando indisponível;
 - **Projetos-filhos:** zero writes nesta release; SHAs finais iguais ao preflight;
-- **Commit de release validado:** `0193ba0ac4e7b9bc23562c961583f2193fd8b4c3`;
-- **Deploy validado:** workflow run `36274467394` — success.
+- **Commit de release validado:** `0c57c967e277764d1938f3a6fc91fc03f73a74e5`;
+- **Deploy validado:** workflow run `36277789554` — success.
 
 ## [5.0.0] — 2026-09-26
 - personalização local sem backend;
