@@ -26,46 +26,20 @@
       </section>
       <section class="section resume-card" aria-labelledby="resume-title"><div><p class="eyebrow">RETOMADA</p><h2 id="resume-title">Continue de onde parou</h2><p id="last-project-text" class="muted">O histórico local será registrado quando você abrir um ambiente pela Central.</p></div><div class="resume-actions"><a id="resume-button" class="button button-secondary is-hidden" href="#">Retomar</a><button id="clear-history" class="button button-quiet" type="button">Limpar histórico</button></div></section>
       <details id="preferences-panel" class="preferences-panel">
-        <summary>
-          <span><span class="eyebrow">PREFERÊNCIAS</span><strong>Personalizar a Central</strong></span>
-          <span class="preferences-local-badge">Só neste aparelho</span>
-        </summary>
+        <summary><span><span class="eyebrow">PREFERÊNCIAS</span><strong>Personalizar a Central</strong></span><span class="preferences-local-badge">Só neste aparelho</span></summary>
         <div class="preferences-body">
           <p class="preferences-intro">Estas escolhas alteram apenas a apresentação e a organização da Central. Não modificam os projetos nem o registry.</p>
           <div class="preferences-grid">
-            <label class="preferences-field">
-              <span>Densidade</span>
-              <select id="preference-density">
-                <option value="comfortable">Confortável</option>
-                <option value="compact">Compacta</option>
-              </select>
-            </label>
-            <label class="preferences-toggle">
-              <input id="preference-technical" type="checkbox" checked />
-              <span><strong>Detalhes técnicos nos cards</strong><small>Disponibilidade, publicação e deploy continuam no Pulso da Central.</small></span>
-            </label>
+            <label class="preferences-field"><span>Densidade</span><select id="preference-density"><option value="comfortable">Confortável</option><option value="compact">Compacta</option></select></label>
+            <label class="preferences-toggle"><input id="preference-technical" type="checkbox" checked /><span><strong>Detalhes técnicos nos cards</strong><small>Disponibilidade, publicação e deploy continuam no Pulso da Central.</small></span></label>
           </div>
-          <div class="preferences-order">
-            <div>
-              <h3>Ordem dos ambientes</h3>
-              <p>Mover um ambiente ativa novamente a “Ordem padrão” do catálogo.</p>
-            </div>
-            <div id="preferences-order-list" class="preferences-order-list" aria-live="polite"></div>
-          </div>
-          <div class="preferences-footer">
-            <p id="preferences-status" class="preferences-status" aria-live="polite">Preferências salvas somente neste navegador.</p>
-            <button id="preferences-reset" class="button button-ghost" type="button">Restaurar padrões</button>
-          </div>
+          <div class="preferences-order"><div><h3>Ordem dos ambientes</h3><p>Mover um ambiente ativa novamente a “Ordem padrão” do catálogo.</p></div><div id="preferences-order-list" class="preferences-order-list" aria-live="polite"></div></div>
+          <div class="preferences-footer"><p id="preferences-status" class="preferences-status" aria-live="polite">Preferências salvas somente neste navegador.</p><button id="preferences-reset" class="button button-ghost" type="button">Restaurar padrões</button></div>
         </div>
       </details>
-
       <section class="section" aria-labelledby="projects-title">
         <div class="section-heading"><div><p class="eyebrow">AMBIENTES</p><h2 id="projects-title">Seus projetos</h2></div><p class="muted compact">Cada ambiente continua independente. A Central apenas organiza o acesso.</p></div>
-        <div class="catalog-toolbar" role="search" aria-label="Organizar ambientes">
-          <label class="catalog-field"><span>Buscar</span><input id="catalog-search" type="search" inputmode="search" autocomplete="off" placeholder="Nome, área ou fase" /></label>
-          <label class="catalog-field"><span>Ordenar</span><select id="catalog-sort"><option value="default">Ordem padrão</option><option value="favorites">Favoritos primeiro</option><option value="name">Nome A–Z</option></select></label>
-          <span id="catalog-count" class="catalog-count" aria-live="polite">3 de 3 ambientes</span>
-        </div>
+        <div class="catalog-toolbar" role="search" aria-label="Organizar ambientes"><label class="catalog-field"><span>Buscar</span><input id="catalog-search" type="search" inputmode="search" autocomplete="off" placeholder="Nome, área ou fase" /></label><label class="catalog-field"><span>Ordenar</span><select id="catalog-sort"><option value="default">Ordem padrão</option><option value="favorites">Favoritos primeiro</option><option value="name">Nome A–Z</option></select></label><span id="catalog-count" class="catalog-count" aria-live="polite">3 de 3 ambientes</span></div>
         <p class="catalog-hint">☆ Favoritos ficam só neste aparelho. No desktop, Alt+1, Alt+2… abre os ambientes visíveis sem interferir na digitação.</p>
         <div id="projects-grid" class="projects-grid" aria-live="polite">
           <article class="project-card project-tcego" data-project-id="tcego" data-project-order="0"><div class="project-top"><span class="project-icon" aria-hidden="true">🏛️</span><span class="project-status">Foco</span></div><h3>TCE-GO</h3><p class="muted">Controle Externo</p><p class="project-phase">Edital publicado</p><div class="project-observability"><span class="mini-health">Disponibilidade não verificada</span><span class="repo-freshness">Atualização técnica não verificada</span></div><div class="project-actions"><a class="project-link" href="https://rodrigorosadantas.github.io/tce-go-dashboard/">Abrir ambiente →</a><span class="mini-health">Acesso direto</span></div></article>
@@ -82,5 +56,6 @@
   <script src="./js/app.js" defer></script>
   <script src="./js/catalog-v4.js" defer></script>
   <script src="./js/personalization-v5.js" defer></script>
+  <script src="./js/pwa-v6.js" defer></script>
 </body>
 </html>
