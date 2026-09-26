@@ -12,8 +12,13 @@ Camada de entrada para os ambientes independentes de estudo:
 
 A Central **não importa, altera ou replica** o código dos projetos-filhos.
 
-## Estado atual — v1.4
+## Estado atual — v2.0
 
+- fundação de produto consolidada em v2.0;
+- hierarquia principal: foco → retomada → ambientes → estado técnico;
+- camada de armazenamento local tolerante a indisponibilidade/corrupção;
+- validação defensiva do registry antes da renderização;
+- modo degradado explícito quando a camada dinâmica falha;
 - interface mobile-first;
 - foco atual separado de último acesso;
 - foco selecionável pelo usuário e salvo apenas neste aparelho;
@@ -51,17 +56,6 @@ Consulte `docs/ARCHITECTURE.md` antes de introduzir integrações.
 
 
 <!-- deploy-trigger: 2026-09-26 -->
-
-
-## Evolução até v10
-
-A evolução autônoma é governada por:
-
-- `docs/COMMAND-V10.md` — protocolo de execução;
-- `docs/ROADMAP-V10.md` — objetivos de cada major;
-- `docs/V10-CHECKPOINT.md` — estado real e próxima etapa.
-
-Regra operacional: no máximo uma major por execução, com auditoria e deploy bem-sucedido antes do avanço.
 
 
 ## Governança da evolução até v10
