@@ -2,6 +2,8 @@ const STORAGE_KEY = "central-estudos:last-project";
 const FOCUS_STORAGE_KEY = "central-estudos:focus-project";
 const HEALTH_TIMEOUT_MS = 4500;
 const META_TIMEOUT_MS = 4500;
+const HEALTH_CACHE_KEY = "central-estudos:health-v9";
+const HEALTH_CACHE_TTL_MS = 2 * 60 * 1000;
 const META_CACHE_KEY = "central-estudos:repo-meta-v3";
 const META_CACHE_TTL_MS = 15 * 60 * 1000;
 
@@ -15,6 +17,15 @@ const state = {
 
 function byId(id) {
   return document.getElementById(id);
+}
+
+function escapeHtml(value) {
+  return String(value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
 }
 
 function safeStorageGet(key) {
@@ -71,7 +82,7 @@ function validateConfig(config) {
     throw new Error("Nenhum ambiente configurado.");
   }
 
-  const required = ["id", "name", "description", "phase", "url", "repository"];
+  const required = ["id", "name", "description", "phase", "status", "priority", "icon", "url", "repository"];
   const ids = new Set();
 
   config.projects.forEach(project => {
@@ -81,6 +92,9 @@ function validateConfig(config) {
       }
     });
 
+    if (!/^[a-z0-9_-]+$/i.test(project.id)) {
+      throw new Error(`ID de projeto inválido: ${project.id}.`);
+    }
     if (ids.has(project.id)) throw new Error(`ID de projeto duplicado: ${project.id}.`);
     ids.add(project.id);
 
@@ -95,13 +109,31 @@ function validateConfig(config) {
     }
   });
 
+  if (!ids.has(config.central.defaultProject)) {
+    throw new Error("Projeto padrão não existe no registry.");
+  }
+  if (typeof config.central.version !== "string" || !/^\d+\.\d+\.\d+$/.test(config.central.version)) {
+    throw new Error("Versão central inválida.");
+  }
+
   return config;
 }
 
 function normalizeProject(project) {
   return {
     ...project,
+    id: project.id.trim(),
+    name: project.name.trim(),
+    description: project.description.trim(),
+    phase: project.phase.trim(),
+    status: project.status.trim(),
+    priority: project.priority.trim(),
+    icon: project.icon.trim(),
+    url: new URL(project.url).href,
+    repository: new URL(project.repository).href,
     health: "checking",
+    healthMetaState: "checking",
+    healthCheckedAt: null,
     repoUpdatedAt: null,
     repoMetaState: "checking",
     repoCheckedAt: null,
@@ -187,6 +219,23 @@ function getGreeting() {
   if (hour < 12) return "Bom dia, Rodrigo.";
   if (hour < 18) return "Boa tarde, Rodrigo.";
   return "Boa noite, Rodrigo.";
+}
+
+function readHealthCache() {
+  const raw = safeStorageGet(HEALTH_CACHE_KEY);
+  if (!raw) return {};
+
+  try {
+    const parsed = JSON.parse(raw);
+    return parsed && typeof parsed === "object" ? parsed : {};
+  } catch {
+    safeStorageRemove(HEALTH_CACHE_KEY);
+    return {};
+  }
+}
+
+function writeHealthCache(cache) {
+  safeStorageSet(HEALTH_CACHE_KEY, JSON.stringify(cache));
 }
 
 function readRepoMetaCache() {
@@ -338,25 +387,32 @@ function healthLabel(status) {
   return "Verificando disponibilidade";
 }
 
-function healthMarkup(status) {
-  const className = status === "online"
-    ? "is-success"
-    : status === "offline"
-      ? "is-danger"
-      : status === "checking"
-        ? "is-muted"
+function healthMarkup(project) {
+  const status = project.health;
+  const cached = project.healthMetaState === "cached" || project.healthMetaState === "stale-cache";
+  const className = cached
+    ? "is-warning"
+    : status === "online"
+      ? "is-success"
+      : status === "offline"
+        ? "is-danger"
         : "is-muted";
-  const icon = status === "online" ? "✓" : status === "offline" ? "!" : status === "checking" ? "↻" : "·";
-  const meta = status === "unknown"
-    ? "Falha de rede ou verificação inconclusiva; o link continua disponível"
-    : "Tentativa técnica direta ao site";
+  const icon = cached ? "◷" : status === "online" ? "✓" : status === "offline" ? "!" : status === "checking" ? "↻" : "·";
+  const label = cached ? `Disponibilidade em cache: ${healthLabel(status)}` : healthLabel(status);
+  const checked = project.healthCheckedAt ? exactDateTime(project.healthCheckedAt) : null;
+  const meta = cached
+    ? `${project.healthMetaState === "stale-cache" ? "Cache antigo" : "Cache recente"}${checked ? ` · checagem ${checked}` : ""}; não confirma o estado neste instante`
+    : status === "unknown"
+      ? "Falha de rede ou verificação inconclusiva; o link continua disponível"
+      : "Tentativa técnica direta ao site";
 
-  return `<div class="observability-row"><span class="observability-icon">${icon}</span><span class="observability-copy"><span class="observability-label ${className}">${healthLabel(status)}</span><span class="observability-meta">${meta}</span></span></div>`;
+  return `<div class="observability-row"><span class="observability-icon">${icon}</span><span class="observability-copy"><span class="observability-label ${className}">${label}</span><span class="observability-meta">${meta}</span></span></div>`;
 }
 
 function updatePulse() {
   const projectCount = state.projects.length;
-  const onlineCount = state.projects.filter(project => project.health === "online").length;
+  const onlineCount = state.projects.filter(project => project.health === "online" && project.healthMetaState === "live").length;
+  const cachedCount = state.projects.filter(project => project.healthMetaState === "cached" || project.healthMetaState === "stale-cache").length;
   const healthPending = state.projects.some(project => project.health === "checking");
   const knownDates = state.projects
     .map(project => project.repoUpdatedAt ? new Date(project.repoUpdatedAt) : null)
@@ -369,7 +425,11 @@ function updatePulse() {
   if (!projectEl || !onlineEl || !freshnessEl) return;
 
   projectEl.textContent = String(projectCount);
-  onlineEl.textContent = healthPending ? "Verificando" : `${onlineCount}/${projectCount} acessíveis`;
+  onlineEl.textContent = healthPending
+    ? "Verificando"
+    : cachedCount
+      ? `${onlineCount}/${projectCount} agora · ${cachedCount} cache`
+      : `${onlineCount}/${projectCount} acessíveis`;
 
   if (knownDates.length) {
     const latest = relativeTimeFromNow(knownDates[0].toISOString());
@@ -456,14 +516,20 @@ async function fetchProjectObservability(project) {
         ? "stale-cache"
         : "unknown";
     } else {
-      const runsResult = await fetchGithubJson(`${apiBase}/actions/runs?branch=main&per_page=100`);
+      const targetedResult = await fetchGithubJson(
+        `${apiBase}/actions/workflows/deploy-pages.yml/runs?branch=main&per_page=1`
+      );
+      const runsResult = targetedResult.ok || targetedResult.reason === "rate-limited"
+        ? targetedResult
+        : await fetchGithubJson(`${apiBase}/actions/runs?branch=main&per_page=30`);
 
       if (runsResult.ok && Array.isArray(runsResult.data.workflow_runs)) {
         const runs = runsResult.data.workflow_runs;
-        const run =
-          runs.find(item => /deploy-pages\.ya?ml$/i.test(item.path || "")) ||
-          runs.find(item => /deploy.*pages|pages.*deploy|publish/i.test(item.name || "")) ||
-          runs.find(item => /pages|deploy|publish/i.test(item.path || ""));
+        const run = targetedResult.ok
+          ? runs[0]
+          : runs.find(item => /deploy-pages\.ya?ml$/i.test(item.path || "")) ||
+            runs.find(item => /deploy.*pages|pages.*deploy|publish/i.test(item.name || "")) ||
+            runs.find(item => /pages|deploy|publish/i.test(item.path || ""));
 
         if (run) {
           project.deployStatus = run.status === "completed"
@@ -517,14 +583,17 @@ function renderFocus(project) {
   }
 
   const health = byId("focus-health");
-  const shortHealth = project.health === "online"
-    ? "Online"
-    : project.health === "offline"
-      ? "Erro técnico"
-      : project.health === "checking"
-        ? "Verificando"
-        : "Não verificado";
-  health.className = `health health-${project.health}`;
+  const healthCached = project.healthMetaState === "cached" || project.healthMetaState === "stale-cache";
+  const shortHealth = healthCached
+    ? project.health === "online" ? "Online (cache)" : project.health === "offline" ? "Erro (cache)" : "Cache"
+    : project.health === "online"
+      ? "Online"
+      : project.health === "offline"
+        ? "Erro técnico"
+        : project.health === "checking"
+          ? "Verificando"
+          : "Não verificado";
+  health.className = `health health-${healthCached ? "unknown" : project.health}`;
   health.innerHTML = `<span class="dot"></span>${shortHealth}`;
 
   const button = byId("continue-button");
@@ -553,23 +622,23 @@ function renderProjects() {
     article.dataset.projectOrder = String(projectIndex);
     article.innerHTML = `
       <div class="project-top">
-        <span class="project-icon" aria-hidden="true">${project.icon || "•"}</span>
+        <span class="project-icon" aria-hidden="true">${escapeHtml(project.icon || "•")}</span>
         <div class="project-top-right">
           ${isLast ? '<span class="last-chip">Último acesso</span>' : ""}
           <span class="project-status">${isFocus ? "Foco" : "Ativo"}</span>
         </div>
       </div>
-      <h3>${project.name}</h3>
-      <p class="muted">${project.description}</p>
-      <p class="project-phase">${project.phase}</p>
+      <h3>${escapeHtml(project.name)}</h3>
+      <p class="muted">${escapeHtml(project.description)}</p>
+      <p class="project-phase">${escapeHtml(project.phase)}</p>
       <div class="project-observability">
-        <span data-health="${project.id}">${healthMarkup(project.health)}</span>
+        <span data-health="${project.id}">${healthMarkup(project)}</span>
         <span data-repo="${project.id}">${repoFreshnessMarkup(project)}</span>
         <span data-deploy="${project.id}">${deployMarkup(project)}</span>
       </div>
       <div class="project-actions">
-        <a class="project-link" href="${project.url}">Abrir ambiente →</a>
-        <button class="focus-toggle" type="button" ${isFocus ? "disabled" : ""} aria-label="${isFocus ? `${project.name} é o foco atual` : `Definir ${project.name} como foco`}">
+        <a class="project-link" href="${escapeHtml(project.url)}">Abrir ambiente →</a>
+        <button class="focus-toggle" type="button" ${isFocus ? "disabled" : ""} aria-label="${escapeHtml(isFocus ? `${project.name} é o foco atual` : `Definir ${project.name} como foco`)}">
           ${isFocus ? "★ Foco atual" : "☆ Definir foco"}
         </button>
       </div>
@@ -630,6 +699,27 @@ function renderResume() {
 }
 
 async function checkHealth(project) {
+  const cache = readHealthCache();
+  const cached = cache[project.id];
+  const now = Date.now();
+  const validCached = cached &&
+    ["online", "offline"].includes(cached.status) &&
+    Number.isFinite(cached.checkedAt);
+
+  if (validCached && now - cached.checkedAt < HEALTH_CACHE_TTL_MS) {
+    return {
+      status: cached.status,
+      checkedAt: cached.checkedAt,
+      metaState: "cached"
+    };
+  }
+
+  if (typeof navigator !== "undefined" && navigator.onLine === false) {
+    return validCached
+      ? { status: cached.status, checkedAt: cached.checkedAt, metaState: "stale-cache" }
+      : { status: "unknown", checkedAt: null, metaState: "unknown" };
+  }
+
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), HEALTH_TIMEOUT_MS);
 
@@ -639,9 +729,14 @@ async function checkHealth(project) {
       cache: "no-store",
       signal: controller.signal
     });
-    return response.ok ? "online" : "offline";
+    const status = response.ok ? "online" : "offline";
+    cache[project.id] = { status, checkedAt: now };
+    writeHealthCache(cache);
+    return { status, checkedAt: now, metaState: "live" };
   } catch {
-    return "unknown";
+    return validCached
+      ? { status: cached.status, checkedAt: cached.checkedAt, metaState: "stale-cache" }
+      : { status: "unknown", checkedAt: null, metaState: "unknown" };
   } finally {
     clearTimeout(timeout);
   }
@@ -655,6 +750,8 @@ function emitTechnicalState(project) {
       id: project.id,
       name: project.name,
       health: project.health,
+      healthMetaState: project.healthMetaState,
+      healthCheckedAt: project.healthCheckedAt,
       repoUpdatedAt: project.repoUpdatedAt,
       repoMetaState: project.repoMetaState,
       repoCheckedAt: project.repoCheckedAt,
@@ -668,9 +765,12 @@ function emitTechnicalState(project) {
 async function updateHealth() {
   await Promise.all(
     state.projects.map(async project => {
-      project.health = await checkHealth(project);
+      const healthResult = await checkHealth(project);
+      project.health = healthResult.status;
+      project.healthMetaState = healthResult.metaState;
+      project.healthCheckedAt = healthResult.checkedAt;
       const slot = document.querySelector(`[data-health="${project.id}"]`);
-      if (slot) slot.innerHTML = healthMarkup(project.health);
+      if (slot) slot.innerHTML = healthMarkup(project);
       if (state.focus?.id === project.id) renderFocus(project);
       emitTechnicalState(project);
       updatePulse();
