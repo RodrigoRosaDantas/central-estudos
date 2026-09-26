@@ -5,8 +5,8 @@
 - **Versão validada:** 2.0.0
 - **Meta:** 10.0.0
 - **Next major:** 3.0.0
-- **Active major:** none
-- **Stage:** READY
+- **Active major:** 3.0.0
+- **Stage:** IN_PROGRESS
 - **Status:** IN PROGRESS
 - **Último deploy de release validado:** workflow run 36264383202 — success
 - **Commit de release validado:** `e3cfacdf6e3784ca0236065cf34ac14c2900dd97`
@@ -49,14 +49,14 @@ Esteira encerrada.
 
 ## Snapshot da major ativa
 
-- **Major:** none
-- **Started at:** —
-- **Source version:** —
-- **Central HEAD inicial:** —
-- **Último deploy inicial:** —
-- **Child SHAs no início:** —
-- **Acceptance aplicável:** —
-- **Riscos:** —
+- **Major:** 3.0.0 — Observabilidade confiável
+- **Started at:** 2026-09-26
+- **Source version:** 2.0.0
+- **Central HEAD inicial:** `aa97ee55ec3b11047f1aeca9ef94f1487518e6d4`
+- **Último deploy inicial:** workflow run `36264452978` — success — HEAD `aa97ee55ec3b11047f1aeca9ef94f1487518e6d4`
+- **Child SHAs no início:** TCE-GO `2986dabf2ddb3ed6b22fa58b9a5151981a678dbf`; SEEDF `bb006c3bc896534716e6b568849669a7fe4424c8`; TJDFT `8aa366c0068f6f705fb2d27a44b7a522f90003d9`
+- **Acceptance aplicável:** saúde técnica não bloqueante; falha de rede = inconclusiva; cache/limite de chamadas GitHub; rate limit tratado; publicação técnica não confundida com estudo; origem explicável; stale data identificável; gates globais.
+- **Riscos:** GitHub API pública sujeita a rate limit/CORS/rede; health check HEAD pode ser inconclusivo; cache local pode ficar stale; validação visual real pode não estar disponível neste ambiente. Nenhum desses estados pode bloquear o acesso direto aos projetos.
 
 ## Última major concluída — v2.0.0
 
