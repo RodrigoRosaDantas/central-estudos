@@ -132,7 +132,7 @@
             <p class="eyebrow">ESTADO TÉCNICO</p>
             <h2 id="technical-title">Pulso da Central</h2>
           </div>
-          <p class="muted compact">Informação auxiliar. Nunca bloqueia o acesso aos ambientes.</p>
+          <p class="muted compact">Informação auxiliar e somente leitura. Nunca bloqueia o acesso aos ambientes.</p>
         </div>
       <section class="pulse" aria-label="Pulso da Central">
         <div class="pulse-item">
@@ -148,6 +148,17 @@
           <span class="pulse-label">última publicação</span>
         </div>
       </section>
+        <div class="technical-explainer">
+          <p id="observability-source" class="source-note">Fonte: sites públicos + GitHub público. Cache local de 15 minutos.</p>
+          <details>
+            <summary>Como interpretar estes dados</summary>
+            <div class="technical-help">
+              <p><strong>Disponibilidade</strong> é uma tentativa técnica de alcançar o site agora. Falha de rede vira “não verificado”, não uma conclusão de que o projeto caiu.</p>
+              <p><strong>Publicação técnica</strong> é o último <code>push</code> público conhecido no GitHub. Não representa estudo realizado, progresso ou desempenho.</p>
+              <p><strong>Deploy</strong> usa o workflow público de publicação mais recente quando ele pode ser identificado. Se a API estiver limitada, a Central preserva o último dado conhecido e o marca como cache.</p>
+            </div>
+          </details>
+        </div>
       </section>
     </main>
 
