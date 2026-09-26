@@ -1,4 +1,5 @@
 const STORAGE_KEY = "central-estudos:last-project";
+const FOCUS_STORAGE_KEY = "central-estudos:focus-project";
 const HEALTH_TIMEOUT_MS = 4500;
 const META_TIMEOUT_MS = 4500;
 const META_CACHE_KEY = "central-estudos:repo-meta";
@@ -37,12 +38,25 @@ function readLastVisit() {
   return null;
 }
 
+function readFocusPreference() {
+  return localStorage.getItem(FOCUS_STORAGE_KEY);
+}
+
 function chooseFocus(projects, defaultProject) {
+  const preferredId = readFocusPreference();
   return (
+    projects.find(project => project.id === preferredId) ||
     projects.find(project => project.id === defaultProject) ||
     projects.find(project => project.priority === "focus") ||
     projects[0]
   );
+}
+
+function setFocusProject(project) {
+  localStorage.setItem(FOCUS_STORAGE_KEY, project.id);
+  state.focus = project;
+  renderFocus(project);
+  renderProjects();
 }
 
 function rememberProject(project) {
@@ -220,6 +234,12 @@ function renderFocus(project) {
   byId("focus-title").textContent = project.name;
   byId("focus-description").textContent = project.description;
   byId("focus-phase").textContent = project.phase;
+  const focusNote = byId("focus-note");
+  if (focusNote) {
+    focusNote.textContent = readFocusPreference()
+      ? "Foco escolhido por você neste aparelho."
+      : "Prioridade padrão configurada na Central.";
+  }
 
   const health = byId("focus-health");
   health.className = `health health-${project.health}`;
@@ -244,14 +264,15 @@ function renderProjects() {
 
   state.projects.forEach(project => {
     const isLast = project.id === lastVisit?.id;
+    const isFocus = project.id === state.focus?.id;
     const article = document.createElement("article");
-    article.className = `project-card project-${project.id}${isLast ? " is-last" : ""}`;
+    article.className = `project-card project-${project.id}${isLast ? " is-last" : ""}${isFocus ? " is-focus" : ""}`;
     article.innerHTML = `
       <div class="project-top">
         <span class="project-icon" aria-hidden="true">${project.icon}</span>
         <div class="project-top-right">
           ${isLast ? '<span class="last-chip">Último acesso</span>' : ""}
-          <span class="project-status">${project.priority === "focus" ? "Foco" : "Ativo"}</span>
+          <span class="project-status">${isFocus ? "Foco" : "Ativo"}</span>
         </div>
       </div>
       <h3>${project.name}</h3>
@@ -263,6 +284,9 @@ function renderProjects() {
       </div>
       <div class="project-actions">
         <a class="project-link" href="${project.url}">Abrir ambiente →</a>
+        <button class="focus-toggle" type="button" ${isFocus ? "disabled" : ""} aria-label="${isFocus ? `${project.name} é o foco atual` : `Definir ${project.name} como foco`}">
+          ${isFocus ? "★ Foco atual" : "☆ Definir foco"}
+        </button>
       </div>
     `;
 
@@ -270,6 +294,11 @@ function renderProjects() {
       event.preventDefault();
       openProject(project);
     });
+
+    const focusButton = article.querySelector(".focus-toggle");
+    if (focusButton && !isFocus) {
+      focusButton.addEventListener("click", () => setFocusProject(project));
+    }
 
     grid.appendChild(article);
   });
