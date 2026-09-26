@@ -6,7 +6,7 @@
 - **Meta:** 10.0.0
 - **Next major:** 3.0.0
 - **Active major:** 3.0.0
-- **Stage:** IN_PROGRESS
+- **Stage:** VALIDATING
 - **Status:** IN PROGRESS
 - **Último deploy de release validado:** workflow run 36264383202 — success
 - **Commit de release validado:** `e3cfacdf6e3784ca0236065cf34ac14c2900dd97`
