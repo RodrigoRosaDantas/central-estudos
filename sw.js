@@ -36,7 +36,8 @@ self.addEventListener('fetch', (event) => {
   if (request.method !== 'GET') return;
 
   const url = new URL(request.url);
-  if (url.origin !== self.location.origin) return;
+  const scopeUrl = new URL(self.registration.scope);
+  if (url.origin !== scopeUrl.origin || !url.pathname.startsWith(scopeUrl.pathname)) return;
 
   if (request.mode === 'navigate') {
     event.respondWith(
