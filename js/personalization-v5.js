@@ -89,13 +89,24 @@
           .toLowerCase()
           .replace(/[^a-z0-9]+/g, "-")
           .replace(/^-+|-+$/g, ""),
-      name: card.querySelector("h3")?.textContent?.trim() || "Ambiente"
+      name: card.querySelector("h3")?.textContent?.trim() || "Ambiente",
+      registryOrder: Number.isFinite(Number(card.dataset.projectOrder))
+        ? Number(card.dataset.projectOrder)
+        : Number.MAX_SAFE_INTEGER
     }));
+  }
+
+  function defaultOrder() {
+    return projectEntries()
+      .slice()
+      .sort((a, b) => a.registryOrder - b.registryOrder || a.name.localeCompare(b.name, "pt-BR"))
+      .map(item => item.id);
   }
 
   function normalizedOrder() {
     const entries = projectEntries();
     const ids = entries.map(item => item.id);
+    const defaults = defaultOrder();
     const saved = readJson(ORDER_KEY, []);
     const validSaved = Array.isArray(saved)
       ? saved.filter(id => typeof id === "string" && ids.includes(id))
@@ -103,7 +114,7 @@
 
     return [
       ...new Set(validSaved),
-      ...ids.filter(id => !validSaved.includes(id))
+      ...defaults.filter(id => ids.includes(id) && !validSaved.includes(id))
     ];
   }
 
@@ -210,7 +221,7 @@
     applyTechnical("show");
     if (catalogSort) catalogSort.value = "default";
 
-    const order = projectEntries().map(item => item.id);
+    const order = defaultOrder();
     if (order.length) writeJson(ORDER_KEY, order);
 
     refreshCatalog();
