@@ -383,71 +383,110 @@ async function fetchProjectObservability(project) {
   const cache = readRepoMetaCache();
   const cached = cache[project.id] || {};
   const now = Date.now();
-  const cacheFresh = cached.checkedAt && now - cached.checkedAt < META_CACHE_TTL_MS;
 
-  if (cacheFresh) {
+  const repoCacheFresh = cached.repoCheckedAt &&
+    now - cached.repoCheckedAt < META_CACHE_TTL_MS;
+  const deployCacheFresh = cached.deployCheckedAt &&
+    now - cached.deployCheckedAt < META_CACHE_TTL_MS;
+
+  if (repoCacheFresh) {
     project.repoUpdatedAt = cached.pushedAt || null;
-    project.repoCheckedAt = cached.checkedAt || null;
+    project.repoCheckedAt = cached.repoCheckedAt;
     project.repoMetaState = project.repoUpdatedAt ? "cached" : "unknown";
+  }
+
+  if (deployCacheFresh) {
     project.deployStatus = cached.deployStatus || "unknown";
     project.deployUpdatedAt = cached.deployUpdatedAt || null;
     project.deployMetaState = project.deployStatus !== "unknown" ? "cached" : "unknown";
-    return;
   }
+
+  if (repoCacheFresh && deployCacheFresh) return;
 
   const apiBase = githubApiBase(project);
   if (!apiBase) {
-    project.repoMetaState = "unknown";
-    project.deployMetaState = "unknown";
-    project.deployStatus = "unknown";
+    if (!repoCacheFresh) project.repoMetaState = cached.pushedAt ? "stale-cache" : "unknown";
+    if (!deployCacheFresh) {
+      project.deployStatus = cached.deployStatus || "unknown";
+      project.deployUpdatedAt = cached.deployUpdatedAt || null;
+      project.deployMetaState = cached.deployStatus && cached.deployStatus !== "unknown"
+        ? "stale-cache"
+        : "unknown";
+    }
     return;
   }
 
-  const repoResult = await fetchGithubJson(apiBase);
-  if (repoResult.ok) {
-    project.repoUpdatedAt = repoResult.data.pushed_at || repoResult.data.updated_at || null;
-    project.repoCheckedAt = now;
-    project.repoMetaState = project.repoUpdatedAt ? "online" : "unknown";
-  } else if (cached.pushedAt) {
-    project.repoUpdatedAt = cached.pushedAt;
-    project.repoCheckedAt = cached.checkedAt || null;
-    project.repoMetaState = "stale-cache";
-  } else {
-    project.repoMetaState = "unknown";
+  let repoRateLimited = false;
+
+  if (!repoCacheFresh) {
+    const repoResult = await fetchGithubJson(apiBase);
+
+    if (repoResult.ok) {
+      project.repoUpdatedAt = repoResult.data.pushed_at || repoResult.data.updated_at || null;
+      project.repoCheckedAt = now;
+      project.repoMetaState = project.repoUpdatedAt ? "online" : "unknown";
+    } else {
+      repoRateLimited = repoResult.reason === "rate-limited";
+      if (cached.pushedAt) {
+        project.repoUpdatedAt = cached.pushedAt;
+        project.repoCheckedAt = cached.repoCheckedAt || null;
+        project.repoMetaState = "stale-cache";
+      } else {
+        project.repoMetaState = "unknown";
+      }
+    }
   }
 
-  const runsResult = await fetchGithubJson(`${apiBase}/actions/runs?branch=main&per_page=10`);
-  if (runsResult.ok && Array.isArray(runsResult.data.workflow_runs)) {
-    const run = runsResult.data.workflow_runs.find(item =>
-      /pages|deploy|publish/i.test(item.name || "") ||
-      /pages|deploy|publish/i.test(item.path || "")
-    );
-
-    if (run) {
-      project.deployStatus = run.status === "completed"
-        ? (run.conclusion || "unknown")
-        : (run.status || "unknown");
-      project.deployUpdatedAt = run.updated_at || run.created_at || null;
-      project.deployMetaState = "online";
+  if (!deployCacheFresh) {
+    if (repoRateLimited) {
+      project.deployStatus = cached.deployStatus || "unknown";
+      project.deployUpdatedAt = cached.deployUpdatedAt || null;
+      project.deployMetaState = cached.deployStatus && cached.deployStatus !== "unknown"
+        ? "stale-cache"
+        : "unknown";
     } else {
-      project.deployStatus = "unknown";
-      project.deployMetaState = "unknown";
+      const runsResult = await fetchGithubJson(`${apiBase}/actions/runs?branch=main&per_page=100`);
+
+      if (runsResult.ok && Array.isArray(runsResult.data.workflow_runs)) {
+        const run = runsResult.data.workflow_runs.find(item =>
+          /pages|deploy|publish/i.test(item.name || "") ||
+          /pages|deploy|publish/i.test(item.path || "")
+        );
+
+        if (run) {
+          project.deployStatus = run.status === "completed"
+            ? (run.conclusion || "unknown")
+            : (run.status || "unknown");
+          project.deployUpdatedAt = run.updated_at || run.created_at || null;
+          project.deployMetaState = "online";
+        } else {
+          project.deployStatus = "unknown";
+          project.deployUpdatedAt = null;
+          project.deployMetaState = "unknown";
+        }
+      } else if (cached.deployStatus && cached.deployStatus !== "unknown") {
+        project.deployStatus = cached.deployStatus;
+        project.deployUpdatedAt = cached.deployUpdatedAt || null;
+        project.deployMetaState = "stale-cache";
+      } else {
+        project.deployStatus = "unknown";
+        project.deployMetaState = "unknown";
+      }
     }
-  } else if (cached.deployStatus && cached.deployStatus !== "unknown") {
-    project.deployStatus = cached.deployStatus;
-    project.deployUpdatedAt = cached.deployUpdatedAt || null;
-    project.deployMetaState = "stale-cache";
-  } else {
-    project.deployStatus = "unknown";
-    project.deployMetaState = "unknown";
   }
 
   cache[project.id] = {
-    pushedAt: project.repoUpdatedAt,
-    deployStatus: project.deployStatus,
-    deployUpdatedAt: project.deployUpdatedAt,
-    checkedAt: now
+    pushedAt: project.repoUpdatedAt || cached.pushedAt || null,
+    repoCheckedAt: project.repoMetaState === "online"
+      ? now
+      : (cached.repoCheckedAt || null),
+    deployStatus: project.deployStatus || cached.deployStatus || "unknown",
+    deployUpdatedAt: project.deployUpdatedAt || cached.deployUpdatedAt || null,
+    deployCheckedAt: project.deployMetaState === "online"
+      ? now
+      : (cached.deployCheckedAt || null)
   };
+
   writeRepoMetaCache(cache);
 }
 
