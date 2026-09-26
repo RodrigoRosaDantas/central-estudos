@@ -533,12 +533,13 @@ function renderProjects() {
   const lastVisit = readLastVisit();
   grid.innerHTML = "";
 
-  state.projects.forEach(project => {
+  state.projects.forEach((project, projectIndex) => {
     const isLast = project.id === lastVisit?.id;
     const isFocus = project.id === state.focus?.id;
     const article = document.createElement("article");
     article.className = `project-card project-${project.id}${isLast ? " is-last" : ""}${isFocus ? " is-focus" : ""}`;
     article.dataset.projectId = project.id;
+    article.dataset.projectOrder = String(projectIndex);
     article.innerHTML = `
       <div class="project-top">
         <span class="project-icon" aria-hidden="true">${project.icon || "•"}</span>
