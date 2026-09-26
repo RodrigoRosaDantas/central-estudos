@@ -7,6 +7,7 @@
   <meta name="description" content="Central de Estudos — acesso unificado aos ambientes TCE-GO, SEEDF e TJDFT." />
   <meta name="color-scheme" content="dark" />
   <meta name="referrer" content="strict-origin-when-cross-origin" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://api.github.com; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; upgrade-insecure-requests" />
   <title>Central de Estudos</title>
   <link rel="icon" href="./assets/icon.svg" type="image/svg+xml" />
   <link rel="manifest" href="./manifest.webmanifest" />
@@ -26,7 +27,7 @@
         <div class="hero-copy"><p class="eyebrow">FOCO ATUAL</p><h2 id="focus-title">TCE-GO</h2><p id="focus-description" class="muted">Controle Externo</p><p id="focus-note" class="focus-note">Ambiente prioritário configurado na Central.</p><div class="hero-meta"><span id="focus-phase" class="badge">Edital publicado</span><span id="focus-health" class="health health-checking"><span class="dot"></span>Verificando</span></div></div>
         <div class="hero-actions"><a id="continue-button" class="button button-primary" href="https://rodrigorosadantas.github.io/tce-go-dashboard/">Entrar no foco <span aria-hidden="true">→</span></a><a id="focus-new-tab" class="button button-ghost" href="https://rodrigorosadantas.github.io/tce-go-dashboard/" target="_blank" rel="noopener">Abrir em nova guia</a></div>
       </section>
-      <section class="section resume-card" aria-labelledby="resume-title"><div><p class="eyebrow">RETOMADA</p><h2 id="resume-title">Continue de onde parou</h2><p id="last-project-text" class="muted">O histórico local será registrado quando você abrir um ambiente pela Central.</p></div><div class="resume-actions"><a id="resume-button" class="button button-secondary is-hidden" href="#">Retomar</a><button id="clear-history" class="button button-quiet" type="button">Limpar histórico</button></div></section>
+      <section class="section resume-card" aria-labelledby="resume-title"><div><p class="eyebrow">RETOMADA</p><h2 id="resume-title">Continue de onde parou</h2><p id="last-project-text" class="muted">O histórico local será registrado quando você abrir um ambiente pela Central.</p></div><div class="resume-actions"><a id="resume-button" class="button button-secondary is-hidden" href="#">Retomar</a><button id="clear-history" class="button button-quiet" type="button" disabled>Limpar histórico</button></div></section>
       <details id="preferences-panel" class="preferences-panel">
         <summary><span><span class="eyebrow">PREFERÊNCIAS</span><strong>Personalizar a Central</strong></span><span class="preferences-local-badge">Só neste aparelho</span></summary>
         <div class="preferences-body">
@@ -41,9 +42,9 @@
       </details>
       <section class="section" aria-labelledby="projects-title">
         <div class="section-heading"><div><p class="eyebrow">AMBIENTES</p><h2 id="projects-title">Seus projetos</h2></div><p class="muted compact">Cada ambiente continua independente. A Central apenas organiza o acesso.</p></div>
-        <div class="catalog-toolbar" role="search" aria-label="Organizar ambientes"><label class="catalog-field"><span>Buscar</span><input id="catalog-search" type="search" inputmode="search" autocomplete="off" placeholder="Nome, área ou fase" /></label><label class="catalog-field"><span>Ordenar</span><select id="catalog-sort"><option value="default">Ordem padrão</option><option value="favorites">Favoritos primeiro</option><option value="name">Nome A–Z</option></select></label><span id="catalog-count" class="catalog-count" aria-live="polite">3 de 3 ambientes</span></div>
-        <p class="catalog-hint">☆ Favoritos ficam só neste aparelho. No desktop, Alt+1, Alt+2… abre os ambientes visíveis sem interferir na digitação.</p>
-        <div id="projects-grid" class="projects-grid" aria-live="polite">
+        <div class="catalog-toolbar" role="search" aria-label="Organizar ambientes" aria-describedby="catalog-hint"><label class="catalog-field"><span>Buscar</span><input id="catalog-search" type="search" inputmode="search" autocomplete="off" placeholder="Nome, área ou fase" aria-controls="projects-grid" /></label><label class="catalog-field"><span>Ordenar</span><select id="catalog-sort" aria-controls="projects-grid"><option value="default">Ordem padrão</option><option value="favorites">Favoritos primeiro</option><option value="name">Nome A–Z</option></select></label><span id="catalog-count" class="catalog-count" aria-live="polite">3 de 3 ambientes</span></div>
+        <p id="catalog-hint" class="catalog-hint">☆ Favoritos ficam só neste aparelho. No desktop, Alt+1, Alt+2… abre os ambientes visíveis sem interferir na digitação.</p>
+        <div id="projects-grid" class="projects-grid">
           <article class="project-card project-tcego" data-project-id="tcego" data-project-order="0"><div class="project-top"><span class="project-icon" aria-hidden="true">🏛️</span><span class="project-status">Foco</span></div><h3>TCE-GO</h3><p class="muted">Controle Externo</p><p class="project-phase">Edital publicado</p><div class="project-observability"><span class="mini-health">Disponibilidade não verificada</span><span class="repo-freshness">Atualização técnica não verificada</span></div><div class="project-actions"><a class="project-link" href="https://rodrigorosadantas.github.io/tce-go-dashboard/">Abrir ambiente →</a><span class="mini-health">Acesso direto</span></div></article>
           <article class="project-card project-seedf" data-project-id="seedf" data-project-order="1"><div class="project-top"><span class="project-icon" aria-hidden="true">📚</span><span class="project-status">Ativo</span></div><h3>SEEDF</h3><p class="muted">Gestor + Analista — Apoio Administrativo</p><p class="project-phase">Pré-edital</p><div class="project-observability"><span class="mini-health">Disponibilidade não verificada</span><span class="repo-freshness">Atualização técnica não verificada</span></div><div class="project-actions"><a class="project-link" href="https://rodrigorosadantas.github.io/seedf-ppge-dashboard/">Abrir ambiente →</a><span class="mini-health">Acesso direto</span></div></article>
           <article class="project-card project-tjdft" data-project-id="tjdft" data-project-order="2"><div class="project-top"><span class="project-icon" aria-hidden="true">⚖️</span><span class="project-status">Ativo</span></div><h3>TJDFT</h3><p class="muted">Técnico + Analista — Área Administrativa</p><p class="project-phase">Preparação</p><div class="project-observability"><span class="mini-health">Disponibilidade não verificada</span><span class="repo-freshness">Atualização técnica não verificada</span></div><div class="project-actions"><a class="project-link" href="https://rodrigorosadantas.github.io/tjdft-dashboard/">Abrir ambiente →</a><span class="mini-health">Acesso direto</span></div></article>
@@ -67,7 +68,7 @@
               </div>
               <span class="activity-source">Fonte local</span>
             </div>
-            <div id="access-history-list" class="activity-list" aria-live="polite">
+            <div id="access-history-list" class="activity-list" aria-live="polite" aria-atomic="false">
               <p class="activity-empty">Nenhum acesso registrado neste aparelho.</p>
             </div>
           </article>
@@ -79,7 +80,7 @@
               </div>
               <span class="activity-source">Site + GitHub</span>
             </div>
-            <div id="technical-activity-list" class="activity-list" aria-live="polite">
+            <div id="technical-activity-list" class="activity-list" aria-live="polite" aria-atomic="false">
               <p class="activity-empty">Aguardando sinais técnicos públicos.</p>
             </div>
           </article>
