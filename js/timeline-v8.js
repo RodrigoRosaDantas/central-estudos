@@ -53,6 +53,15 @@
     }
   }
 
+  function escapeHtml(value) {
+    return String(value)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
+
   function formatDate(isoDate) {
     const date = new Date(isoDate);
     if (Number.isNaN(date.getTime())) return "horário não disponível";
@@ -92,7 +101,7 @@
       <div class="activity-item">
         <span class="activity-marker" aria-hidden="true">↗</span>
         <span class="activity-copy">
-          <span class="activity-title">${item.name} aberto pela Central</span>
+          <span class="activity-title">${escapeHtml(item.name)} aberto pela Central</span>
           <span class="activity-meta">${formatDate(item.visitedAt)} · fonte: histórico local deste navegador</span>
           <span class="activity-diagnostic">Este registro indica somente um acesso. Não mede estudo, duração, progresso ou desempenho.</span>
         </span>
@@ -122,7 +131,8 @@
   }
 
   function projectOrder(id) {
-    const card = document.querySelector(`[data-project-id="${CSS.escape(id)}"]`);
+    const card = [...document.querySelectorAll("[data-project-id]")]
+      .find(item => item.dataset.projectId === id);
     const value = Number(card?.dataset.projectOrder);
     return Number.isFinite(value) ? value : Number.MAX_SAFE_INTEGER;
   }
@@ -184,7 +194,7 @@
         <div class="activity-item">
           <span class="activity-marker" aria-hidden="true">●</span>
           <span class="activity-copy">
-            <span class="activity-title">${item.name}</span>
+            <span class="activity-title">${escapeHtml(item.name)}</span>
             <span class="activity-meta">${publication} · ${deployLabel(item.deployStatus)} · fonte: ${source}</span>
             <span class="activity-diagnostic">${diagnosis(item)}</span>
           </span>
