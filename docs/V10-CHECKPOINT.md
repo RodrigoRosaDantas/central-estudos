@@ -6,7 +6,7 @@
 - **Meta:** 10.0.0
 - **Next major:** 5.0.0
 - **Active major:** 5.0.0
-- **Stage:** IN_PROGRESS
+- **Stage:** VALIDATING
 - **Status:** IN PROGRESS
 - **Último deploy de release validado:** workflow run 36271496568 — success
 - **Commit de release validado:** `42ee59a34ebb34ecaa858da77b03646f25c21304`
@@ -35,6 +35,8 @@
 - **Child SHAs no início:** TCE-GO `2986dabf2ddb3ed6b22fa58b9a5151981a678dbf`; SEEDF `bb006c3bc896534716e6b568849669a7fe4424c8`; TJDFT `8aa366c0068f6f705fb2d27a44b7a522f90003d9`
 - **Acceptance aplicável:** preferências somente locais; reset seguro; preferências inválidas não quebram renderização; ordem/apresentação não alteram registry; nenhuma informação sensível; configuração compreensível e reversível; gates globais.
 - **Riscos:** conflito com ordenação da v4; preferências corrompidas; controles mortos sem JavaScript; reset apagar continuidade indevidamente; regressão mobile ao adicionar painel de preferências.
+- **QA v5:** PASS — densidade confortável/compacta; apresentação técnica show/hide; ordem manual ancorada no registry; preferências inválidas limpas; reset confirmado e reversível; último acesso preservado; controles ocultos sem JS; armazenamento somente local; nenhum dado sensível; nenhuma lógica de service worker/PWA antecipada.
+- **Estado da implementação:** concluída; aguardando promoção para 5.0.0, documentação, deploy e pós-deploy.
 
 ## Última major concluída — v4.0.0
 
