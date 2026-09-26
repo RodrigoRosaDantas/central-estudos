@@ -258,12 +258,11 @@ function renderProjects() {
       <p class="muted">${project.description}</p>
       <p class="project-phase">${project.phase}</p>
       <div class="project-observability">
-        <span class="project-status-text">Abrir projeto</span>
+        <span data-health="${project.id}">${healthMarkup(project.health)}</span>
         <span data-repo="${project.id}">${repoFreshnessMarkup(project)}</span>
       </div>
       <div class="project-actions">
         <a class="project-link" href="${project.url}">Abrir ambiente →</a>
-        <span data-health="${project.id}">${healthMarkup(project.health)}</span>
       </div>
     `;
 
