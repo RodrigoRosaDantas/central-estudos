@@ -26,6 +26,7 @@
 - `COMPLETE — v10.0.0`: esteira encerrada.
 
 ## Snapshot da major ativa
+
 - **Major:** none
 - **Started at:** —
 - **Source version:** —
@@ -36,18 +37,22 @@
 - **Riscos:** —
 
 ## Última major concluída — v4.0.0
+
 - **Origem:** v3.0.0
-- **Objetivo:** catálogo operacional para escolha e acesso sem duplicar dashboards.
+- **Objetivo:** transformar o catálogo em uma camada operacional simples e escalável.
 - **Resultado:** PASS
 - **Acceptance v4:** PASS nos gates estruturais/lógicos verificáveis.
-- **Catálogo:** busca local; ordem padrão/favoritos/nome; favoritos locais.
-- **Semântica:** foco, favorito, último acesso e recência continuam distintos.
-- **Atalhos:** `Alt+1..9` apenas fora de campos editáveis; touch não depende de teclado.
-- **Ação principal:** abrir ambiente permanece dominante e fallback direto foi preservado.
-- **QA:** registry/manifest válidos; IDs/HTTPS/fallback/404 preservados; JS v4 revisado; observer corrigido para não criar loop; storage degrada sem bloquear.
+- **Busca:** local por nome, descrição/área e fase.
+- **Favoritos/ordenação:** somente locais; não alteram registry.
+- **Separação semântica:** foco, retomada, favorito e recência técnica permanecem independentes.
+- **Atalhos:** Alt+1..9 apenas para cards visíveis e sem capturar campos editáveis.
+- **Progressive enhancement:** controles do catálogo permanecem ocultos sem JavaScript.
+- **Escalabilidade:** IDs do catálogo usam `data-project-id` vindo do registry, sem hardcode dos três projetos atuais.
+- **Ação principal:** Abrir ambiente preservada.
 - **Projetos-filhos:** SHAs finais idênticos aos SHAs de preflight; zero writes nesta execução.
-- **Deploy:** workflow run `36271230177` — success para commit `f4a8688abc370061ad92a45cbb9b5c4a9b68054c`.
-- **Limitação:** a URL pública do Pages não pôde ser aberta diretamente pelas ferramentas desta sessão; nenhuma validação visual foi inventada.
+- **Deploy:** workflow run `36271401822` — success.
+- **Commit validado:** `e9b7d5e3cc0a9e0dc5294244912d9674baef67db`.
+- **Limitação registrada:** a URL pública do GitHub Pages não pôde ser aberta diretamente pela ferramenta web desta sessão; nenhuma validação visual foi inventada.
 
 ## Última major concluída — v3.0.0
 - **Origem:** v2.0.0
