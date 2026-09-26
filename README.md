@@ -6,80 +6,49 @@ Camada de entrada para os ambientes independentes TCE-GO, SEEDF e TJDFT.
 
 A Central não importa, altera ou replica o código dos projetos-filhos.
 
-## Estado atual — v9.0
+## Estado atual — v10.0
 
-A v9 endurece a plataforma para a auditoria final:
+A v10 é a release estável que consolida a evolução v2→v9 sem criar nova responsabilidade arquitetural. A auditoria terminal está documentada em `docs/FINAL-AUDIT-V10.md`.
 
-- CSP compatível com a observabilidade pública;
-- validação mais estrita do registry;
-- escape explícito de conteúdo dinâmico/local;
-- health check com cache curto e estado de cache visível;
-- consulta de deploy direcionada ao workflow real em vez de baixar 100 runs;
-- contraste crítico, teclado, forced colors e touch targets no quality gate;
-- hardening estrutural para 360 px e larguras intermediárias;
-- orçamento de shell de 120 KiB; estado atual auditado em 91.658 bytes;
-- zero JS/CSS órfãos e nenhuma função nomeada morta detectada;
-- edge cases documentados em `docs/HARDENING-V9.md`.
+Capacidades consolidadas:
 
-A v8 continua fornecendo linha do tempo e diagnóstico técnico sem criar métricas pedagógicas:
-
-- histórico local dos acessos feitos pela própria Central;
-- histórico limitado e armazenado apenas neste navegador;
-- sinais técnicos dos três projetos reutilizando a observabilidade existente;
-- publicação técnica e acesso local exibidos como fontes diferentes;
-- diagnósticos conservadores, sem afirmar causa não comprovada;
-- dados stale/cache identificados;
-- nenhum acesso é interpretado como estudo, duração, progresso ou desempenho;
-- nenhuma chamada de rede extra é criada pela linha do tempo.
-
-A v7 continua fornecendo um quality gate automatizado antes de cada deploy:
-
-- registry, fallback, manifest e referências internas validados automaticamente;
-- sintaxe de todos os JavaScripts críticos verificada;
-- testes reais de configuração, foco e recuperação de estado local corrompido;
-- contratos de PWA/service worker auditados;
-- detecção simples de secrets/tokens no frontend;
-- workflow dividido em `quality → deploy`;
-- qualquer falha no gate impede a publicação;
-- testes sem rede externa e sem dependências de escrita nos projetos-filhos.
-
-A v6 continua fornecendo PWA e resiliência sem transformar a Central em dependência dos projetos:
-
-- app shell da própria Central disponível como fallback offline após a primeira visita;
-- service worker limitado à origem da Central;
-- estratégia network-first conservadora;
-- cache explicitamente versionado (`central-shell-v9.0.0`) e limpeza previsível de versões antigas;
-- atualização controlada: quando um novo worker estiver pronto, a Central oferece **Atualizar agora**;
-- nenhum site, API ou estado dos projetos-filhos é cacheado pelo service worker;
-- instalação como app permanece opcional e conduzida pelo navegador;
-- falha/ausência de service worker preserva o comportamento web normal.
-
-A personalização local da v5 continua disponível: densidade, detalhes técnicos, ordem manual, reset seguro e preferências somente neste navegador. O catálogo da v4 preserva busca, favoritos, ordenação e atalhos `Alt+1..9`.
-
-Fundação preservada:
+- shell mobile-first com fallback estático e 404 própria;
 - foco atual separado de último acesso/retomada;
-- observabilidade técnica separa disponibilidade, publicação e deploy;
-- cache local de observabilidade de 15 minutos, stale explícito e rate limit tratado;
+- catálogo com busca, favoritos, ordenação e atalhos locais;
+- personalização local reversível, sem backend e sem dados sensíveis;
+- observabilidade somente leitura, não bloqueante, com disponibilidade, publicação técnica e deploy separados;
+- falhas de rede/rate limit tratadas sem falso estado offline;
+- linha do tempo local de acessos separada de atividade técnica e sem inferência pedagógica;
+- PWA network-first, app shell offline e cache `central-shell-v10.0.0` restrito à Central;
+- quality gate automatizado antes de todo deploy;
+- CSP, escape de conteúdo, HTTPS, contraste, teclado, forced colors e touch targets auditados;
+- orçamento de shell <= 120 KiB e zero dependências externas de JS/CSS;
 - registry único em `config/projects.json`;
-- armazenamento local defensivo;
-- fallback estático com os três links mesmo sem JavaScript/registry;
-- interface mobile-first;
-- GitHub Pages automático;
+- GitHub Pages automático após quality gate;
 - zero framework e zero etapa de build.
 
 ## Offline não significa projetos offline
-O cache PWA guarda somente arquivos da Central. TCE-GO, SEEDF e TJDFT continuam sendo ambientes externos independentes e exigem a própria conectividade. A Central nunca deve apresentar um projeto como disponível offline apenas porque sua shell abriu do cache.
+
+O cache PWA guarda somente arquivos da Central. TCE-GO, SEEDF e TJDFT continuam ambientes externos independentes e exigem a própria conectividade. A Central nunca apresenta um projeto como disponível offline apenas porque sua shell abriu do cache.
+
+## Separação de conceitos
+
+**Foco**, **retomada/último acesso**, **favorito**, **acesso local**, **recência técnica**, **disponibilidade** e **deploy** são sinais distintos. Commit ou acesso não é interpretado como estudo, duração, progresso ou desempenho.
 
 ## Publicação
-GitHub Pages, diretamente da branch `main`.
+
+GitHub Pages, diretamente da branch `main`. O workflow executa `quality` antes de `deploy`; falha no gate impede publicação.
 
 ## Segurança e independência
-A Central nunca deve ser requisito para os projetos funcionarem. TCE-GO, SEEDF e TJDFT permanecem aplicações autônomas e acessíveis pelas próprias URLs. A Central não escreve nos projetos-filhos e não armazena informação sensível.
+
+A Central nunca é requisito para os projetos funcionarem. TCE-GO, SEEDF e TJDFT permanecem aplicações autônomas e acessíveis pelas próprias URLs. A Central não escreve nos projetos-filhos e não armazena informação sensível.
 
 ## Adicionar um projeto
+
 A fonte dinâmica de verdade é `config/projects.json`. O `index.html` mantém uma cópia mínima dos links para fallback; ao adicionar ambiente, mantenha o fallback coerente e consulte `docs/ARCHITECTURE.md`.
 
-## Governança até v10
-A evolução usa `docs/COMMAND-V10.md`, `docs/ROADMAP-V10.md`, `docs/ACCEPTANCE-V10.md`, `docs/AUDIT-PROTOCOL.md`, `docs/V10-CHECKPOINT.md`, `docs/BACKLOG-V10.md` e `CHANGELOG.md`.
+## Governança e auditoria
 
-Princípio: **o checkpoint manda; o relógio não manda**.
+A evolução até v10 é governada por `docs/COMMAND-V10.md`, `docs/ROADMAP-V10.md`, `docs/ACCEPTANCE-V10.md`, `docs/AUDIT-PROTOCOL.md`, `docs/V10-CHECKPOINT.md`, `docs/BACKLOG-V10.md`, `docs/FINAL-AUDIT-V10.md` e `CHANGELOG.md`.
+
+A v10 é terminal para esta esteira: após validação final, o checkpoint fica `COMPLETE — v10.0.0` e nenhuma v11 é iniciada automaticamente.
