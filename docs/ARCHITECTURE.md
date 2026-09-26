@@ -103,3 +103,19 @@ O histórico local é limitado, opcional e armazenado somente no navegador. A at
 Diagnósticos descrevem observações e incerteza; nunca atribuem causa não comprovada. O painel deve permanecer resumido e não evoluir para um mural de métricas.
 
 Como a v8 adiciona novos arquivos ao app shell, o cache da Central passa para `central-shell-v8.0.0`, preservando as regras de isolamento e atualização da v6.
+
+
+## Hardening — v9
+
+A auditoria e os edge cases da v9 estão em `docs/HARDENING-V9.md`.
+
+A v9 não adiciona uma nova responsabilidade à Central. Ela endurece as camadas existentes:
+
+- CSP e validação/escape de conteúdo;
+- cache curto e explicitamente marcado para health;
+- consulta de deploy mais enxuta;
+- contratos automáticos de contraste, teclado, mobile e payload;
+- cache PWA `central-shell-v9.0.0`;
+- limpeza e inventário de assets/código.
+
+O hardening preserva progressive enhancement, acesso direto, registry como fonte de verdade e isolamento dos projetos-filhos.
