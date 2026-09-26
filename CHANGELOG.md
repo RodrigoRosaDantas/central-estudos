@@ -5,7 +5,8 @@
 - cache de 15 minutos, stale explícito e rate limit tratado;
 - origem dos dados explicada; dado técnico não representa estudo;
 - projetos-filhos mantidos somente leitura;
-- deploy final: pendente de validação.
+- commit de release validado: `dbc938e2b8eb32a9b3e126c464c5f1dfe82bea0c`.
+- deploy validado: workflow run `36270559732` — success.
 
 ## [2.0.0] — 2026-09-26
 - consolidada a shell da Central sem alterar projetos-filhos;
