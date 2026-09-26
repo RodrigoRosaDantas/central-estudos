@@ -43,3 +43,6 @@ A fonte dinâmica de verdade é `config/projects.json`.
 O `index.html` contém apenas uma cópia mínima dos links para fallback de segurança. Ao adicionar um novo projeto, mantenha o fallback coerente.
 
 Consulte `docs/ARCHITECTURE.md` antes de introduzir integrações.
+
+
+<!-- deploy-trigger: 2026-09-26 -->
