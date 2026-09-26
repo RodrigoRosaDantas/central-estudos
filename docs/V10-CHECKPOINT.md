@@ -2,13 +2,14 @@
 
 ## Estado da esteira
 
-- **Versão validada:** 1.4.0
+- **Versão validada:** 2.0.0
 - **Meta:** 10.0.0
-- **Next major:** 2.0.0
-- **Active major:** 2.0.0
-- **Stage:** VALIDATING
+- **Next major:** 3.0.0
+- **Active major:** none
+- **Stage:** READY
 - **Status:** IN PROGRESS
-- **Último deploy validado:** workflow run 36264051332 — success
+- **Último deploy de release validado:** workflow run 36264383202 — success
+- **Commit de release validado:** `e3cfacdf6e3784ca0236065cf34ac14c2900dd97`
 - **Repositório:** RodrigoRosaDantas/central-estudos
 - **Projetos-filhos:** READ-ONLY / NO WRITES
 
@@ -48,16 +49,28 @@ Esteira encerrada.
 
 ## Snapshot da major ativa
 
-- **Major:** 2.0.0
-- **Started at:** 2026-09-26
-- **Source version:** 1.4.0
-- **Central HEAD inicial:** `df1e9cd9bf3764957c9d68ddba427c204dd7e27d`
-- **Último deploy inicial:** workflow run 36264051332 — success
-- **Child SHAs no início:** TCE-GO `2986dabf...`; SEEDF `bb006c3b...`; TJDFT `8aa366c0...`
-- **Acceptance aplicável:** v2.0 — fundação consolidada + gates globais
-- **Riscos:** regressão no fallback estático; corrupção/indisponibilidade de localStorage; competição visual entre foco, pulso, retomada e catálogo; divergência entre fallback HTML e registry dinâmico.
-- **QA estrutural:** PASS — JS/JSON/manifest válidos; IDs únicos; HTTPS; fallback 3/3; hierarquia foco → retomada → ambientes → estado técnico; 404; sem secrets detectados.
-- **Estado da implementação:** fundação v2 concluída; aguardando promoção de versão, documentação, deploy e pós-deploy.
+- **Major:** none
+- **Started at:** —
+- **Source version:** —
+- **Central HEAD inicial:** —
+- **Último deploy inicial:** —
+- **Child SHAs no início:** —
+- **Acceptance aplicável:** —
+- **Riscos:** —
+
+## Última major concluída — v2.0.0
+
+- **Origem:** v1.4.0
+- **Objetivo:** consolidar a fundação da shell.
+- **Resultado:** PASS
+- **Acceptance v2:** PASS nos gates verificáveis estruturalmente.
+- **QA estrutural:** PASS — JS/JSON/manifest válidos; IDs únicos; HTTPS; fallback 3/3; 404; sem secrets detectados.
+- **Hierarquia:** foco → retomada → ambientes → estado técnico.
+- **Resiliência local:** storage defensivo, limpeza de preferências inválidas e modo degradado explícito.
+- **Projetos-filhos:** SHAs finais idênticos aos SHAs de preflight; zero writes nesta execução.
+- **Deploy:** workflow run `36264383202` — success.
+- **Commit validado:** `e3cfacdf6e3784ca0236065cf34ac14c2900dd97`.
+- **Limitação registrada:** este ambiente não conseguiu acessar diretamente a URL do GitHub Pages para inspeção visual real; nenhuma validação visual foi inventada.
 
 ## Regra de avanço
 
@@ -66,15 +79,13 @@ Uma major só fecha após:
 - audit protocol;
 - quality gate;
 - deploy Pages `success`;
-- post-deploy QA;
+- post-deploy QA verificável;
 - changelog;
 - checkpoint.
 
-## Histórico de majors futuras
+## Histórico de majors
 
-Formato:
-
-`- YYYY-MM-DD — vX.0.0 — resumo — final commit — Pages run — success`
+- 2026-09-26 — v2.0.0 — fundação consolidada e resiliência local — commit `e3cfacdf...` — Pages run `36264383202` — success
 
 ## Parada
 
