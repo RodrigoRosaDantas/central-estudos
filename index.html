@@ -11,170 +11,39 @@
   <link rel="icon" href="./assets/icon.svg" type="image/svg+xml" />
   <link rel="manifest" href="./manifest.webmanifest" />
   <link rel="stylesheet" href="./css/app.css" />
+  <link rel="stylesheet" href="./css/catalog-v4.css" />
 </head>
 <body>
   <a class="skip-link" href="#conteudo">Ir para o conteúdo</a>
-
   <div class="shell">
-    <header class="topbar">
-      <div>
-        <p class="eyebrow">CENTRAL</p>
-        <h1>Central de Estudos</h1>
-        <p id="greeting" class="topbar-greeting">Seus ambientes de estudo, em um só lugar.</p>
-      </div>
-      <div class="user-pill" aria-label="Usuário atual">
-        <span class="avatar" aria-hidden="true">R</span>
-        <span>Rodrigo</span>
-      </div>
-    </header>
-
+    <header class="topbar"><div><p class="eyebrow">CENTRAL</p><h1>Central de Estudos</h1><p id="greeting" class="topbar-greeting">Seus ambientes de estudo, em um só lugar.</p></div><div class="user-pill" aria-label="Usuário atual"><span class="avatar" aria-hidden="true">R</span><span>Rodrigo</span></div></header>
     <main id="conteudo">
       <div id="system-notice" class="system-notice is-hidden" role="status" aria-live="polite"></div>
-
       <section class="hero" aria-labelledby="focus-title">
-        <div class="hero-copy">
-          <p class="eyebrow">FOCO ATUAL</p>
-          <h2 id="focus-title">TCE-GO</h2>
-          <p id="focus-description" class="muted">Controle Externo</p>
-          <p id="focus-note" class="focus-note">Ambiente prioritário configurado na Central.</p>
-          <div class="hero-meta">
-            <span id="focus-phase" class="badge">Edital publicado</span>
-            <span id="focus-health" class="health health-checking"><span class="dot"></span>Verificando</span>
-          </div>
-        </div>
-        <div class="hero-actions">
-          <a id="continue-button" class="button button-primary" href="https://rodrigorosadantas.github.io/tce-go-dashboard/">Entrar no foco <span aria-hidden="true">→</span></a>
-          <a id="focus-new-tab" class="button button-ghost" href="https://rodrigorosadantas.github.io/tce-go-dashboard/" target="_blank" rel="noopener">Abrir em nova guia</a>
-        </div>
+        <div class="hero-copy"><p class="eyebrow">FOCO ATUAL</p><h2 id="focus-title">TCE-GO</h2><p id="focus-description" class="muted">Controle Externo</p><p id="focus-note" class="focus-note">Ambiente prioritário configurado na Central.</p><div class="hero-meta"><span id="focus-phase" class="badge">Edital publicado</span><span id="focus-health" class="health health-checking"><span class="dot"></span>Verificando</span></div></div>
+        <div class="hero-actions"><a id="continue-button" class="button button-primary" href="https://rodrigorosadantas.github.io/tce-go-dashboard/">Entrar no foco <span aria-hidden="true">→</span></a><a id="focus-new-tab" class="button button-ghost" href="https://rodrigorosadantas.github.io/tce-go-dashboard/" target="_blank" rel="noopener">Abrir em nova guia</a></div>
       </section>
-
-      <section class="section resume-card" aria-labelledby="resume-title">
-        <div>
-          <p class="eyebrow">RETOMADA</p>
-          <h2 id="resume-title">Continue de onde parou</h2>
-          <p id="last-project-text" class="muted">O histórico local será registrado quando você abrir um ambiente pela Central.</p>
-        </div>
-        <div class="resume-actions">
-          <a id="resume-button" class="button button-secondary is-hidden" href="#">Retomar</a>
-          <button id="clear-history" class="button button-quiet" type="button">Limpar histórico</button>
-        </div>
-      </section>
-
+      <section class="section resume-card" aria-labelledby="resume-title"><div><p class="eyebrow">RETOMADA</p><h2 id="resume-title">Continue de onde parou</h2><p id="last-project-text" class="muted">O histórico local será registrado quando você abrir um ambiente pela Central.</p></div><div class="resume-actions"><a id="resume-button" class="button button-secondary is-hidden" href="#">Retomar</a><button id="clear-history" class="button button-quiet" type="button">Limpar histórico</button></div></section>
       <section class="section" aria-labelledby="projects-title">
-        <div class="section-heading">
-          <div>
-            <p class="eyebrow">AMBIENTES</p>
-            <h2 id="projects-title">Seus projetos</h2>
-          </div>
-          <p class="muted compact">Cada ambiente continua independente. A Central apenas organiza o acesso.</p>
+        <div class="section-heading"><div><p class="eyebrow">AMBIENTES</p><h2 id="projects-title">Seus projetos</h2></div><p class="muted compact">Cada ambiente continua independente. A Central apenas organiza o acesso.</p></div>
+        <div class="catalog-toolbar" role="search" aria-label="Organizar ambientes">
+          <label class="catalog-field"><span>Buscar</span><input id="catalog-search" type="search" inputmode="search" autocomplete="off" placeholder="Nome, área ou fase" /></label>
+          <label class="catalog-field"><span>Ordenar</span><select id="catalog-sort"><option value="default">Ordem padrão</option><option value="favorites">Favoritos primeiro</option><option value="name">Nome A–Z</option></select></label>
+          <span id="catalog-count" class="catalog-count" aria-live="polite">3 de 3 ambientes</span>
         </div>
-
+        <p class="catalog-hint">☆ Favoritos ficam só neste aparelho. No desktop, Alt+1, Alt+2… abre os ambientes visíveis sem interferir na digitação.</p>
         <div id="projects-grid" class="projects-grid" aria-live="polite">
-          <article class="project-card project-tcego">
-            <div class="project-top">
-              <span class="project-icon" aria-hidden="true">🏛️</span>
-              <span class="project-status">Foco</span>
-            </div>
-            <h3>TCE-GO</h3>
-            <p class="muted">Controle Externo</p>
-            <p class="project-phase">Edital publicado</p>
-            <div class="project-observability">
-              <span class="mini-health">Disponibilidade não verificada</span>
-              <span class="repo-freshness">Atualização técnica não verificada</span>
-            </div>
-            <div class="project-actions">
-              <a class="project-link" href="https://rodrigorosadantas.github.io/tce-go-dashboard/">Abrir ambiente →</a>
-              <span class="mini-health">Acesso direto</span>
-            </div>
-          </article>
-
-          <article class="project-card project-seedf">
-            <div class="project-top">
-              <span class="project-icon" aria-hidden="true">📚</span>
-              <span class="project-status">Ativo</span>
-            </div>
-            <h3>SEEDF</h3>
-            <p class="muted">Gestor + Analista — Apoio Administrativo</p>
-            <p class="project-phase">Pré-edital</p>
-            <div class="project-observability">
-              <span class="mini-health">Disponibilidade não verificada</span>
-              <span class="repo-freshness">Atualização técnica não verificada</span>
-            </div>
-            <div class="project-actions">
-              <a class="project-link" href="https://rodrigorosadantas.github.io/seedf-ppge-dashboard/">Abrir ambiente →</a>
-              <span class="mini-health">Acesso direto</span>
-            </div>
-          </article>
-
-          <article class="project-card project-tjdft">
-            <div class="project-top">
-              <span class="project-icon" aria-hidden="true">⚖️</span>
-              <span class="project-status">Ativo</span>
-            </div>
-            <h3>TJDFT</h3>
-            <p class="muted">Técnico + Analista — Área Administrativa</p>
-            <p class="project-phase">Preparação</p>
-            <div class="project-observability">
-              <span class="mini-health">Disponibilidade não verificada</span>
-              <span class="repo-freshness">Atualização técnica não verificada</span>
-            </div>
-            <div class="project-actions">
-              <a class="project-link" href="https://rodrigorosadantas.github.io/tjdft-dashboard/">Abrir ambiente →</a>
-              <span class="mini-health">Acesso direto</span>
-            </div>
-          </article>
+          <article class="project-card project-tcego"><div class="project-top"><span class="project-icon" aria-hidden="true">🏛️</span><span class="project-status">Foco</span></div><h3>TCE-GO</h3><p class="muted">Controle Externo</p><p class="project-phase">Edital publicado</p><div class="project-observability"><span class="mini-health">Disponibilidade não verificada</span><span class="repo-freshness">Atualização técnica não verificada</span></div><div class="project-actions"><a class="project-link" href="https://rodrigorosadantas.github.io/tce-go-dashboard/">Abrir ambiente →</a><span class="mini-health">Acesso direto</span></div></article>
+          <article class="project-card project-seedf"><div class="project-top"><span class="project-icon" aria-hidden="true">📚</span><span class="project-status">Ativo</span></div><h3>SEEDF</h3><p class="muted">Gestor + Analista — Apoio Administrativo</p><p class="project-phase">Pré-edital</p><div class="project-observability"><span class="mini-health">Disponibilidade não verificada</span><span class="repo-freshness">Atualização técnica não verificada</span></div><div class="project-actions"><a class="project-link" href="https://rodrigorosadantas.github.io/seedf-ppge-dashboard/">Abrir ambiente →</a><span class="mini-health">Acesso direto</span></div></article>
+          <article class="project-card project-tjdft"><div class="project-top"><span class="project-icon" aria-hidden="true">⚖️</span><span class="project-status">Ativo</span></div><h3>TJDFT</h3><p class="muted">Técnico + Analista — Área Administrativa</p><p class="project-phase">Preparação</p><div class="project-observability"><span class="mini-health">Disponibilidade não verificada</span><span class="repo-freshness">Atualização técnica não verificada</span></div><div class="project-actions"><a class="project-link" href="https://rodrigorosadantas.github.io/tjdft-dashboard/">Abrir ambiente →</a><span class="mini-health">Acesso direto</span></div></article>
         </div>
       </section>
-
-      <section class="section technical-summary" aria-labelledby="technical-title">
-        <div class="section-heading">
-          <div>
-            <p class="eyebrow">ESTADO TÉCNICO</p>
-            <h2 id="technical-title">Pulso da Central</h2>
-          </div>
-          <p class="muted compact">Informação auxiliar e somente leitura. Nunca bloqueia o acesso aos ambientes.</p>
-        </div>
-      <section class="pulse" aria-label="Pulso da Central">
-        <div class="pulse-item">
-          <span id="pulse-projects" class="pulse-value">3</span>
-          <span class="pulse-label">ambientes</span>
-        </div>
-        <div class="pulse-item">
-          <span id="pulse-online" class="pulse-value">Verificando</span>
-          <span class="pulse-label">disponibilidade</span>
-        </div>
-        <div class="pulse-item">
-          <span id="pulse-freshness" class="pulse-value">Verificando</span>
-          <span class="pulse-label">última publicação</span>
-        </div>
-      </section>
-        <div class="technical-explainer">
-          <p id="observability-source" class="source-note">Fonte: sites públicos + GitHub público. Cache local de 15 minutos.</p>
-          <details>
-            <summary>Como interpretar estes dados</summary>
-            <div class="technical-help">
-              <p><strong>Disponibilidade</strong> é uma tentativa técnica de alcançar o site agora. Falha de rede vira “não verificado”, não uma conclusão de que o projeto caiu.</p>
-              <p><strong>Publicação técnica</strong> é o último <code>push</code> público conhecido no GitHub. Não representa estudo realizado, progresso ou desempenho.</p>
-              <p><strong>Deploy</strong> usa o workflow público de publicação mais recente quando ele pode ser identificado. Se a API estiver limitada, a Central preserva o último dado conhecido e o marca como cache.</p>
-            </div>
-          </details>
-        </div>
-      </section>
+      <section class="section technical-summary" aria-labelledby="technical-title"><div class="section-heading"><div><p class="eyebrow">ESTADO TÉCNICO</p><h2 id="technical-title">Pulso da Central</h2></div><p class="muted compact">Informação auxiliar e somente leitura. Nunca bloqueia o acesso aos ambientes.</p></div><section class="pulse" aria-label="Pulso da Central"><div class="pulse-item"><span id="pulse-projects" class="pulse-value">3</span><span class="pulse-label">ambientes</span></div><div class="pulse-item"><span id="pulse-online" class="pulse-value">Verificando</span><span class="pulse-label">disponibilidade</span></div><div class="pulse-item"><span id="pulse-freshness" class="pulse-value">Verificando</span><span class="pulse-label">última publicação</span></div></section><div class="technical-explainer"><p id="observability-source" class="source-note">Fonte: sites públicos + GitHub público. Cache local de 15 minutos.</p><details><summary>Como interpretar estes dados</summary><div class="technical-help"><p><strong>Disponibilidade</strong> é uma tentativa técnica de alcançar o site agora. Falha de rede vira “não verificado”, não uma conclusão de que o projeto caiu.</p><p><strong>Publicação técnica</strong> é o último <code>push</code> público conhecido no GitHub. Não representa estudo realizado, progresso ou desempenho.</p><p><strong>Deploy</strong> usa o workflow público de publicação mais recente quando ele pode ser identificado. Se a API estiver limitada, a Central preserva o último dado conhecido e o marca como cache.</p></div></details></div></section>
     </main>
-
-    <footer>
-      <span>Central de Estudos <span id="app-version"></span></span>
-      <span class="footer-separator">•</span>
-      <span>3 ambientes autônomos</span>
-    </footer>
+    <footer><span>Central de Estudos <span id="app-version"></span></span><span class="footer-separator">•</span><span>3 ambientes autônomos</span></footer>
   </div>
-
-  <noscript>
-    <div class="noscript">
-      JavaScript está desativado. Os três acessos diretos continuam funcionando normalmente.
-    </div>
-  </noscript>
-
+  <noscript><div class="noscript">JavaScript está desativado. Os três acessos diretos continuam funcionando normalmente.</div></noscript>
   <script src="./js/app.js" defer></script>
+  <script src="./js/catalog-v4.js" defer></script>
 </body>
 </html>
