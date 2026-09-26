@@ -12,8 +12,15 @@ Camada de entrada para os ambientes independentes de estudo:
 
 A Central **não importa, altera ou replica** o código dos projetos-filhos.
 
-## Estado atual — v2.0
+## Estado atual — v3.0
 
+- observabilidade técnica consolidada em v3.0;
+- publicação técnica, disponibilidade e deploy tratados como dados distintos;
+- cache local de observabilidade de 15 minutos;
+- fallback stale-cache quando a API pública falha;
+- tratamento explícito de rate limit da API do GitHub;
+- descoberta de deploy público com preferência por `deploy-pages.yml`;
+- explicação da origem dos dados e separação explícita entre dado técnico e estudo;
 - fundação de produto consolidada em v2.0;
 - hierarquia principal: foco → retomada → ambientes → estado técnico;
 - camada de armazenamento local tolerante a indisponibilidade/corrupção;
@@ -23,7 +30,7 @@ A Central **não importa, altera ou replica** o código dos projetos-filhos.
 - foco atual separado de último acesso;
 - foco selecionável pelo usuário e salvo apenas neste aparelho;
 - pulso global de disponibilidade dos ambientes;
-- leitura pública da última publicação de cada repositório, com cache local de 10 minutos;
+- leitura pública da última publicação de cada repositório, com cache local de 15 minutos;
 - retomada real do último ambiente aberto;
 - saudação contextual pelo horário do aparelho;
 - registro único de projetos em `config/projects.json`;
