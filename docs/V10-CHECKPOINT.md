@@ -2,14 +2,14 @@
 
 ## Estado da esteira
 
-- **Versão validada:** 7.0.0
+- **Versão validada:** 8.0.0
 - **Meta:** 10.0.0
-- **Next major:** 8.0.0
-- **Active major:** 8.0.0
-- **Stage:** BLOCKED
+- **Next major:** 9.0.0
+- **Active major:** none
+- **Stage:** READY
 - **Status:** IN PROGRESS
-- **Último deploy de release validado:** workflow run 36278662494 — quality success + deploy success
-- **Commit de release validado:** `e47e94341c21219936133762bf3675a0251f4c79`
+- **Último deploy de release validado:** workflow run 36279346345 — quality success + deploy success
+- **Commit de release validado:** `e1b118a502927256029ae855f39d88fb4fd46a9b`
 - **Repositório:** RodrigoRosaDantas/central-estudos
 - **Projetos-filhos:** READ-ONLY / NO WRITES
 
@@ -36,21 +36,26 @@
 - **Acceptance aplicável:** —
 - **Riscos:** —
 
-## Snapshot da major ativa
+## Última major concluída — v8.0.0
 
-- **Major:** 8.0.0 — Linha do tempo e diagnóstico técnico
-- **Started at:** 2026-09-26
-- **Source version:** 7.0.0
-- **Central HEAD inicial:** `109ca8eef75dacf1c697fa958d17ef8d1717c47d`
-- **Último deploy inicial:** workflow run `36278739820` — quality success + deploy success — HEAD `109ca8eef75dacf1c697fa958d17ef8d1717c47d`
-- **Child SHAs no início:** TCE-GO `2986dabf2ddb3ed6b22fa58b9a5151981a678dbf`; SEEDF `bb006c3bc896534716e6b568849669a7fe4424c8`; TJDFT `8aa366c0068f6f705fb2d27a44b7a522f90003d9`
-- **Acceptance aplicável:** linha do tempo separa acesso local de atualização técnica; diagnóstico evita conclusões não suportadas; indisponibilidade tem explicação/fallback; origem de cada dado é identificável; painel permanece resumido; nenhum dado pedagógico inventado; gates globais.
-- **Riscos:** confundir acesso com progresso; excesso de métricas; diagnóstico afirmar causa sem evidência; histórico local crescer indefinidamente; dados técnicos stale parecerem atuais; duplicação visual com Pulso da Central.
-- **QA v8:** PASS — acesso local e atividade técnica separados; histórico limitado a 12 e exibição a 5; limpeza integrada ao histórico; diagnóstico usa linguagem inconclusiva quando necessário; stale/cache identificado; zero chamadas de rede extras; nomes locais escapados antes de `innerHTML`; app shell inclui assets v8.
-- **Pipeline de implementação:** workflow run `36279001125` — quality `success` + deploy `success` no HEAD `c29f19ef22016b87c60913ab2668010de779547a`.
-- **Estado da implementação:** concluída; aguardando pipeline final com versão/documentação 8.0.0 e pós-deploy.
-- **Bloqueio atual:** workflow run `36279059038` mantém o job `Quality gate` em `in_progress` sem avanço; o pipeline final `36279080439` do HEAD `ddd129d8e4356396cfd2d972f0c75ee0eb3f7bc3` permanece `pending`. O código v8 já passou quality + deploy no run `36279001125`, mas a release 8.0.0 não será fechada até o pipeline final publicar o HEAD atual.
-- **Ação exigida na próxima execução:** reler estes runs; se o final concluir `success`, executar pós-deploy e fechar a v8; se houver falha, ler jobs/logs e corrigir; não iniciar v9.
+- **Origem:** v7.0.0
+- **Objetivo:** adicionar linha do tempo e diagnóstico técnico sem assumir lógica pedagógica.
+- **Resultado:** PASS
+- **Acceptance v8:** PASS nos gates estruturais/lógicos verificáveis.
+- **Acesso local:** histórico próprio em `localStorage`, limitado a 12 registros e exibição de 5, integrado a **Limpar histórico**.
+- **Separação de fontes:** acesso local, publicação técnica, disponibilidade e deploy permanecem semanticamente distintos.
+- **Atividade técnica:** reutiliza os sinais da observabilidade existente; zero chamadas de rede adicionais.
+- **Diagnóstico:** linguagem conservadora, com estados inconclusivos e sem atribuição de causa não comprovada.
+- **Stale/cache:** condição explicitamente indicada quando metadados podem estar desatualizados.
+- **Sem inferência pedagógica:** acesso não é tratado como estudo, duração, progresso ou desempenho.
+- **Segurança local:** nomes vindos do histórico local são escapados antes de renderização em HTML.
+- **PWA:** app shell atualizado para `central-shell-v8.0.0` com os novos assets.
+- **Quality gate:** contratos específicos da v8 adicionados a `tests/quality.mjs`.
+- **Incidente de pipeline:** um run intermediário ficou preso; o checkpoint foi temporariamente marcado `BLOCKED`. O push de proteção destravou a concorrência, cancelou os runs obsoletos e o pipeline final concluiu normalmente.
+- **Pipeline final:** workflow run `36279346345` — quality `success` + deploy `success`.
+- **Projetos-filhos:** SHAs finais idênticos aos SHAs de preflight; zero writes nesta execução.
+- **Commit validado:** `e1b118a502927256029ae855f39d88fb4fd46a9b`.
+- **Limitação registrada:** inspeção visual real em navegador não foi inventada; validação visual ficou restrita ao que as ferramentas permitiram verificar estruturalmente.
 
 ## Última major concluída — v7.0.0
 
@@ -140,6 +145,7 @@
 - 2026-09-26 — v5.0.0 — personalização local — commit `cf8cdb818449d020923f50d63e67689b635abc96` — Pages `36272168251` — success
 - 2026-09-26 — v6.0.0 — PWA e resiliência — commit `0c57c967e277764d1938f3a6fc91fc03f73a74e5` — Pages `36277789554` — success
 - 2026-09-26 — v7.0.0 — qualidade e testes — commit `e47e94341c21219936133762bf3675a0251f4c79` — Pages `36278662494` — quality success + deploy success
+- 2026-09-26 — v8.0.0 — linha do tempo e diagnóstico — commit `e1b118a502927256029ae855f39d88fb4fd46a9b` — Pages `36279346345` — quality success + deploy success
 
 ## Regra de avanço
 Uma major só fecha após acceptance, audit protocol, quality gate, Pages `success`, post-deploy QA verificável, changelog e checkpoint.
