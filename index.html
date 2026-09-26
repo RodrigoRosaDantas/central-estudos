@@ -3,9 +3,12 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="theme-color" content="#0b1020" />
+  <meta name="theme-color" content="#070b14" />
   <meta name="description" content="Central de Estudos — acesso unificado aos ambientes TCE-GO, SEEDF e TJDFT." />
+  <meta name="color-scheme" content="dark" />
   <title>Central de Estudos</title>
+  <link rel="icon" href="./assets/icon.svg" type="image/svg+xml" />
+  <link rel="manifest" href="./manifest.webmanifest" />
   <link rel="stylesheet" href="./css/app.css" />
 </head>
 <body>
@@ -27,14 +30,14 @@
       <section class="hero" aria-labelledby="focus-title">
         <div class="hero-copy">
           <p class="eyebrow">FOCO ATUAL</p>
-          <h2 id="focus-title">Carregando projeto…</h2>
-          <p id="focus-description" class="muted">Preparando seu ambiente.</p>
+          <h2 id="focus-title">TCE-GO</h2>
+          <p id="focus-description" class="muted">Controle Externo</p>
           <div class="hero-meta">
-            <span id="focus-phase" class="badge">—</span>
+            <span id="focus-phase" class="badge">Edital publicado</span>
             <span id="focus-health" class="health health-checking"><span class="dot"></span>Verificando</span>
           </div>
         </div>
-        <a id="continue-button" class="button button-primary" href="#" rel="noopener">Continuar estudo <span aria-hidden="true">→</span></a>
+        <a id="continue-button" class="button button-primary" href="https://rodrigorosadantas.github.io/tce-go-dashboard/">Continuar estudo <span aria-hidden="true">→</span></a>
       </section>
 
       <section class="section" aria-labelledby="projects-title">
@@ -45,21 +48,64 @@
           </div>
           <p class="muted compact">Independentes por arquitetura. Unidos apenas pela navegação.</p>
         </div>
-        <div id="projects-grid" class="projects-grid" aria-live="polite"></div>
+
+        <div id="projects-grid" class="projects-grid" aria-live="polite">
+          <article class="project-card project-tcego">
+            <div class="project-top">
+              <span class="project-icon" aria-hidden="true">🏛️</span>
+              <span class="project-status">Foco</span>
+            </div>
+            <h3>TCE-GO</h3>
+            <p class="muted">Controle Externo</p>
+            <p class="project-phase">Edital publicado</p>
+            <div class="project-actions">
+              <a class="project-link" href="https://rodrigorosadantas.github.io/tce-go-dashboard/">Abrir ambiente →</a>
+              <span class="mini-health">Acesso direto</span>
+            </div>
+          </article>
+
+          <article class="project-card project-seedf">
+            <div class="project-top">
+              <span class="project-icon" aria-hidden="true">📚</span>
+              <span class="project-status">Ativo</span>
+            </div>
+            <h3>SEEDF</h3>
+            <p class="muted">Gestor + Analista — Apoio Administrativo</p>
+            <p class="project-phase">Pré-edital</p>
+            <div class="project-actions">
+              <a class="project-link" href="https://rodrigorosadantas.github.io/seedf-ppge-dashboard/">Abrir ambiente →</a>
+              <span class="mini-health">Acesso direto</span>
+            </div>
+          </article>
+
+          <article class="project-card project-tjdft">
+            <div class="project-top">
+              <span class="project-icon" aria-hidden="true">⚖️</span>
+              <span class="project-status">Ativo</span>
+            </div>
+            <h3>TJDFT</h3>
+            <p class="muted">Técnico + Analista — Área Administrativa</p>
+            <p class="project-phase">Preparação</p>
+            <div class="project-actions">
+              <a class="project-link" href="https://rodrigorosadantas.github.io/tjdft-dashboard/">Abrir ambiente →</a>
+              <span class="mini-health">Acesso direto</span>
+            </div>
+          </article>
+        </div>
       </section>
 
       <section class="section utility" aria-labelledby="utility-title">
         <div>
-          <p class="eyebrow">ATALHO</p>
+          <p class="eyebrow">RETOMADA</p>
           <h2 id="utility-title">Continue de onde parou</h2>
-          <p id="last-project-text" class="muted">Ainda não há histórico local nesta Central.</p>
+          <p id="last-project-text" class="muted">O histórico local será registrado quando você abrir um ambiente pela Central.</p>
         </div>
         <button id="clear-history" class="button button-secondary" type="button">Limpar histórico local</button>
       </section>
     </main>
 
     <footer>
-      <span>Central de Estudos</span>
+      <span>Central de Estudos <span id="app-version"></span></span>
       <span class="footer-separator">•</span>
       <span>Os projetos continuam autônomos.</span>
     </footer>
@@ -67,7 +113,7 @@
 
   <noscript>
     <div class="noscript">
-      Esta Central precisa de JavaScript apenas para carregar o registro dos projetos. Os sites individuais continuam independentes.
+      JavaScript está desativado. Os links diretos acima continuam funcionando normalmente.
     </div>
   </noscript>
 
