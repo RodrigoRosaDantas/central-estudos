@@ -6,9 +6,20 @@ Camada de entrada para os ambientes independentes TCE-GO, SEEDF e TJDFT.
 
 A Central não importa, altera ou replica o código dos projetos-filhos.
 
-## Estado atual — v7.0
+## Estado atual — v8.0
 
-A v7 adiciona um quality gate automatizado antes de cada deploy:
+A v8 adiciona linha do tempo e diagnóstico técnico sem criar métricas pedagógicas:
+
+- histórico local dos acessos feitos pela própria Central;
+- histórico limitado e armazenado apenas neste navegador;
+- sinais técnicos dos três projetos reutilizando a observabilidade existente;
+- publicação técnica e acesso local exibidos como fontes diferentes;
+- diagnósticos conservadores, sem afirmar causa não comprovada;
+- dados stale/cache identificados;
+- nenhum acesso é interpretado como estudo, duração, progresso ou desempenho;
+- nenhuma chamada de rede extra é criada pela linha do tempo.
+
+A v7 continua fornecendo um quality gate automatizado antes de cada deploy:
 
 - registry, fallback, manifest e referências internas validados automaticamente;
 - sintaxe de todos os JavaScripts críticos verificada;
@@ -24,7 +35,7 @@ A v6 continua fornecendo PWA e resiliência sem transformar a Central em depend�
 - app shell da própria Central disponível como fallback offline após a primeira visita;
 - service worker limitado à origem da Central;
 - estratégia network-first conservadora;
-- cache explicitamente versionado (`central-shell-v6.0.0`) e limpeza previsível de versões antigas;
+- cache explicitamente versionado (`central-shell-v8.0.0`) e limpeza previsível de versões antigas;
 - atualização controlada: quando um novo worker estiver pronto, a Central oferece **Atualizar agora**;
 - nenhum site, API ou estado dos projetos-filhos é cacheado pelo service worker;
 - instalação como app permanece opcional e conduzida pelo navegador;
