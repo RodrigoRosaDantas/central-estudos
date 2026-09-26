@@ -2,14 +2,15 @@ const STORAGE_KEY = "central-estudos:last-project";
 const FOCUS_STORAGE_KEY = "central-estudos:focus-project";
 const HEALTH_TIMEOUT_MS = 4500;
 const META_TIMEOUT_MS = 4500;
-const META_CACHE_KEY = "central-estudos:repo-meta";
-const META_CACHE_TTL_MS = 10 * 60 * 1000;
+const META_CACHE_KEY = "central-estudos:repo-meta-v3";
+const META_CACHE_TTL_MS = 15 * 60 * 1000;
 
 const state = {
   config: null,
   projects: [],
   focus: null,
-  storageAvailable: true
+  storageAvailable: true,
+  githubApiState: "checking"
 };
 
 function byId(id) {
@@ -63,11 +64,9 @@ function validateConfig(config) {
   if (!config || typeof config !== "object") {
     throw new Error("Configuração da Central inválida.");
   }
-
   if (!config.central || typeof config.central.defaultProject !== "string") {
     throw new Error("Configuração central incompleta.");
   }
-
   if (!Array.isArray(config.projects) || config.projects.length === 0) {
     throw new Error("Nenhum ambiente configurado.");
   }
@@ -82,9 +81,7 @@ function validateConfig(config) {
       }
     });
 
-    if (ids.has(project.id)) {
-      throw new Error(`ID de projeto duplicado: ${project.id}.`);
-    }
+    if (ids.has(project.id)) throw new Error(`ID de projeto duplicado: ${project.id}.`);
     ids.add(project.id);
 
     for (const field of ["url", "repository"]) {
@@ -94,9 +91,7 @@ function validateConfig(config) {
       } catch {
         throw new Error(`URL inválida em ${project.id}.`);
       }
-      if (parsed.protocol !== "https:") {
-        throw new Error(`URL não segura em ${project.id}.`);
-      }
+      if (parsed.protocol !== "https:") throw new Error(`URL não segura em ${project.id}.`);
     }
   });
 
@@ -108,7 +103,11 @@ function normalizeProject(project) {
     ...project,
     health: "checking",
     repoUpdatedAt: null,
-    repoMetaState: "checking"
+    repoMetaState: "checking",
+    repoCheckedAt: null,
+    deployStatus: "checking",
+    deployUpdatedAt: null,
+    deployMetaState: "checking"
   };
 }
 
@@ -124,14 +123,9 @@ function readLastVisit() {
         visitedAt: typeof parsed.visitedAt === "string" ? parsed.visitedAt : null
       };
     }
-  } catch {
-    // Formato legado ou corrompido: tratado abaixo.
-  }
+  } catch {}
 
-  if (/^[a-z0-9_-]+$/i.test(raw)) {
-    return { id: raw, visitedAt: null };
-  }
-
+  if (/^[a-z0-9_-]+$/i.test(raw)) return { id: raw, visitedAt: null };
   safeStorageRemove(STORAGE_KEY);
   return null;
 }
@@ -144,10 +138,7 @@ function readFocusPreference() {
 function chooseFocus(projects, defaultProject) {
   const preferredId = readFocusPreference();
   const preferred = projects.find(project => project.id === preferredId);
-
-  if (preferredId && !preferred) {
-    safeStorageRemove(FOCUS_STORAGE_KEY);
-  }
+  if (preferredId && !preferred) safeStorageRemove(FOCUS_STORAGE_KEY);
 
   return (
     preferred ||
@@ -190,7 +181,6 @@ function getGreeting() {
 function readRepoMetaCache() {
   const raw = safeStorageGet(META_CACHE_KEY);
   if (!raw) return {};
-
   try {
     const parsed = JSON.parse(raw);
     return parsed && typeof parsed === "object" ? parsed : {};
@@ -204,15 +194,20 @@ function writeRepoMetaCache(cache) {
   safeStorageSet(META_CACHE_KEY, JSON.stringify(cache));
 }
 
-function githubApiUrl(project) {
+function githubRepoParts(project) {
   try {
     const url = new URL(project.repository);
     const parts = url.pathname.split("/").filter(Boolean);
     if (url.hostname !== "github.com" || parts.length < 2) return null;
-    return `https://api.github.com/repos/${parts[0]}/${parts[1]}`;
+    return { owner: parts[0], repo: parts[1] };
   } catch {
     return null;
   }
+}
+
+function githubApiBase(project) {
+  const parts = githubRepoParts(project);
+  return parts ? `https://api.github.com/repos/${parts.owner}/${parts.repo}` : null;
 }
 
 function relativeTimeFromNow(isoDate) {
@@ -223,7 +218,6 @@ function relativeTimeFromNow(isoDate) {
   const diffMs = date.getTime() - Date.now();
   const absMs = Math.abs(diffMs);
   const rtf = new Intl.RelativeTimeFormat("pt-BR", { numeric: "auto" });
-
   const minute = 60 * 1000;
   const hour = 60 * minute;
   const day = 24 * hour;
@@ -233,19 +227,120 @@ function relativeTimeFromNow(isoDate) {
   return rtf.format(Math.round(diffMs / day), "day");
 }
 
+function exactDateTime(isoDate) {
+  if (!isoDate) return "";
+  const date = new Date(isoDate);
+  if (Number.isNaN(date.getTime())) return "";
+  return new Intl.DateTimeFormat("pt-BR", {
+    dateStyle: "short",
+    timeStyle: "short"
+  }).format(date);
+}
+
+function isRateLimited(response) {
+  return response.status === 429 ||
+    (response.status === 403 && response.headers.get("x-ratelimit-remaining") === "0");
+}
+
+async function fetchGithubJson(url) {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), META_TIMEOUT_MS);
+
+  try {
+    const response = await fetch(url, {
+      headers: { Accept: "application/vnd.github+json" },
+      cache: "no-store",
+      signal: controller.signal
+    });
+
+    if (isRateLimited(response)) {
+      state.githubApiState = "rate-limited";
+      return { ok: false, reason: "rate-limited", data: null };
+    }
+
+    if (!response.ok) {
+      return { ok: false, reason: `http-${response.status}`, data: null };
+    }
+
+    if (state.githubApiState !== "rate-limited") state.githubApiState = "online";
+    return { ok: true, reason: null, data: await response.json() };
+  } catch {
+    if (state.githubApiState !== "rate-limited") state.githubApiState = "unknown";
+    return { ok: false, reason: "network", data: null };
+  } finally {
+    clearTimeout(timeout);
+  }
+}
+
 function repoFreshnessMarkup(project) {
   if (project.repoMetaState === "checking") {
-    return '<span class="repo-freshness">Atualização: verificando…</span>';
+    return '<div class="observability-row"><span class="observability-icon">↻</span><span class="observability-copy"><span class="observability-label is-muted">Publicação técnica: verificando…</span><span class="observability-meta">Fonte: GitHub público</span></span></div>';
   }
 
   if (!project.repoUpdatedAt) {
-    return '<span class="repo-freshness">Atualização técnica não verificada</span>';
+    return '<div class="observability-row"><span class="observability-icon">·</span><span class="observability-copy"><span class="observability-label is-muted">Publicação técnica: não verificada</span><span class="observability-meta">Fonte: GitHub público</span></span></div>';
   }
 
-  const relative = relativeTimeFromNow(project.repoUpdatedAt);
-  const ageMs = Date.now() - new Date(project.repoUpdatedAt).getTime();
-  const className = ageMs <= 7 * 24 * 60 * 60 * 1000 ? "is-fresh" : "is-stale";
-  return `<span class="repo-freshness ${className}">Repositório atualizado ${relative || ""}</span>`;
+  const relative = relativeTimeFromNow(project.repoUpdatedAt) || "em data conhecida";
+  const exact = exactDateTime(project.repoUpdatedAt);
+  const stale = project.repoMetaState === "stale-cache";
+  const label = stale
+    ? `Publicação técnica: cache · ${relative}`
+    : `Publicação técnica: ${relative}`;
+  const meta = stale
+    ? `Dado preservado em cache · última checagem ${relativeTimeFromNow(project.repoCheckedAt) || "anterior"}`
+    : `GitHub público · ${exact}`;
+
+  return `<div class="observability-row"><span class="observability-icon">${stale ? "◷" : "↑"}</span><span class="observability-copy"><span class="observability-label ${stale ? "is-warning" : ""}">${label}</span><span class="observability-meta">${meta}</span></span></div>`;
+}
+
+function deployMarkup(project) {
+  if (project.deployMetaState === "checking") {
+    return '<div class="observability-row"><span class="observability-icon">↻</span><span class="observability-copy"><span class="observability-label is-muted">Deploy: verificando…</span><span class="observability-meta">Workflow público do GitHub</span></span></div>';
+  }
+
+  if (project.deployStatus === "unknown") {
+    return '<div class="observability-row"><span class="observability-icon">·</span><span class="observability-copy"><span class="observability-label is-muted">Deploy: não verificado</span><span class="observability-meta">Nenhum workflow público de deploy identificado</span></span></div>';
+  }
+
+  const stale = project.deployMetaState === "stale-cache";
+  const statusMap = {
+    success: ["Publicado", "is-success", "✓"],
+    failure: ["Falha no último deploy", "is-danger", "!"],
+    cancelled: ["Último deploy cancelado", "is-warning", "–"],
+    in_progress: ["Deploy em andamento", "is-warning", "↻"],
+    queued: ["Deploy na fila", "is-warning", "…"]
+  };
+  const [label, className, icon] = statusMap[project.deployStatus] || ["Deploy: estado público conhecido", "is-muted", "·"];
+  const relative = relativeTimeFromNow(project.deployUpdatedAt);
+  const meta = stale
+    ? `Dado em cache · ${relative || "checagem anterior"}`
+    : `Workflow público${relative ? ` · ${relative}` : ""}`;
+
+  return `<div class="observability-row"><span class="observability-icon">${icon}</span><span class="observability-copy"><span class="observability-label ${stale ? "is-warning" : className}">${stale ? "Deploy em cache: " : "Deploy: "}${label}</span><span class="observability-meta">${meta}</span></span></div>`;
+}
+
+function healthLabel(status) {
+  if (status === "online") return "Site acessível";
+  if (status === "offline") return "Site respondeu com erro";
+  if (status === "unknown") return "Disponibilidade não verificada";
+  return "Verificando disponibilidade";
+}
+
+function healthMarkup(status) {
+  const className = status === "online"
+    ? "is-success"
+    : status === "offline"
+      ? "is-danger"
+      : status === "checking"
+        ? "is-muted"
+        : "is-muted";
+  const icon = status === "online" ? "✓" : status === "offline" ? "!" : status === "checking" ? "↻" : "·";
+  const meta = status === "unknown"
+    ? "Falha de rede ou verificação inconclusiva; o link continua disponível"
+    : "Tentativa técnica direta ao site";
+
+  return `<div class="observability-row"><span class="observability-icon">${icon}</span><span class="observability-copy"><span class="observability-label ${className}">${healthLabel(status)}</span><span class="observability-meta">${meta}</span></span></div>`;
 }
 
 function updatePulse() {
@@ -263,80 +358,97 @@ function updatePulse() {
   if (!projectEl || !onlineEl || !freshnessEl) return;
 
   projectEl.textContent = String(projectCount);
-  onlineEl.textContent = healthPending
-    ? "Verificando"
-    : `${onlineCount}/${projectCount} online`;
+  onlineEl.textContent = healthPending ? "Verificando" : `${onlineCount}/${projectCount} acessíveis`;
 
   if (knownDates.length) {
     const latest = relativeTimeFromNow(knownDates[0].toISOString());
-    freshnessEl.textContent = latest ? `Atualizado ${latest}` : "Atualizado";
+    const anyStale = state.projects.some(project => project.repoMetaState === "stale-cache");
+    freshnessEl.textContent = anyStale
+      ? `Cache · ${latest || "conhecido"}`
+      : `Atualizado ${latest || ""}`;
   } else {
     const metaPending = state.projects.some(project => project.repoMetaState === "checking");
     freshnessEl.textContent = metaPending ? "Verificando" : "Não verificado";
   }
+
+  const source = byId("observability-source");
+  if (source) {
+    source.textContent = state.githubApiState === "rate-limited"
+      ? "Fonte: sites públicos + GitHub público. API do GitHub temporariamente limitada; dados conhecidos podem aparecer em cache."
+      : "Fonte: sites públicos + GitHub público. Cache local de 15 minutos. Dados técnicos não representam estudo.";
+  }
 }
 
-async function fetchRepoMetadata(project) {
+async function fetchProjectObservability(project) {
   const cache = readRepoMetaCache();
-  const cached = cache[project.id];
+  const cached = cache[project.id] || {};
   const now = Date.now();
+  const cacheFresh = cached.checkedAt && now - cached.checkedAt < META_CACHE_TTL_MS;
 
-  if (cached?.pushedAt && cached?.checkedAt && now - cached.checkedAt < META_CACHE_TTL_MS) {
-    project.repoUpdatedAt = cached.pushedAt;
-    project.repoMetaState = "cached";
+  if (cacheFresh) {
+    project.repoUpdatedAt = cached.pushedAt || null;
+    project.repoCheckedAt = cached.checkedAt || null;
+    project.repoMetaState = project.repoUpdatedAt ? "cached" : "unknown";
+    project.deployStatus = cached.deployStatus || "unknown";
+    project.deployUpdatedAt = cached.deployUpdatedAt || null;
+    project.deployMetaState = project.deployStatus !== "unknown" ? "cached" : "unknown";
     return;
   }
 
-  const apiUrl = githubApiUrl(project);
-  if (!apiUrl) {
+  const apiBase = githubApiBase(project);
+  if (!apiBase) {
     project.repoMetaState = "unknown";
+    project.deployMetaState = "unknown";
+    project.deployStatus = "unknown";
     return;
   }
 
-  const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), META_TIMEOUT_MS);
-
-  try {
-    const response = await fetch(apiUrl, {
-      headers: { Accept: "application/vnd.github+json" },
-      cache: "no-store",
-      signal: controller.signal
-    });
-
-    if (!response.ok) throw new Error(`GitHub API ${response.status}`);
-    const data = await response.json();
-
-    project.repoUpdatedAt = data.pushed_at || data.updated_at || null;
+  const repoResult = await fetchGithubJson(apiBase);
+  if (repoResult.ok) {
+    project.repoUpdatedAt = repoResult.data.pushed_at || repoResult.data.updated_at || null;
+    project.repoCheckedAt = now;
     project.repoMetaState = project.repoUpdatedAt ? "online" : "unknown";
-
-    if (project.repoUpdatedAt) {
-      cache[project.id] = {
-        pushedAt: project.repoUpdatedAt,
-        checkedAt: now
-      };
-      writeRepoMetaCache(cache);
-    }
-  } catch {
-    if (cached?.pushedAt) {
-      project.repoUpdatedAt = cached.pushedAt;
-      project.repoMetaState = "cached";
-    } else {
-      project.repoMetaState = "unknown";
-    }
-  } finally {
-    clearTimeout(timeout);
+  } else if (cached.pushedAt) {
+    project.repoUpdatedAt = cached.pushedAt;
+    project.repoCheckedAt = cached.checkedAt || null;
+    project.repoMetaState = "stale-cache";
+  } else {
+    project.repoMetaState = "unknown";
   }
-}
 
-function healthLabel(status) {
-  if (status === "online") return "Online";
-  if (status === "offline") return "Indisponível";
-  if (status === "unknown") return "Não verificado";
-  return "Verificando";
-}
+  const runsResult = await fetchGithubJson(`${apiBase}/actions/runs?branch=main&per_page=10`);
+  if (runsResult.ok && Array.isArray(runsResult.data.workflow_runs)) {
+    const run = runsResult.data.workflow_runs.find(item =>
+      /pages|deploy|publish/i.test(item.name || "") ||
+      /pages|deploy|publish/i.test(item.path || "")
+    );
 
-function healthMarkup(status) {
-  return `<span class="mini-health ${status}"><span class="dot"></span>${healthLabel(status)}</span>`;
+    if (run) {
+      project.deployStatus = run.status === "completed"
+        ? (run.conclusion || "unknown")
+        : (run.status || "unknown");
+      project.deployUpdatedAt = run.updated_at || run.created_at || null;
+      project.deployMetaState = "online";
+    } else {
+      project.deployStatus = "unknown";
+      project.deployMetaState = "unknown";
+    }
+  } else if (cached.deployStatus && cached.deployStatus !== "unknown") {
+    project.deployStatus = cached.deployStatus;
+    project.deployUpdatedAt = cached.deployUpdatedAt || null;
+    project.deployMetaState = "stale-cache";
+  } else {
+    project.deployStatus = "unknown";
+    project.deployMetaState = "unknown";
+  }
+
+  cache[project.id] = {
+    pushedAt: project.repoUpdatedAt,
+    deployStatus: project.deployStatus,
+    deployUpdatedAt: project.deployUpdatedAt,
+    checkedAt: now
+  };
+  writeRepoMetaCache(cache);
 }
 
 function renderFocus(project) {
@@ -354,8 +466,15 @@ function renderFocus(project) {
   }
 
   const health = byId("focus-health");
+  const shortHealth = project.health === "online"
+    ? "Online"
+    : project.health === "offline"
+      ? "Erro técnico"
+      : project.health === "checking"
+        ? "Verificando"
+        : "Não verificado";
   health.className = `health health-${project.health}`;
-  health.innerHTML = `<span class="dot"></span>${healthLabel(project.health)}`;
+  health.innerHTML = `<span class="dot"></span>${shortHealth}`;
 
   const button = byId("continue-button");
   button.href = project.url;
@@ -393,6 +512,7 @@ function renderProjects() {
       <div class="project-observability">
         <span data-health="${project.id}">${healthMarkup(project.health)}</span>
         <span data-repo="${project.id}">${repoFreshnessMarkup(project)}</span>
+        <span data-deploy="${project.id}">${deployMarkup(project)}</span>
       </div>
       <div class="project-actions">
         <a class="project-link" href="${project.url}">Abrir ambiente →</a>
@@ -489,9 +609,14 @@ async function updateHealth() {
 async function updateRepositoryMetadata() {
   await Promise.all(
     state.projects.map(async project => {
-      await fetchRepoMetadata(project);
-      const slot = document.querySelector(`[data-repo="${project.id}"]`);
-      if (slot) slot.outerHTML = `<span data-repo="${project.id}">${repoFreshnessMarkup(project)}</span>`;
+      await fetchProjectObservability(project);
+
+      const repoSlot = document.querySelector(`[data-repo="${project.id}"]`);
+      if (repoSlot) repoSlot.innerHTML = repoFreshnessMarkup(project);
+
+      const deploySlot = document.querySelector(`[data-deploy="${project.id}"]`);
+      if (deploySlot) deploySlot.innerHTML = deployMarkup(project);
+
       updatePulse();
     })
   );
