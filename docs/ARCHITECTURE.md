@@ -38,3 +38,27 @@ As preferências do catálogo não alteram `projects.json`, foco, último acesso
 
 ## Evolução
 Integrações futuras devem ser somente leitura, opcionais, versionadas e desacopladas do schema interno dos projetos-filhos. A Central não deve conhecer tabelas ou modelos internos dos projetos.
+
+
+## Personalização local — v5
+
+A v5 adiciona preferências de apresentação e organização sem backend.
+
+Preferências suportadas:
+- densidade confortável ou compacta;
+- exibição ou ocultação dos detalhes técnicos nos cards;
+- ordem manual dos ambientes;
+- foco, favoritos e ordenação do catálogo já existentes.
+
+Regras:
+- todas as preferências ficam em `localStorage`;
+- nenhuma preferência altera `projects.json`;
+- nenhuma preferência escreve nos projetos-filhos;
+- valores inválidos são ignorados/limpos e caem para defaults seguros;
+- a ordem padrão é derivada do registry por `data-project-order`;
+- mover um ambiente retorna o catálogo para `Ordem padrão`;
+- o reset restaura foco, favoritos, ordem, densidade e apresentação;
+- o reset preserva o histórico de último acesso;
+- o painel de preferências permanece oculto quando JavaScript não está disponível.
+
+A personalização é opcional e reversível. Falha de persistência não pode impedir navegação.
