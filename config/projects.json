@@ -3,42 +3,12 @@
   "central": {
     "name": "Central de Estudos",
     "owner": "Rodrigo",
-    "version": "3.0.0",
+    "version": "4.0.0",
     "defaultProject": "tcego"
   },
   "projects": [
-    {
-      "id": "tcego",
-      "name": "TCE-GO",
-      "description": "Controle Externo",
-      "phase": "Edital publicado",
-      "status": "active",
-      "priority": "focus",
-      "icon": "🏛️",
-      "url": "https://rodrigorosadantas.github.io/tce-go-dashboard/",
-      "repository": "https://github.com/RodrigoRosaDantas/tce-go-dashboard"
-    },
-    {
-      "id": "seedf",
-      "name": "SEEDF",
-      "description": "Gestor + Analista — Apoio Administrativo",
-      "phase": "Pré-edital",
-      "status": "active",
-      "priority": "normal",
-      "icon": "📚",
-      "url": "https://rodrigorosadantas.github.io/seedf-ppge-dashboard/",
-      "repository": "https://github.com/RodrigoRosaDantas/seedf-ppge-dashboard"
-    },
-    {
-      "id": "tjdft",
-      "name": "TJDFT",
-      "description": "Técnico + Analista — Área Administrativa",
-      "phase": "Preparação",
-      "status": "active",
-      "priority": "normal",
-      "icon": "⚖️",
-      "url": "https://rodrigorosadantas.github.io/tjdft-dashboard/",
-      "repository": "https://github.com/RodrigoRosaDantas/tjdft-dashboard"
-    }
+    {"id":"tcego","name":"TCE-GO","description":"Controle Externo","phase":"Edital publicado","status":"active","priority":"focus","icon":"🏛️","url":"https://rodrigorosadantas.github.io/tce-go-dashboard/","repository":"https://github.com/RodrigoRosaDantas/tce-go-dashboard"},
+    {"id":"seedf","name":"SEEDF","description":"Gestor + Analista — Apoio Administrativo","phase":"Pré-edital","status":"active","priority":"normal","icon":"📚","url":"https://rodrigorosadantas.github.io/seedf-ppge-dashboard/","repository":"https://github.com/RodrigoRosaDantas/seedf-ppge-dashboard"},
+    {"id":"tjdft","name":"TJDFT","description":"Técnico + Analista — Área Administrativa","phase":"Preparação","status":"active","priority":"normal","icon":"⚖️","url":"https://rodrigorosadantas.github.io/tjdft-dashboard/","repository":"https://github.com/RodrigoRosaDantas/tjdft-dashboard"}
   ]
 }
