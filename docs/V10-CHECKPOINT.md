@@ -5,8 +5,8 @@
 - **Versão validada:** 6.0.0
 - **Meta:** 10.0.0
 - **Next major:** 7.0.0
-- **Active major:** none
-- **Stage:** READY
+- **Active major:** 7.0.0
+- **Stage:** IN_PROGRESS
 - **Status:** IN PROGRESS
 - **Último deploy de release validado:** workflow run 36277789554 — success
 - **Commit de release validado:** `0c57c967e277764d1938f3a6fc91fc03f73a74e5`
@@ -24,6 +24,17 @@
 - `VALIDATING`: implementação pronta; faltam gates/deploy.
 - `BLOCKED`: corrigir/reconciliar antes de avançar.
 - `COMPLETE — v10.0.0`: esteira encerrada.
+
+## Snapshot da major ativa
+
+- **Major:** 7.0.0 — Qualidade e testes
+- **Started at:** 2026-09-26
+- **Source version:** 6.0.0
+- **Central HEAD inicial:** `c3a2cad65e974243113fa321dc57492b5bb4e874`
+- **Último deploy inicial:** workflow run `36277886863` — success — HEAD `c3a2cad65e974243113fa321dc57492b5bb4e874`
+- **Child SHAs no início:** TCE-GO `2986dabf2ddb3ed6b22fa58b9a5151981a678dbf`; SEEDF `bb006c3bc896534716e6b568849669a7fe4424c8`; TJDFT `8aa366c0068f6f705fb2d27a44b7a522f90003d9`
+- **Acceptance aplicável:** validação automatizada do registry; testes leves para JavaScript crítico; checagem de links/configuração; quality gate antes do deploy; falha de teste impede deploy; workflow legível/recuperável; testes sem dependência de write nos projetos-filhos; gates globais.
+- **Riscos:** quality gate frágil por regex; workflow bloquear deploy por falso positivo; testes dependerem de rede externa; duplicação entre auditoria manual e automática; Node/runtime incompatível.
 
 ## Última major concluída — v6.0.0
 
