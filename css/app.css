@@ -511,3 +511,74 @@ footer {
     animation: none !important;
   }
 }
+
+
+/* v3 — observabilidade confiável */
+.observability-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  min-width: 0;
+}
+.observability-icon {
+  flex: 0 0 auto;
+  width: 16px;
+  color: var(--muted);
+  font-size: .72rem;
+  line-height: 1.45;
+  text-align: center;
+}
+.observability-copy {
+  min-width: 0;
+}
+.observability-label {
+  display: block;
+  color: #dce4f2;
+  font-size: .76rem;
+  font-weight: 750;
+  line-height: 1.35;
+}
+.observability-meta {
+  display: block;
+  margin-top: 2px;
+  color: var(--muted);
+  font-size: .69rem;
+  line-height: 1.35;
+}
+.observability-label.is-success { color: var(--success); }
+.observability-label.is-warning { color: var(--warning); }
+.observability-label.is-danger { color: var(--danger); }
+.observability-label.is-muted { color: var(--muted); }
+
+.technical-explainer {
+  margin-top: 14px;
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: rgba(255,255,255,.018);
+}
+.source-note {
+  margin: 0 0 9px;
+  color: var(--muted);
+  font-size: .72rem;
+  line-height: 1.45;
+}
+.technical-explainer details {
+  color: var(--muted);
+  font-size: .76rem;
+}
+.technical-explainer summary {
+  color: #cbd6e8;
+  cursor: pointer;
+  font-weight: 750;
+}
+.technical-help {
+  padding-top: 8px;
+}
+.technical-help p {
+  margin: 7px 0 0;
+  line-height: 1.55;
+}
+.technical-help code {
+  color: #d9e5f7;
+}
