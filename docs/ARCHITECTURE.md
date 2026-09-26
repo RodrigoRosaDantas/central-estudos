@@ -26,7 +26,6 @@ A observabilidade confiável está especificada em `docs/OBSERVABILITY-V3.md`: s
 
 ## Catálogo operacional — v4
 O catálogo adiciona uma camada opcional de organização sobre o registry:
-
 - busca textual local por conteúdo visível do card;
 - ordenação local por ordem padrão, favoritos ou nome;
 - favoritos persistidos apenas no navegador;
@@ -36,12 +35,7 @@ O catálogo adiciona uma camada opcional de organização sobre o registry:
 
 As preferências do catálogo não alteram `projects.json`, foco, último acesso, dados técnicos ou projetos-filhos. `js/catalog-v4.js` é uma extensão progressiva da shell e deve tolerar indisponibilidade de `localStorage`.
 
-## Evolução
-Integrações futuras devem ser somente leitura, opcionais, versionadas e desacopladas do schema interno dos projetos-filhos. A Central não deve conhecer tabelas ou modelos internos dos projetos.
-
-
 ## Personalização local — v5
-
 A v5 adiciona preferências de apresentação e organização sem backend.
 
 Preferências suportadas:
@@ -62,3 +56,20 @@ Regras:
 - o painel de preferências permanece oculto quando JavaScript não está disponível.
 
 A personalização é opcional e reversível. Falha de persistência não pode impedir navegação.
+
+## PWA e resiliência — v6
+A v6 adiciona um service worker estritamente limitado à origem da Central. O cache `central-shell-v6.0.0` contém somente o app shell da Central; URLs dos três projetos-filhos e chamadas externas de observabilidade nunca são interceptadas nem cacheadas pelo service worker.
+
+Estratégia:
+- navegações da Central usam **network first**, com `index.html` em cache apenas como fallback offline;
+- arquivos conhecidos do app shell usam **network first**, atualizando o cache em respostas válidas e recorrendo ao cache somente em falha de rede;
+- cada major PWA troca explicitamente o nome do cache; caches antigos com prefixo `central-shell-` são removidos na ativação;
+- um worker novo permanece em espera quando já existe uma versão controlando a página; a interface oferece **Atualizar agora**, que envia `SKIP_WAITING` e recarrega uma única vez após `controllerchange`;
+- não existe prompt próprio de instalação: instalar como app é escolha do navegador/usuário;
+- falha no registro do service worker mantém a experiência web normal;
+- remover/desregistrar o service worker e apagar caches não afeta os links diretos nem o funcionamento web da Central.
+
+O app shell offline não afirma que TCE-GO, SEEDF ou TJDFT estão disponíveis offline. Observabilidade continua sendo informação de rede e deve degradar para estado inconclusivo/cache conforme suas próprias regras.
+
+## Evolução
+Integrações futuras devem ser somente leitura, opcionais, versionadas e desacopladas do schema interno dos projetos-filhos. A Central não deve conhecer tabelas ou modelos internos dos projetos.
