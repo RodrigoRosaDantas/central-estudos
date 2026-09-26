@@ -8,8 +8,8 @@
 - **Active major:** none
 - **Stage:** READY
 - **Status:** IN PROGRESS
-- **Último deploy de release validado:** workflow run 36271230177 — success
-- **Commit de release validado:** `f4a8688abc370061ad92a45cbb9b5c4a9b68054c`
+- **Último deploy de release validado:** workflow run 36271496568 — success
+- **Commit de release validado:** `42ee59a34ebb34ecaa858da77b03646f25c21304`
 - **Repositório:** RodrigoRosaDantas/central-estudos
 - **Projetos-filhos:** READ-ONLY / NO WRITES
 
@@ -64,7 +64,7 @@
 ## Histórico de majors
 - 2026-09-26 — v2.0.0 — fundação consolidada — commit `e3cfacdf6e3784ca0236065cf34ac14c2900dd97` — Pages `36264383202` — success
 - 2026-09-26 — v3.0.0 — observabilidade confiável — commit `dbc938e2b8eb32a9b3e126c464c5f1dfe82bea0c` — Pages `36270559732` — success
-- 2026-09-26 — v4.0.0 — catálogo operacional — commit `f4a8688abc370061ad92a45cbb9b5c4a9b68054c` — Pages `36271230177` — success
+- 2026-09-26 — v4.0.0 — catálogo operacional — commit `42ee59a34ebb34ecaa858da77b03646f25c21304` — Pages `36271496568` — success
 
 ## Regra de avanço
 Uma major só fecha após acceptance, audit protocol, quality gate, Pages `success`, post-deploy QA verificável, changelog e checkpoint.
