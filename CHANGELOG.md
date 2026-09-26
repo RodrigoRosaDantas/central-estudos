@@ -11,7 +11,8 @@
 - app shell atualizado para `central-shell-v8.0.0`;
 - quality gate v7 passou com os contratos específicos da v8;
 - **Projetos-filhos:** zero writes nesta release;
-- **Commit/deploy final:** preencher após validação do pipeline final.
+- **Commit de release validado:** `e1b118a502927256029ae855f39d88fb4fd46a9b`;
+- **Deploy validado:** workflow run `36279346345` — quality `success` + deploy `success`.
 
 ## [7.0.0] — 2026-09-26
 - quality gate automatizado e sem dependências externas;
