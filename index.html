@@ -12,6 +12,7 @@
   <link rel="manifest" href="./manifest.webmanifest" />
   <link rel="stylesheet" href="./css/app.css" />
   <link rel="stylesheet" href="./css/catalog-v4.css" />
+  <link rel="stylesheet" href="./css/personalization-v5.css" />
 </head>
 <body>
   <a class="skip-link" href="#conteudo">Ir para o conteúdo</a>
@@ -24,6 +25,40 @@
         <div class="hero-actions"><a id="continue-button" class="button button-primary" href="https://rodrigorosadantas.github.io/tce-go-dashboard/">Entrar no foco <span aria-hidden="true">→</span></a><a id="focus-new-tab" class="button button-ghost" href="https://rodrigorosadantas.github.io/tce-go-dashboard/" target="_blank" rel="noopener">Abrir em nova guia</a></div>
       </section>
       <section class="section resume-card" aria-labelledby="resume-title"><div><p class="eyebrow">RETOMADA</p><h2 id="resume-title">Continue de onde parou</h2><p id="last-project-text" class="muted">O histórico local será registrado quando você abrir um ambiente pela Central.</p></div><div class="resume-actions"><a id="resume-button" class="button button-secondary is-hidden" href="#">Retomar</a><button id="clear-history" class="button button-quiet" type="button">Limpar histórico</button></div></section>
+      <details id="preferences-panel" class="preferences-panel">
+        <summary>
+          <span><span class="eyebrow">PREFERÊNCIAS</span><strong>Personalizar a Central</strong></span>
+          <span class="preferences-local-badge">Só neste aparelho</span>
+        </summary>
+        <div class="preferences-body">
+          <p class="preferences-intro">Estas escolhas alteram apenas a apresentação e a organização da Central. Não modificam os projetos nem o registry.</p>
+          <div class="preferences-grid">
+            <label class="preferences-field">
+              <span>Densidade</span>
+              <select id="preference-density">
+                <option value="comfortable">Confortável</option>
+                <option value="compact">Compacta</option>
+              </select>
+            </label>
+            <label class="preferences-toggle">
+              <input id="preference-technical" type="checkbox" checked />
+              <span><strong>Detalhes técnicos nos cards</strong><small>Disponibilidade, publicação e deploy continuam no Pulso da Central.</small></span>
+            </label>
+          </div>
+          <div class="preferences-order">
+            <div>
+              <h3>Ordem dos ambientes</h3>
+              <p>Mover um ambiente ativa novamente a “Ordem padrão” do catálogo.</p>
+            </div>
+            <div id="preferences-order-list" class="preferences-order-list" aria-live="polite"></div>
+          </div>
+          <div class="preferences-footer">
+            <p id="preferences-status" class="preferences-status" aria-live="polite">Preferências salvas somente neste navegador.</p>
+            <button id="preferences-reset" class="button button-ghost" type="button">Restaurar padrões</button>
+          </div>
+        </div>
+      </details>
+
       <section class="section" aria-labelledby="projects-title">
         <div class="section-heading"><div><p class="eyebrow">AMBIENTES</p><h2 id="projects-title">Seus projetos</h2></div><p class="muted compact">Cada ambiente continua independente. A Central apenas organiza o acesso.</p></div>
         <div class="catalog-toolbar" role="search" aria-label="Organizar ambientes">
@@ -46,5 +81,6 @@
   <noscript><div class="noscript">JavaScript está desativado. Os três acessos diretos continuam funcionando normalmente.</div></noscript>
   <script src="./js/app.js" defer></script>
   <script src="./js/catalog-v4.js" defer></script>
+  <script src="./js/personalization-v5.js" defer></script>
 </body>
 </html>
