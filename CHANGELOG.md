@@ -10,7 +10,8 @@
 - testes não usam rede externa nem write nos projetos-filhos;
 - `actions/setup-node@v7` com Node 22;
 - **Projetos-filhos:** zero writes nesta release;
-- **Commit/deploy final:** preencher após validação do Pages.
+- **Commit de release validado:** `e47e94341c21219936133762bf3675a0251f4c79`;
+- **Deploy validado:** workflow run `36278662494` — quality `success` + deploy `success`.
 
 ## [6.0.0] — 2026-09-26
 - PWA e resiliência com service worker limitado à origem da Central;
