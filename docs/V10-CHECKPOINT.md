@@ -2,14 +2,14 @@
 
 ## Estado da esteira
 
-- **Versão validada:** 5.0.0
+- **Versão validada:** 6.0.0
 - **Meta:** 10.0.0
-- **Next major:** 6.0.0
-- **Active major:** 6.0.0
-- **Stage:** IN_PROGRESS
+- **Next major:** 7.0.0
+- **Active major:** none
+- **Stage:** READY
 - **Status:** IN PROGRESS
-- **Último deploy de release validado:** workflow run 36272168251 — success
-- **Commit de release validado:** `cf8cdb818449d020923f50d63e67689b635abc96`
+- **Último deploy de release validado:** workflow run 36274467394 — success
+- **Commit de release validado:** `0193ba0ac4e7b9bc23562c961583f2193fd8b4c3`
 - **Repositório:** RodrigoRosaDantas/central-estudos
 - **Projetos-filhos:** READ-ONLY / NO WRITES
 
@@ -25,17 +25,25 @@
 - `BLOCKED`: corrigir/reconciliar antes de avançar.
 - `COMPLETE — v10.0.0`: esteira encerrada.
 
-## Snapshot da major ativa
+## Última major concluída — v6.0.0
 
-- **Major:** 6.0.0 — PWA e resiliência
-- **Started at:** 2026-09-26 18:51 BRT
-- **Source version:** 5.0.0
-- **Central HEAD inicial:** `28314ade49fa99dffe5a5da75fb6daba1d370335`
-- **Último deploy inicial:** workflow run `36272420910` — success — HEAD `28314ade49fa99dffe5a5da75fb6daba1d370335`
-- **Child SHAs no início:** TCE-GO `2986dabf2ddb3ed6b22fa58b9a5151981a678dbf`; SEEDF `bb006c3bc896534716e6b568849669a7fe4424c8`; TJDFT `8aa366c0068f6f705fb2d27a44b7a522f90003d9`
-- **Acceptance aplicável:** service worker não impede atualização; app shell abre offline; links externos não fingem disponibilidade offline; caches versionados/previsíveis; remoção de SW/cache restaura web normal; instalação opcional; gates globais.
-- **Riscos:** cache obsoleto; service worker interceptar navegação externa indevidamente; atualização presa em worker antigo; offline induzir interpretação falsa de disponibilidade; suporte variável a PWA/SVG icon.
-- **Reconciliação de preflight:** registry/README/changelog/checkpoint concordam em v5.0.0 validada. O HEAD atual é o commit documental posterior de fechamento da v5 e seu Pages run `36272420910` também passou; isso não altera a versão de release validada.
+- **Origem:** v5.0.0
+- **Objetivo:** PWA e resiliência sem criar dependência dos projetos-filhos.
+- **Resultado:** PASS
+- **Acceptance v6:** PASS nos gates estruturais/lógicos verificáveis.
+- **Service worker:** restrito à origem da Central e somente a GETs; projetos-filhos e APIs externas não são interceptados.
+- **Offline:** app shell usa fallback local; isso não afirma disponibilidade offline dos projetos.
+- **Cache:** `central-shell-v6.0.0`, network-first e limpeza de caches antigos com prefixo da Central.
+- **Atualização:** worker novo pode aguardar; UI oferece `Atualizar agora`, usa `SKIP_WAITING` e recarrega uma vez em `controllerchange`.
+- **Instalação:** opcional, sem prompt próprio obrigatório.
+- **Recuperação:** falha/remoção de service worker e caches preserva/restaura a experiência web normal.
+- **Manifest:** válido e coerente com escopo/start URL relativos da Central.
+- **Fallback:** três acessos diretos continuam presentes no HTML sem depender de JavaScript.
+- **Quality gate:** registry JSON válido; IDs únicos; URLs HTTPS; referências críticas presentes; nenhum secret/token adicionado; arquitetura/README coerentes; workflow Pages preservado.
+- **Post-deploy QA:** run `36274467394` publicou exatamente o HEAD `0193ba0ac4e7b9bc23562c961583f2193fd8b4c3`; arquivos críticos foram revalidados na `main`. A URL pública não pôde ser aberta diretamente pela ferramenta web desta execução, portanto nenhuma validação visual/offline real foi inventada.
+- **Projetos-filhos:** SHAs finais idênticos aos SHAs de preflight; zero writes nesta execução.
+- **Deploy:** workflow run `36274467394` — success.
+- **Commit validado:** `0193ba0ac4e7b9bc23562c961583f2193fd8b4c3`.
 
 ## Última major concluída — v5.0.0
 
@@ -53,8 +61,6 @@
 - **Projetos-filhos:** SHAs finais idênticos aos SHAs de preflight; zero writes nesta execução.
 - **Deploy:** workflow run `36272168251` — success.
 - **Commit validado:** `cf8cdb818449d020923f50d63e67689b635abc96`.
-- **Incidente de deploy:** um run antigo do Pages ficou temporariamente preso e bloqueou a fila; ele foi cancelado pelo GitHub e o deploy final prosseguiu sem alteração de workflow.
-- **Limitação registrada:** nenhuma renderização visual real foi inventada; QA visual ficou restrito ao que as ferramentas conseguem verificar estruturalmente.
 
 ## Última major concluída — v4.0.0
 
@@ -72,7 +78,6 @@
 - **Projetos-filhos:** SHAs finais idênticos aos SHAs de preflight; zero writes nesta execução.
 - **Deploy:** workflow run `36271401822` — success.
 - **Commit validado:** `e9b7d5e3cc0a9e0dc5294244912d9674baef67db`.
-- **Limitação registrada:** a URL pública do GitHub Pages não pôde ser aberta diretamente pela ferramenta web desta sessão; nenhuma validação visual foi inventada.
 
 ## Última major concluída — v3.0.0
 - **Origem:** v2.0.0
@@ -86,6 +91,7 @@
 - 2026-09-26 — v3.0.0 — observabilidade confiável — commit `dbc938e2b8eb32a9b3e126c464c5f1dfe82bea0c` — Pages `36270559732` — success
 - 2026-09-26 — v4.0.0 — catálogo operacional — commit `42ee59a34ebb34ecaa858da77b03646f25c21304` — Pages `36271496568` — success
 - 2026-09-26 — v5.0.0 — personalização local — commit `cf8cdb818449d020923f50d63e67689b635abc96` — Pages `36272168251` — success
+- 2026-09-26 — v6.0.0 — PWA e resiliência — commit `0193ba0ac4e7b9bc23562c961583f2193fd8b4c3` — Pages `36274467394` — success
 
 ## Regra de avanço
 Uma major só fecha após acceptance, audit protocol, quality gate, Pages `success`, post-deploy QA verificável, changelog e checkpoint.
