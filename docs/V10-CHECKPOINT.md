@@ -8,8 +8,8 @@
 - **Active major:** none
 - **Stage:** READY
 - **Status:** IN PROGRESS
-- **Último deploy de release validado:** workflow run 36274467394 — success
-- **Commit de release validado:** `0193ba0ac4e7b9bc23562c961583f2193fd8b4c3`
+- **Último deploy de release validado:** workflow run 36277789554 — success
+- **Commit de release validado:** `0c57c967e277764d1938f3a6fc91fc03f73a74e5`
 - **Repositório:** RodrigoRosaDantas/central-estudos
 - **Projetos-filhos:** READ-ONLY / NO WRITES
 
@@ -31,6 +31,7 @@
 - **Objetivo:** PWA e resiliência sem criar dependência dos projetos-filhos.
 - **Resultado:** PASS
 - **Acceptance v6:** PASS nos gates estruturais/lógicos verificáveis.
+- **Correções finais de resiliência:** aviso de atualização isolado do status geral; botão de update idempotente; primeira instalação sem reload forçado; escopo/pathname do worker defendido explicitamente.
 - **Service worker:** restrito à origem da Central e somente a GETs; projetos-filhos e APIs externas não são interceptados.
 - **Offline:** app shell usa fallback local; isso não afirma disponibilidade offline dos projetos.
 - **Cache:** `central-shell-v6.0.0`, network-first e limpeza de caches antigos com prefixo da Central.
@@ -40,10 +41,10 @@
 - **Manifest:** válido e coerente com escopo/start URL relativos da Central.
 - **Fallback:** três acessos diretos continuam presentes no HTML sem depender de JavaScript.
 - **Quality gate:** registry JSON válido; IDs únicos; URLs HTTPS; referências críticas presentes; nenhum secret/token adicionado; arquitetura/README coerentes; workflow Pages preservado.
-- **Post-deploy QA:** run `36274467394` publicou exatamente o HEAD `0193ba0ac4e7b9bc23562c961583f2193fd8b4c3`; arquivos críticos foram revalidados na `main`. A URL pública não pôde ser aberta diretamente pela ferramenta web desta execução, portanto nenhuma validação visual/offline real foi inventada.
+- **Post-deploy QA:** run `36277789554` publicou exatamente o HEAD `0c57c967e277764d1938f3a6fc91fc03f73a74e5`; arquivos críticos foram revalidados na `main`. A URL pública não pôde ser aberta diretamente pela ferramenta web desta execução, portanto nenhuma validação visual/offline real foi inventada.
 - **Projetos-filhos:** SHAs finais idênticos aos SHAs de preflight; zero writes nesta execução.
-- **Deploy:** workflow run `36274467394` — success.
-- **Commit validado:** `0193ba0ac4e7b9bc23562c961583f2193fd8b4c3`.
+- **Deploy:** workflow run `36277789554` — success.
+- **Commit validado:** `0c57c967e277764d1938f3a6fc91fc03f73a74e5`.
 
 ## Última major concluída — v5.0.0
 
@@ -91,7 +92,7 @@
 - 2026-09-26 — v3.0.0 — observabilidade confiável — commit `dbc938e2b8eb32a9b3e126c464c5f1dfe82bea0c` — Pages `36270559732` — success
 - 2026-09-26 — v4.0.0 — catálogo operacional — commit `42ee59a34ebb34ecaa858da77b03646f25c21304` — Pages `36271496568` — success
 - 2026-09-26 — v5.0.0 — personalização local — commit `cf8cdb818449d020923f50d63e67689b635abc96` — Pages `36272168251` — success
-- 2026-09-26 — v6.0.0 — PWA e resiliência — commit `0193ba0ac4e7b9bc23562c961583f2193fd8b4c3` — Pages `36274467394` — success
+- 2026-09-26 — v6.0.0 — PWA e resiliência — commit `0c57c967e277764d1938f3a6fc91fc03f73a74e5` — Pages `36277789554` — success
 
 ## Regra de avanço
 Uma major só fecha após acceptance, audit protocol, quality gate, Pages `success`, post-deploy QA verificável, changelog e checkpoint.
