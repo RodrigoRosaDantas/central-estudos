@@ -10,7 +10,8 @@
 - README foi limpo para remover duplicação de governança;
 - **Riscos/limitações:** validação visual real depende do navegador do usuário; observabilidade avançada/rate limit permanece escopo de v3;
 - **Projetos-filhos:** zero writes nesta release;
-- **Commit/deploy final:** preencher após validação do Pages.
+- **Commit de release validado:** `e3cfacdf6e3784ca0236065cf34ac14c2900dd97`.
+- **Deploy validado:** workflow run `36264383202` — success.
 
 ## [1.4.0] — 2026-09-26
 - foco escolhível localmente;
