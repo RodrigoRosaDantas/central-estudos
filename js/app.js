@@ -33,11 +33,9 @@ function readLastVisit() {
 }
 
 function chooseFocus(projects, defaultProject) {
-  const lastVisit = readLastVisit();
   return (
-    projects.find(p => p.id === lastVisit?.id) ||
-    projects.find(p => p.id === defaultProject) ||
-    projects.find(p => p.priority === "focus") ||
+    projects.find(project => project.id === defaultProject) ||
+    projects.find(project => project.priority === "focus") ||
     projects[0]
   );
 }
@@ -52,6 +50,13 @@ function rememberProject(project) {
 function openProject(project) {
   rememberProject(project);
   window.location.assign(project.url);
+}
+
+function getGreeting() {
+  const hour = new Date().getHours();
+  if (hour < 12) return "Bom dia, Rodrigo.";
+  if (hour < 18) return "Boa tarde, Rodrigo.";
+  return "Boa noite, Rodrigo.";
 }
 
 function healthLabel(status) {
@@ -78,23 +83,32 @@ function renderFocus(project) {
 
   const button = byId("continue-button");
   button.href = project.url;
-  button.onclick = (event) => {
+  button.onclick = event => {
     event.preventDefault();
     openProject(project);
   };
+
+  const newTab = byId("focus-new-tab");
+  newTab.href = project.url;
+  newTab.onclick = () => rememberProject(project);
 }
 
 function renderProjects() {
   const grid = byId("projects-grid");
+  const lastVisit = readLastVisit();
   grid.innerHTML = "";
 
   state.projects.forEach(project => {
+    const isLast = project.id === lastVisit?.id;
     const article = document.createElement("article");
-    article.className = `project-card project-${project.id}`;
+    article.className = `project-card project-${project.id}${isLast ? " is-last" : ""}`;
     article.innerHTML = `
       <div class="project-top">
         <span class="project-icon" aria-hidden="true">${project.icon}</span>
-        <span class="project-status">${project.priority === "focus" ? "Foco" : "Ativo"}</span>
+        <div class="project-top-right">
+          ${isLast ? '<span class="last-chip">Último acesso</span>' : ""}
+          <span class="project-status">${project.priority === "focus" ? "Foco" : "Ativo"}</span>
+        </div>
       </div>
       <h3>${project.name}</h3>
       <p class="muted">${project.description}</p>
@@ -126,14 +140,32 @@ function formatVisitDate(isoDate) {
   }).format(date);
 }
 
-function renderLastProject() {
+function renderResume() {
   const lastVisit = readLastVisit();
-  const project = state.projects.find(p => p.id === lastVisit?.id);
+  const project = state.projects.find(item => item.id === lastVisit?.id);
   const visitedAt = formatVisitDate(lastVisit?.visitedAt);
+  const resumeButton = byId("resume-button");
+  const clearButton = byId("clear-history");
 
-  byId("last-project-text").textContent = project
-    ? `Último ambiente aberto: ${project.name}${visitedAt ? ` em ${visitedAt}` : ""}.`
-    : "O histórico local será registrado quando você abrir um ambiente pela Central.";
+  if (!project) {
+    byId("last-project-text").textContent =
+      "O histórico local será registrado quando você abrir um ambiente pela Central.";
+    resumeButton.classList.add("is-hidden");
+    clearButton.disabled = true;
+    return;
+  }
+
+  byId("last-project-text").textContent =
+    `Último ambiente aberto: ${project.name}${visitedAt ? ` em ${visitedAt}` : ""}.`;
+
+  resumeButton.textContent = `Retomar ${project.name} →`;
+  resumeButton.href = project.url;
+  resumeButton.classList.remove("is-hidden");
+  resumeButton.onclick = event => {
+    event.preventDefault();
+    openProject(project);
+  };
+  clearButton.disabled = false;
 }
 
 async function checkHealth(project) {
@@ -170,13 +202,14 @@ async function updateHealth() {
 function bindClearHistory() {
   byId("clear-history").addEventListener("click", () => {
     localStorage.removeItem(STORAGE_KEY);
-    state.focus = chooseFocus(state.projects, state.config.central.defaultProject);
-    renderFocus(state.focus);
-    renderLastProject();
+    renderResume();
+    renderProjects();
   });
 }
 
 async function init() {
+  byId("greeting").textContent = getGreeting();
+
   try {
     const response = await fetch("./config/projects.json", { cache: "no-store" });
     if (!response.ok) throw new Error("Registro de projetos indisponível.");
@@ -186,8 +219,8 @@ async function init() {
     state.focus = chooseFocus(state.projects, state.config.central.defaultProject);
 
     renderFocus(state.focus);
+    renderResume();
     renderProjects();
-    renderLastProject();
     bindClearHistory();
 
     const version = byId("app-version");
@@ -200,7 +233,8 @@ async function init() {
     console.warn("Central em modo de fallback:", error);
     byId("focus-health").className = "health health-unknown";
     byId("focus-health").innerHTML = '<span class="dot"></span>Modo direto';
-    byId("last-project-text").textContent = "O registro dinâmico não carregou. Os acessos diretos continuam disponíveis.";
+    byId("last-project-text").textContent =
+      "O registro dinâmico não carregou. Os acessos diretos continuam disponíveis.";
     byId("clear-history").disabled = true;
   }
 }
