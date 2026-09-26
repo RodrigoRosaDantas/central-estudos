@@ -6,7 +6,7 @@
 - **Meta:** 10.0.0
 - **Next major:** 7.0.0
 - **Active major:** 7.0.0
-- **Stage:** IN_PROGRESS
+- **Stage:** VALIDATING
 - **Status:** IN PROGRESS
 - **Último deploy de release validado:** workflow run 36277789554 — success
 - **Commit de release validado:** `0c57c967e277764d1938f3a6fc91fc03f73a74e5`
@@ -35,6 +35,10 @@
 - **Child SHAs no início:** TCE-GO `2986dabf2ddb3ed6b22fa58b9a5151981a678dbf`; SEEDF `bb006c3bc896534716e6b568849669a7fe4424c8`; TJDFT `8aa366c0068f6f705fb2d27a44b7a522f90003d9`
 - **Acceptance aplicável:** validação automatizada do registry; testes leves para JavaScript crítico; checagem de links/configuração; quality gate antes do deploy; falha de teste impede deploy; workflow legível/recuperável; testes sem dependência de write nos projetos-filhos; gates globais.
 - **Riscos:** quality gate frágil por regex; workflow bloquear deploy por falso positivo; testes dependerem de rede externa; duplicação entre auditoria manual e automática; Node/runtime incompatível.
+- **QA v7:** PASS no workflow real — suite `tests/quality.mjs` executada com sucesso; registry/fallback/manifest/assets/PWA validados; funções críticas `validateConfig`, `chooseFocus` e `readLastVisit` testadas em sandbox; URLs HTTP/IDs duplicados/estado local corrompido cobertos.
+- **CI gate:** PASS — workflow `Validate and deploy Central de Estudos` possui job `quality` e `deploy needs: quality`; quality real passou antes de o deploy ser enfileirado.
+- **Runtime:** `actions/setup-node@v7` com Node 22; sem dependências npm e sem rede externa nos testes.
+- **Estado da implementação:** concluída; aguardando deploy final da release 7.0.0 e pós-deploy.
 
 ## Última major concluída — v6.0.0
 
