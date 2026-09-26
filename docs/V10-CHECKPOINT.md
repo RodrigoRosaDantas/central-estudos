@@ -6,7 +6,7 @@
 - **Meta:** 10.0.0
 - **Next major:** 9.0.0
 - **Active major:** 9.0.0
-- **Stage:** IN_PROGRESS
+- **Stage:** VALIDATING
 - **Status:** IN PROGRESS
 - **Último deploy de release validado:** workflow run 36279346345 — quality success + deploy success
 - **Commit de release validado:** `e1b118a502927256029ae855f39d88fb4fd46a9b`
@@ -46,6 +46,10 @@
 - **Child SHAs no início:** TCE-GO `2986dabf2ddb3ed6b22fa58b9a5151981a678dbf`; SEEDF `bb006c3bc896534716e6b568849669a7fe4424c8`; TJDFT `8aa366c0068f6f705fb2d27a44b7a522f90003d9`
 - **Acceptance aplicável:** acessibilidade; navegação por teclado; contraste/estados críticos; chamadas externas minimizadas; edge cases documentados; segurança frontend; performance/payload; redução de código morto/duplicação; auditoria mobile pequena e média; gates globais.
 - **Riscos:** CSP bloquear observabilidade legítima; otimização de rede esconder estado atual; hardening quebrar progressive enhancement/PWA; alteração de foco/teclado regressiva; testes de contraste/HTML gerarem falso positivo; cache antigo mascarar assets novos.
+- **QA v9:** PASS no pipeline de implementação — CSP/sem inline dependencies; registry endurecido; escape dinâmico; health cache 2 min explicitamente marcado; deploy lookup direcionado; contraste >=4.5:1 nos tokens críticos; teclado/touch/forced-colors; breakpoint 360 px; payload 91.658 bytes <= 120 KiB; zero JS/CSS órfãos; zero funções nomeadas mortas detectadas.
+- **Pipeline de implementação:** workflow run `36279915259` — quality `success` + deploy `success` no HEAD `63fa6dad9c7abc8bca65aa037e1ca3bd850a84af`.
+- **Limitação visual:** auditoria mobile/contraste é estrutural e automatizada onde possível; nenhuma renderização visual real foi inventada.
+- **Estado da implementação:** concluída; aguardando pipeline final com versão/documentação 9.0.0 e pós-deploy.
 
 ## Última major concluída — v8.0.0
 
