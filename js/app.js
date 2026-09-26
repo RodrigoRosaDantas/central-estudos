@@ -8,11 +8,99 @@ const META_CACHE_TTL_MS = 10 * 60 * 1000;
 const state = {
   config: null,
   projects: [],
-  focus: null
+  focus: null,
+  storageAvailable: true
 };
 
 function byId(id) {
   return document.getElementById(id);
+}
+
+function safeStorageGet(key) {
+  try {
+    return window.localStorage.getItem(key);
+  } catch {
+    state.storageAvailable = false;
+    return null;
+  }
+}
+
+function safeStorageSet(key, value) {
+  try {
+    window.localStorage.setItem(key, value);
+    return true;
+  } catch {
+    state.storageAvailable = false;
+    return false;
+  }
+}
+
+function safeStorageRemove(key) {
+  try {
+    window.localStorage.removeItem(key);
+    return true;
+  } catch {
+    state.storageAvailable = false;
+    return false;
+  }
+}
+
+function showSystemNotice(message, kind = "info") {
+  const notice = byId("system-notice");
+  if (!notice) return;
+  notice.textContent = message;
+  notice.className = `system-notice is-${kind}`;
+}
+
+function hideSystemNotice() {
+  const notice = byId("system-notice");
+  if (!notice) return;
+  notice.textContent = "";
+  notice.className = "system-notice is-hidden";
+}
+
+function validateConfig(config) {
+  if (!config || typeof config !== "object") {
+    throw new Error("Configuração da Central inválida.");
+  }
+
+  if (!config.central || typeof config.central.defaultProject !== "string") {
+    throw new Error("Configuração central incompleta.");
+  }
+
+  if (!Array.isArray(config.projects) || config.projects.length === 0) {
+    throw new Error("Nenhum ambiente configurado.");
+  }
+
+  const required = ["id", "name", "description", "phase", "url", "repository"];
+  const ids = new Set();
+
+  config.projects.forEach(project => {
+    required.forEach(field => {
+      if (typeof project[field] !== "string" || !project[field].trim()) {
+        throw new Error(`Projeto com campo obrigatório inválido: ${field}.`);
+      }
+    });
+
+    if (ids.has(project.id)) {
+      throw new Error(`ID de projeto duplicado: ${project.id}.`);
+    }
+    ids.add(project.id);
+
+    for (const field of ["url", "repository"]) {
+      let parsed;
+      try {
+        parsed = new URL(project[field]);
+      } catch {
+        throw new Error(`URL inválida em ${project.id}.`);
+      }
+      if (parsed.protocol !== "https:") {
+        throw new Error(`URL não segura em ${project.id}.`);
+      }
+    }
+  });
+
+  return config;
 }
 
 function normalizeProject(project) {
@@ -25,27 +113,44 @@ function normalizeProject(project) {
 }
 
 function readLastVisit() {
-  const raw = localStorage.getItem(STORAGE_KEY);
+  const raw = safeStorageGet(STORAGE_KEY);
   if (!raw) return null;
 
   try {
     const parsed = JSON.parse(raw);
-    if (parsed && parsed.id) return parsed;
+    if (parsed && typeof parsed.id === "string") {
+      return {
+        id: parsed.id,
+        visitedAt: typeof parsed.visitedAt === "string" ? parsed.visitedAt : null
+      };
+    }
   } catch {
+    // Formato legado ou corrompido: tratado abaixo.
+  }
+
+  if (/^[a-z0-9_-]+$/i.test(raw)) {
     return { id: raw, visitedAt: null };
   }
 
+  safeStorageRemove(STORAGE_KEY);
   return null;
 }
 
 function readFocusPreference() {
-  return localStorage.getItem(FOCUS_STORAGE_KEY);
+  const value = safeStorageGet(FOCUS_STORAGE_KEY);
+  return value && /^[a-z0-9_-]+$/i.test(value) ? value : null;
 }
 
 function chooseFocus(projects, defaultProject) {
   const preferredId = readFocusPreference();
+  const preferred = projects.find(project => project.id === preferredId);
+
+  if (preferredId && !preferred) {
+    safeStorageRemove(FOCUS_STORAGE_KEY);
+  }
+
   return (
-    projects.find(project => project.id === preferredId) ||
+    preferred ||
     projects.find(project => project.id === defaultProject) ||
     projects.find(project => project.priority === "focus") ||
     projects[0]
@@ -53,14 +158,18 @@ function chooseFocus(projects, defaultProject) {
 }
 
 function setFocusProject(project) {
-  localStorage.setItem(FOCUS_STORAGE_KEY, project.id);
+  safeStorageSet(FOCUS_STORAGE_KEY, project.id);
   state.focus = project;
   renderFocus(project);
   renderProjects();
+
+  if (!state.storageAvailable) {
+    showSystemNotice("A preferência de foco vale apenas nesta sessão porque o armazenamento local não está disponível.", "warning");
+  }
 }
 
 function rememberProject(project) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify({
+  safeStorageSet(STORAGE_KEY, JSON.stringify({
     id: project.id,
     visitedAt: new Date().toISOString()
   }));
@@ -78,24 +187,21 @@ function getGreeting() {
   return "Boa noite, Rodrigo.";
 }
 
-
 function readRepoMetaCache() {
-  const raw = localStorage.getItem(META_CACHE_KEY);
+  const raw = safeStorageGet(META_CACHE_KEY);
   if (!raw) return {};
 
   try {
-    return JSON.parse(raw) || {};
+    const parsed = JSON.parse(raw);
+    return parsed && typeof parsed === "object" ? parsed : {};
   } catch {
+    safeStorageRemove(META_CACHE_KEY);
     return {};
   }
 }
 
 function writeRepoMetaCache(cache) {
-  try {
-    localStorage.setItem(META_CACHE_KEY, JSON.stringify(cache));
-  } catch {
-    // Cache é opcional; a Central continua funcionando sem ele.
-  }
+  safeStorageSet(META_CACHE_KEY, JSON.stringify(cache));
 }
 
 function githubApiUrl(project) {
@@ -148,20 +254,25 @@ function updatePulse() {
   const healthPending = state.projects.some(project => project.health === "checking");
   const knownDates = state.projects
     .map(project => project.repoUpdatedAt ? new Date(project.repoUpdatedAt) : null)
-    .filter(Boolean)
+    .filter(date => date && !Number.isNaN(date.getTime()))
     .sort((a, b) => b - a);
 
-  byId("pulse-projects").textContent = String(projectCount);
-  byId("pulse-online").textContent = healthPending
+  const projectEl = byId("pulse-projects");
+  const onlineEl = byId("pulse-online");
+  const freshnessEl = byId("pulse-freshness");
+  if (!projectEl || !onlineEl || !freshnessEl) return;
+
+  projectEl.textContent = String(projectCount);
+  onlineEl.textContent = healthPending
     ? "Verificando"
     : `${onlineCount}/${projectCount} online`;
 
   if (knownDates.length) {
     const latest = relativeTimeFromNow(knownDates[0].toISOString());
-    byId("pulse-freshness").textContent = latest ? `Atualizado ${latest}` : "Atualizado";
+    freshnessEl.textContent = latest ? `Atualizado ${latest}` : "Atualizado";
   } else {
     const metaPending = state.projects.some(project => project.repoMetaState === "checking");
-    byId("pulse-freshness").textContent = metaPending ? "Verificando" : "Não verificado";
+    freshnessEl.textContent = metaPending ? "Verificando" : "Não verificado";
   }
 }
 
@@ -234,6 +345,7 @@ function renderFocus(project) {
   byId("focus-title").textContent = project.name;
   byId("focus-description").textContent = project.description;
   byId("focus-phase").textContent = project.phase;
+
   const focusNote = byId("focus-note");
   if (focusNote) {
     focusNote.textContent = readFocusPreference()
@@ -269,7 +381,7 @@ function renderProjects() {
     article.className = `project-card project-${project.id}${isLast ? " is-last" : ""}${isFocus ? " is-focus" : ""}`;
     article.innerHTML = `
       <div class="project-top">
-        <span class="project-icon" aria-hidden="true">${project.icon}</span>
+        <span class="project-icon" aria-hidden="true">${project.icon || "•"}</span>
         <div class="project-top-right">
           ${isLast ? '<span class="last-chip">Último acesso</span>' : ""}
           <span class="project-status">${isFocus ? "Foco" : "Ativo"}</span>
@@ -306,7 +418,6 @@ function renderProjects() {
 
 function formatVisitDate(isoDate) {
   if (!isoDate) return null;
-
   const date = new Date(isoDate);
   if (Number.isNaN(date.getTime())) return null;
 
@@ -324,8 +435,9 @@ function renderResume() {
   const clearButton = byId("clear-history");
 
   if (!project) {
+    if (lastVisit?.id) safeStorageRemove(STORAGE_KEY);
     byId("last-project-text").textContent =
-      "O histórico local será registrado quando você abrir um ambiente pela Central.";
+      "Abra um ambiente pela Central para criar um ponto de retomada neste aparelho.";
     resumeButton.classList.add("is-hidden");
     clearButton.disabled = true;
     return;
@@ -366,10 +478,8 @@ async function updateHealth() {
   await Promise.all(
     state.projects.map(async project => {
       project.health = await checkHealth(project);
-
       const slot = document.querySelector(`[data-health="${project.id}"]`);
       if (slot) slot.innerHTML = healthMarkup(project.health);
-
       if (state.focus?.id === project.id) renderFocus(project);
       updatePulse();
     })
@@ -380,7 +490,6 @@ async function updateRepositoryMetadata() {
   await Promise.all(
     state.projects.map(async project => {
       await fetchRepoMetadata(project);
-
       const slot = document.querySelector(`[data-repo="${project.id}"]`);
       if (slot) slot.outerHTML = `<span data-repo="${project.id}">${repoFreshnessMarkup(project)}</span>`;
       updatePulse();
@@ -389,21 +498,52 @@ async function updateRepositoryMetadata() {
 }
 
 function bindClearHistory() {
-  byId("clear-history").addEventListener("click", () => {
-    localStorage.removeItem(STORAGE_KEY);
+  const clearButton = byId("clear-history");
+  if (!clearButton) return;
+
+  clearButton.addEventListener("click", () => {
+    safeStorageRemove(STORAGE_KEY);
     renderResume();
     renderProjects();
+
+    if (!state.storageAvailable) {
+      showSystemNotice("O histórico não pôde ser alterado porque o armazenamento local está indisponível.", "warning");
+    }
   });
 }
 
+function enterFallbackMode(error) {
+  console.warn("Central em modo de fallback:", error);
+  showSystemNotice(
+    "A camada dinâmica não carregou. Os três acessos diretos abaixo continuam funcionando normalmente.",
+    "warning"
+  );
+
+  const health = byId("focus-health");
+  if (health) {
+    health.className = "health health-unknown";
+    health.innerHTML = '<span class="dot"></span>Modo direto';
+  }
+
+  const lastProjectText = byId("last-project-text");
+  if (lastProjectText) {
+    lastProjectText.textContent =
+      "Retomada dinâmica indisponível. Use os acessos diretos dos ambientes.";
+  }
+
+  const clearButton = byId("clear-history");
+  if (clearButton) clearButton.disabled = true;
+}
+
 async function init() {
-  byId("greeting").textContent = getGreeting();
+  const greeting = byId("greeting");
+  if (greeting) greeting.textContent = getGreeting();
 
   try {
     const response = await fetch("./config/projects.json", { cache: "no-store" });
     if (!response.ok) throw new Error("Registro de projetos indisponível.");
 
-    state.config = await response.json();
+    state.config = validateConfig(await response.json());
     state.projects = state.config.projects.map(normalizeProject);
     state.focus = chooseFocus(state.projects, state.config.central.defaultProject);
 
@@ -417,16 +557,20 @@ async function init() {
       version.textContent = `v${state.config.central.version}`;
     }
 
+    if (!state.storageAvailable) {
+      showSystemNotice(
+        "Preferências e retomada local estão indisponíveis neste navegador; a navegação continua normal.",
+        "warning"
+      );
+    } else {
+      hideSystemNotice();
+    }
+
     updatePulse();
     updateHealth();
     updateRepositoryMetadata();
   } catch (error) {
-    console.warn("Central em modo de fallback:", error);
-    byId("focus-health").className = "health health-unknown";
-    byId("focus-health").innerHTML = '<span class="dot"></span>Modo direto';
-    byId("last-project-text").textContent =
-      "O registro dinâmico não carregou. Os acessos diretos continuam disponíveis.";
-    byId("clear-history").disabled = true;
+    enterFallbackMode(error);
   }
 }
 
