@@ -72,6 +72,15 @@
     }
   }
 
+  function escapeHtml(value) {
+    return String(value)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
+
   function announce(message) {
     if (status) {
       status.textContent = storageWritable
@@ -182,10 +191,10 @@
         const row = document.createElement("div");
         row.className = "preference-order-item";
         row.innerHTML = `
-          <span class="preference-order-name">${item.name}</span>
+          <span class="preference-order-name">${escapeHtml(item.name)}</span>
           <span class="preference-order-actions">
-            <button class="preference-order-button" type="button" data-move="-1" aria-label="Mover ${item.name} para cima" ${index === 0 ? "disabled" : ""}>↑</button>
-            <button class="preference-order-button" type="button" data-move="1" aria-label="Mover ${item.name} para baixo" ${index === order.length - 1 ? "disabled" : ""}>↓</button>
+            <button class="preference-order-button" type="button" data-move="-1" aria-label="Mover ${escapeHtml(item.name)} para cima" ${index === 0 ? "disabled" : ""}>↑</button>
+            <button class="preference-order-button" type="button" data-move="1" aria-label="Mover ${escapeHtml(item.name)} para baixo" ${index === order.length - 1 ? "disabled" : ""}>↓</button>
           </span>
         `;
 
