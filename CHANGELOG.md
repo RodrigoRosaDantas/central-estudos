@@ -8,8 +8,8 @@
 - ação principal continua sendo abrir o projeto real; fallback estático preservado;
 - **Riscos/limitações:** inspeção visual real da URL pública não ficou disponível nesta sessão; QA pós-deploy foi estrutural e pelo artefato/commit publicado;
 - **Projetos-filhos:** zero writes; SHAs finais iguais ao preflight;
-- **Commit de release validado:** `f4a8688abc370061ad92a45cbb9b5c4a9b68054c`;
-- **Deploy validado:** workflow run `36271230177` — success.
+- **Commit de release validado:** `42ee59a34ebb34ecaa858da77b03646f25c21304`;
+- **Deploy validado:** workflow run `36271496568` — success.
 
 ## [3.0.0] — 2026-09-26
 - observabilidade confiável: disponibilidade, publicação e deploy separados;
