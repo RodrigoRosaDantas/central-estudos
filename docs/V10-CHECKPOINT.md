@@ -5,8 +5,8 @@
 - **Versão validada:** 8.0.0
 - **Meta:** 10.0.0
 - **Next major:** 9.0.0
-- **Active major:** none
-- **Stage:** READY
+- **Active major:** 9.0.0
+- **Stage:** IN_PROGRESS
 - **Status:** IN PROGRESS
 - **Último deploy de release validado:** workflow run 36279346345 — quality success + deploy success
 - **Commit de release validado:** `e1b118a502927256029ae855f39d88fb4fd46a9b`
@@ -35,6 +35,17 @@
 - **Child SHAs no início:** —
 - **Acceptance aplicável:** —
 - **Riscos:** —
+
+## Snapshot da major ativa
+
+- **Major:** 9.0.0 — Hardening
+- **Started at:** 2026-09-26
+- **Source version:** 8.0.0
+- **Central HEAD inicial:** `aab33f3c9e3f40006f9cfdf9e44312178016dfd2`
+- **Último deploy inicial:** workflow run `36279431377` — quality success + deploy success — HEAD `aab33f3c9e3f40006f9cfdf9e44312178016dfd2`
+- **Child SHAs no início:** TCE-GO `2986dabf2ddb3ed6b22fa58b9a5151981a678dbf`; SEEDF `bb006c3bc896534716e6b568849669a7fe4424c8`; TJDFT `8aa366c0068f6f705fb2d27a44b7a522f90003d9`
+- **Acceptance aplicável:** acessibilidade; navegação por teclado; contraste/estados críticos; chamadas externas minimizadas; edge cases documentados; segurança frontend; performance/payload; redução de código morto/duplicação; auditoria mobile pequena e média; gates globais.
+- **Riscos:** CSP bloquear observabilidade legítima; otimização de rede esconder estado atual; hardening quebrar progressive enhancement/PWA; alteração de foco/teclado regressiva; testes de contraste/HTML gerarem falso positivo; cache antigo mascarar assets novos.
 
 ## Última major concluída — v8.0.0
 
