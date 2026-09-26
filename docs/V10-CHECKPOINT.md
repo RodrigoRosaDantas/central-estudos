@@ -5,8 +5,8 @@
 - **Versão validada:** 5.0.0
 - **Meta:** 10.0.0
 - **Next major:** 6.0.0
-- **Active major:** none
-- **Stage:** READY
+- **Active major:** 6.0.0
+- **Stage:** IN_PROGRESS
 - **Status:** IN PROGRESS
 - **Último deploy de release validado:** workflow run 36272168251 — success
 - **Commit de release validado:** `cf8cdb818449d020923f50d63e67689b635abc96`
@@ -27,14 +27,15 @@
 
 ## Snapshot da major ativa
 
-- **Major:** none
-- **Started at:** —
-- **Source version:** —
-- **Central HEAD inicial:** —
-- **Último deploy inicial:** —
-- **Child SHAs no início:** —
-- **Acceptance aplicável:** —
-- **Riscos:** —
+- **Major:** 6.0.0 — PWA e resiliência
+- **Started at:** 2026-09-26 18:51 BRT
+- **Source version:** 5.0.0
+- **Central HEAD inicial:** `28314ade49fa99dffe5a5da75fb6daba1d370335`
+- **Último deploy inicial:** workflow run `36272420910` — success — HEAD `28314ade49fa99dffe5a5da75fb6daba1d370335`
+- **Child SHAs no início:** TCE-GO `2986dabf2ddb3ed6b22fa58b9a5151981a678dbf`; SEEDF `bb006c3bc896534716e6b568849669a7fe4424c8`; TJDFT `8aa366c0068f6f705fb2d27a44b7a522f90003d9`
+- **Acceptance aplicável:** service worker não impede atualização; app shell abre offline; links externos não fingem disponibilidade offline; caches versionados/previsíveis; remoção de SW/cache restaura web normal; instalação opcional; gates globais.
+- **Riscos:** cache obsoleto; service worker interceptar navegação externa indevidamente; atualização presa em worker antigo; offline induzir interpretação falsa de disponibilidade; suporte variável a PWA/SVG icon.
+- **Reconciliação de preflight:** registry/README/changelog/checkpoint concordam em v5.0.0 validada. O HEAD atual é o commit documental posterior de fechamento da v5 e seu Pages run `36272420910` também passou; isso não altera a versão de release validada.
 
 ## Última major concluída — v5.0.0
 
