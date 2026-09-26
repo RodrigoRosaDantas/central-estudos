@@ -136,3 +136,37 @@ A preferência:
 - pode ser trocada a qualquer momento escolhendo outro card.
 
 Se não houver preferência local, a Central usa `central.defaultProject` como fallback.
+
+
+## Fundação consolidada — v2.0
+
+A shell passa a seguir uma hierarquia explícita:
+
+1. **Foco atual** — ação principal;
+2. **Retomada** — continuidade local;
+3. **Ambientes** — catálogo navegável;
+4. **Estado técnico** — informação auxiliar e não bloqueante.
+
+### Armazenamento local defensivo
+
+Todo acesso a `localStorage` deve passar por funções seguras. Falha, indisponibilidade ou conteúdo corrompido não pode quebrar a navegação.
+
+Preferências inválidas devem:
+- ser ignoradas;
+- ser limpas quando seguro;
+- cair para defaults previsíveis.
+
+### Registry defensivo
+
+Antes de renderizar dinamicamente, a Central valida:
+- existência de `central.defaultProject`;
+- lista de projetos não vazia;
+- campos obrigatórios;
+- IDs únicos;
+- URLs HTTPS.
+
+Se a configuração falhar, a Central entra em **modo direto** e preserva os links estáticos do HTML.
+
+### Progressive enhancement
+
+O HTML mantém os três acessos essenciais como baseline. JavaScript melhora foco, retomada e observabilidade, mas não é requisito para abrir os projetos.
