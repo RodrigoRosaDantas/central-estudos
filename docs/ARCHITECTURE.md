@@ -86,3 +86,20 @@ O workflow possui:
 A suite é local, determinística e sem rede externa. Ela valida registry, fallback, referências, manifest, service worker, ausência de secrets óbvios e funções críticas do `app.js`.
 
 Falha de teste impede o deploy do commit. Os testes nunca escrevem nos projetos-filhos.
+
+
+## Linha do tempo e diagnóstico — v8
+
+A v8 está especificada em `docs/DIAGNOSTICS-V8.md`.
+
+A arquitetura separa explicitamente:
+- acesso local feito pela Central;
+- atividade técnica pública;
+- estado de disponibilidade;
+- qualquer conceito pedagógico.
+
+O histórico local é limitado, opcional e armazenado somente no navegador. A atividade técnica reutiliza os sinais da observabilidade v3 e não cria novas chamadas de rede.
+
+Diagnósticos descrevem observações e incerteza; nunca atribuem causa não comprovada. O painel deve permanecer resumido e não evoluir para um mural de métricas.
+
+Como a v8 adiciona novos arquivos ao app shell, o cache da Central passa para `central-shell-v8.0.0`, preservando as regras de isolamento e atualização da v6.
