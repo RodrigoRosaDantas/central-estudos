@@ -1,5 +1,20 @@
 # CHANGELOG — Central de Estudos
 
+## [9.0.0] — 2026-09-26
+- CSP frontend compatível com GitHub Pages/observabilidade;
+- registry endurecido com IDs seguros, default válido e versão semântica;
+- conteúdo do registry e preferências escapado antes de renderização HTML;
+- health check com cache local de 2 minutos e estado cached/stale explícito;
+- consulta de deploy reduzida para workflow `deploy-pages.yml` com `per_page=1`, fallback máximo 30;
+- acessibilidade/teclado/forced-colors/touch targets revisados e testados;
+- auditoria estrutural mobile inclui 360/419/480/680/720/760 px;
+- shell auditado em 91.658 bytes e limitado pelo gate a 120 KiB;
+- zero JS/CSS órfãos e zero funções nomeadas mortas detectadas;
+- app shell atualizado para `central-shell-v9.0.0`;
+- edge cases e política de hardening documentados;
+- **Projetos-filhos:** zero writes nesta release;
+- **Commit/deploy final:** preencher após validação do pipeline final.
+
 ## [8.0.0] — 2026-09-26
 - linha do tempo local de acessos feitos pela Central, limitada a 12 registros;
 - painel técnico reutiliza sinais existentes de disponibilidade, publicação e deploy;
