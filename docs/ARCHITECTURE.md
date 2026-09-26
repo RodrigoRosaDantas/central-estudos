@@ -1,121 +1,64 @@
 # Arquitetura — Central de Estudos
 
 ## Responsabilidade
+
 A Central é uma camada de **navegação e observabilidade leve**.
 
 > A Central observa e direciona. Os projetos executam e decidem.
 
-Ela pode listar ambientes, destacar o foco, recordar o último ambiente aberto, testar disponibilidade sem bloquear a navegação e direcionar para o site real. Ela não edita dados internos, não altera Supabase, não importa dashboards, não assume regras pedagógicas e não cria dependência obrigatória entre ambientes.
+Ela lista ambientes, destaca foco, recorda último acesso, oferece organização local, testa disponibilidade sem bloquear navegação e direciona ao site real. Não edita dados internos, não altera Supabase, não importa dashboards, não assume regras pedagógicas e não cria dependência obrigatória entre ambientes.
 
 ## Registry
+
 A fonte dinâmica de verdade é `config/projects.json` (`schemaVersion: 1`). Campos de projeto: `id`, `name`, `description`, `phase`, `status`, `priority`, `icon`, `url`, `repository`.
 
-## Fallback de segurança
-`index.html` contém uma cópia mínima dos três acessos diretos. Essa duplicação é intencional e restrita ao fallback. Se JavaScript ou registry falharem, TCE-GO, SEEDF e TJDFT continuam acessíveis. Nenhuma inteligência da Central pode ser requisito para abrir um projeto.
+## Fallback e progressive enhancement
+
+`index.html` contém uma cópia mínima dos três acessos diretos. Essa duplicação é intencional e restrita ao fallback. Se JavaScript ou registry falharem, TCE-GO, SEEDF e TJDFT continuam acessíveis. JavaScript melhora foco, retomada, catálogo, preferências, diagnóstico e observabilidade, mas nunca é requisito para abrir um projeto.
 
 ## Estado local e separação semântica
-A Central usa armazenamento local apenas para preferências e continuidade da própria Central. **Foco**, **retomada/último acesso**, **favorito** e **recência técnica** são conceitos independentes. Nenhum deles deve alterar automaticamente outro. Nenhum dado acadêmico ou de desempenho é gravado.
 
-Todo acesso a `localStorage` deve degradar com segurança. Conteúdo inválido/corrompido é ignorado e defaults previsíveis são usados.
+A Central usa `localStorage` somente para preferências e continuidade da própria Central. **Foco**, **retomada/último acesso**, **favorito**, **acesso local** e **recência técnica** são conceitos independentes. Nenhum altera automaticamente outro. Nenhum dado acadêmico, duração, desempenho ou progresso é gravado ou inferido.
 
-## Progressive enhancement
-O HTML mantém os três acessos essenciais como baseline. JavaScript melhora foco, retomada, catálogo e observabilidade, mas não é requisito para abrir os projetos.
+Todo acesso a armazenamento local degrada com segurança; conteúdo inválido é ignorado/limpo e defaults previsíveis são usados.
 
-## Observabilidade — v3
-A observabilidade confiável está especificada em `docs/OBSERVABILITY-V3.md`: somente leitura, não bloqueante e separada de estudo. Disponibilidade, publicação técnica e deploy são dados distintos. Falha de rede é inconclusiva; metadados públicos podem usar cache e stale explícito; rate limit não bloqueia navegação.
+## Observabilidade
 
-## Catálogo operacional — v4
-O catálogo adiciona uma camada opcional de organização sobre o registry:
-- busca textual local por conteúdo visível do card;
-- ordenação local por ordem padrão, favoritos ou nome;
-- favoritos persistidos apenas no navegador;
-- atalhos `Alt+1..9` somente fora de campos editáveis e aplicados aos cards visíveis;
-- controles touch-friendly e progressivos;
-- ação principal continua sendo **Abrir ambiente**.
+Somente leitura, não bloqueante e separada de estudo. Disponibilidade, publicação técnica e deploy são dados distintos. Falha de rede é inconclusiva; metadados públicos usam cache controlado/stale explícito; rate limit não bloqueia navegação. Contrato detalhado em `docs/OBSERVABILITY-V3.md`.
 
-As preferências do catálogo não alteram `projects.json`, foco, último acesso, dados técnicos ou projetos-filhos. `js/catalog-v4.js` é uma extensão progressiva da shell e deve tolerar indisponibilidade de `localStorage`.
+## Catálogo e personalização
 
-## Personalização local — v5
-A v5 adiciona preferências de apresentação e organização sem backend.
+Busca, favoritos, ordenação, atalhos e ordem manual são camadas locais sobre o registry. Preferências de densidade/apresentação são reversíveis. Nada disso altera `projects.json`, dados técnicos ou projetos-filhos. A ação principal continua **Abrir ambiente**.
 
-Preferências suportadas:
-- densidade confortável ou compacta;
-- exibição ou ocultação dos detalhes técnicos nos cards;
-- ordem manual dos ambientes;
-- foco, favoritos e ordenação do catálogo já existentes.
+## PWA e resiliência
 
-Regras:
-- todas as preferências ficam em `localStorage`;
-- nenhuma preferência altera `projects.json`;
-- nenhuma preferência escreve nos projetos-filhos;
-- valores inválidos são ignorados/limpos e caem para defaults seguros;
-- a ordem padrão é derivada do registry por `data-project-order`;
-- mover um ambiente retorna o catálogo para `Ordem padrão`;
-- o reset restaura foco, favoritos, ordem, densidade e apresentação;
-- o reset preserva o histórico de último acesso;
-- o painel de preferências permanece oculto quando JavaScript não está disponível.
-
-A personalização é opcional e reversível. Falha de persistência não pode impedir navegação.
-
-## PWA e resiliência — v6
-A v6 adiciona um service worker estritamente limitado à origem da Central. O cache `central-shell-v6.0.0` contém somente o app shell da Central; URLs dos três projetos-filhos e chamadas externas de observabilidade nunca são interceptadas nem cacheadas pelo service worker.
+O service worker é limitado à origem e ao pathname da Central. O cache da release estável é `central-shell-v10.0.0` e contém somente o app shell da Central.
 
 Estratégia:
-- navegações da Central usam **network first**, com `index.html` em cache apenas como fallback offline;
-- arquivos conhecidos do app shell usam **network first**, atualizando o cache em respostas válidas e recorrendo ao cache somente em falha de rede;
-- cada major PWA troca explicitamente o nome do cache; caches antigos com prefixo `central-shell-` são removidos na ativação;
-- um worker novo permanece em espera quando já existe uma versão controlando a página; a interface oferece **Atualizar agora**, que envia `SKIP_WAITING` e recarrega uma única vez após `controllerchange`;
-- não existe prompt próprio de instalação: instalar como app é escolha do navegador/usuário;
-- falha no registro do service worker mantém a experiência web normal;
-- remover/desregistrar o service worker e apagar caches não afeta os links diretos nem o funcionamento web da Central.
+- navegações e assets conhecidos usam **network first**;
+- cache local serve apenas como fallback de rede;
+- caches antigos com prefixo `central-shell-` são removidos na ativação;
+- projetos-filhos e APIs externas não são interceptados/cacheados;
+- atualização de worker é controlada por `SKIP_WAITING` e `controllerchange`;
+- instalação é opcional;
+- remover worker/caches restaura a experiência web normal.
 
-O app shell offline não afirma que TCE-GO, SEEDF ou TJDFT estão disponíveis offline. Observabilidade continua sendo informação de rede e deve degradar para estado inconclusivo/cache conforme suas próprias regras.
+Abrir a shell offline não afirma disponibilidade offline dos projetos.
 
-## Evolução
-Integrações futuras devem ser somente leitura, opcionais, versionadas e desacopladas do schema interno dos projetos-filhos. A Central não deve conhecer tabelas ou modelos internos dos projetos.
+## Qualidade e deploy
 
+`tests/quality.mjs` é uma suite local, determinística e sem dependências externas. O workflow Pages executa `quality` antes de `deploy`, com dependência explícita `deploy needs: quality`. O gate cobre registry, referências, fallback, manifest, service worker, segurança básica, funções críticas, contratos de diagnóstico, acessibilidade estrutural, mobile e orçamento de payload.
 
-## Qualidade e testes — v7
+## Linha do tempo e diagnóstico
 
-A v7 adiciona um gate automatizado antes do deploy. O contrato completo está em `docs/QUALITY-V7.md`.
+Acesso local, atividade técnica pública e disponibilidade são fontes separadas. Diagnósticos descrevem observações e incerteza; nunca atribuem causa não comprovada. A linha do tempo reutiliza sinais existentes e não cria chamadas de rede próprias. Contrato em `docs/DIAGNOSTICS-V8.md`.
 
-O workflow possui:
-- job `quality`;
-- job `deploy` com dependência explícita `needs: quality`.
+## Segurança e hardening
 
-A suite é local, determinística e sem rede externa. Ela valida registry, fallback, referências, manifest, service worker, ausência de secrets óbvios e funções críticas do `app.js`.
+A plataforma usa CSP compatível com a observabilidade, HTTPS, validação/escape de conteúdo dinâmico, IDs seguros, ausência de scripts/estilos externos obrigatórios, orçamento de shell, tratamento de edge cases, contraste/teclado/forced-colors/touch targets e cache de rede limitado. Detalhes em `docs/HARDENING-V9.md`.
 
-Falha de teste impede o deploy do commit. Os testes nunca escrevem nos projetos-filhos.
+## Contrato terminal — v10
 
+A v10 congela esta arquitetura para a esteira atual. A auditoria integral está em `docs/FINAL-AUDIT-V10.md`. Integrações futuras, se aprovadas fora desta esteira, devem continuar somente leitura, opcionais, versionadas e desacopladas do schema interno dos projetos-filhos.
 
-## Linha do tempo e diagnóstico — v8
-
-A v8 está especificada em `docs/DIAGNOSTICS-V8.md`.
-
-A arquitetura separa explicitamente:
-- acesso local feito pela Central;
-- atividade técnica pública;
-- estado de disponibilidade;
-- qualquer conceito pedagógico.
-
-O histórico local é limitado, opcional e armazenado somente no navegador. A atividade técnica reutiliza os sinais da observabilidade v3 e não cria novas chamadas de rede.
-
-Diagnósticos descrevem observações e incerteza; nunca atribuem causa não comprovada. O painel deve permanecer resumido e não evoluir para um mural de métricas.
-
-Como a v8 adiciona novos arquivos ao app shell, o cache da Central passa para `central-shell-v8.0.0`, preservando as regras de isolamento e atualização da v6.
-
-
-## Hardening — v9
-
-A auditoria e os edge cases da v9 estão em `docs/HARDENING-V9.md`.
-
-A v9 não adiciona uma nova responsabilidade à Central. Ela endurece as camadas existentes:
-
-- CSP e validação/escape de conteúdo;
-- cache curto e explicitamente marcado para health;
-- consulta de deploy mais enxuta;
-- contratos automáticos de contraste, teclado, mobile e payload;
-- cache PWA `central-shell-v9.0.0`;
-- limpeza e inventário de assets/código.
-
-O hardening preserva progressive enhancement, acesso direto, registry como fonte de verdade e isolamento dos projetos-filhos.
+Não fazem parte desta arquitetura: iframe dos projetos, banco mestre, autenticação compartilhada, Supabase compartilhado, lógica pedagógica global, escrita nos projetos-filhos ou dependência externa obrigatória.
