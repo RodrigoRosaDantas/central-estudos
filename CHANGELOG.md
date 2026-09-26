@@ -1,5 +1,17 @@
 # CHANGELOG — Central de Estudos
 
+## [2.0.0] — 2026-09-26
+- consolidada a shell da Central sem alterar projetos-filhos;
+- hierarquia ajustada para foco → retomada → ambientes → estado técnico;
+- armazenamento local passou a ser acessado de forma defensiva;
+- preferências legadas, inválidas ou corrompidas passam a degradar com segurança;
+- registry dinâmico ganhou validação estrutural e HTTPS antes da renderização;
+- adicionado modo degradado explícito preservando os acessos estáticos;
+- README foi limpo para remover duplicação de governança;
+- **Riscos/limitações:** validação visual real depende do navegador do usuário; observabilidade avançada/rate limit permanece escopo de v3;
+- **Projetos-filhos:** zero writes nesta release;
+- **Commit/deploy final:** preencher após validação do Pages.
+
 ## [1.4.0] — 2026-09-26
 - foco escolhível localmente;
 - foco separado de último acesso;
