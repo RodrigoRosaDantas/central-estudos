@@ -1,177 +1,40 @@
 # Arquitetura — Central de Estudos
 
 ## Responsabilidade
-
 A Central é uma camada de **navegação e observabilidade leve**.
 
 > A Central observa e direciona. Os projetos executam e decidem.
 
-Ela pode:
+Ela pode listar ambientes, destacar o foco, recordar o último ambiente aberto, testar disponibilidade sem bloquear a navegação e direcionar para o site real. Ela não edita dados internos, não altera Supabase, não importa dashboards, não assume regras pedagógicas e não cria dependência obrigatória entre ambientes.
 
-- listar ambientes;
-- destacar o foco;
-- recordar o último ambiente aberto;
-- testar disponibilidade sem bloquear a navegação;
-- direcionar para o site real.
-
-Ela não pode:
-
-- editar dados internos dos projetos;
-- alterar Supabase dos projetos;
-- importar componentes dos dashboards;
-- assumir regras pedagógicas;
-- tornar-se banco mestre;
-- criar dependência obrigatória entre ambientes.
-
-## Contrato V1
-
-A fonte dinâmica de verdade é `config/projects.json`.
-
-```json
-{
-  "schemaVersion": 1,
-  "projects": []
-}
-```
-
-Campos de projeto:
-
-- `id`
-- `name`
-- `description`
-- `phase`
-- `status`
-- `priority`
-- `icon`
-- `url`
-- `repository`
+## Registry
+A fonte dinâmica de verdade é `config/projects.json` (`schemaVersion: 1`). Campos de projeto: `id`, `name`, `description`, `phase`, `status`, `priority`, `icon`, `url`, `repository`.
 
 ## Fallback de segurança
+`index.html` contém uma cópia mínima dos três acessos diretos. Essa duplicação é intencional e restrita ao fallback. Se JavaScript ou registry falharem, TCE-GO, SEEDF e TJDFT continuam acessíveis. Nenhuma inteligência da Central pode ser requisito para abrir um projeto.
 
-O `index.html` contém uma cópia mínima dos três acessos diretos. Essa duplicação é **intencional e restrita ao fallback**.
+## Estado local e separação semântica
+A Central usa armazenamento local apenas para preferências e continuidade da própria Central. **Foco**, **retomada/último acesso**, **favorito** e **recência técnica** são conceitos independentes. Nenhum deles deve alterar automaticamente outro. Nenhum dado acadêmico ou de desempenho é gravado.
 
-Motivo: se JavaScript ou `projects.json` falharem, TCE-GO, SEEDF e TJDFT continuam acessíveis. Quando a configuração carrega normalmente, o JavaScript substitui os cards estáticos pelo registry dinâmico.
+Todo acesso a `localStorage` deve degradar com segurança. Conteúdo inválido/corrompido é ignorado e defaults previsíveis são usados.
 
-Nenhuma inteligência da Central pode ser requisito para abrir um projeto.
+## Progressive enhancement
+O HTML mantém os três acessos essenciais como baseline. JavaScript melhora foco, retomada, catálogo e observabilidade, mas não é requisito para abrir os projetos.
 
-## Estado local
+## Observabilidade — v3
+A observabilidade confiável está especificada em `docs/OBSERVABILITY-V3.md`: somente leitura, não bloqueante e separada de estudo. Disponibilidade, publicação técnica e deploy são dados distintos. Falha de rede é inconclusiva; metadados públicos podem usar cache e stale explícito; rate limit não bloqueia navegação.
 
-A Central guarda apenas no navegador:
+## Catálogo operacional — v4
+O catálogo adiciona uma camada opcional de organização sobre o registry:
 
-- último projeto aberto;
-- data/hora desse acesso.
+- busca textual local por conteúdo visível do card;
+- ordenação local por ordem padrão, favoritos ou nome;
+- favoritos persistidos apenas no navegador;
+- atalhos `Alt+1..9` somente fora de campos editáveis e aplicados aos cards visíveis;
+- controles touch-friendly e progressivos;
+- ação principal continua sendo **Abrir ambiente**.
 
-Nenhum dado acadêmico ou de desempenho é gravado pela Central.
+As preferências do catálogo não alteram `projects.json`, foco, último acesso, dados técnicos ou projetos-filhos. `js/catalog-v4.js` é uma extensão progressiva da shell e deve tolerar indisponibilidade de `localStorage`.
 
-## Health check
-
-A disponibilidade é informativa:
-
-- `online`: resposta HTTP válida;
-- `offline`: resposta HTTP recebida com erro;
-- `unknown`: não foi possível verificar.
-
-Um health check inconclusivo **nunca bloqueia o botão de acesso**.
-
-## Evolução futura
-
-Integrações de métricas deverão ser:
-
-- somente leitura;
-- opcionais;
-- versionadas;
-- desacopladas do schema interno dos projetos.
-
-Exemplo:
-
-```json
-{
-  "schemaVersion": 1,
-  "project": "SEEDF",
-  "lastActivity": "2026-09-26",
-  "nextAction": "L03"
-}
-```
-
-A Central não deve conhecer tabelas ou modelos internos dos projetos-filhos.
-
-
-## Separação semântica — v1.2
-
-A Central distingue duas ideias que não devem ser confundidas:
-
-- **foco**: prioridade configurada no registry;
-- **retomada**: último ambiente efetivamente aberto pelo usuário.
-
-O último acesso nunca altera automaticamente a prioridade do projeto.
-
-
-## Observabilidade somente leitura — v1.3
-
-A Central pode consultar metadados públicos do GitHub para indicar a **última publicação técnica** de cada projeto.
-
-Essa informação:
-
-- vem do campo público `pushed_at` do repositório;
-- não representa estudo realizado, progresso ou desempenho;
-- é cacheada localmente por 10 minutos para reduzir chamadas;
-- é opcional e nunca bloqueia a navegação;
-- não exige token, secret, Supabase ou alteração nos projetos-filhos.
-
-O pulso global usa somente:
-- quantidade de ambientes cadastrados;
-- disponibilidade dos sites;
-- publicação técnica mais recente conhecida.
-
-
-## Preferência de foco — v1.4
-
-O usuário pode trocar o foco diretamente na Central.
-
-A preferência:
-- é gravada apenas em `localStorage` neste aparelho;
-- não altera `projects.json`;
-- não modifica nenhum projeto-filho;
-- não altera o histórico de último acesso;
-- pode ser trocada a qualquer momento escolhendo outro card.
-
-Se não houver preferência local, a Central usa `central.defaultProject` como fallback.
-
-
-## Fundação consolidada — v2.0
-
-A shell passa a seguir uma hierarquia explícita:
-
-1. **Foco atual** — ação principal;
-2. **Retomada** — continuidade local;
-3. **Ambientes** — catálogo navegável;
-4. **Estado técnico** — informação auxiliar e não bloqueante.
-
-### Armazenamento local defensivo
-
-Todo acesso a `localStorage` deve passar por funções seguras. Falha, indisponibilidade ou conteúdo corrompido não pode quebrar a navegação.
-
-Preferências inválidas devem:
-- ser ignoradas;
-- ser limpas quando seguro;
-- cair para defaults previsíveis.
-
-### Registry defensivo
-
-Antes de renderizar dinamicamente, a Central valida:
-- existência de `central.defaultProject`;
-- lista de projetos não vazia;
-- campos obrigatórios;
-- IDs únicos;
-- URLs HTTPS.
-
-Se a configuração falhar, a Central entra em **modo direto** e preserva os links estáticos do HTML.
-
-### Progressive enhancement
-
-O HTML mantém os três acessos essenciais como baseline. JavaScript melhora foco, retomada e observabilidade, mas não é requisito para abrir os projetos.
-
-
-## Contrato de observabilidade — v3.0
-
-A observabilidade confiável da v3 está especificada em `docs/OBSERVABILITY-V3.md`. Ela permanece somente leitura, não bloqueante e separada de qualquer dado de estudo.
+## Evolução
+Integrações futuras devem ser somente leitura, opcionais, versionadas e desacopladas do schema interno dos projetos-filhos. A Central não deve conhecer tabelas ou modelos internos dos projetos.
