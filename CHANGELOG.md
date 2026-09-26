@@ -1,5 +1,18 @@
 # CHANGELOG — Central de Estudos
 
+## [6.0.0] — 2026-09-26
+- PWA e resiliência com service worker limitado à origem da Central;
+- app shell offline após primeira visita, sem cachear projetos-filhos ou APIs externas;
+- estratégia network-first para navegações e recursos conhecidos do shell;
+- cache versionado `central-shell-v6.0.0` com limpeza previsível de caches antigos;
+- atualização controlada via worker em espera e ação explícita **Atualizar agora**;
+- instalação permanece opcional e conduzida pelo navegador;
+- falha ou remoção do service worker preserva/restaura o comportamento web normal;
+- **Acceptance v6:** PASS nos gates estruturais/lógicos verificáveis; inspeção visual/offline em navegador real não foi inventada quando indisponível;
+- **Projetos-filhos:** zero writes nesta release; SHAs finais iguais ao preflight;
+- **Commit de release validado:** `0193ba0ac4e7b9bc23562c961583f2193fd8b4c3`;
+- **Deploy validado:** workflow run `36274467394` — success.
+
 ## [5.0.0] — 2026-09-26
 - personalização local sem backend;
 - densidade confortável/compacta;
