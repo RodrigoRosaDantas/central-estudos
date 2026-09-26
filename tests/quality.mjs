@@ -184,6 +184,14 @@ function testCriticalAppLogic(registry) {
   insecure.projects[0].url = insecure.projects[0].url.replace("https://", "http://");
   assert.throws(() => context.validateConfig(insecure), /não segura/i, "HTTP project URL must fail");
 
+  const invalidId = clone(registry);
+  invalidId.projects[0].id = 'bad id"><script>';
+  assert.throws(() => context.validateConfig(invalidId), /ID de projeto inválido/i, "unsafe project ids must fail");
+
+  const missingDefault = clone(registry);
+  missingDefault.central.defaultProject = "missing-project";
+  assert.throws(() => context.validateConfig(missingDefault), /Projeto padrão não existe/i, "missing defaultProject must fail");
+
   localStorage.clear();
   const defaultFocus = context.chooseFocus(valid.projects, valid.central.defaultProject);
   assert.equal(defaultFocus.id, valid.central.defaultProject, "default focus must use registry defaultProject");
@@ -223,6 +231,115 @@ function testTimelineContract(registry) {
   }
 
   pass("v8 timeline, source separation and diagnostic contracts");
+}
+
+
+function colorLuminance(hex) {
+  const rgb = hex
+    .replace("#", "")
+    .match(/.{2}/g)
+    .map(value => Number.parseInt(value, 16) / 255)
+    .map(value => value <= 0.04045
+      ? value / 12.92
+      : ((value + 0.055) / 1.055) ** 2.4);
+
+  return 0.2126 * rgb[0] + 0.7152 * rgb[1] + 0.0722 * rgb[2];
+}
+
+function contrastRatio(foreground, background) {
+  const a = colorLuminance(foreground);
+  const b = colorLuminance(background);
+  return (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05);
+}
+
+function cssHexVariable(css, name) {
+  const match = css.match(new RegExp(`--${name}:\\s*(#[0-9a-fA-F]{6})`));
+  assert.ok(match, `CSS variable --${name} must be a six-digit hex color`);
+  return match[1];
+}
+
+function testV9Hardening(registry) {
+  const html = read("index.html");
+  const app = read("js/app.js");
+  const catalog = read("js/catalog-v4.js");
+  const personalization = read("js/personalization-v5.js");
+  const timeline = read("js/timeline-v8.js");
+  const css = read("css/app.css");
+
+  const csp = html.match(/http-equiv="Content-Security-Policy" content="([^"]+)"/)?.[1] || "";
+  for (const directive of [
+    "default-src 'self'",
+    "script-src 'self'",
+    "style-src 'self'",
+    "connect-src 'self' https://api.github.com",
+    "worker-src 'self'",
+    "object-src 'none'",
+    "base-uri 'none'",
+    "form-action 'none'"
+  ]) {
+    assert.ok(csp.includes(directive), `CSP directive missing: ${directive}`);
+  }
+
+  assert.equal((html.match(/<script(?![^>]*src=)/g) || []).length, 0, "inline scripts are not allowed");
+  assert.equal(
+    [...html.matchAll(/<script[^>]+src="([^"]+)"/g)].filter(match => !match[1].startsWith("./")).length,
+    0,
+    "external script dependencies are not allowed"
+  );
+  assert.equal(
+    [...html.matchAll(/<link[^>]+href="([^"]+)"/g)].filter(match => /^https?:/.test(match[1])).length,
+    0,
+    "external stylesheet dependencies are not allowed"
+  );
+
+  assert.ok(html.includes('name="viewport"'), "mobile viewport meta must exist");
+  assert.ok(html.includes('class="skip-link"'), "keyboard skip link must exist");
+  assert.ok(html.includes('id="clear-history"') && html.includes('id="clear-history" class="button button-quiet" type="button" disabled'), "JS-only clear-history control must start disabled");
+  assert.ok(html.includes('aria-controls="projects-grid"'), "catalog controls must identify the grid they control");
+  assert.ok(css.includes(":focus-visible"), "visible keyboard focus style must exist");
+  assert.ok(css.includes("@media (max-width: 360px)"), "small mobile hardening breakpoint must exist");
+  assert.ok(css.includes("@media (pointer: coarse)"), "coarse-pointer touch target hardening must exist");
+  assert.ok(css.includes("@media (forced-colors: active)"), "forced-colors fallback must exist");
+  assert.ok(catalog.includes("HTMLInputElement") && catalog.includes("HTMLTextAreaElement") && catalog.includes("HTMLSelectElement"), "keyboard shortcuts must ignore editable controls");
+  assert.ok(catalog.includes('aria-pressed'), "favorite control must expose pressed state");
+
+  const bg = cssHexVariable(css, "bg");
+  const surface = cssHexVariable(css, "surface");
+  for (const name of ["text", "muted", "success", "warning", "danger"]) {
+    const color = cssHexVariable(css, name);
+    assert.ok(contrastRatio(color, bg) >= 4.5, `--${name} contrast on --bg must be >= 4.5:1`);
+    assert.ok(contrastRatio(color, surface) >= 4.5, `--${name} contrast on --surface must be >= 4.5:1`);
+  }
+
+  assert.ok(app.includes("HEALTH_CACHE_TTL_MS = 2 * 60 * 1000"), "health checks must use a short cache");
+  assert.ok(app.includes("/actions/workflows/deploy-pages.yml/runs?branch=main&per_page=1"), "deploy lookup must prefer the targeted one-run endpoint");
+  assert.ok(!app.includes("per_page=100"), "deploy lookup must not download 100 workflow runs");
+  assert.ok(app.includes("escapeHtml(project.name)") && app.includes("escapeHtml(project.url)"), "registry content must be escaped before card innerHTML");
+  assert.ok(personalization.includes("escapeHtml(item.name)"), "personalization content must be escaped before innerHTML");
+  assert.ok(timeline.includes('healthMetaState === "cached"') && timeline.includes("não confirma o estado neste instante"), "cached health must not be described as current");
+
+  const payloadFiles = [
+    "index.html",
+    "sw.js",
+    "manifest.webmanifest",
+    "js/app.js",
+    "js/catalog-v4.js",
+    "js/personalization-v5.js",
+    "js/pwa-v6.js",
+    "js/timeline-v8.js",
+    "css/app.css",
+    "css/catalog-v4.css",
+    "css/personalization-v5.css",
+    "css/timeline-v8.css"
+  ];
+  const payloadBytes = payloadFiles.reduce((total, file) => total + fs.statSync(path.join(ROOT, file)).size, 0);
+  assert.ok(payloadBytes <= 120 * 1024, `first-party shell source budget exceeded: ${payloadBytes} bytes`);
+
+  for (const project of registry.projects) {
+    assert.match(project.id, /^[a-z0-9_-]+$/i, `unsafe registry id: ${project.id}`);
+  }
+
+  pass("v9 security, accessibility, contrast, network and payload hardening");
 }
 
 function testSecurityAndContracts(registry) {
@@ -280,6 +397,7 @@ testManifest(manifest);
 testServiceWorker(registry);
 testCriticalAppLogic(registry);
 testTimelineContract(registry);
+testV9Hardening(registry);
 testSecurityAndContracts(registry);
 
 console.log("\nQuality gate PASS");
