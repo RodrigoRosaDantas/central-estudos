@@ -51,3 +51,14 @@ Consulte `docs/ARCHITECTURE.md` antes de introduzir integrações.
 
 
 <!-- deploy-trigger: 2026-09-26 -->
+
+
+## Evolução até v10
+
+A evolução autônoma é governada por:
+
+- `docs/COMMAND-V10.md` — protocolo de execução;
+- `docs/ROADMAP-V10.md` — objetivos de cada major;
+- `docs/V10-CHECKPOINT.md` — estado real e próxima etapa.
+
+Regra operacional: no máximo uma major por execução, com auditoria e deploy bem-sucedido antes do avanço.
