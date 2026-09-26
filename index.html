@@ -29,6 +29,8 @@
     </header>
 
     <main id="conteudo">
+      <div id="system-notice" class="system-notice is-hidden" role="status" aria-live="polite"></div>
+
       <section class="hero" aria-labelledby="focus-title">
         <div class="hero-copy">
           <p class="eyebrow">FOCO ATUAL</p>
@@ -43,21 +45,6 @@
         <div class="hero-actions">
           <a id="continue-button" class="button button-primary" href="https://rodrigorosadantas.github.io/tce-go-dashboard/">Entrar no foco <span aria-hidden="true">→</span></a>
           <a id="focus-new-tab" class="button button-ghost" href="https://rodrigorosadantas.github.io/tce-go-dashboard/" target="_blank" rel="noopener">Abrir em nova guia</a>
-        </div>
-      </section>
-
-      <section class="pulse" aria-label="Pulso da Central">
-        <div class="pulse-item">
-          <span id="pulse-projects" class="pulse-value">3</span>
-          <span class="pulse-label">ambientes</span>
-        </div>
-        <div class="pulse-item">
-          <span id="pulse-online" class="pulse-value">Verificando</span>
-          <span class="pulse-label">disponibilidade</span>
-        </div>
-        <div class="pulse-item">
-          <span id="pulse-freshness" class="pulse-value">Verificando</span>
-          <span class="pulse-label">última publicação</span>
         </div>
       </section>
 
@@ -137,6 +124,30 @@
             </div>
           </article>
         </div>
+      </section>
+
+      <section class="section technical-summary" aria-labelledby="technical-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">ESTADO TÉCNICO</p>
+            <h2 id="technical-title">Pulso da Central</h2>
+          </div>
+          <p class="muted compact">Informação auxiliar. Nunca bloqueia o acesso aos ambientes.</p>
+        </div>
+      <section class="pulse" aria-label="Pulso da Central">
+        <div class="pulse-item">
+          <span id="pulse-projects" class="pulse-value">3</span>
+          <span class="pulse-label">ambientes</span>
+        </div>
+        <div class="pulse-item">
+          <span id="pulse-online" class="pulse-value">Verificando</span>
+          <span class="pulse-label">disponibilidade</span>
+        </div>
+        <div class="pulse-item">
+          <span id="pulse-freshness" class="pulse-value">Verificando</span>
+          <span class="pulse-label">última publicação</span>
+        </div>
+      </section>
       </section>
     </main>
 
