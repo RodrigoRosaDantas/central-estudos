@@ -5,8 +5,8 @@
 - **Versão validada:** 7.0.0
 - **Meta:** 10.0.0
 - **Next major:** 8.0.0
-- **Active major:** none
-- **Stage:** READY
+- **Active major:** 8.0.0
+- **Stage:** IN_PROGRESS
 - **Status:** IN PROGRESS
 - **Último deploy de release validado:** workflow run 36278662494 — quality success + deploy success
 - **Commit de release validado:** `e47e94341c21219936133762bf3675a0251f4c79`
@@ -35,6 +35,17 @@
 - **Child SHAs no início:** —
 - **Acceptance aplicável:** —
 - **Riscos:** —
+
+## Snapshot da major ativa
+
+- **Major:** 8.0.0 — Linha do tempo e diagnóstico técnico
+- **Started at:** 2026-09-26
+- **Source version:** 7.0.0
+- **Central HEAD inicial:** `109ca8eef75dacf1c697fa958d17ef8d1717c47d`
+- **Último deploy inicial:** workflow run `36278739820` — quality success + deploy success — HEAD `109ca8eef75dacf1c697fa958d17ef8d1717c47d`
+- **Child SHAs no início:** TCE-GO `2986dabf2ddb3ed6b22fa58b9a5151981a678dbf`; SEEDF `bb006c3bc896534716e6b568849669a7fe4424c8`; TJDFT `8aa366c0068f6f705fb2d27a44b7a522f90003d9`
+- **Acceptance aplicável:** linha do tempo separa acesso local de atualização técnica; diagnóstico evita conclusões não suportadas; indisponibilidade tem explicação/fallback; origem de cada dado é identificável; painel permanece resumido; nenhum dado pedagógico inventado; gates globais.
+- **Riscos:** confundir acesso com progresso; excesso de métricas; diagnóstico afirmar causa sem evidência; histórico local crescer indefinidamente; dados técnicos stale parecerem atuais; duplicação visual com Pulso da Central.
 
 ## Última major concluída — v7.0.0
 
