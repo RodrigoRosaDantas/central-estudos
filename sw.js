@@ -1,0 +1,69 @@
+const CACHE_VERSION = 'central-shell-v6.0.0';
+const APP_SHELL = [
+  './',
+  './index.html',
+  './404.html',
+  './manifest.webmanifest',
+  './assets/icon.svg',
+  './css/app.css',
+  './css/catalog-v4.css',
+  './css/personalization-v5.css',
+  './js/app.js',
+  './js/catalog-v4.js',
+  './js/personalization-v5.js',
+  './js/pwa-v6.js',
+  './config/projects.json'
+];
+
+self.addEventListener('install', (event) => {
+  event.waitUntil(caches.open(CACHE_VERSION).then((cache) => cache.addAll(APP_SHELL)));
+});
+
+self.addEventListener('activate', (event) => {
+  event.waitUntil(
+    caches.keys()
+      .then((keys) => Promise.all(keys.filter((key) => key.startsWith('central-shell-') && key !== CACHE_VERSION).map((key) => caches.delete(key))))
+      .then(() => self.clients.claim())
+  );
+});
+
+self.addEventListener('message', (event) => {
+  if (event.data && event.data.type === 'SKIP_WAITING') self.skipWaiting();
+});
+
+self.addEventListener('fetch', (event) => {
+  const request = event.request;
+  if (request.method !== 'GET') return;
+
+  const url = new URL(request.url);
+  if (url.origin !== self.location.origin) return;
+
+  if (request.mode === 'navigate') {
+    event.respondWith(
+      fetch(request)
+        .then((response) => {
+          if (response && response.ok) {
+            const copy = response.clone();
+            caches.open(CACHE_VERSION).then((cache) => cache.put('./index.html', copy));
+          }
+          return response;
+        })
+        .catch(() => caches.match('./index.html'))
+    );
+    return;
+  }
+
+  if (!APP_SHELL.some((path) => new URL(path, self.registration.scope).href === url.href)) return;
+
+  event.respondWith(
+    fetch(request)
+      .then((response) => {
+        if (response && response.ok) {
+          const copy = response.clone();
+          caches.open(CACHE_VERSION).then((cache) => cache.put(request, copy));
+        }
+        return response;
+      })
+      .catch(() => caches.match(request))
+  );
+});
