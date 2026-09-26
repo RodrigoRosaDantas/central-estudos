@@ -1,5 +1,12 @@
 # CHANGELOG — Central de Estudos
 
+## [3.0.0] — 2026-09-26
+- observabilidade confiável: disponibilidade, publicação e deploy separados;
+- cache de 15 minutos, stale explícito e rate limit tratado;
+- origem dos dados explicada; dado técnico não representa estudo;
+- projetos-filhos mantidos somente leitura;
+- deploy final: pendente de validação.
+
 ## [2.0.0] — 2026-09-26
 - consolidada a shell da Central sem alterar projetos-filhos;
 - hierarquia ajustada para foco → retomada → ambientes → estado técnico;
