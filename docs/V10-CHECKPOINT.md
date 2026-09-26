@@ -5,8 +5,8 @@
 - **Versão validada:** 4.0.0
 - **Meta:** 10.0.0
 - **Next major:** 5.0.0
-- **Active major:** none
-- **Stage:** READY
+- **Active major:** 5.0.0
+- **Stage:** IN_PROGRESS
 - **Status:** IN PROGRESS
 - **Último deploy de release validado:** workflow run 36271496568 — success
 - **Commit de release validado:** `42ee59a34ebb34ecaa858da77b03646f25c21304`
@@ -27,14 +27,14 @@
 
 ## Snapshot da major ativa
 
-- **Major:** none
-- **Started at:** —
-- **Source version:** —
-- **Central HEAD inicial:** —
-- **Último deploy inicial:** —
-- **Child SHAs no início:** —
-- **Acceptance aplicável:** —
-- **Riscos:** —
+- **Major:** 5.0.0 — Personalização local
+- **Started at:** 2026-09-26
+- **Source version:** 4.0.0
+- **Central HEAD inicial:** `968a00e76166d68bda4ea1fe981e69526acc4b7a`
+- **Último deploy inicial:** workflow run `36271895234` — success — HEAD `968a00e76166d68bda4ea1fe981e69526acc4b7a`
+- **Child SHAs no início:** TCE-GO `2986dabf2ddb3ed6b22fa58b9a5151981a678dbf`; SEEDF `bb006c3bc896534716e6b568849669a7fe4424c8`; TJDFT `8aa366c0068f6f705fb2d27a44b7a522f90003d9`
+- **Acceptance aplicável:** preferências somente locais; reset seguro; preferências inválidas não quebram renderização; ordem/apresentação não alteram registry; nenhuma informação sensível; configuração compreensível e reversível; gates globais.
+- **Riscos:** conflito com ordenação da v4; preferências corrompidas; controles mortos sem JavaScript; reset apagar continuidade indevidamente; regressão mobile ao adicionar painel de preferências.
 
 ## Última major concluída — v4.0.0
 
