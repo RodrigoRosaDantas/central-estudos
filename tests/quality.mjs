@@ -203,6 +203,28 @@ function testCriticalAppLogic(registry) {
   pass("critical app logic: config validation, focus and corrupted local state");
 }
 
+function testTimelineContract(registry) {
+  const timeline = read("js/timeline-v8.js");
+  const html = read("index.html");
+
+  assert.ok(html.includes('id="activity-panel"'), "v8 activity panel must exist");
+  assert.ok(html.includes("./js/timeline-v8.js"), "v8 timeline script must be referenced");
+  assert.ok(html.includes("./css/timeline-v8.css"), "v8 timeline stylesheet must be referenced");
+  assert.ok(timeline.includes("central-estudos:access-history-v8"), "v8 access history must use its own local key");
+  assert.ok(timeline.includes("MAX_ACCESS_HISTORY = 12"), "v8 local history must be bounded");
+  assert.ok(timeline.includes("central:project-opened"), "v8 must distinguish local access events");
+  assert.ok(timeline.includes("central:technical-state"), "v8 must consume technical state separately");
+  assert.ok(timeline.includes("não determina a causa"), "v8 diagnosis must avoid unsupported causes");
+  assert.ok(timeline.includes("Não mede estudo, duração, progresso ou desempenho"), "v8 local access must not be framed as study");
+  assert.ok(!timeline.includes("fetch("), "v8 timeline must reuse existing observability instead of creating extra network calls");
+
+  for (const project of registry.projects) {
+    assert.ok(html.includes(`data-project-id="${project.id}"`), `v8 timeline needs registry-backed card id: ${project.id}`);
+  }
+
+  pass("v8 timeline, source separation and diagnostic contracts");
+}
+
 function testSecurityAndContracts(registry) {
   const frontendFiles = [
     "index.html",
@@ -213,9 +235,11 @@ function testSecurityAndContracts(registry) {
     "js/catalog-v4.js",
     "js/personalization-v5.js",
     "js/pwa-v6.js",
+    "js/timeline-v8.js",
     "css/app.css",
     "css/catalog-v4.css",
-    "css/personalization-v5.css"
+    "css/personalization-v5.css",
+    "css/timeline-v8.css"
   ];
 
   const combined = frontendFiles.map(read).join("\n");
@@ -240,6 +264,7 @@ const syntaxFiles = [
   "js/catalog-v4.js",
   "js/personalization-v5.js",
   "js/pwa-v6.js",
+  "js/timeline-v8.js",
   "sw.js"
 ];
 
@@ -254,6 +279,7 @@ testInternalReferences(html);
 testManifest(manifest);
 testServiceWorker(registry);
 testCriticalAppLogic(registry);
+testTimelineContract(registry);
 testSecurityAndContracts(registry);
 
 console.log("\nQuality gate PASS");
