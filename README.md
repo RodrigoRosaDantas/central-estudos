@@ -12,25 +12,34 @@ Camada de entrada para os ambientes independentes de estudo:
 
 A Central **não importa, altera ou replica** o código dos projetos-filhos.
 
-## V1
+## Estado atual — v1.1
 
 - interface mobile-first;
 - registro único de projetos em `config/projects.json`;
 - projeto em foco;
-- botão “Continuar estudo”;
-- histórico local do último ambiente aberto;
-- health check simples dos ambientes;
-- fallback: os links dos projetos continuam sendo a função principal;
-- zero dependências e zero etapa de build.
+- botão **Continuar estudo**;
+- histórico local do último ambiente aberto e horário de acesso;
+- health check informativo, com timeout e estado inconclusivo;
+- fallback estático: os três projetos continuam acessíveis mesmo se JavaScript ou o registry falharem;
+- identidade visual sutil por ambiente;
+- acessibilidade de teclado e preferência por movimento reduzido;
+- manifest + ícone para uso como atalho/app no celular;
+- zero framework, zero dependências e zero etapa de build.
 
 ## Publicação
 
-Projetado para GitHub Pages como site estático.
+GitHub Pages, diretamente da branch `main`.
 
-Repositório: `RodrigoRosaDantas/central-estudos`.
+## Regra de segurança
+
+A Central nunca deve ser requisito para os projetos funcionarem.
+
+TCE-GO, SEEDF e TJDFT permanecem aplicações autônomas e devem continuar acessíveis pelas URLs próprias.
 
 ## Adicionar um novo projeto
 
-Edite apenas `config/projects.json` e acrescente outro objeto em `projects`.
+A fonte dinâmica de verdade é `config/projects.json`.
 
-Não duplique URLs ou metadados no HTML/JS.
+O `index.html` contém apenas uma cópia mínima dos links para fallback de segurança. Ao adicionar um novo projeto, mantenha o fallback coerente.
+
+Consulte `docs/ARCHITECTURE.md` antes de introduzir integrações.
