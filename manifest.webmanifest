@@ -1,0 +1,18 @@
+{
+  "name": "Central de Estudos",
+  "short_name": "Central",
+  "description": "Acesso unificado aos ambientes TCE-GO, SEEDF e TJDFT.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#070b14",
+  "theme_color": "#070b14",
+  "icons": [
+    {
+      "src": "./assets/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
