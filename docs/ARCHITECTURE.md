@@ -170,3 +170,8 @@ Se a configuração falhar, a Central entra em **modo direto** e preserva os lin
 ### Progressive enhancement
 
 O HTML mantém os três acessos essenciais como baseline. JavaScript melhora foco, retomada e observabilidade, mas não é requisito para abrir os projetos.
+
+
+## Contrato de observabilidade — v3.0
+
+A observabilidade confiável da v3 está especificada em `docs/OBSERVABILITY-V3.md`. Ela permanece somente leitura, não bloqueante e separada de qualquer dado de estudo.
