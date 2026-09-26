@@ -12,10 +12,12 @@ Camada de entrada para os ambientes independentes de estudo:
 
 A Central **não importa, altera ou replica** o código dos projetos-filhos.
 
-## Estado atual — v1.2
+## Estado atual — v1.3
 
 - interface mobile-first;
 - foco atual separado de último acesso;
+- pulso global de disponibilidade dos ambientes;
+- leitura pública da última publicação de cada repositório, com cache local de 10 minutos;
 - retomada real do último ambiente aberto;
 - saudação contextual pelo horário do aparelho;
 - registro único de projetos em `config/projects.json`;
