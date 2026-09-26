@@ -2,14 +2,14 @@
 
 ## Estado da esteira
 
-- **Versão validada:** 8.0.0
+- **Versão validada:** 9.0.0
 - **Meta:** 10.0.0
-- **Next major:** 9.0.0
-- **Active major:** 9.0.0
-- **Stage:** VALIDATING
+- **Next major:** 10.0.0
+- **Active major:** none
+- **Stage:** READY
 - **Status:** IN PROGRESS
-- **Último deploy de release validado:** workflow run 36279346345 — quality success + deploy success
-- **Commit de release validado:** `e1b118a502927256029ae855f39d88fb4fd46a9b`
+- **Último deploy de release validado:** workflow run 36280042225 — quality success + deploy success
+- **Commit de release validado:** `5a243c24447c39eaaae85fd8183e599be5ac9c81`
 - **Repositório:** RodrigoRosaDantas/central-estudos
 - **Projetos-filhos:** READ-ONLY / NO WRITES
 
@@ -36,20 +36,24 @@
 - **Acceptance aplicável:** —
 - **Riscos:** —
 
-## Snapshot da major ativa
+## Última major concluída — v9.0.0
 
-- **Major:** 9.0.0 — Hardening
-- **Started at:** 2026-09-26
-- **Source version:** 8.0.0
-- **Central HEAD inicial:** `aab33f3c9e3f40006f9cfdf9e44312178016dfd2`
-- **Último deploy inicial:** workflow run `36279431377` — quality success + deploy success — HEAD `aab33f3c9e3f40006f9cfdf9e44312178016dfd2`
-- **Child SHAs no início:** TCE-GO `2986dabf2ddb3ed6b22fa58b9a5151981a678dbf`; SEEDF `bb006c3bc896534716e6b568849669a7fe4424c8`; TJDFT `8aa366c0068f6f705fb2d27a44b7a522f90003d9`
-- **Acceptance aplicável:** acessibilidade; navegação por teclado; contraste/estados críticos; chamadas externas minimizadas; edge cases documentados; segurança frontend; performance/payload; redução de código morto/duplicação; auditoria mobile pequena e média; gates globais.
-- **Riscos:** CSP bloquear observabilidade legítima; otimização de rede esconder estado atual; hardening quebrar progressive enhancement/PWA; alteração de foco/teclado regressiva; testes de contraste/HTML gerarem falso positivo; cache antigo mascarar assets novos.
-- **QA v9:** PASS no pipeline de implementação — CSP/sem inline dependencies; registry endurecido; escape dinâmico; health cache 2 min explicitamente marcado; deploy lookup direcionado; contraste >=4.5:1 nos tokens críticos; teclado/touch/forced-colors; breakpoint 360 px; payload 91.658 bytes <= 120 KiB; zero JS/CSS órfãos; zero funções nomeadas mortas detectadas.
-- **Pipeline de implementação:** workflow run `36279915259` — quality `success` + deploy `success` no HEAD `63fa6dad9c7abc8bca65aa037e1ca3bd850a84af`.
-- **Limitação visual:** auditoria mobile/contraste é estrutural e automatizada onde possível; nenhuma renderização visual real foi inventada.
-- **Estado da implementação:** concluída; aguardando pipeline final com versão/documentação 9.0.0 e pós-deploy.
+- **Origem:** v8.0.0
+- **Objetivo:** hardening antes da auditoria final v10.
+- **Resultado:** PASS
+- **Acceptance v9:** PASS nos gates estruturais/lógicos verificáveis.
+- **Acessibilidade:** skip link, foco visível, relações de controle, atalhos protegidos durante digitação, touch targets, forced-colors e contraste automatizado dos tokens críticos >= 4.5:1.
+- **Mobile:** auditoria estrutural cobre 360/419/480/680/720/760 px; hardening adicional de largura, padding e quebra de texto em 360 px.
+- **Segurança frontend:** CSP, IDs seguros no registry, default válido, versão semântica, URLs normalizadas e conteúdo dinâmico/local escapado antes de `innerHTML`.
+- **Rede:** metadata GitHub mantém cache de 15 min; health usa cache curto de 2 min; offline evita nova checagem; deploy lookup usa workflow alvo com `per_page=1` e fallback máximo 30.
+- **Performance:** shell bruto auditado em 91.658 bytes; quality gate impõe orçamento <= 120 KiB; zero dependências externas de JS/CSS.
+- **Código:** zero JS/CSS órfãos e zero funções nomeadas mortas detectadas na auditoria estática.
+- **PWA:** cache atualizado para `central-shell-v9.0.0`.
+- **Edge cases:** documentados em `docs/HARDENING-V9.md`.
+- **Quality gate:** workflow run `36280042225` — quality `success` + deploy `success`.
+- **Projetos-filhos:** SHAs finais idênticos aos SHAs de preflight; zero writes nesta execução.
+- **Commit validado:** `5a243c24447c39eaaae85fd8183e599be5ac9c81`.
+- **Limitação registrada:** inspeção visual real em navegador não foi inventada; auditorias de mobile/contraste foram estruturais e automatizadas onde disponível.
 
 ## Última major concluída — v8.0.0
 
@@ -161,6 +165,7 @@
 - 2026-09-26 — v6.0.0 — PWA e resiliência — commit `0c57c967e277764d1938f3a6fc91fc03f73a74e5` — Pages `36277789554` — success
 - 2026-09-26 — v7.0.0 — qualidade e testes — commit `e47e94341c21219936133762bf3675a0251f4c79` — Pages `36278662494` — quality success + deploy success
 - 2026-09-26 — v8.0.0 — linha do tempo e diagnóstico — commit `e1b118a502927256029ae855f39d88fb4fd46a9b` — Pages `36279346345` — quality success + deploy success
+- 2026-09-26 — v9.0.0 — hardening — commit `5a243c24447c39eaaae85fd8183e599be5ac9c81` — Pages `36280042225` — quality success + deploy success
 
 ## Regra de avanço
 Uma major só fecha após acceptance, audit protocol, quality gate, Pages `success`, post-deploy QA verificável, changelog e checkpoint.
