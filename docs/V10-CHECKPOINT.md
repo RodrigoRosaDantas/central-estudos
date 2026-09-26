@@ -6,7 +6,7 @@
 - **Meta:** 10.0.0
 - **Next major:** 8.0.0
 - **Active major:** 8.0.0
-- **Stage:** IN_PROGRESS
+- **Stage:** VALIDATING
 - **Status:** IN PROGRESS
 - **Último deploy de release validado:** workflow run 36278662494 — quality success + deploy success
 - **Commit de release validado:** `e47e94341c21219936133762bf3675a0251f4c79`
@@ -46,6 +46,9 @@
 - **Child SHAs no início:** TCE-GO `2986dabf2ddb3ed6b22fa58b9a5151981a678dbf`; SEEDF `bb006c3bc896534716e6b568849669a7fe4424c8`; TJDFT `8aa366c0068f6f705fb2d27a44b7a522f90003d9`
 - **Acceptance aplicável:** linha do tempo separa acesso local de atualização técnica; diagnóstico evita conclusões não suportadas; indisponibilidade tem explicação/fallback; origem de cada dado é identificável; painel permanece resumido; nenhum dado pedagógico inventado; gates globais.
 - **Riscos:** confundir acesso com progresso; excesso de métricas; diagnóstico afirmar causa sem evidência; histórico local crescer indefinidamente; dados técnicos stale parecerem atuais; duplicação visual com Pulso da Central.
+- **QA v8:** PASS — acesso local e atividade técnica separados; histórico limitado a 12 e exibição a 5; limpeza integrada ao histórico; diagnóstico usa linguagem inconclusiva quando necessário; stale/cache identificado; zero chamadas de rede extras; nomes locais escapados antes de `innerHTML`; app shell inclui assets v8.
+- **Pipeline de implementação:** workflow run `36279001125` — quality `success` + deploy `success` no HEAD `c29f19ef22016b87c60913ab2668010de779547a`.
+- **Estado da implementação:** concluída; aguardando pipeline final com versão/documentação 8.0.0 e pós-deploy.
 
 ## Última major concluída — v7.0.0
 
