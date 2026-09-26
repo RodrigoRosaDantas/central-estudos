@@ -189,6 +189,14 @@
 
   applyCatalog();
 
+  document.addEventListener("central:catalog-refresh", () => {
+    const requestedSort = readText(SORT_KEY);
+    sort.value = ["default", "favorites", "name"].includes(requestedSort)
+      ? requestedSort
+      : "default";
+    applyCatalog();
+  });
+
   const observer = new MutationObserver(() => {
     if (applying) return;
     const cards = [...grid.querySelectorAll(".project-card")];
