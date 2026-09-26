@@ -1,112 +1,66 @@
 # CHANGELOG — Central de Estudos
 
+## [10.0.0] — 2026-09-26
+- release estável terminal da esteira v10;
+- auditoria integral registrada em `docs/FINAL-AUDIT-V10.md`;
+- documentação consolidada e arquitetura congelada para esta esteira;
+- registry atualizado para `10.0.0`;
+- cache PWA rotacionado para `central-shell-v10.0.0`;
+- preservados fallback, progressive enhancement, mobile-first, observabilidade não bloqueante e separação entre foco/retomada/favorito/acesso/recência técnica;
+- quality gate continua obrigatório antes do deploy;
+- nenhuma responsabilidade pedagógica global ou acoplamento obrigatório foi introduzido;
+- **Projetos-filhos:** somente leitura; zero writes durante a implementação; SHAs devem ser reconfirmados no fechamento;
+- **Commit/deploy final:** pendentes de fechamento após quality + deploy + post-deploy QA.
+
 ## [9.0.0] — 2026-09-26
-- CSP frontend compatível com GitHub Pages/observabilidade;
-- registry endurecido com IDs seguros, default válido e versão semântica;
-- conteúdo do registry e preferências escapado antes de renderização HTML;
-- health check com cache local de 2 minutos e estado cached/stale explícito;
-- consulta de deploy reduzida para workflow `deploy-pages.yml` com `per_page=1`, fallback máximo 30;
-- acessibilidade/teclado/forced-colors/touch targets revisados e testados;
-- auditoria estrutural mobile inclui 360/419/480/680/720/760 px;
-- shell auditado em 91.658 bytes e limitado pelo gate a 120 KiB;
-- zero JS/CSS órfãos e zero funções nomeadas mortas detectadas;
-- app shell atualizado para `central-shell-v9.0.0`;
-- edge cases e política de hardening documentados;
-- **Projetos-filhos:** zero writes nesta release;
-- **Commit de release validado:** `5a243c24447c39eaaae85fd8183e599be5ac9c81`;
-- **Deploy validado:** workflow run `36280042225` — quality `success` + deploy `success`.
+- hardening de segurança, acessibilidade, mobile, rede e performance;
+- CSP, escape de conteúdo, registry endurecido, health cache curto e deploy lookup direcionado;
+- contraste crítico, teclado, forced-colors, touch targets e larguras 360/419/480/680/720/760 auditados;
+- shell 91.658 bytes com orçamento <= 120 KiB; zero JS/CSS órfãos e funções nomeadas mortas detectadas;
+- cache `central-shell-v9.0.0`;
+- commit validado `5a243c24447c39eaaae85fd8183e599be5ac9c81`; Pages `36280042225` — success; zero writes nos filhos.
 
 ## [8.0.0] — 2026-09-26
-- linha do tempo local de acessos feitos pela Central, limitada a 12 registros;
-- painel técnico reutiliza sinais existentes de disponibilidade, publicação e deploy;
-- acesso local e atualização técnica aparecem como fontes distintas;
-- diagnóstico evita causas não comprovadas e explicita estados inconclusivos/cache;
-- nenhum acesso é tratado como estudo, duração, progresso ou desempenho;
-- linha do tempo não cria chamadas de rede adicionais;
-- histórico local é sanitizado antes da renderização;
-- app shell atualizado para `central-shell-v8.0.0`;
-- quality gate v7 passou com os contratos específicos da v8;
-- **Projetos-filhos:** zero writes nesta release;
-- **Commit de release validado:** `e1b118a502927256029ae855f39d88fb4fd46a9b`;
-- **Deploy validado:** workflow run `36279346345` — quality `success` + deploy `success`.
+- linha do tempo local limitada e diagnóstico técnico conservador;
+- acesso local separado de atividade técnica/disponibilidade/deploy;
+- nenhuma inferência de estudo, duração, progresso ou desempenho;
+- cache `central-shell-v8.0.0`;
+- commit `e1b118a502927256029ae855f39d88fb4fd46a9b`; Pages `36279346345` — success; zero writes nos filhos.
 
 ## [7.0.0] — 2026-09-26
-- quality gate automatizado e sem dependências externas;
-- validação automática de registry, fallback, manifest, assets e contratos PWA;
-- testes leves das funções críticas do `app.js` em sandbox Node;
-- detecção simples de secrets/tokens no frontend;
-- workflow Pages dividido em `quality → deploy`;
-- deploy depende explicitamente do sucesso do quality gate;
-- testes não usam rede externa nem write nos projetos-filhos;
-- `actions/setup-node@v7` com Node 22;
-- **Projetos-filhos:** zero writes nesta release;
-- **Commit de release validado:** `e47e94341c21219936133762bf3675a0251f4c79`;
-- **Deploy validado:** workflow run `36278662494` — quality `success` + deploy `success`.
+- quality gate automatizado, determinístico e sem rede externa;
+- validação de registry, fallback, manifest, PWA, secrets e funções críticas;
+- workflow `quality → deploy`, com falha de teste impedindo publicação;
+- commit `e47e94341c21219936133762bf3675a0251f4c79`; Pages `36278662494` — success; zero writes nos filhos.
 
 ## [6.0.0] — 2026-09-26
-- PWA e resiliência com service worker limitado à origem da Central;
-- app shell offline após primeira visita, sem cachear projetos-filhos ou APIs externas;
-- estratégia network-first para navegações e recursos conhecidos do shell;
-- cache versionado `central-shell-v6.0.0` com limpeza previsível de caches antigos;
-- atualização controlada via worker em espera e ação explícita **Atualizar agora**;
-- aviso de atualização separado do status geral; primeira instalação não força reload; escopo do worker validado também por pathname;
-- instalação permanece opcional e conduzida pelo navegador;
-- falha ou remoção do service worker preserva/restaura o comportamento web normal;
-- **Acceptance v6:** PASS nos gates estruturais/lógicos verificáveis; inspeção visual/offline em navegador real não foi inventada quando indisponível;
-- **Projetos-filhos:** zero writes nesta release; SHAs finais iguais ao preflight;
-- **Commit de release validado:** `0c57c967e277764d1938f3a6fc91fc03f73a74e5`;
-- **Deploy validado:** workflow run `36277789554` — success.
+- PWA e resiliência com service worker restrito à Central;
+- app shell offline, network-first, cache versionado e atualização controlada;
+- projetos/APIs externas fora do cache; instalação opcional;
+- commit `0c57c967e277764d1938f3a6fc91fc03f73a74e5`; Pages `36277789554` — success; zero writes nos filhos.
 
 ## [5.0.0] — 2026-09-26
-- personalização local sem backend;
-- densidade confortável/compacta;
-- opção para ocultar detalhes técnicos nos cards sem ocultar o Pulso da Central;
-- ordem manual dos ambientes ancorada no registry;
-- reset seguro de preferências com preservação do último acesso;
-- preferências inválidas degradam para defaults;
-- painel de preferências usa progressive enhancement e fica oculto sem JavaScript;
-- nenhum dado sensível é armazenado;
-- **Projetos-filhos:** zero writes nesta release;
-- **Commit de release validado:** `cf8cdb818449d020923f50d63e67689b635abc96`;
-- **Deploy validado:** workflow run `36272168251` — success.
+- personalização local: densidade, detalhes, ordem manual e reset seguro;
+- preferências inválidas degradam para defaults; nenhum dado sensível;
+- commit `cf8cdb818449d020923f50d63e67689b635abc96`; Pages `36272168251` — success; zero writes nos filhos.
 
 ## [4.0.0] — 2026-09-26
-- catálogo operacional com busca local e ordenação por padrão, favoritos ou nome;
-- favoritos persistidos somente no navegador e semanticamente separados de foco/retomada/recência;
-- atalhos `Alt+1..9` para cards visíveis, desativados durante digitação em campos;
-- controles responsivos/touch-friendly e progressive enhancement preservado;
-- ação principal continua sendo abrir o projeto real; fallback estático preservado;
-- **Riscos/limitações:** inspeção visual real da URL pública não ficou disponível nesta sessão; QA pós-deploy foi estrutural e pelo artefato/commit publicado;
-- **Projetos-filhos:** zero writes; SHAs finais iguais ao preflight;
-- **Commit de release validado:** `42ee59a34ebb34ecaa858da77b03646f25c21304`;
-- **Deploy validado:** workflow run `36271496568` — success.
+- catálogo com busca, favoritos, ordenação e atalhos `Alt+1..9`;
+- foco, retomada, favorito e recência permanecem distintos;
+- commit `42ee59a34ebb34ecaa858da77b03646f25c21304`; Pages `36271496568` — success; zero writes nos filhos.
 
 ## [3.0.0] — 2026-09-26
 - observabilidade confiável: disponibilidade, publicação e deploy separados;
-- cache de 15 minutos, stale explícito e rate limit tratado;
-- origem dos dados explicada; dado técnico não representa estudo;
-- projetos-filhos mantidos somente leitura;
-- commit de release validado: `dbc938e2b8eb32a9b3e126c464c5f1dfe82bea0c`;
-- deploy validado: workflow run `36270559732` — success.
+- cache/stale/rate limit tratados; dado técnico não representa estudo;
+- commit `dbc938e2b8eb32a9b3e126c464c5f1dfe82bea0c`; Pages `36270559732` — success; zero writes nos filhos.
 
 ## [2.0.0] — 2026-09-26
-- shell consolidada; hierarquia foco → retomada → ambientes → estado técnico;
-- armazenamento local defensivo e registry validado antes da renderização;
-- modo degradado preserva acessos estáticos;
-- projetos-filhos sem writes;
-- commit validado `e3cfacdf6e3784ca0236065cf34ac14c2900dd97`; deploy `36264383202` — success.
+- shell consolidada, armazenamento local defensivo, fallback/404 e hierarquia operacional;
+- commit `e3cfacdf6e3784ca0236065cf34ac14c2900dd97`; Pages `36264383202` — success; zero writes nos filhos.
 
-## [1.4.0] — 2026-09-26
-- foco escolhível localmente; foco separado de último acesso; observabilidade pública; deploy validado `36263567239`.
-
-## [1.3.0] — 2026-09-26
-- pulso global; disponibilidade; última publicação técnica pública; cache local.
-
-## [1.2.0] — 2026-09-26
-- separação entre foco e retomada; experiência de retomada; 404; melhorias mobile.
-
-## [1.1.0] — 2026-09-26
-- fallback resiliente; health check; manifest/ícone; acessibilidade.
-
-## [1.0.0] — 2026-09-26
-- fundação da Central; registry; navegação inicial; arquitetura desacoplada.
+## Série 1.x — 2026-09-26
+- v1.4: foco local e deploy validado;
+- v1.3: pulso global, disponibilidade e publicação técnica;
+- v1.2: separação foco/retomada e 404;
+- v1.1: fallback, health check, manifest e acessibilidade;
+- v1.0: fundação, registry, navegação e arquitetura desacoplada.
