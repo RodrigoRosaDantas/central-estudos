@@ -73,3 +73,16 @@ O app shell offline não afirma que TCE-GO, SEEDF ou TJDFT estão disponíveis o
 
 ## Evolução
 Integrações futuras devem ser somente leitura, opcionais, versionadas e desacopladas do schema interno dos projetos-filhos. A Central não deve conhecer tabelas ou modelos internos dos projetos.
+
+
+## Qualidade e testes — v7
+
+A v7 adiciona um gate automatizado antes do deploy. O contrato completo está em `docs/QUALITY-V7.md`.
+
+O workflow possui:
+- job `quality`;
+- job `deploy` com dependência explícita `needs: quality`.
+
+A suite é local, determinística e sem rede externa. Ela valida registry, fallback, referências, manifest, service worker, ausência de secrets óbvios e funções críticas do `app.js`.
+
+Falha de teste impede o deploy do commit. Os testes nunca escrevem nos projetos-filhos.
