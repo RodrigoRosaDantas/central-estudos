@@ -10,7 +10,8 @@
 - painel de preferências usa progressive enhancement e fica oculto sem JavaScript;
 - nenhum dado sensível é armazenado;
 - **Projetos-filhos:** zero writes nesta release;
-- **Commit/deploy final:** preencher após validação do Pages.
+- **Commit de release validado:** `cf8cdb818449d020923f50d63e67689b635abc96`;
+- **Deploy validado:** workflow run `36272168251` — success.
 
 ## [4.0.0] — 2026-09-26
 - catálogo operacional com busca local e ordenação por padrão, favoritos ou nome;
