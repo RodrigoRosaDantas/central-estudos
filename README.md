@@ -62,3 +62,18 @@ A evolução autônoma é governada por:
 - `docs/V10-CHECKPOINT.md` — estado real e próxima etapa.
 
 Regra operacional: no máximo uma major por execução, com auditoria e deploy bem-sucedido antes do avanço.
+
+
+## Governança da evolução até v10
+
+A esteira autônoma usa:
+
+- `docs/COMMAND-V10.md` — protocolo mestre;
+- `docs/ROADMAP-V10.md` — objetivo de cada major;
+- `docs/ACCEPTANCE-V10.md` — critérios de aceite;
+- `docs/AUDIT-PROTOCOL.md` — preflight, QA, deploy e rollback;
+- `docs/V10-CHECKPOINT.md` — máquina de estado;
+- `docs/BACKLOG-V10.md` — ideias fora de escopo;
+- `CHANGELOG.md` — histórico das releases.
+
+Princípio: **o checkpoint manda; o relógio não manda**. Uma execução nunca pula para a próxima major se a atual estiver incompleta.
