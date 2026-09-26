@@ -6,29 +6,22 @@ Camada de entrada para os ambientes independentes TCE-GO, SEEDF e TJDFT.
 
 A Central não importa, altera ou replica o código dos projetos-filhos.
 
-## Estado atual — v5.0
+## Estado atual — v6.0
 
-A v5 adiciona personalização local, sem backend e sem alterar os projetos:
+A v6 adiciona PWA e resiliência sem transformar a Central em dependência dos projetos:
 
-- densidade confortável ou compacta;
-- exibir/ocultar detalhes técnicos dentro dos cards;
-- ordem manual dos ambientes;
-- restauração segura de foco, favoritos, ordem e apresentação;
-- último acesso preservado durante o reset;
-- preferências inválidas retornam a defaults seguros;
-- tudo salvo somente neste navegador.
+- app shell da própria Central disponível como fallback offline após a primeira visita;
+- service worker limitado à origem da Central;
+- estratégia network-first conservadora;
+- cache explicitamente versionado (`central-shell-v6.0.0`) e limpeza previsível de versões antigas;
+- atualização controlada: quando um novo worker estiver pronto, a Central oferece **Atualizar agora**;
+- nenhum site, API ou estado dos projetos-filhos é cacheado pelo service worker;
+- instalação como app permanece opcional e conduzida pelo navegador;
+- falha/ausência de service worker preserva o comportamento web normal.
 
-A v4 continua fornecendo o catálogo operacional:
-
-- busca local por nome, área e conteúdo do card;
-- ordenação por padrão, favoritos ou nome;
-- favoritos locais, independentes do foco e da retomada;
-- atalhos de desktop `Alt+1..9` para os ambientes visíveis, sem capturar digitação em campos;
-- controles touch-friendly e progressive enhancement;
-- **Abrir ambiente** permanece a ação principal.
+A personalização local da v5 continua disponível: densidade, detalhes técnicos, ordem manual, reset seguro e preferências somente neste navegador. O catálogo da v4 preserva busca, favoritos, ordenação e atalhos `Alt+1..9`.
 
 Fundação preservada:
-
 - foco atual separado de último acesso/retomada;
 - observabilidade técnica separa disponibilidade, publicação e deploy;
 - cache local de observabilidade de 15 minutos, stale explícito e rate limit tratado;
@@ -38,6 +31,9 @@ Fundação preservada:
 - interface mobile-first;
 - GitHub Pages automático;
 - zero framework e zero etapa de build.
+
+## Offline não significa projetos offline
+O cache PWA guarda somente arquivos da Central. TCE-GO, SEEDF e TJDFT continuam sendo ambientes externos independentes e exigem a própria conectividade. A Central nunca deve apresentar um projeto como disponível offline apenas porque sua shell abriu do cache.
 
 ## Publicação
 GitHub Pages, diretamente da branch `main`.
