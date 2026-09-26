@@ -4,7 +4,7 @@
   if (!('serviceWorker' in navigator)) return;
 
   const showUpdate = (registration) => {
-    const notice = document.getElementById('system-notice');
+    const notice = document.getElementById('pwa-update-notice');
     if (!notice || !registration.waiting) return;
 
     notice.classList.remove('is-hidden');
@@ -17,7 +17,13 @@
     button.type = 'button';
     button.className = 'button button-quiet';
     button.textContent = 'Atualizar agora';
-    button.addEventListener('click', () => registration.waiting?.postMessage({ type: 'SKIP_WAITING' }));
+    button.addEventListener('click', () => {
+      const waiting = registration.waiting;
+      if (!waiting) return;
+      button.disabled = true;
+      button.textContent = 'Atualizando…';
+      waiting.postMessage({ type: 'SKIP_WAITING' });
+    });
 
     notice.append(text, button);
   };
