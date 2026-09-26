@@ -6,6 +6,7 @@
   <meta name="theme-color" content="#070b14" />
   <meta name="description" content="Central de Estudos — acesso unificado aos ambientes TCE-GO, SEEDF e TJDFT." />
   <meta name="color-scheme" content="dark" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
   <title>Central de Estudos</title>
   <link rel="icon" href="./assets/icon.svg" type="image/svg+xml" />
   <link rel="manifest" href="./manifest.webmanifest" />
@@ -19,6 +20,7 @@
       <div>
         <p class="eyebrow">CENTRAL</p>
         <h1>Central de Estudos</h1>
+        <p id="greeting" class="topbar-greeting">Seus ambientes de estudo, em um só lugar.</p>
       </div>
       <div class="user-pill" aria-label="Usuário atual">
         <span class="avatar" aria-hidden="true">R</span>
@@ -32,12 +34,28 @@
           <p class="eyebrow">FOCO ATUAL</p>
           <h2 id="focus-title">TCE-GO</h2>
           <p id="focus-description" class="muted">Controle Externo</p>
+          <p id="focus-note" class="focus-note">Ambiente prioritário configurado na Central.</p>
           <div class="hero-meta">
             <span id="focus-phase" class="badge">Edital publicado</span>
             <span id="focus-health" class="health health-checking"><span class="dot"></span>Verificando</span>
           </div>
         </div>
-        <a id="continue-button" class="button button-primary" href="https://rodrigorosadantas.github.io/tce-go-dashboard/">Continuar estudo <span aria-hidden="true">→</span></a>
+        <div class="hero-actions">
+          <a id="continue-button" class="button button-primary" href="https://rodrigorosadantas.github.io/tce-go-dashboard/">Entrar no foco <span aria-hidden="true">→</span></a>
+          <a id="focus-new-tab" class="button button-ghost" href="https://rodrigorosadantas.github.io/tce-go-dashboard/" target="_blank" rel="noopener">Abrir em nova guia</a>
+        </div>
+      </section>
+
+      <section class="section resume-card" aria-labelledby="resume-title">
+        <div>
+          <p class="eyebrow">RETOMADA</p>
+          <h2 id="resume-title">Continue de onde parou</h2>
+          <p id="last-project-text" class="muted">O histórico local será registrado quando você abrir um ambiente pela Central.</p>
+        </div>
+        <div class="resume-actions">
+          <a id="resume-button" class="button button-secondary is-hidden" href="#">Retomar</a>
+          <button id="clear-history" class="button button-quiet" type="button">Limpar histórico</button>
+        </div>
       </section>
 
       <section class="section" aria-labelledby="projects-title">
@@ -46,7 +64,7 @@
             <p class="eyebrow">AMBIENTES</p>
             <h2 id="projects-title">Seus projetos</h2>
           </div>
-          <p class="muted compact">Independentes por arquitetura. Unidos apenas pela navegação.</p>
+          <p class="muted compact">Cada ambiente continua independente. A Central apenas organiza o acesso.</p>
         </div>
 
         <div id="projects-grid" class="projects-grid" aria-live="polite">
@@ -93,27 +111,18 @@
           </article>
         </div>
       </section>
-
-      <section class="section utility" aria-labelledby="utility-title">
-        <div>
-          <p class="eyebrow">RETOMADA</p>
-          <h2 id="utility-title">Continue de onde parou</h2>
-          <p id="last-project-text" class="muted">O histórico local será registrado quando você abrir um ambiente pela Central.</p>
-        </div>
-        <button id="clear-history" class="button button-secondary" type="button">Limpar histórico local</button>
-      </section>
     </main>
 
     <footer>
       <span>Central de Estudos <span id="app-version"></span></span>
       <span class="footer-separator">•</span>
-      <span>Os projetos continuam autônomos.</span>
+      <span>3 ambientes autônomos</span>
     </footer>
   </div>
 
   <noscript>
     <div class="noscript">
-      JavaScript está desativado. Os links diretos acima continuam funcionando normalmente.
+      JavaScript está desativado. Os três acessos diretos continuam funcionando normalmente.
     </div>
   </noscript>
 
