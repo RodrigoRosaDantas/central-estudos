@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Central de Estudos">
+  <rect width="512" height="512" rx="112" fill="#0d1322"/>
+  <path d="M112 156c0-24.3 19.7-44 44-44h200c24.3 0 44 19.7 44 44v200c0 24.3-19.7 44-44 44H156c-24.3 0-44-19.7-44-44V156Z" fill="#121a2c" stroke="#77a7ff" stroke-width="12"/>
+  <path d="M176 198h160M176 256h112M176 314h144" stroke="#f5f7fb" stroke-width="24" stroke-linecap="round"/>
+  <circle cx="344" cy="256" r="18" fill="#75d8a3"/>
+</svg>
