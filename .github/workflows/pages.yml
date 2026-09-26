@@ -1,4 +1,4 @@
-name: Deploy Central de Estudos to GitHub Pages
+name: Validate and deploy Central de Estudos
 
 on:
   push:
@@ -16,7 +16,25 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  quality:
+    name: Quality gate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Run dependency-free quality suite
+        run: node tests/quality.mjs
+
   deploy:
+    name: Deploy
+    needs:
+      - quality
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
