@@ -13,6 +13,7 @@
   <link rel="stylesheet" href="./css/app.css" />
   <link rel="stylesheet" href="./css/catalog-v4.css" />
   <link rel="stylesheet" href="./css/personalization-v5.css" />
+  <link rel="stylesheet" href="./css/timeline-v8.css" />
 </head>
 <body>
   <a class="skip-link" href="#conteudo">Ir para o conteúdo</a>
@@ -49,6 +50,42 @@
         </div>
         <p id="catalog-empty" class="catalog-empty" hidden>Nenhum ambiente encontrado para esta busca.</p>
       </section>
+      <section id="activity-panel" class="section activity-panel" aria-labelledby="activity-title" hidden>
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">ATIVIDADE E DIAGNÓSTICO</p>
+            <h2 id="activity-title">O que aconteceu recentemente</h2>
+          </div>
+          <p class="muted compact">Acessos locais e sinais técnicos são fontes diferentes. Nenhum deles mede estudo, progresso ou desempenho.</p>
+        </div>
+        <div class="activity-grid">
+          <article class="activity-card" aria-labelledby="access-history-title">
+            <div class="activity-card-heading">
+              <div>
+                <p class="eyebrow">NESTE APARELHO</p>
+                <h3 id="access-history-title">Acessos recentes</h3>
+              </div>
+              <span class="activity-source">Fonte local</span>
+            </div>
+            <div id="access-history-list" class="activity-list" aria-live="polite">
+              <p class="activity-empty">Nenhum acesso registrado neste aparelho.</p>
+            </div>
+          </article>
+          <article class="activity-card" aria-labelledby="technical-activity-title">
+            <div class="activity-card-heading">
+              <div>
+                <p class="eyebrow">SINAIS TÉCNICOS</p>
+                <h3 id="technical-activity-title">Projetos e diagnóstico</h3>
+              </div>
+              <span class="activity-source">Site + GitHub</span>
+            </div>
+            <div id="technical-activity-list" class="activity-list" aria-live="polite">
+              <p class="activity-empty">Aguardando sinais técnicos públicos.</p>
+            </div>
+          </article>
+        </div>
+        <p class="activity-footnote">A Central registra somente acessos feitos por ela neste navegador. Atualização técnica vem de fontes públicas e pode estar em cache. Diagnósticos descrevem o que foi observado, sem afirmar a causa de uma falha.</p>
+      </section>
       <section class="section technical-summary" aria-labelledby="technical-title"><div class="section-heading"><div><p class="eyebrow">ESTADO TÉCNICO</p><h2 id="technical-title">Pulso da Central</h2></div><p class="muted compact">Informação auxiliar e somente leitura. Nunca bloqueia o acesso aos ambientes.</p></div><section class="pulse" aria-label="Pulso da Central"><div class="pulse-item"><span id="pulse-projects" class="pulse-value">3</span><span class="pulse-label">ambientes</span></div><div class="pulse-item"><span id="pulse-online" class="pulse-value">Verificando</span><span class="pulse-label">disponibilidade</span></div><div class="pulse-item"><span id="pulse-freshness" class="pulse-value">Verificando</span><span class="pulse-label">última publicação</span></div></section><div class="technical-explainer"><p id="observability-source" class="source-note">Fonte: sites públicos + GitHub público. Cache local de 15 minutos.</p><details><summary>Como interpretar estes dados</summary><div class="technical-help"><p><strong>Disponibilidade</strong> é uma tentativa técnica de alcançar o site agora. Falha de rede vira “não verificado”, não uma conclusão de que o projeto caiu.</p><p><strong>Publicação técnica</strong> é o último <code>push</code> público conhecido no GitHub. Não representa estudo realizado, progresso ou desempenho.</p><p><strong>Deploy</strong> usa o workflow público de publicação mais recente quando ele pode ser identificado. Se a API estiver limitada, a Central preserva o último dado conhecido e o marca como cache.</p></div></details></div></section>
     </main>
     <footer><span>Central de Estudos <span id="app-version"></span></span><span class="footer-separator">•</span><span>3 ambientes autônomos</span></footer>
@@ -58,5 +95,6 @@
   <script src="./js/catalog-v4.js" defer></script>
   <script src="./js/personalization-v5.js" defer></script>
   <script src="./js/pwa-v6.js" defer></script>
+  <script src="./js/timeline-v8.js" defer></script>
 </body>
 </html>
