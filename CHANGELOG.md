@@ -1,5 +1,18 @@
 # CHANGELOG — Central de Estudos
 
+## [8.0.0] — 2026-09-26
+- linha do tempo local de acessos feitos pela Central, limitada a 12 registros;
+- painel técnico reutiliza sinais existentes de disponibilidade, publicação e deploy;
+- acesso local e atualização técnica aparecem como fontes distintas;
+- diagnóstico evita causas não comprovadas e explicita estados inconclusivos/cache;
+- nenhum acesso é tratado como estudo, duração, progresso ou desempenho;
+- linha do tempo não cria chamadas de rede adicionais;
+- histórico local é sanitizado antes da renderização;
+- app shell atualizado para `central-shell-v8.0.0`;
+- quality gate v7 passou com os contratos específicos da v8;
+- **Projetos-filhos:** zero writes nesta release;
+- **Commit/deploy final:** preencher após validação do pipeline final.
+
 ## [7.0.0] — 2026-09-26
 - quality gate automatizado e sem dependências externas;
 - validação automática de registry, fallback, manifest, assets e contratos PWA;
