@@ -582,3 +582,76 @@ footer {
 .technical-help code {
   color: #d9e5f7;
 }
+
+
+/* v9 — hardening */
+.project-card,
+.observability-copy,
+.activity-copy,
+.technical-help,
+.source-note,
+.muted {
+  overflow-wrap: anywhere;
+}
+
+.technical-explainer summary {
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+}
+
+@media (pointer: coarse) {
+  .focus-toggle,
+  .button-quiet {
+    min-height: 44px;
+  }
+}
+
+@media (max-width: 360px) {
+  .shell,
+  .noscript {
+    width: min(100% - 20px, 1120px);
+  }
+
+  .hero,
+  .resume-card,
+  .project-card {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .hero h2 {
+    font-size: clamp(2rem, 16vw, 3rem);
+  }
+
+  .topbar {
+    gap: 10px;
+  }
+
+  .project-actions,
+  .hero-actions,
+  .resume-actions {
+    width: 100%;
+  }
+
+  .project-link,
+  .focus-toggle,
+  .hero-actions .button,
+  .resume-actions .button {
+    max-width: 100%;
+  }
+}
+
+@media (forced-colors: active) {
+  .project-card,
+  .hero,
+  .resume-card,
+  .pulse-item,
+  .technical-explainer {
+    border: 1px solid CanvasText;
+  }
+
+  .project-card::before {
+    background: CanvasText;
+  }
+}
