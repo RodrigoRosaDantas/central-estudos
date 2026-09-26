@@ -12,18 +12,20 @@ Camada de entrada para os ambientes independentes de estudo:
 
 A Central **não importa, altera ou replica** o código dos projetos-filhos.
 
-## Estado atual — v1.1
+## Estado atual — v1.2
 
 - interface mobile-first;
+- foco atual separado de último acesso;
+- retomada real do último ambiente aberto;
+- saudação contextual pelo horário do aparelho;
 - registro único de projetos em `config/projects.json`;
-- projeto em foco;
-- botão **Continuar estudo**;
-- histórico local do último ambiente aberto e horário de acesso;
+- histórico local com projeto + data/hora;
 - health check informativo, com timeout e estado inconclusivo;
 - fallback estático: os três projetos continuam acessíveis mesmo se JavaScript ou o registry falharem;
 - identidade visual sutil por ambiente;
 - acessibilidade de teclado e preferência por movimento reduzido;
-- manifest + ícone para uso como atalho/app no celular;
+- manifest + ícone para uso como atalho no celular;
+- workflow explícito de GitHub Pages;
 - zero framework, zero dependências e zero etapa de build.
 
 ## Publicação
