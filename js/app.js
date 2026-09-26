@@ -448,10 +448,11 @@ async function fetchProjectObservability(project) {
       const runsResult = await fetchGithubJson(`${apiBase}/actions/runs?branch=main&per_page=100`);
 
       if (runsResult.ok && Array.isArray(runsResult.data.workflow_runs)) {
-        const run = runsResult.data.workflow_runs.find(item =>
-          /pages|deploy|publish/i.test(item.name || "") ||
-          /pages|deploy|publish/i.test(item.path || "")
-        );
+        const runs = runsResult.data.workflow_runs;
+        const run =
+          runs.find(item => /deploy-pages\.ya?ml$/i.test(item.path || "")) ||
+          runs.find(item => /deploy.*pages|pages.*deploy|publish/i.test(item.name || "")) ||
+          runs.find(item => /pages|deploy|publish/i.test(item.path || ""));
 
         if (run) {
           project.deployStatus = run.status === "completed"
