@@ -1,5 +1,17 @@
 # CHANGELOG — Central de Estudos
 
+## [5.0.0] — 2026-09-26
+- personalização local sem backend;
+- densidade confortável/compacta;
+- opção para ocultar detalhes técnicos nos cards sem ocultar o Pulso da Central;
+- ordem manual dos ambientes ancorada no registry;
+- reset seguro de preferências com preservação do último acesso;
+- preferências inválidas degradam para defaults;
+- painel de preferências usa progressive enhancement e fica oculto sem JavaScript;
+- nenhum dado sensível é armazenado;
+- **Projetos-filhos:** zero writes nesta release;
+- **Commit/deploy final:** preencher após validação do Pages.
+
 ## [4.0.0] — 2026-09-26
 - catálogo operacional com busca local e ordenação por padrão, favoritos ou nome;
 - favoritos persistidos somente no navegador e semanticamente separados de foco/retomada/recência;
