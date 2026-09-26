@@ -2,14 +2,14 @@
 
 ## Estado da esteira
 
-- **Versão validada:** 2.0.0
+- **Versão validada:** 3.0.0
 - **Meta:** 10.0.0
-- **Next major:** 3.0.0
-- **Active major:** 3.0.0
-- **Stage:** VALIDATING
+- **Next major:** 4.0.0
+- **Active major:** none
+- **Stage:** READY
 - **Status:** IN PROGRESS
-- **Último deploy de release validado:** workflow run 36264383202 — success
-- **Commit de release validado:** `e3cfacdf6e3784ca0236065cf34ac14c2900dd97`
+- **Último deploy de release validado:** workflow run 36270559732 — success
+- **Commit de release validado:** `dbc938e2b8eb32a9b3e126c464c5f1dfe82bea0c`
 - **Repositório:** RodrigoRosaDantas/central-estudos
 - **Projetos-filhos:** READ-ONLY / NO WRITES
 
@@ -49,14 +49,29 @@ Esteira encerrada.
 
 ## Snapshot da major ativa
 
-- **Major:** 3.0.0 — Observabilidade confiável
-- **Started at:** 2026-09-26
-- **Source version:** 2.0.0
-- **Central HEAD inicial:** `aa97ee55ec3b11047f1aeca9ef94f1487518e6d4`
-- **Último deploy inicial:** workflow run `36264452978` — success — HEAD `aa97ee55ec3b11047f1aeca9ef94f1487518e6d4`
-- **Child SHAs no início:** TCE-GO `2986dabf2ddb3ed6b22fa58b9a5151981a678dbf`; SEEDF `bb006c3bc896534716e6b568849669a7fe4424c8`; TJDFT `8aa366c0068f6f705fb2d27a44b7a522f90003d9`
-- **Acceptance aplicável:** saúde técnica não bloqueante; falha de rede = inconclusiva; cache/limite de chamadas GitHub; rate limit tratado; publicação técnica não confundida com estudo; origem explicável; stale data identificável; gates globais.
-- **Riscos:** GitHub API pública sujeita a rate limit/CORS/rede; health check HEAD pode ser inconclusivo; cache local pode ficar stale; validação visual real pode não estar disponível neste ambiente. Nenhum desses estados pode bloquear o acesso direto aos projetos.
+- **Major:** none
+- **Started at:** —
+- **Source version:** —
+- **Central HEAD inicial:** —
+- **Último deploy inicial:** —
+- **Child SHAs no início:** —
+- **Acceptance aplicável:** —
+- **Riscos:** —
+
+## Última major concluída — v3.0.0
+
+- **Origem:** v2.0.0
+- **Objetivo:** tornar a observabilidade técnica confiável e explicável.
+- **Resultado:** PASS
+- **Acceptance v3:** PASS nos gates estruturais/lógicos verificáveis.
+- **Cache:** 15 minutos, com `cached` e `stale-cache` distintos.
+- **Rate limit:** tratado explicitamente sem bloquear navegação.
+- **Deploy público:** busca até 100 runs e prioriza `deploy-pages.yml`.
+- **Origem dos dados:** explicada na interface; publicação técnica não equivale a estudo.
+- **Projetos-filhos:** SHAs finais idênticos aos SHAs de preflight; zero writes nesta execução.
+- **Deploy:** workflow run `36270559732` — success.
+- **Commit validado:** `dbc938e2b8eb32a9b3e126c464c5f1dfe82bea0c`.
+- **Limitação registrada:** a URL pública do GitHub Pages não pôde ser aberta diretamente pelas ferramentas desta sessão; nenhuma renderização visual foi inventada.
 
 ## Última major concluída — v2.0.0
 
@@ -86,6 +101,7 @@ Uma major só fecha após:
 ## Histórico de majors
 
 - 2026-09-26 — v2.0.0 — fundação consolidada e resiliência local — commit `e3cfacdf...` — Pages run `36264383202` — success
+- 2026-09-26 — v3.0.0 — observabilidade confiável — commit `dbc938e2...` — Pages run `36270559732` — success
 
 ## Parada
 
