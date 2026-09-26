@@ -1,5 +1,17 @@
 # CHANGELOG — Central de Estudos
 
+## [7.0.0] — 2026-09-26
+- quality gate automatizado e sem dependências externas;
+- validação automática de registry, fallback, manifest, assets e contratos PWA;
+- testes leves das funções críticas do `app.js` em sandbox Node;
+- detecção simples de secrets/tokens no frontend;
+- workflow Pages dividido em `quality → deploy`;
+- deploy depende explicitamente do sucesso do quality gate;
+- testes não usam rede externa nem write nos projetos-filhos;
+- `actions/setup-node@v7` com Node 22;
+- **Projetos-filhos:** zero writes nesta release;
+- **Commit/deploy final:** preencher após validação do Pages.
+
 ## [6.0.0] — 2026-09-26
 - PWA e resiliência com service worker limitado à origem da Central;
 - app shell offline após primeira visita, sem cachear projetos-filhos ou APIs externas;
