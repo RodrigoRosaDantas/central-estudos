@@ -104,3 +104,21 @@ A Central distingue duas ideias que não devem ser confundidas:
 - **retomada**: último ambiente efetivamente aberto pelo usuário.
 
 O último acesso nunca altera automaticamente a prioridade do projeto.
+
+
+## Observabilidade somente leitura — v1.3
+
+A Central pode consultar metadados públicos do GitHub para indicar a **última publicação técnica** de cada projeto.
+
+Essa informação:
+
+- vem do campo público `pushed_at` do repositório;
+- não representa estudo realizado, progresso ou desempenho;
+- é cacheada localmente por 10 minutos para reduzir chamadas;
+- é opcional e nunca bloqueia a navegação;
+- não exige token, secret, Supabase ou alteração nos projetos-filhos.
+
+O pulso global usa somente:
+- quantidade de ambientes cadastrados;
+- disponibilidade dos sites;
+- publicação técnica mais recente conhecida.
