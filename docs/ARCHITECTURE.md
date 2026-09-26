@@ -4,12 +4,14 @@
 
 A Central é uma camada de **navegação e observabilidade leve**.
 
+> A Central observa e direciona. Os projetos executam e decidem.
+
 Ela pode:
 
 - listar ambientes;
 - destacar o foco;
 - recordar o último ambiente aberto;
-- testar disponibilidade;
+- testar disponibilidade sem bloquear a navegação;
 - direcionar para o site real.
 
 Ela não pode:
@@ -23,7 +25,7 @@ Ela não pode:
 
 ## Contrato V1
 
-`config/projects.json`
+A fonte dinâmica de verdade é `config/projects.json`.
 
 ```json
 {
@@ -44,15 +46,43 @@ Campos de projeto:
 - `url`
 - `repository`
 
-## Regra de falha
+## Fallback de segurança
 
-Se qualquer inteligência adicional falhar, o acesso direto aos projetos deve permanecer disponível.
+O `index.html` contém uma cópia mínima dos três acessos diretos. Essa duplicação é **intencional e restrita ao fallback**.
+
+Motivo: se JavaScript ou `projects.json` falharem, TCE-GO, SEEDF e TJDFT continuam acessíveis. Quando a configuração carrega normalmente, o JavaScript substitui os cards estáticos pelo registry dinâmico.
+
+Nenhuma inteligência da Central pode ser requisito para abrir um projeto.
+
+## Estado local
+
+A Central guarda apenas no navegador:
+
+- último projeto aberto;
+- data/hora desse acesso.
+
+Nenhum dado acadêmico ou de desempenho é gravado pela Central.
+
+## Health check
+
+A disponibilidade é informativa:
+
+- `online`: resposta HTTP válida;
+- `offline`: resposta HTTP recebida com erro;
+- `unknown`: não foi possível verificar.
+
+Um health check inconclusivo **nunca bloqueia o botão de acesso**.
 
 ## Evolução futura
 
-A integração de métricas, quando existir, deverá ser **somente leitura** e baseada em um contrato versionado de status por projeto.
+Integrações de métricas deverão ser:
 
-Exemplo futuro:
+- somente leitura;
+- opcionais;
+- versionadas;
+- desacopladas do schema interno dos projetos.
+
+Exemplo:
 
 ```json
 {
