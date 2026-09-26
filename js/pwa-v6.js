@@ -3,6 +3,8 @@
 
   if (!('serviceWorker' in navigator)) return;
 
+  let reloadOnControllerChange = false;
+
   const showUpdate = (registration) => {
     const notice = document.getElementById('pwa-update-notice');
     if (!notice || !registration.waiting) return;
@@ -22,6 +24,7 @@
       if (!waiting) return;
       button.disabled = true;
       button.textContent = 'Atualizando…';
+      reloadOnControllerChange = true;
       waiting.postMessage({ type: 'SKIP_WAITING' });
     });
 
@@ -43,7 +46,7 @@
 
       let refreshing = false;
       navigator.serviceWorker.addEventListener('controllerchange', () => {
-        if (refreshing) return;
+        if (!reloadOnControllerChange || refreshing) return;
         refreshing = true;
         window.location.reload();
       });
