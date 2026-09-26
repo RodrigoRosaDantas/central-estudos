@@ -6,7 +6,7 @@
 - **Meta:** 10.0.0
 - **Next major:** 8.0.0
 - **Active major:** 8.0.0
-- **Stage:** VALIDATING
+- **Stage:** BLOCKED
 - **Status:** IN PROGRESS
 - **Último deploy de release validado:** workflow run 36278662494 — quality success + deploy success
 - **Commit de release validado:** `e47e94341c21219936133762bf3675a0251f4c79`
@@ -49,6 +49,8 @@
 - **QA v8:** PASS — acesso local e atividade técnica separados; histórico limitado a 12 e exibição a 5; limpeza integrada ao histórico; diagnóstico usa linguagem inconclusiva quando necessário; stale/cache identificado; zero chamadas de rede extras; nomes locais escapados antes de `innerHTML`; app shell inclui assets v8.
 - **Pipeline de implementação:** workflow run `36279001125` — quality `success` + deploy `success` no HEAD `c29f19ef22016b87c60913ab2668010de779547a`.
 - **Estado da implementação:** concluída; aguardando pipeline final com versão/documentação 8.0.0 e pós-deploy.
+- **Bloqueio atual:** workflow run `36279059038` mantém o job `Quality gate` em `in_progress` sem avanço; o pipeline final `36279080439` do HEAD `ddd129d8e4356396cfd2d972f0c75ee0eb3f7bc3` permanece `pending`. O código v8 já passou quality + deploy no run `36279001125`, mas a release 8.0.0 não será fechada até o pipeline final publicar o HEAD atual.
+- **Ação exigida na próxima execução:** reler estes runs; se o final concluir `success`, executar pós-deploy e fechar a v8; se houver falha, ler jobs/logs e corrigir; não iniciar v9.
 
 ## Última major concluída — v7.0.0
 
