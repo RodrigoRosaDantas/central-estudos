@@ -13,7 +13,8 @@
 - app shell atualizado para `central-shell-v9.0.0`;
 - edge cases e política de hardening documentados;
 - **Projetos-filhos:** zero writes nesta release;
-- **Commit/deploy final:** preencher após validação do pipeline final.
+- **Commit de release validado:** `5a243c24447c39eaaae85fd8183e599be5ac9c81`;
+- **Deploy validado:** workflow run `36280042225` — quality `success` + deploy `success`.
 
 ## [8.0.0] — 2026-09-26
 - linha do tempo local de acessos feitos pela Central, limitada a 12 registros;
