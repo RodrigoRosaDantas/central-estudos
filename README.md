@@ -6,9 +6,20 @@ Camada de entrada para os ambientes independentes TCE-GO, SEEDF e TJDFT.
 
 A Central não importa, altera ou replica o código dos projetos-filhos.
 
-## Estado atual — v6.0
+## Estado atual — v7.0
 
-A v6 adiciona PWA e resiliência sem transformar a Central em dependência dos projetos:
+A v7 adiciona um quality gate automatizado antes de cada deploy:
+
+- registry, fallback, manifest e referências internas validados automaticamente;
+- sintaxe de todos os JavaScripts críticos verificada;
+- testes reais de configuração, foco e recuperação de estado local corrompido;
+- contratos de PWA/service worker auditados;
+- detecção simples de secrets/tokens no frontend;
+- workflow dividido em `quality → deploy`;
+- qualquer falha no gate impede a publicação;
+- testes sem rede externa e sem dependências de escrita nos projetos-filhos.
+
+A v6 continua fornecendo PWA e resiliência sem transformar a Central em dependência dos projetos:
 
 - app shell da própria Central disponível como fallback offline após a primeira visita;
 - service worker limitado à origem da Central;
