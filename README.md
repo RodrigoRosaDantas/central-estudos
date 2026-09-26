@@ -6,9 +6,19 @@ Camada de entrada para os ambientes independentes TCE-GO, SEEDF e TJDFT.
 
 A Central não importa, altera ou replica o código dos projetos-filhos.
 
-## Estado atual — v4.0
+## Estado atual — v5.0
 
-A v4 transforma o catálogo em uma ferramenta operacional sem virar outro dashboard:
+A v5 adiciona personalização local, sem backend e sem alterar os projetos:
+
+- densidade confortável ou compacta;
+- exibir/ocultar detalhes técnicos dentro dos cards;
+- ordem manual dos ambientes;
+- restauração segura de foco, favoritos, ordem e apresentação;
+- último acesso preservado durante o reset;
+- preferências inválidas retornam a defaults seguros;
+- tudo salvo somente neste navegador.
+
+A v4 continua fornecendo o catálogo operacional:
 
 - busca local por nome, área e conteúdo do card;
 - ordenação por padrão, favoritos ou nome;
