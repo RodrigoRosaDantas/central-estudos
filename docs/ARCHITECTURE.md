@@ -94,3 +94,13 @@ Exemplo:
 ```
 
 A Central não deve conhecer tabelas ou modelos internos dos projetos-filhos.
+
+
+## Separação semântica — v1.2
+
+A Central distingue duas ideias que não devem ser confundidas:
+
+- **foco**: prioridade configurada no registry;
+- **retomada**: último ambiente efetivamente aberto pelo usuário.
+
+O último acesso nunca altera automaticamente a prioridade do projeto.
