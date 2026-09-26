@@ -160,10 +160,21 @@ function setFocusProject(project) {
 }
 
 function rememberProject(project) {
+  const visitedAt = new Date().toISOString();
   safeStorageSet(STORAGE_KEY, JSON.stringify({
     id: project.id,
-    visitedAt: new Date().toISOString()
+    visitedAt
   }));
+
+  if (typeof CustomEvent === "function") {
+    document.dispatchEvent(new CustomEvent("central:project-opened", {
+      detail: {
+        id: project.id,
+        name: project.name,
+        visitedAt
+      }
+    }));
+  }
 }
 
 function openProject(project) {
@@ -636,6 +647,24 @@ async function checkHealth(project) {
   }
 }
 
+function emitTechnicalState(project) {
+  if (typeof CustomEvent !== "function") return;
+
+  document.dispatchEvent(new CustomEvent("central:technical-state", {
+    detail: {
+      id: project.id,
+      name: project.name,
+      health: project.health,
+      repoUpdatedAt: project.repoUpdatedAt,
+      repoMetaState: project.repoMetaState,
+      repoCheckedAt: project.repoCheckedAt,
+      deployStatus: project.deployStatus,
+      deployUpdatedAt: project.deployUpdatedAt,
+      deployMetaState: project.deployMetaState
+    }
+  }));
+}
+
 async function updateHealth() {
   await Promise.all(
     state.projects.map(async project => {
@@ -643,6 +672,7 @@ async function updateHealth() {
       const slot = document.querySelector(`[data-health="${project.id}"]`);
       if (slot) slot.innerHTML = healthMarkup(project.health);
       if (state.focus?.id === project.id) renderFocus(project);
+      emitTechnicalState(project);
       updatePulse();
     })
   );
@@ -659,6 +689,7 @@ async function updateRepositoryMetadata() {
       const deploySlot = document.querySelector(`[data-deploy="${project.id}"]`);
       if (deploySlot) deploySlot.innerHTML = deployMarkup(project);
 
+      emitTechnicalState(project);
       updatePulse();
     })
   );
@@ -670,6 +701,9 @@ function bindClearHistory() {
 
   clearButton.addEventListener("click", () => {
     safeStorageRemove(STORAGE_KEY);
+    if (typeof CustomEvent === "function") {
+      document.dispatchEvent(new CustomEvent("central:history-cleared"));
+    }
     renderResume();
     renderProjects();
 
