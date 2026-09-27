@@ -16,6 +16,7 @@
   <link rel="stylesheet" href="./css/personalization-v5.css" />
   <link rel="stylesheet" href="./css/timeline-v8.css" />
   <link rel="stylesheet" href="./css/pro-v11.css" />
+  <link rel="stylesheet" href="./css/operational-v13.css" />
 </head>
 <body>
   <a class="skip-link" href="#conteudo">Ir para o conteúdo</a>
@@ -43,6 +44,7 @@
             <span class="pro-now-kicker">FOCO</span>
             <strong id="pro-now-focus-name">TCE-GO</strong>
             <span id="pro-now-focus-meta" class="pro-now-meta">Edital publicado</span>
+            <span id="pro-now-focus-operational" class="pro-now-operational is-hidden"></span>
             <a id="pro-now-focus-link" class="pro-now-action" href="https://rodrigorosadantas.github.io/tce-go-dashboard/">Continuar foco →</a>
           </article>
           <article class="pro-now-card">
@@ -58,6 +60,16 @@
             <a class="pro-now-action" href="#projetos">Ver projetos ↓</a>
           </article>
         </div>
+      </section>
+      <section id="operational-panel" class="section operational-panel" aria-labelledby="operational-title" hidden>
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">ESTADO OPERACIONAL</p>
+            <h2 id="operational-title">Próximas ações publicadas</h2>
+          </div>
+          <p class="muted compact">A Central apenas apresenta o estado publicado por cada projeto. Ela não calcula prioridade nem substitui o mentor interno.</p>
+        </div>
+        <div id="operational-list" class="operational-grid" aria-live="polite" aria-atomic="false"></div>
       </section>
       <section class="hero" aria-labelledby="focus-title">
         <div class="hero-copy"><p class="eyebrow">FOCO ATUAL</p><h2 id="focus-title">TCE-GO</h2><p id="focus-description" class="muted">Controle Externo</p><p id="focus-note" class="focus-note">Ambiente prioritário configurado na Central.</p><div class="hero-meta"><span id="focus-phase" class="badge">Edital publicado</span><span id="focus-health" class="health health-checking"><span class="dot"></span>Verificando</span></div></div>
@@ -135,5 +147,6 @@
   <script src="./js/timeline-v8.js" defer></script>
   <script src="./js/pro-v11.js" defer></script>
   <script src="./js/contracts-v12.js" defer></script>
+  <script src="./js/operational-v13.js" defer></script>
 </body>
 </html>
