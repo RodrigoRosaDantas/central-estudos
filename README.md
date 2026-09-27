@@ -6,9 +6,22 @@ Camada de entrada para os ambientes independentes TCE-GO, SEEDF e TJDFT.
 
 A Central não importa, altera ou replica o código dos projetos-filhos.
 
-## Estado atual — v12.0
+## Estado atual — v13.0
 
-A v12 adiciona contratos operacionais read-only opcionais entre a Central e cada projeto.
+A v13 apresenta na interface o estado operacional autorizado pelos contratos v12.
+
+Evoluções da v13:
+- nova seção **Próximas ações publicadas**;
+- fase, ciclo e unidade atual exibidos quando publicados;
+- próxima ação aparece exatamente como fornecida pelo projeto;
+- `operational`, `planned` e `stale-cache` são visualmente distintos;
+- o foco humano continua independente do estado operacional;
+- alertas públicos do contrato podem ser mostrados;
+- estado stale é apresentado como **Último estado conhecido**, nunca como atual;
+- a camada v13 não faz chamadas de rede próprias;
+- não existe ranking, score, mentor global ou prioridade calculada.
+
+A v12 continua fornecendo contratos operacionais read-only opcionais entre a Central e cada projeto.
 
 Evoluções da v12:
 - registry schema v2 com `statusUrl` opcional;
@@ -43,7 +56,7 @@ Capacidades consolidadas:
 - observabilidade somente leitura, não bloqueante, com disponibilidade, publicação técnica e deploy separados;
 - falhas de rede/rate limit tratadas sem falso estado offline;
 - linha do tempo local de acessos separada de atividade técnica e sem inferência pedagógica;
-- PWA network-first, app shell offline e cache `central-shell-v12.0.0` restrito à Central;
+- PWA network-first, app shell offline e cache `central-shell-v13.0.0` restrito à Central;
 - quality gate automatizado antes de todo deploy;
 - CSP, escape de conteúdo, HTTPS, contraste, teclado, forced colors e touch targets auditados;
 - orçamento de shell <= 120 KiB e zero dependências externas de JS/CSS;
