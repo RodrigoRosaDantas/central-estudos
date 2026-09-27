@@ -2,11 +2,10 @@
 
 ## Estado
 - **Versão de origem:** 10.0.0
-- **Versão validada:** 11.0.0
-- **Stage:** BLOCKED
-- **Active major:** 12.0.0
+- **Versão validada:** 12.0.0
+- **Stage:** READY
 - **Next major:** 13.0.0
-- **Projetos-filhos:** writes restritos e autorizados nesta v12 apenas para `public/central-status.json`; demais arquivos READ-ONLY
+- **Projetos-filhos:** READ-ONLY na v13; contratos v12 já publicados
 - **Automação:** nenhuma
 
 ## Baseline
@@ -78,3 +77,15 @@
 - Estado: aguardando pipeline final da Central v12.0.0.
 
 - **Bloqueio operacional v12:** o run `36285092201` permaneceu `in_progress` no job Quality gate sem steps/logs disponíveis, segurando o run final `36285097988` em `pending`. Código/contratos-filhos já validados estruturalmente; não fechar v12 até um pipeline final da Central concluir `quality + deploy success`.
+
+
+## Fechamento v12.0.0
+- **Resultado:** PASS
+- **Commit validado:** `554063372968b6e128ccf7dc70d22f14b564bd1a`
+- **Pipeline Central:** `36285194809` — quality success + deploy success
+- **Contratos publicados:** PASS nos três projetos
+- **Graceful degradation:** PASS
+- **Home v11 não antecipou v13:** PASS
+- **Projetos-filhos no fechamento:** TCE-GO `889017ba83143be268a84358229882a2b3ef9289`; SEEDF `b68431e2aa4944199705400c8821bf28505299d1`; TJDFT `99877771dcd008594d6855c08f077e1563e609bd`
+- **Próxima etapa autorizada:** v13.0.0 — estado operacional na Visão Agora
+- **Regra v13:** Central-only; nenhum write adicional nos filhos.
