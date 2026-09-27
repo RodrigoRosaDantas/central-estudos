@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'central-shell-v17.0.0';
+const CACHE_VERSION = 'central-shell-v16.0.0';
 const APP_SHELL = [
   './',
   './index.html',
@@ -27,11 +27,7 @@ self.addEventListener('install', (event) => {
 });
 
 self.addEventListener('activate', (event) => {
-  event.waitUntil(
-    caches.keys()
-      .then((keys) => Promise.all(keys.filter((key) => key.startsWith('central-shell-') && key !== CACHE_VERSION).map((key) => caches.delete(key))))
-      .then(() => self.clients.claim())
-  );
+  event.waitUntil(caches.keys().then((keys) => Promise.all(keys.filter((key) => key.startsWith('central-shell-') && key !== CACHE_VERSION).map((key) => caches.delete(key)))).then(() => self.clients.claim()));
 });
 
 self.addEventListener('message', (event) => {
@@ -41,37 +37,25 @@ self.addEventListener('message', (event) => {
 self.addEventListener('fetch', (event) => {
   const request = event.request;
   if (request.method !== 'GET') return;
-
   const url = new URL(request.url);
   const scopeUrl = new URL(self.registration.scope);
   if (url.origin !== scopeUrl.origin || !url.pathname.startsWith(scopeUrl.pathname)) return;
-
   if (request.mode === 'navigate') {
-    event.respondWith(
-      fetch(request)
-        .then((response) => {
-          if (response && response.ok) {
-            const copy = response.clone();
-            caches.open(CACHE_VERSION).then((cache) => cache.put('./index.html', copy));
-          }
-          return response;
-        })
-        .catch(() => caches.match('./index.html'))
-    );
+    event.respondWith(fetch(request).then((response) => {
+      if (response && response.ok) {
+        const copy = response.clone();
+        caches.open(CACHE_VERSION).then((cache) => cache.put('./index.html', copy));
+      }
+      return response;
+    }).catch(() => caches.match('./index.html')));
     return;
   }
-
   if (!APP_SHELL.some((path) => new URL(path, self.registration.scope).href === url.href)) return;
-
-  event.respondWith(
-    fetch(request)
-      .then((response) => {
-        if (response && response.ok) {
-          const copy = response.clone();
-          caches.open(CACHE_VERSION).then((cache) => cache.put(request, copy));
-        }
-        return response;
-      })
-      .catch(() => caches.match(request))
-  );
+  event.respondWith(fetch(request).then((response) => {
+    if (response && response.ok) {
+      const copy = response.clone();
+      caches.open(CACHE_VERSION).then((cache) => cache.put(request, copy));
+    }
+    return response;
+  }).catch(() => caches.match(request)));
 });
