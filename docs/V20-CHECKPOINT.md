@@ -2,12 +2,12 @@
 
 ## Estado
 - **Versão de origem:** 15.0.0
-- **Versão validada:** 19.0.0
-- **Stage:** BLOCKED
-- **Active major:** 20.0.0
-- **Next major:** 20.0.0
+- **Versão validada:** 20.0.0
+- **Stage:** COMPLETE
+- **Active major:** none
+- **Next major:** none
 - **Projetos externos:** READ-ONLY
-- **Automação:** ativa até o fechamento terminal v20
+- **Automação:** encerrar/desativar após este fechamento terminal
 
 ## Baseline v16
 - **Central HEAD inicial:** `d2854585560b58a86a13ae9d16c4061dd85436d9`
@@ -232,3 +232,23 @@
 - **Impacto funcional:** nenhum; o workflow continua com deploy dependente de quality.
 - **Correção autorizada:** ajustar somente a asserção terminal para aceitar a sintaxe YAML viva; nenhum write em produto ou filhos.
 - **Regra:** permanecer em v20; não marcar COMPLETE até novo quality + deploy + pós-deploy QA + guarda final.
+
+
+## Fechamento terminal v20.0.0
+- **Resultado:** PASS — esteira v16→v20 concluída.
+- **Commit de release validado:** `8980ec3de229b85722556d5a9bc2ecc185965476`.
+- **Pipeline de release:** `36332111657` — quality SUCCESS + deploy SUCCESS.
+- **Pós-deploy QA:** PASS sobre o artefato GitHub Pages `10935679416`.
+- **Digest do artefato:** `sha256:9f9d0a728fb8129bab5ddf0ef912594165ba5bcaed5cca3069fd2444bdfc3f27`.
+- **Shell final:** 130.983 bytes <= 131.072 bytes; margem 89 bytes.
+- **Regressão v10/v15:** PASS.
+- **v16 Command Palette / v17 Inbox / v18 Proveniência / v19 Views locais:** PASS.
+- **Mobile/teclado/a11y/offline:** PASS estrutural/automatizado; nenhuma inspeção visual real foi inventada.
+- **Segurança/PWA/registry/documentação/contratos:** PASS.
+- **Fallback/no-JS e links diretos:** PASS.
+- **Rede própria nas camadas PRO/apresentação:** zero.
+- **Contratos:** GET read-only; zero métodos de write.
+- **Segredos óbvios no shell:** nenhum detectado.
+- **Guarda final dos filhos:** TCE-GO `889017ba83143be268a84358229882a2b3ef9289`; SEEDF `b68431e2aa4944199705400c8821bf28505299d1`; TJDFT `99877771dcd008594d6855c08f077e1563e609bd` — iguais ao preflight; zero writes.
+- **Estado terminal:** Stage=COMPLETE; Active major=none; Next major=none.
+- **Regra terminal:** não criar v21 ou qualquer versão além do roadmap v20 sem nova esteira explicitamente definida.

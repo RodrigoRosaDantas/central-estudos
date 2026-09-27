@@ -9,6 +9,10 @@
 - zero writes em TCE-GO, SEEDF e TJDFT;
 - app shell rotacionado para `central-shell-v20.0.0`;
 - auditoria terminal documentada em `docs/FINAL-AUDIT-V20.md`.
+- **Commit terminal validado:** `8980ec3de229b85722556d5a9bc2ecc185965476`;
+- **Workflow terminal validado:** `36332111657` — quality `success` + deploy `success`;
+- **Artefato Pages:** `10935679416`, shell 130.983 bytes <= 131.072 bytes;
+- **Estado terminal:** COMPLETE; nenhuma v21 definida.
 
 
 ## [19.0.0] — 2026-09-27
