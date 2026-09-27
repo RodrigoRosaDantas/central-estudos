@@ -27,10 +27,10 @@ Auditoria terminal da Central de Estudos conforme `COMMAND-V10`, `ACCEPTANCE-V10
 | Documentação | PASS | README, arquitetura, changelog, checkpoint e auditoria final consolidados para v10. |
 | Código morto/duplicação | PASS automatizado | gate v9 cobre JS/CSS órfãos e funções nomeadas mortas; duplicação mínima do fallback é intencional. |
 | Registry | PASS | schema 1, IDs únicos, default existente, HTTPS e versão semântica 10.0.0. |
-| Workflow | PASS | `quality` precede `deploy`; deploy depende de quality; Node 22; sem dependências npm. |
+| Workflow | PASS | `quality` precede `deploy`; deploy depende de quality; Node 22; sem dependências npm. Actions atualizadas para `checkout@v7`, `configure-pages@v6`, `upload-pages-artifact@v5` e `deploy-pages@v5`; warning legado de Node 20 eliminado. |
 | Recuperação de falha | PASS | progressive enhancement, fallback estático, cache network-first e política de rollback documentada. |
 | Histórico/changelog | PASS | majors v2→v9 registradas; v10 é a release terminal. |
-| Projetos-filhos | PASS no preflight | TCE-GO `2986dabf...`; SEEDF `bb006c3b...`; TJDFT `8aa366c0...`; conferir novamente antes do fechamento. |
+| Projetos-filhos | PASS final | TCE-GO `2986dabf2ddb3ed6b22fa58b9a5151981a678dbf`; SEEDF `bb006c3bc896534716e6b568849669a7fe4424c8`; TJDFT `8aa366c0068f6f705fb2d27a44b7a522f90003d9`; idênticos ao preflight e zero writes nesta execução. |
 
 ## Quality gate terminal
 
@@ -43,3 +43,25 @@ Não foi inventada inspeção visual real em navegador quando a ferramenta dispo
 ## Critério terminal
 
 Com os gates acima e o deploy final aprovados: `Status: COMPLETE — v10.0.0`, `Next major: none`, `Active major: none`, `Stage: COMPLETE`. Não iniciar v11.
+
+
+## Fechamento terminal
+
+- **Release validada:** 10.0.0
+- **Commit de produto validado:** `f19cb013b2dfaf20cfc4febb00ab677a79741fd0`
+- **Workflow final de produto:** `36283643314`
+- **Quality gate:** success
+- **Deploy:** success
+- **URL de ambiente reportada pelo GitHub Pages:** `https://rodrigorosadantas.github.io/central-estudos/`
+- **Artifact/Pages:** deployment criado para o mesmo HEAD `f19cb013b2dfaf20cfc4febb00ab677a79741fd0`
+- **Actions de pipeline:** checkout v7, setup-node v7, configure-pages v6, upload-pages-artifact v5, deploy-pages v5
+- **Warning legado de Node 20:** não reproduzido após atualização das actions
+- **Shell auditado:** ~91,7 KiB de fonte própria, abaixo do orçamento automatizado de 120 KiB
+- **Débitos críticos anteriores:** nenhum crítico aberto identificado; o único débito detectado na auditoria terminal foi o uso de majors antigas das actions de Pages e foi resolvido antes do fechamento.
+- **Projetos-filhos:** SHAs finais iguais ao preflight; zero writes.
+
+### Resultado final
+
+**PASS — v10.0.0 apta para COMPLETE.**
+
+A URL pública não pôde ser aberta pela ferramenta web desta sessão; a validação de produção usa o deployment reportado pelo próprio GitHub Pages, o HEAD publicado, o quality gate e a revalidação estrutural dos arquivos críticos. Nenhuma inspeção visual foi inventada.
