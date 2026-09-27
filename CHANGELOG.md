@@ -9,8 +9,11 @@
 - preservados fallback, progressive enhancement, mobile-first, observabilidade não bloqueante e separação entre foco/retomada/favorito/acesso/recência técnica;
 - quality gate continua obrigatório antes do deploy;
 - nenhuma responsabilidade pedagógica global ou acoplamento obrigatório foi introduzido;
-- **Projetos-filhos:** somente leitura; zero writes durante a implementação; SHAs devem ser reconfirmados no fechamento;
-- **Commit/deploy final:** pendentes de fechamento após quality + deploy + post-deploy QA.
+- auditoria terminal: PASS estrutural/automatizado, com limitação explícita de ausência de inspeção visual interativa real;
+- **Projetos-filhos:** somente leitura; zero writes nesta esteira; SHAs finais confirmados: TCE-GO `2986dabf2ddb3ed6b22fa58b9a5151981a678dbf`, SEEDF `bb006c3bc896534716e6b568849669a7fe4424c8`, TJDFT `8aa366c0068f6f705fb2d27a44b7a522f90003d9`;
+- **Commit de release validado:** `f19cb013b2dfaf20cfc4febb00ab677a79741fd0`;
+- **Workflow/deploy final da release:** Pages `36283643314` — `quality: success` + `deploy: success`;
+- **Estado terminal:** `COMPLETE — v10.0.0`; nenhuma v11 iniciada automaticamente.
 
 ## [9.0.0] — 2026-09-26
 - hardening de segurança, acessibilidade, mobile, rede e performance;
