@@ -334,14 +334,12 @@ function testV9Hardening(registry) {
     "js/pro-v11.js",
     "js/contracts-v12.js",
     "js/operational-v13.js",
-    "js/routing-v14.js",
     "css/app.css",
     "css/catalog-v4.css",
     "css/personalization-v5.css",
     "css/timeline-v8.css",
     "css/pro-v11.css",
     "css/operational-v13.css",
-    "css/routing-v14.css"
   ];
   const payloadBytes = payloadFiles.reduce((total, file) => total + fs.statSync(path.join(ROOT, file)).size, 0);
   assert.ok(payloadBytes <= 120 * 1024, `first-party shell source budget exceeded: ${payloadBytes} bytes`);
@@ -480,8 +478,8 @@ function testV13OperationalState(registry) {
 
 function testV14ExplainableRouting(registry) {
   const html = read("index.html");
-  const routing = read("js/routing-v14.js");
-  const css = read("css/routing-v14.css");
+  const routing = read("js/operational-v13.js");
+  const css = read("css/operational-v13.css");
   const sw = read("sw.js");
 
   assert.ok(html.includes('id="routing-panel"'), "v14 routing panel must exist");
@@ -510,8 +508,8 @@ function testV14ExplainableRouting(registry) {
 
   const cacheMajor = Number(sw.match(/central-shell-v(\d+)\./)?.[1] || 0);
   assert.ok(cacheMajor >= 14, "service worker cache must preserve v14 or newer");
-  assert.ok(sw.includes("./js/routing-v14.js"), "v14 JS must be in app shell");
-  assert.ok(sw.includes("./css/routing-v14.css"), "v14 CSS must be in app shell");
+  assert.ok(sw.includes("./js/operational-v13.js"), "v14 routing must remain in operational app-shell JS");
+  assert.ok(sw.includes("./css/operational-v13.css"), "v14 routing styles must remain in operational app-shell CSS");
 
   for (const project of registry.projects) {
     assert.ok(html.includes(project.url), `v14 must preserve direct link for ${project.id}`);
@@ -566,7 +564,6 @@ const syntaxFiles = [
   "js/pro-v11.js",
   "js/contracts-v12.js",
   "js/operational-v13.js",
-  "js/routing-v14.js",
   "sw.js"
 ];
 
