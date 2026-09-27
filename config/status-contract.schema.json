@@ -1,0 +1,109 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://rodrigorosadantas.github.io/central-estudos/config/status-contract.schema.json",
+  "title": "Central de Estudos — Status Contract v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "projectId",
+    "publishedAt",
+    "source",
+    "state"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": 1
+    },
+    "projectId": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-]+$"
+    },
+    "publishedAt": {
+      "type": "string",
+      "format": "date"
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "ref",
+        "status",
+        "updatedAt"
+      ],
+      "properties": {
+        "kind": {
+          "const": "public-project-state"
+        },
+        "ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "status": {
+          "type": "string",
+          "minLength": 1
+        },
+        "updatedAt": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "state": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "phase",
+        "cycle",
+        "currentUnit",
+        "nextAction",
+        "nextActionKind",
+        "alerts"
+      ],
+      "properties": {
+        "phase": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "cycle": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "currentUnit": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "nextAction": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "nextActionKind": {
+          "enum": [
+            "operational",
+            "planned",
+            "manual",
+            "none"
+          ]
+        },
+        "alerts": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 10
+        }
+      }
+    }
+  }
+}
