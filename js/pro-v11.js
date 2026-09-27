@@ -67,5 +67,5 @@ document.addEventListener("keydown",e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLower
 }
 ["central:app-ready","central:focus-changed","central:project-opened","central:history-cleared","central:catalog-refresh"].forEach(e=>document.addEventListener(e,refresh));
 if(grid&&"MutationObserver"in window)new MutationObserver(()=>queueMicrotask(refresh)).observe(grid,{childList:true,subtree:false});
-document.addEventListener("DOMContentLoaded",()=>{refresh();activeNav();renderWorkspace()});
+document.addEventListener("DOMContentLoaded",()=>{refresh();activeNav();renderWorkspace();initCommand()});
 })();
