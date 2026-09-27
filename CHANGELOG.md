@@ -23,6 +23,9 @@
 - **Home mobile simplificada:** remove duplicações de foco/retomada, adota rótulos Acessos/Histórico e prioriza Evolução antes de “Como entrar”.
 - **Atualização operacional global:** botão `Atualizar tudo` reaproveita refresh read-only dos contratos, sem fetch na camada de apresentação.
 - **Validação:** commit `9f4ab37745c85b23908fa29acedbabebbea34034`, workflow `36337115700`, artefato `10936824711`, shell 130.989 bytes.
+- **Manutenção UX — foco, retomada e evolução:** foco e último ambiente aberto agora aparecem uma única vez em “Agora”; a retomada informa último acesso sem sugerir aula exata ou progresso.
+- **Validação funcional:** commit `fa47c154cbf377c55c006869c23ab1794357b373`, workflow `36339824154` — quality SUCCESS + deploy SUCCESS; artefato `10937469381`, digest `sha256:f765d120cfce8983a349ca13ee3a4b23c95cd76cc30e91af22078b4af7d9b140`; shell 130.229 bytes.
+
 ## [19.0.0] — 2026-09-27
 - Views locais nomeadas e limitadas a 8 por navegador;
 - snapshots restritos a aba do Workspace, lente e filtros da Inbox;
