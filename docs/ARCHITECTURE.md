@@ -10,7 +10,7 @@ Ela lista ambientes, destaca foco, recorda último acesso, oferece organização
 
 ## Registry
 
-A fonte dinâmica de verdade é `config/projects.json` (`schemaVersion: 1`). Campos de projeto: `id`, `name`, `description`, `phase`, `status`, `priority`, `icon`, `url`, `repository`.
+A fonte dinâmica de verdade é `config/projects.json` (`schemaVersion: 3`). O lifecycle é explícito em `status`: `active`, `archived` ou `future`. Projetos ativos/arquivados possuem URL e repositório HTTPS; futuros podem existir sem URL até o ambiente ser criado. `statusUrl` continua opcional e destinado ao contrato read-only.
 
 ## Fallback e progressive enhancement
 
@@ -32,7 +32,7 @@ Busca, favoritos, ordenação, atalhos e ordem manual são camadas locais sobre 
 
 ## PWA e resiliência
 
-O service worker é limitado à origem e ao pathname da Central. O cache da release estável é `central-shell-v10.0.0` e contém somente o app shell da Central.
+O service worker é limitado à origem e ao pathname da Central. O cache da release atual é `central-shell-v15.0.0` e contém somente o app shell da Central.
 
 Estratégia:
 - navegações e assets conhecidos usam **network first**;
