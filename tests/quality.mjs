@@ -790,6 +790,7 @@ function testReleaseDocumentationCoherence(registry) {
   const sw = read("sw.js");
   const roadmap21 = read("docs/ROADMAP-V21.md");
   const checkpoint21 = read("docs/V21-CHECKPOINT.md");
+  const audit21 = read("docs/FINAL-AUDIT-V21.md");
 
   const version = registry.central.version;
   const major = Number(version.split(".")[0]);
@@ -838,9 +839,12 @@ function testReleaseDocumentationCoherence(registry) {
   }
   if (major >= 21) {
     assert.equal(version,"21.0.0","v21 release must be terminal version 21.0.0");
-    assert.ok(roadmap21.includes("21.0.0")&&checkpoint21.includes("21.0.0"),"v21 roadmap and checkpoint must be present");
+    assert.ok(roadmap21.includes("Stage:** COMPLETE")&&checkpoint21.includes("Stage:** COMPLETE"),"v21 roadmap and checkpoint must be closed");
+    assert.ok(audit21.includes("418231a98699a52b07bdce6d94d6d00a3c1e01bd")&&audit21.includes("36346724227"),"v21 audit must bind the release commit and workflow");
+    assert.ok(audit21.includes("não executado")&&audit21.includes("mobile"),"v21 audit must disclose mobile visual inspection status");
     assert.ok(architecture.includes("## Presença e Ritmo — v21"),"architecture must describe the v21 experience");
     assert.ok(changelog.includes("## [21.0.0]"),"changelog must include v21 release");
+    assert.ok(exists("docs/FINAL-AUDIT-V21.md"),"v21 final audit must exist");
     assert.ok(sw.includes("central-shell-v21.0.0"),"service worker cache must match v21 release");
   }
 
