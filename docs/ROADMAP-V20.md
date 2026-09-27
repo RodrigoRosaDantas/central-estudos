@@ -10,6 +10,8 @@ Os projetos externos permanecem somente leitura nesta roadmap, salvo autorizaç�
 
 ## v16 — Command Palette
 
+**Budget da geração v16+:** <= 128 KiB. A v15 permanece registrada com seu fechamento <= 120 KiB.
+
 Objetivo: acesso rápido por teclado e toque sem aumentar a complexidade visual da Home.
 
 Escopo:
@@ -20,7 +22,7 @@ Escopo:
 - ações rápidas para foco e retomada quando existentes;
 - teclado com ↑/↓/Enter/Escape;
 - sem chamadas de rede;
-- manter shell <= 120 KiB.
+- manter shell <= 128 KiB.
 
 ## v17 — Inbox operacional
 
