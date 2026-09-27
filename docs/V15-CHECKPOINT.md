@@ -3,7 +3,7 @@
 ## Estado
 - **Versão de origem:** 10.0.0
 - **Versão validada:** 13.0.0
-- **Stage:** IN_PROGRESS
+- **Stage:** VALIDATING
 - **Active major:** 14.0.0
 - **Next major:** 15.0.0
 - **Projetos-filhos:** READ-ONLY na v14; contratos v12 já publicados
@@ -134,3 +134,16 @@
 - **Child HEADs:** TCE-GO `889017ba83143be268a84358229882a2b3ef9289`; SEEDF `b68431e2aa4944199705400c8821bf28505299d1`; TJDFT `99877771dcd008594d6855c08f077e1563e609bd`.
 - **Writes nos filhos:** proibidos nesta v14.
 - **Acceptance v14:** usuário escolhe a lente; lentes Foco/Retomada/Ações publicadas/Alertas; cada item explica por que aparece; sem ranking/score/recomendação automática; ordem de múltiplos itens segue o catálogo; stale explicitamente marcado; camada sem fetch; fallback/mobile preservados; quality + deploy passam.
+
+
+## QA v14
+- Lentes explícitas: implementadas.
+- Foco/Retomada/Ações publicadas/Alertas: implementados.
+- Explicação “Por que aparece aqui?”: implementada.
+- Ordem múltipla = catálogo: PASS.
+- Estado stale = Último estado conhecido: PASS.
+- Rede própria da v14: zero.
+- Ranking/score/recomendação automática: ausentes.
+- Refactor de payload: v13/v14 consolidados sem elevar o orçamento.
+- Pipeline de implementação: `36286667986` — quality success + deploy success.
+- Estado: aguardando pipeline final já com versão/documentação 14.0.0.
