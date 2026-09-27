@@ -1,5 +1,20 @@
 # CHANGELOG — Central de Estudos
 
+## [14.0.0] — 2026-09-27
+- roteamento explicável por lentes escolhidas pelo usuário;
+- lentes: Foco, Retomada, Ações publicadas e Alertas;
+- cada resultado explica por que aparece;
+- múltiplos resultados preservam a ordem do catálogo;
+- estado stale mostrado como **Último estado conhecido**;
+- lente local persistida sem backend;
+- zero chamadas de rede adicionais;
+- sem ranking, score, prioridade calculada ou recomendação automática;
+- camada v13/v14 consolidada para evitar duplicação;
+- shell mantido dentro do orçamento de 120 KiB sem aumentar o limite;
+- app shell atualizado para `central-shell-v14.0.0`;
+- **Projetos-filhos:** read-only; zero writes;
+- **Commit/deploy final:** preencher após pipeline final.
+
 ## [13.0.0] — 2026-09-27
 - estado operacional dos contratos v12 passa a ser apresentado na interface;
 - nova seção **Próximas ações publicadas**;
