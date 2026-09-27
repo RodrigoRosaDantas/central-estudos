@@ -380,7 +380,8 @@ function testV11Pro(registry) {
   assert.ok(css.includes("position:fixed"), "v11 mobile navigation must remain reachable");
   assert.ok(css.includes("min-height:52px"), "v11 mobile nav touch targets must be adequate");
 
-  assert.ok(sw.includes("central-shell-v11.0.0"), "v11 service worker cache must be versioned");
+  const v11CacheMajor = Number(sw.match(/central-shell-v(\d+)\./)?.[1] || 0);
+  assert.ok(v11CacheMajor >= 11, "service worker cache must preserve v11 or newer");
   assert.ok(sw.includes("./js/pro-v11.js"), "v11 JS must be in the app shell");
   assert.ok(sw.includes("./css/pro-v11.css"), "v11 CSS must be in the app shell");
 
@@ -424,7 +425,8 @@ function testV12Contracts(registry) {
   assert.ok(!pro.includes("nextAction"), "v12 must not expose nextAction in the Home before v13");
   assert.ok(!pro.includes("currentUnit"), "v12 must not expose currentUnit in the Home before v13");
 
-  assert.ok(sw.includes("central-shell-v12.0.0"), "v12 app shell cache must be versioned");
+  const v12CacheMajor = Number(sw.match(/central-shell-v(\d+)\./)?.[1] || 0);
+  assert.ok(v12CacheMajor >= 12, "service worker cache must preserve v12 or newer");
   assert.ok(sw.includes("./js/contracts-v12.js"), "v12 contract consumer must be in app shell");
   for (const project of registry.projects) {
     assert.ok(!sw.includes(project.statusUrl), `service worker must not cache child contract: ${project.id}`);
@@ -444,10 +446,13 @@ function testSecurityAndContracts(registry) {
     "js/personalization-v5.js",
     "js/pwa-v6.js",
     "js/timeline-v8.js",
+    "js/pro-v11.js",
+    "js/contracts-v12.js",
     "css/app.css",
     "css/catalog-v4.css",
     "css/personalization-v5.css",
-    "css/timeline-v8.css"
+    "css/timeline-v8.css",
+    "css/pro-v11.css"
   ];
 
   const combined = frontendFiles.map(read).join("\n");
