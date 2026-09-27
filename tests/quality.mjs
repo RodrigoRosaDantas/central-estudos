@@ -327,10 +327,12 @@ function testV9Hardening(registry) {
     "js/personalization-v5.js",
     "js/pwa-v6.js",
     "js/timeline-v8.js",
+    "js/pro-v11.js",
     "css/app.css",
     "css/catalog-v4.css",
     "css/personalization-v5.css",
-    "css/timeline-v8.css"
+    "css/timeline-v8.css",
+    "css/pro-v11.css"
   ];
   const payloadBytes = payloadFiles.reduce((total, file) => total + fs.statSync(path.join(ROOT, file)).size, 0);
   assert.ok(payloadBytes <= 120 * 1024, `first-party shell source budget exceeded: ${payloadBytes} bytes`);
@@ -340,6 +342,50 @@ function testV9Hardening(registry) {
   }
 
   pass("v9 security, accessibility, contrast, network and payload hardening");
+}
+
+
+function testV11Pro(registry) {
+  const html = read("index.html");
+  const pro = read("js/pro-v11.js");
+  const css = read("css/pro-v11.css");
+  const app = read("js/app.js");
+  const sw = read("sw.js");
+
+  assert.ok(html.includes('class="pro-nav"'), "v11 primary navigation must exist");
+  for (const anchor of ["#agora", "#projetos", "#activity-panel", "#diagnostico"]) {
+    assert.ok(html.includes(`href="${anchor}"`), `v11 navigation anchor missing: ${anchor}`);
+  }
+
+  assert.ok(html.includes('id="agora"'), "v11 now section must exist");
+  assert.ok(html.includes('id="pro-now-focus-name"'), "v11 now view must expose focus");
+  assert.ok(html.includes('id="pro-now-resume-name"'), "v11 now view must expose resume");
+  assert.ok(html.includes('id="pro-now-project-count"'), "v11 now view must expose project count");
+
+  assert.ok(pro.includes("central:app-ready"), "v11 must refresh when app state becomes ready");
+  assert.ok(pro.includes("central:focus-changed"), "v11 must refresh when focus changes");
+  assert.ok(pro.includes("central:project-opened"), "v11 must refresh after local access");
+  assert.ok(pro.includes("central:history-cleared"), "v11 must refresh after history reset");
+  assert.ok(!pro.includes("fetch("), "v11 UX layer must not create external network calls");
+
+  assert.ok(app.includes("central:app-ready"), "core app must expose ready event for v11");
+  assert.ok(app.includes("central:focus-changed"), "core app must expose focus change event for v11");
+
+  assert.ok(css.includes("@media(max-width:719px)"), "v11 must define mobile navigation");
+  assert.ok(css.includes("position:fixed"), "v11 mobile navigation must remain reachable");
+  assert.ok(css.includes("min-height:52px"), "v11 mobile nav touch targets must be adequate");
+
+  assert.ok(sw.includes("central-shell-v11.0.0"), "v11 service worker cache must be versioned");
+  assert.ok(sw.includes("./js/pro-v11.js"), "v11 JS must be in the app shell");
+  assert.ok(sw.includes("./css/pro-v11.css"), "v11 CSS must be in the app shell");
+
+  for (const project of registry.projects) {
+    assert.ok(html.includes(project.url), `v11 must preserve direct fallback for ${project.id}`);
+  }
+
+  assert.ok(!/próxima ação|progresso de estudo|horas estudadas/i.test(pro), "v11 must not invent pedagogical state");
+
+  pass("v11 PRO navigation, now view and no-fake-state contracts");
 }
 
 function testSecurityAndContracts(registry) {
@@ -382,6 +428,7 @@ const syntaxFiles = [
   "js/personalization-v5.js",
   "js/pwa-v6.js",
   "js/timeline-v8.js",
+  "js/pro-v11.js",
   "sw.js"
 ];
 
@@ -398,6 +445,7 @@ testServiceWorker(registry);
 testCriticalAppLogic(registry);
 testTimelineContract(registry);
 testV9Hardening(registry);
+testV11Pro(registry);
 testSecurityAndContracts(registry);
 
 console.log("\nQuality gate PASS");
