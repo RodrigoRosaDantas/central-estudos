@@ -592,7 +592,7 @@ function testV16CommandPalette(registry) {
   assert.ok(pro.includes('setAttribute("role","option")'), "v16 results must expose option semantics");
   assert.ok(pro.includes('"Projeto ativo"') && pro.includes('"Histórico arquivado"') && pro.includes('"Projeto futuro"'), "v16 must distinguish workspace lifecycle");
   assert.ok(pro.includes('Ir para Agora') && pro.includes('Ir para Workspace') && pro.includes('Ir para Diagnóstico'), "v16 must search core navigation");
-  assert.ok(pro.includes("Continuar foco") && pro.includes("Retomar"), "v16 must expose valid focus/resume quick actions");
+  assert.ok(pro.includes("Continuar foco") && pro.includes("Abrir último ambiente"), "v16 must expose focus and last-project quick actions");
   assert.ok(!pro.includes("fetch("), "v16 command palette must not create network calls");
 
   assert.ok(css.includes(".command-open"), "v16 must provide a visible touch control");
@@ -728,16 +728,25 @@ function testV20MobileHomeSimplification() {
   const html=read("index.html"),css=read("css/pro-v11.css");
   assert.ok(html.includes(">Acessos<")&&html.includes(">Histórico<"),"v20 mobile UX must use clearer navigation labels");
   assert.ok(html.includes("COMO ENTRAR")&&html.includes("Acessos rápidos"),"v20 UX must simplify routing and project language");
-  assert.ok(css.includes("main>.hero,main>.resume-card{display:none}"),"mobile home must hide duplicated focus/resume blocks");
-  pass("v20 mobile home simplification and clearer navigation");
+  assert.ok(html.includes('id="pro-now-focus-name"')&&html.includes('id="pro-now-resume-name"')&&html.includes('id="resume-button"'),"the Agora view must hold the single focus and last-project actions");
+  const pro=read("js/pro-v11.js");
+  assert.ok(pro.includes('F.textContent=$("pro-now-focus-name")')&&pro.includes('FL.href=$("pro-now-focus-link")')&&pro.includes('RL=$("resume-button")'),"focus and last-project controls must bind to the consolidated Agora view");
+  assert.ok(!html.includes('class="hero"')&&!html.includes('class="section resume-card"'),"duplicate full focus/resume sections must be removed at every viewport");
+  const activityStart=html.indexOf('id="activity-panel"'),clearHistory=html.indexOf('id="clear-history"'),activityEnd=html.indexOf("</section>",activityStart);
+  assert.ok(clearHistory>activityStart&&clearHistory<activityEnd,"clear-history must remain inside the history view");
+  assert.ok(!html.includes('id="last-project-text"'),"retomada must not use a separate duplicate panel");
+  assert.ok(!css.includes("main>.hero,main>.resume-card{display:none}"),"mobile CSS must not hide duplicate focus/resume sections that no longer exist");
+  pass("v20 consolidated focus/resume home and clearer navigation");
 }
 
 function testV20EvolutionRefreshAll() {
   const html=read("index.html"),operational=read("js/operational-v13.js");
   assert.ok(html.indexOf('id="operational-panel"')<html.indexOf('id="routing-panel"'),"evolution must appear before routing");
+  assert.ok(html.includes('id="operational-title">Evolução dos projetos'),"evolution heading must remain clear");
+  assert.ok(!operational.includes('panel.querySelector("h2").textContent')&&!operational.includes("Ações e alertas publicados pelos projetos"),"inbox setup must not replace the evolution heading or its contract-based description");
   assert.ok(html.includes('id="refresh-all-contracts"'),"evolution must expose refresh all");
   assert.ok(operational.includes("central:contract-refresh")&&operational.includes("allProjects().forEach"),"refresh all must reuse read-only contract refresh events");
-  pass("v20 evolution-first layout and read-only refresh all");
+  pass("v20 evolution heading and read-only refresh all");
 }
 
 function testReleaseDocumentationCoherence(registry) {
