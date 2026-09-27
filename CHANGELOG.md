@@ -1,5 +1,19 @@
 # CHANGELOG — Central de Estudos
 
+## [13.0.0] — 2026-09-27
+- estado operacional dos contratos v12 passa a ser apresentado na interface;
+- nova seção **Próximas ações publicadas**;
+- fase, ciclo, unidade atual, próxima ação e alertas exibidos quando publicados;
+- ações `operational` e `planned` recebem rótulos distintos;
+- stale cache é mostrado como **Último estado conhecido**;
+- foco escolhido pelo usuário permanece independente do estado operacional;
+- camada v13 sem chamadas de rede próprias;
+- sem ranking, score, prioridade calculada ou mentor global;
+- novos assets `operational-v13.css` e `operational-v13.js`;
+- app shell atualizado para `central-shell-v13.0.0`;
+- **Projetos-filhos:** read-only nesta major; zero writes;
+- **Commit/deploy final:** preencher após pipeline final.
+
 ## [12.0.0] — 2026-09-27
 - registry atualizado para schema v2 com `statusUrl`;
 - contrato público de estado operacional v1 definido e documentado;
