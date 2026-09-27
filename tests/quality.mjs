@@ -633,6 +633,31 @@ function testV17OperationalInbox(registry) {
   pass("v17 local operational inbox, provenance, stale separation and no-ranking contracts");
 }
 
+function testV18ProvenanceFreshness(registry) {
+  const contracts = read("js/contracts-v12.js");
+  const operational = read("js/operational-v13.js");
+
+  assert.ok(operational.includes("Origem e frescor"), "v18 must expose provenance/freshness details");
+  assert.ok(operational.includes("ageText"), "v18 must calculate descriptive contract/source age");
+  assert.ok(operational.includes("s.kind") && operational.includes("s.ref") && operational.includes("s.status"), "v18 must expose source kind/ref/status");
+  assert.ok(operational.includes("Schema v") && operational.includes("Compatível"), "v18 must expose validated schema compatibility");
+  assert.ok(operational.includes("Atualizar contrato"), "v18 must expose manual refresh");
+  assert.ok(operational.includes("central:contract-refresh"), "v18 presentation must request refresh by event");
+  assert.ok(contracts.includes("central:contract-refresh"), "v18 contract layer must consume manual refresh events");
+  assert.ok(contracts.includes("loadContract(project, true)"), "v18 manual refresh must explicitly bypass fresh cache");
+  assert.ok(contracts.includes("refreshing"), "v18 manual refresh must deduplicate concurrent requests");
+  assert.ok(contracts.includes('method: "GET"'), "v18 refresh must remain read-only GET");
+  assert.ok(contracts.includes('cache:"no-store"'), "v18 refresh must request fresh contract data");
+  assert.ok(!operational.includes("fetch("), "v18 presentation layer must not create network calls");
+  assert.ok(!/poll|setInterval\(/i.test(operational + contracts), "v18 must not add polling");
+
+  for (const project of registry.projects) {
+    if (project.url) assert.ok(read("index.html").includes(project.url), `v18 must preserve direct link for ${project.id}`);
+  }
+
+  pass("v18 contract provenance, freshness, compatibility and safe manual refresh");
+}
+
 function testReleaseDocumentationCoherence(registry) {
   const readme = read("README.md");
   const architecture = read("docs/ARCHITECTURE.md");
@@ -664,6 +689,13 @@ function testReleaseDocumentationCoherence(registry) {
     assert.ok(architecture.includes("## Inbox operacional — v17"), "architecture must document v17 inbox");
     assert.ok(checkpoint20.includes("17.0.0"), "v20 checkpoint must track v17");
     assert.ok(changelog.includes("## [17.0.0]"), "changelog must include v17 release");
+  }
+
+  if (major >= 18) {
+    assert.ok(roadmap20.includes("## v18 — Proveniência e frescor"), "v20 roadmap must document v18");
+    assert.ok(architecture.includes("## Proveniência e frescor — v18"), "architecture must document v18");
+    assert.ok(checkpoint20.includes("18.0.0"), "v20 checkpoint must track v18");
+    assert.ok(changelog.includes("## [18.0.0]"), "changelog must include v18 release");
   }
 
   pass("release documentation coherence");
@@ -738,6 +770,7 @@ testV14ExplainableRouting(registry);
 testV15Workspace(registry);
 testV16CommandPalette(registry);
 testV17OperationalInbox(registry);
+testV18ProvenanceFreshness(registry);
 testReleaseDocumentationCoherence(registry);
 testSecurityAndContracts(registry);
 
