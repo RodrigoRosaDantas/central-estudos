@@ -104,3 +104,32 @@ A camada `pro-v11.js` não faz chamadas de rede. Ela apenas reflete estado já e
 ### Futuro
 
 A evolução v12→v15 está descrita em `docs/ROADMAP-V15.md`. Contratos read-only publicados dentro dos projetos-filhos continuam exigindo autorização explícita para qualquer write nesses repositórios.
+
+
+## Contratos read-only — v12
+
+A v12 adiciona um canal operacional explícito e opcional entre projetos e Central.
+
+O registry passa para `schemaVersion: 2` e pode declarar `statusUrl`. O contrato publicado nesse endpoint segue `config/status-contract.schema.json` e o documento `docs/STATUS-CONTRACT-V1.md`.
+
+### Fluxo
+
+`projeto → central-status.json → validação v1 → cache local → evento central:contract-state → diagnóstico`
+
+Regras:
+- transporte GET somente leitura;
+- timeout de 3,5 s;
+- cache local de 5 min;
+- stale cache é explicitamente marcado;
+- ID do contrato deve corresponder ao ID do registry;
+- schema desconhecido é rejeitado;
+- contrato ausente, inválido ou indisponível não bloqueia links nem observabilidade;
+- a Central não usa snapshots grandes como fallback;
+- o service worker da Central não intercepta os contratos dos filhos;
+- `nextAction` e `currentUnit` ainda não são usados pela Visão Agora na v12.
+
+### Publicação nos filhos
+
+Cada projeto recebeu somente `public/central-status.json`, por autorização específica desta etapa. Nenhum banco, Supabase, Notion, componente, pipeline ou lógica interna foi alterado.
+
+A v13 poderá usar os campos operacionais já autorizados pelo contrato.
