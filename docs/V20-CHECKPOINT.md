@@ -2,8 +2,8 @@
 
 ## Estado
 - **Versão de origem:** 15.0.0
-- **Versão ativa:** 16.0.0
-- **Stage:** VALIDATING
+- **Versão validada:** 16.0.0
+- **Stage:** READY
 - **Next major:** 17.0.0
 - **Projetos externos:** READ-ONLY
 - **Automação:** nenhuma
@@ -48,3 +48,20 @@
 - Shell atual: ~129,4 KB <= 128 KiB.
 - Pipeline de implementação: `36312740627` — quality success + deploy success.
 - Estado: aguardando pipeline final da release 16.0.0.
+
+
+## Fechamento v16.0.0
+- **Resultado:** PASS
+- **Commit validado:** `cfbac82a6bc1b9d924ef5b34f5f40884deb3be38`
+- **Pipeline:** `36312910219` — quality success + deploy success
+- **Command Palette:** PASS
+- **Ctrl/Cmd+K:** PASS
+- **Touch/mobile trigger:** PASS
+- **Busca workspace active/archived/future:** PASS
+- **Foco/retomada:** PASS
+- **Teclado ↑/↓/Enter/Escape:** PASS
+- **Rede adicional da v16:** zero
+- **Shell final:** 129.424 bytes <= 131.072 bytes
+- **Projetos externos:** zero writes; HEADs finais iguais ao preflight v16
+- **Próxima etapa autorizada:** v17.0.0 — Inbox operacional
+- **Regra:** não iniciar v17 nesta mesma execução.
