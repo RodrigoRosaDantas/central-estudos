@@ -6,9 +6,21 @@ Camada de entrada para os ambientes independentes TCE-GO, SEEDF e TJDFT.
 
 A Central não importa, altera ou replica o código dos projetos-filhos.
 
-## Estado atual — v11.0
+## Estado atual — v12.0
 
-A v11 inicia uma nova geração sobre a base estável da v10.
+A v12 adiciona contratos operacionais read-only opcionais entre a Central e cada projeto.
+
+Evoluções da v12:
+- registry schema v2 com `statusUrl` opcional;
+- contrato público versionado em `central-status.json`;
+- schema v1 documentado em `docs/STATUS-CONTRACT-V1.md`;
+- consumidor com timeout, cache curto e fallback stale;
+- contrato inválido/indisponível nunca bloqueia o projeto;
+- Diagnóstico informa disponibilidade do contrato sem exibir ainda `nextAction`;
+- service worker não intercepta/cacheia contratos dos projetos-filhos;
+- TCE-GO, SEEDF e TJDFT publicam somente um arquivo leve autorizado para a Central.
+
+A v11 permanece como a camada PRO/UX sobre a base estável da v10.
 
 Evoluções da v11:
 - **Visão Agora** com foco, retomada e quantidade de ambientes;
@@ -31,7 +43,7 @@ Capacidades consolidadas:
 - observabilidade somente leitura, não bloqueante, com disponibilidade, publicação técnica e deploy separados;
 - falhas de rede/rate limit tratadas sem falso estado offline;
 - linha do tempo local de acessos separada de atividade técnica e sem inferência pedagógica;
-- PWA network-first, app shell offline e cache `central-shell-v11.0.0` restrito à Central;
+- PWA network-first, app shell offline e cache `central-shell-v12.0.0` restrito à Central;
 - quality gate automatizado antes de todo deploy;
 - CSP, escape de conteúdo, HTTPS, contraste, teclado, forced colors e touch targets auditados;
 - orçamento de shell <= 120 KiB e zero dependências externas de JS/CSS;
@@ -53,7 +65,7 @@ GitHub Pages, diretamente da branch `main`. O workflow executa `quality` antes d
 
 ## Segurança e independência
 
-A Central nunca é requisito para os projetos funcionarem. TCE-GO, SEEDF e TJDFT permanecem aplicações autônomas e acessíveis pelas próprias URLs. A Central não escreve nos projetos-filhos e não armazena informação sensível.
+A Central nunca é requisito para os projetos funcionarem. TCE-GO, SEEDF e TJDFT permanecem aplicações autônomas e acessíveis pelas próprias URLs. A Central não escreve em dados internos dos projetos-filhos e não armazena informação sensível. Na v12, cada filho publica explicitamente um único contrato público `central-status.json`, consumido somente em leitura.
 
 ## Adicionar um projeto
 
