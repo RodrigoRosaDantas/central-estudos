@@ -1,9 +1,9 @@
 {
-  "schemaVersion": 2,
+  "schemaVersion": 3,
   "central": {
     "name": "Central de Estudos",
     "owner": "Rodrigo",
-    "version": "14.0.0",
+    "version": "15.0.0",
     "defaultProject": "tcego"
   },
   "projects": [
@@ -42,6 +42,18 @@
       "url": "https://rodrigorosadantas.github.io/tjdft-dashboard/",
       "repository": "https://github.com/RodrigoRosaDantas/tjdft-dashboard",
       "statusUrl": "https://rodrigorosadantas.github.io/tjdft-dashboard/central-status.json"
+    },
+    {
+      "id": "sedes-tdas",
+      "name": "SEDES/DF — TDAS",
+      "description": "Técnico Administrativo — histórico",
+      "phase": "Concurso realizado",
+      "status": "archived",
+      "priority": "normal",
+      "icon": "🗂️",
+      "url": "https://rodrigorosadantas.github.io/sedes-tdas-dashboard/",
+      "repository": "https://github.com/RodrigoRosaDantas/sedes-tdas-dashboard",
+      "archiveNote": "Projeto preservado para consulta histórica e pós-prova."
     }
   ]
 }
