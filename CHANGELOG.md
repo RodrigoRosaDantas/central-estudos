@@ -13,7 +13,8 @@
 - cache PWA atualizado para `central-shell-v11.0.0`;
 - quality gate cobre os contratos específicos da v11;
 - **Projetos-filhos:** somente leitura; zero writes;
-- **Commit/deploy final:** preencher após pipeline final da release.
+- **Commit de release validado:** `7090e201e82192fd53703f5d5e35637f20bbf5f7`;
+- **Deploy validado:** workflow run `36284442637` — quality `success` + deploy `success`.
 
 ## [10.0.0] — 2026-09-26
 - release estável terminal da esteira v10;
