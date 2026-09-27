@@ -3,7 +3,7 @@
 ## Estado
 - **Versão de origem:** 15.0.0
 - **Versão validada:** 16.0.0
-- **Stage:** VALIDATING
+- **Stage:** BLOCKED
 - **Active major:** 17.0.0
 - **Next major:** 18.0.0
 - **Projetos externos:** READ-ONLY
@@ -43,18 +43,21 @@
 - `53a04446a14481122004eff52b5d398e906e9dfb` / pipeline `36323085886`: novo bloqueio em contrato textual legado da v14.
 - Correções foram mínimas e restritas à Central; nenhum projeto-filho foi alterado.
 
-## Validação v17 — 2026-09-27
+## Validação funcional v17 — 2026-09-27
 - **Commit de implementação corrigida:** `88f998b52da91744ed91375b0d5965cdda8f41e1`.
-- **Pipeline:** `36326686908` — COMPLETED / SUCCESS.
-- **Quality gate:** PASS.
-- **Deploy GitHub Pages:** PASS.
+- **Pipeline:** `36326686908` — quality SUCCESS + deploy SUCCESS.
 - **Inbox:** filtros Tudo/Ações/Alertas + projeto implementados sobre contratos v12 já validados.
-- **Provenance:** origem exibida como contrato publicado/cache recente/cache antigo.
+- **Provenance:** contrato publicado/cache recente/cache antigo explicitados.
 - **Stale:** separado semanticamente como “Último estado”.
 - **Ordenação:** ordem do catálogo; sem ranking/score.
-- **Rede própria v17:** zero; `operational-v13.js` continua sem `fetch(`.
+- **Rede própria v17:** zero; camada operacional continua sem `fetch(`.
 - **Fallback/no-JS:** estrutura estática preservada; inbox é progressive enhancement.
 - **Guarda dos filhos:** TCE-GO `889017ba83143be268a84358229882a2b3ef9289`; SEEDF `b68431e2aa4944199705400c8821bf28505299d1`; TJDFT `99877771dcd008594d6855c08f077e1563e609bd` — intactos.
-- **Release metadata em validação:** registry alterado para `17.0.0` e app shell rotacionado para `central-shell-v17.0.0`.
-- **Estado atual:** VALIDATING. A v17 só será fechada após o pipeline disparado pelos commits de release metadata concluir quality + deploy e o pós-deploy QA ser reconciliado.
-- **Regra:** não iniciar v18 nesta execução.
+
+## Bloqueio de release metadata v17
+- Ao tentar rotacionar registry/app-shell para 17.0.0, o pipeline `36328690026` falhou no quality gate e o deploy foi corretamente skipped.
+- Causa identificada no gate: `testReleaseDocumentationCoherence` ainda exige literalmente `central-shell-v16.0.0` para qualquer major >=16 e README/arquitetura ainda estão no estado documental v16.
+- Não foi mascarado sucesso nem avançada a v18.
+- Correção conservadora aplicada: registry restaurado para a versão validada `16.0.0` (`9172e826bb397df5c7723538d55459c38517c2d4`) e app-shell restaurado para `central-shell-v16.0.0` (`79b919738cbf11a5b2652c96d7d5469ba3f9b5b7`).
+- **Estado atual:** BLOCKED até o quality gate voltar a verde nessa base e a coerência documental/testes de release ser preparada para o fechamento v17.
+- **Regra:** continuar somente v17; não iniciar v18.
