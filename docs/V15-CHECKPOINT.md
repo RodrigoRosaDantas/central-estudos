@@ -3,9 +3,10 @@
 ## Estado
 - **Versão de origem:** 10.0.0
 - **Versão validada:** 14.0.0
-- **Stage:** READY
-- **Next major:** 15.0.0
-- **Projetos-filhos:** READ-ONLY na v14; contratos v12 já publicados
+- **Stage:** IN_PROGRESS
+- **Active major:** 15.0.0
+- **Next major:** none
+- **Projetos-filhos:** READ-ONLY na v15; contratos v12 preservados
 - **Automação:** nenhuma
 
 ## Baseline
@@ -161,3 +162,14 @@
 - **Orçamento de shell:** mantido <= 120 KiB sem elevar o limite
 - **Projetos-filhos:** sem novos writes; HEADs mantidos nos contratos v12
 - **Próxima etapa autorizada:** v15.0.0 — workspace de concursos.
+
+
+## Snapshot v15.0.0
+- **Objetivo:** workspace de concursos ativos, arquivados e futuros, sem banco mestre.
+- **Central HEAD inicial:** `1a67c06a69fc8b06128859a6a150ca76c7dc22f9`
+- **Último deploy validado:** `36286876214` — quality success + deploy success.
+- **Ativos:** TCE-GO, SEEDF e TJDFT.
+- **Histórico verificado:** SEDES/DF — repositório `RodrigoRosaDantas/sedes-tdas-dashboard`, Pages build/deployment `36280976327` — success, HEAD `0841f333a63d7d7a7bb84e64518c83ad4d7f4bf5`.
+- **Child HEADs ativos:** TCE-GO `889017ba83143be268a84358229882a2b3ef9289`; SEEDF `b68431e2aa4944199705400c8821bf28505299d1`; TJDFT `99877771dcd008594d6855c08f077e1563e609bd`.
+- **Writes fora da Central:** proibidos nesta v15.
+- **Acceptance v15:** lifecycle active/archived/future no registry; arquivados não entram em foco/retomada/health; workspace mostra categorias e estados vazios; SEDES histórico com link verificado; export/import somente de preferências allowlisted; histórico/caches não entram no backup; sem banco mestre; orçamento <=120 KiB; quality + deploy passam.
