@@ -28,3 +28,10 @@
 
 ## Fechamento
 Registrar versão, commit, workflow, artefato/digest quando disponível, tamanho/margem do shell, evidência visual, itens não executados, resultados e HEADs finais dos repositórios-filhos. Só então marcar a esteira como `COMPLETE`.
+
+
+## Resultado da validação — 2026-09-27
+- **PASS:** experiência inicial, frase por data de Brasília, relógio/data, regressões, integridade, shell, quality gate, deployment e pós-deploy desktop QA.
+- **PASS estrutural:** regras responsivas, navegação móvel, zoom/reflow, `prefers-reduced-motion` e alto contraste.
+- **NÃO EXECUTADO:** inspeção visual mobile em viewport real; a sessão do browser não oferece controle de viewport. Não interpretar os checks estruturais como aprovação visual mobile.
+- **PASS:** HEADs de TCE-GO, SEEDF e TJDFT iguais ao preflight; zero writes.
