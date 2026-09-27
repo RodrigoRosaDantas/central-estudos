@@ -370,3 +370,9 @@ A v21 reorganiza a recepção da Central em torno de saudação, frase original 
 O relógio exibe hora/minuto sem segundos, dia da semana e data por extenso em português brasileiro. A leitura e a escolha da frase usam o fuso America/Sao_Paulo; o timer atualiza por minuto e recalcula quando a aba volta a ficar visível. Nenhuma API adicional é usada para esta apresentação.
 
 A mudança é progressive enhancement: fallback estático, links diretos, foco/retomada, contratos read-only, navegação, cache PWA e independência dos projetos-filhos permanecem preservados. O app shell continua limitado a 128 KiB.
+
+## Centro de Comando — v22
+
+A v22 mantém a arquitetura navigation-first e read-only e reorganiza a primeira dobra como cockpit operacional. Usa somente foco local, fase do registry, disponibilidade técnica, retomada local e estado publicado pelos contratos. Não calcula progresso, nota, ranking, contagem regressiva ou prioridade pedagógica.
+
+A implementação permanece em HTML/CSS/JavaScript nativos, sem backend, telemetria ou dependência externa, preservando IDs/eventos históricos e a independência dos projetos-filhos.

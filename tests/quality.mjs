@@ -780,6 +780,15 @@ function testV21PresenceExperience() {
   pass("v21 welcome, daily motivation and Brasília clock");
 }
 
+function testV22CommandCenter() {
+  const html=read("index.html"),css=read("css/pro-v11.css"),app=read("js/app.js"),operational=read("js/operational-v13.js");
+  for(const id of ["pro-now-focus-name","pro-now-focus-description","pro-now-focus-meta","pro-now-focus-note","pro-now-focus-health","pro-now-focus-operational","pro-now-focus-link","focus-new-tab","pro-now-resume-name","pro-now-resume-meta","resume-button","pro-now-project-count","pro-now-project-meta","brasilia-time","brasilia-date"])assert.ok(html.includes(`id="${id}"`),`v22 must preserve ${id}`);
+  assert.ok(html.includes("CENTRO DE COMANDO")&&html.includes("Abrir foco agora")&&html.includes("Trocar foco"),"v22 command actions missing");
+  assert.ok(css.includes(".command-center")&&css.includes(".command-metrics")&&css.includes(".command-resume")&&css.includes("#5eead4")&&css.includes("#a78bfa"),"v22 visual system missing");
+  assert.ok(app.includes('const zone="America/Sao_Paulo"')&&operational.includes("renderFocus()")&&operational.includes("renderEvolution()"),"v22 must reuse trusted state");
+  pass("v22 command center and trusted-state reuse");
+}
+
 function testReleaseDocumentationCoherence(registry) {
   const readme = read("README.md");
   const architecture = read("docs/ARCHITECTURE.md");
@@ -791,6 +800,9 @@ function testReleaseDocumentationCoherence(registry) {
   const roadmap21 = read("docs/ROADMAP-V21.md");
   const checkpoint21 = read("docs/V21-CHECKPOINT.md");
   const audit21 = read("docs/FINAL-AUDIT-V21.md");
+  const roadmap22 = read("docs/ROADMAP-V22.md");
+  const checkpoint22 = read("docs/V22-CHECKPOINT.md");
+  const acceptance22 = read("docs/ACCEPTANCE-V22.md");
 
   const version = registry.central.version;
   const major = Number(version.split(".")[0]);
@@ -838,14 +850,21 @@ function testReleaseDocumentationCoherence(registry) {
     assert.ok(exists("docs/FINAL-AUDIT-V20.md"), "v20 final audit document must exist");
   }
   if (major >= 21) {
-    assert.equal(version,"21.0.0","v21 release must be terminal version 21.0.0");
+    assert.ok(roadmap21.includes("21.0.0")&&checkpoint21.includes("Stage:** COMPLETE"),"v21 historical release must remain closed");
     assert.ok(roadmap21.includes("Stage:** COMPLETE")&&checkpoint21.includes("Stage:** COMPLETE"),"v21 roadmap and checkpoint must be closed");
     assert.ok(audit21.includes("418231a98699a52b07bdce6d94d6d00a3c1e01bd")&&audit21.includes("36346724227"),"v21 audit must bind the release commit and workflow");
     assert.ok(audit21.includes("não executado")&&audit21.includes("mobile"),"v21 audit must disclose mobile visual inspection status");
     assert.ok(architecture.includes("## Presença e Ritmo — v21"),"architecture must describe the v21 experience");
     assert.ok(changelog.includes("## [21.0.0]"),"changelog must include v21 release");
     assert.ok(exists("docs/FINAL-AUDIT-V21.md"),"v21 final audit must exist");
-    assert.ok(sw.includes("central-shell-v21.0.0"),"service worker cache must match v21 release");
+    if(major===21)assert.ok(sw.includes("central-shell-v21.0.0"),"service worker cache must match v21 release");
+  }
+
+  if (major >= 22) {
+    assert.equal(version,"22.0.0","v22 release must be 22.0.0");
+    assert.ok(roadmap22.includes("22.0.0")&&checkpoint22.includes("22.0.0")&&acceptance22.includes("Centro de Comando"),"v22 governance missing");
+    assert.ok(architecture.includes("## Centro de Comando — v22")&&changelog.includes("## [22.0.0]"),"v22 docs missing");
+    assert.ok(sw.includes("central-shell-v22.0.0"),"service worker must match v22");
   }
 
   pass("release documentation coherence");
@@ -930,6 +949,7 @@ testV20MobileHomeSimplification();
 testV20EvolutionRefreshAll();
 testV21PresenceRuntime();
 testV21PresenceExperience();
+testV22CommandCenter();
 testReleaseDocumentationCoherence(registry);
 testSecurityAndContracts(registry);
 

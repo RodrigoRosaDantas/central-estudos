@@ -6,20 +6,21 @@ Camada de entrada para os ambientes independentes TCE-GO, SEEDF e TJDFT.
 
 A Central não importa, altera ou replica o código dos projetos-filhos.
 
-## Estado atual — v21.0
+## Estado atual — v22.0
 
-A v21 conclui a esteira terminal **Presença e Ritmo**, com uma recepção mais acolhedora e uma apresentação mais clara do horário de Brasília.
+A v22 inaugura o **Centro de Comando**: evolução visual e operacional inspirada na clareza do TDAS, sem copiar dados ou lógica pedagógica dos projetos-filhos.
 
-- frase original de incentivo, estável durante o dia e renovada pelo calendário de America/Sao_Paulo;
-- saudação, relógio em destaque, dia da semana e data por extenso;
-- relógio atualiza a cada minuto e quando a aba volta ao primeiro plano;
-- foco, retomada, acessos, evolução e diagnóstico v20 permanecem no mesmo fluxo;
-- nenhuma frase afirma estudo feito, progresso, desempenho ou aprovação;
-- sem backend, telemetria ou dependência externa nova;
-- shell first-party: **130.650 bytes / 131.072 bytes**, com **422 bytes** de margem;
-- projetos-filhos TCE-GO, SEEDF e TJDFT permanecem somente leitura; zero writes.
-- quality + deploy SUCCESS no workflow 36346724227; artefato 10941231310.
-- inspeção visual desktop PASS; inspeção mobile em viewport real não executada e não declarada como aprovada.
+- foco, fase, saúde técnica, evolução e retomada reunidos na primeira dobra;
+- relógio de Brasília e diretriz diária integrados ao painel;
+- próxima ação publicada pelo projeto ganha destaque sem inferência da Central;
+- retomada, troca de foco e atalhos ficam a um toque;
+- teal/violeta, superfícies profundas e navegação mobile mais legível;
+- contratos, provenance, Inbox, Views, histórico, preferências, PWA e diagnóstico preservados;
+- nenhum write externo em TCE-GO, SEEDF, TJDFT ou SEDES/DF histórico.
+
+### Base v21 — Presença e Ritmo
+
+A v21 introduziu saudação, frase diária e relógio de Brasília, preservados na v22.
 
 ### Base v20 — Workspace PRO estável
 

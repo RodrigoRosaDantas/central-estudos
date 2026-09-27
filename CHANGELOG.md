@@ -1,5 +1,17 @@
 # CHANGELOG — Central de Estudos
 
+## [22.0.0] - 2026-09-27
+
+### Changed
+- Nova Home **Centro de Comando**, com referência visual no TDAS.
+- Foco, fase, saúde, evolução, ação publicada e retomada no mesmo contexto.
+- Relógio, diretriz, atalhos e navegação inferior refinados para mobile.
+- Paleta teal/violeta sobre superfícies escuras.
+
+### Preserved
+- Contratos read-only, provenance, Inbox, Views, histórico, preferências, PWA, fallback e links diretos.
+- Zero writes nos projetos-filhos e zero progresso/ranking inferido.
+
 ## [21.0.0] — 2026-09-27
 - nova recepção visual com frase original de incentivo estável por dia de Brasília;
 - saudação separada do relógio, com hora/minuto, dia da semana e data por extenso;
