@@ -4,11 +4,25 @@
   const panel = document.getElementById("operational-panel");
   const list = document.getElementById("operational-list");
   const focusOperational = document.getElementById("pro-now-focus-operational");
+  const routeList = document.getElementById("routing-list");
+  const routeExplanation = document.getElementById("routing-explanation");
+  const routeButtons = [...document.querySelectorAll("[data-route-lens]")];
 
   if (!panel || !list || !focusOperational) return;
 
   const contracts = new Map();
+  const LENS_KEY = "central-estudos:route-lens-v14";
+  const LAST_KEY = "central-estudos:last-project";
+  const LENSES = new Set(["focus", "resume", "published", "alerts"]);
   let focusId = null;
+  let lens = (() => {
+    try {
+      const value = localStorage.getItem(LENS_KEY);
+      return LENSES.has(value) ? value : "focus";
+    } catch {
+      return "focus";
+    }
+  })();
 
   function projectInfo(id) {
     const card = [...document.querySelectorAll(".project-card")]
@@ -70,6 +84,144 @@
   function validVisibleItem(detail) {
     if (!detail?.contract?.state) return false;
     return ["live", "cached", "stale-cache"].includes(detail.status);
+  }
+
+  function routeProjects() {
+    return [...document.querySelectorAll(".project-card")].map(card => ({
+      id: card.dataset.projectId || "",
+      order: Number(card.dataset.projectOrder ?? Number.MAX_SAFE_INTEGER),
+      name: card.querySelector("h3")?.textContent?.trim() || "Ambiente",
+      phase: card.querySelector(".project-phase")?.textContent?.trim() || "",
+      href: card.querySelector(".project-link")?.href || "#projetos"
+    })).filter(item => item.id);
+  }
+
+  function lastProjectId() {
+    try {
+      const value = JSON.parse(localStorage.getItem(LAST_KEY) || "null");
+      return typeof value?.id === "string" ? value.id : null;
+    } catch {
+      return null;
+    }
+  }
+
+  function routeContract(id) {
+    const item = contracts.get(id);
+    return validVisibleItem(item) ? item : null;
+  }
+
+  function routeExplanationText() {
+    if (lens === "resume") return "Mostra o último ambiente aberto pela Central neste navegador.";
+    if (lens === "published") return "Mostra projetos que publicaram uma próxima ação. A ordem é a do catálogo, sem ranking.";
+    if (lens === "alerts") return "Mostra projetos cujo contrato publicou alertas. A ordem é a do catálogo, sem pontuação.";
+    return "Mostra somente o foco que você definiu na Central.";
+  }
+
+  function routedProjects() {
+    const last = lastProjectId();
+    return routeProjects().filter(item => {
+      const contract = routeContract(item.id);
+      if (lens === "focus") return item.id === focusId;
+      if (lens === "resume") return item.id === last;
+      if (lens === "published") return Boolean(contract?.contract?.state?.nextAction);
+      return Boolean(contract?.contract?.state?.alerts?.length);
+    }).sort((a, b) => a.order - b.order);
+  }
+
+  function routeReason(contract) {
+    if (lens === "resume") return "Aparece porque foi o último ambiente aberto pela Central neste navegador.";
+    if (lens === "published") return contract?.status === "stale-cache"
+      ? "Aparece porque há uma próxima ação no último contrato conhecido, atualmente em cache antigo."
+      : "Aparece porque o próprio projeto publicou uma próxima ação no contrato.";
+    if (lens === "alerts") {
+      const count = contract?.contract?.state?.alerts?.length || 0;
+      return `Aparece porque o contrato do projeto publicou ${count} ${count === 1 ? "alerta" : "alertas"}.`;
+    }
+    return "Aparece porque você definiu este projeto como foco na Central.";
+  }
+
+  function createRouteCard(item) {
+    const contract = routeContract(item.id);
+    const state = contract?.contract?.state;
+    const card = document.createElement("article");
+    card.className = "routing-card";
+
+    const head = document.createElement("div");
+    head.className = "routing-card-head";
+    const name = document.createElement("h3");
+    name.textContent = item.name;
+    const tag = document.createElement("span");
+    tag.className = "routing-tag";
+    tag.textContent = lens === "focus" ? "Foco escolhido" : lens === "resume" ? "Último acesso" : lens === "alerts" ? "Com alerta" : "Ação publicada";
+    head.append(name, tag);
+    card.append(head);
+
+    const meta = document.createElement("p");
+    meta.className = "routing-meta";
+    meta.textContent = item.phase || "Ambiente ativo";
+    card.append(meta);
+
+    if (state?.nextAction) {
+      const action = document.createElement("p");
+      action.className = "routing-operational";
+      action.textContent = contract.status === "stale-cache"
+        ? `Último estado conhecido: ${state.nextAction}`
+        : state.nextActionKind === "planned"
+          ? `Planejado: ${state.nextAction}`
+          : `Próxima ação publicada: ${state.nextAction}`;
+      card.append(action);
+    }
+
+    if (lens === "alerts" && state?.alerts?.length) {
+      const alert = document.createElement("p");
+      alert.className = "routing-alert";
+      alert.textContent = state.alerts[0];
+      card.append(alert);
+    }
+
+    const why = document.createElement("details");
+    why.className = "routing-why";
+    const summary = document.createElement("summary");
+    summary.textContent = "Por que aparece aqui?";
+    const reason = document.createElement("p");
+    reason.textContent = routeReason(contract);
+    why.append(summary, reason);
+    card.append(why);
+
+    const link = document.createElement("a");
+    link.className = "routing-open";
+    link.href = item.href;
+    link.textContent = "Abrir projeto →";
+    card.append(link);
+    return card;
+  }
+
+  function renderRouting() {
+    if (!routeList || !routeExplanation || !routeButtons.length) return;
+
+    routeButtons.forEach(button => {
+      const active = button.dataset.routeLens === lens;
+      button.classList.toggle("is-active", active);
+      button.setAttribute("aria-pressed", String(active));
+    });
+    routeExplanation.textContent = routeExplanationText();
+
+    const items = routedProjects();
+    if (!items.length) {
+      const empty = document.createElement("p");
+      empty.className = "routing-empty";
+      empty.textContent = lens === "resume"
+        ? "Ainda não há um último acesso registrado neste navegador."
+        : lens === "alerts"
+          ? "Nenhum alerta publicado nesta lente."
+          : lens === "published"
+            ? "Nenhuma próxima ação publicada está disponível nesta lente."
+            : "O foco ainda não pôde ser identificado.";
+      routeList.replaceChildren(empty);
+      return;
+    }
+
+    routeList.replaceChildren(...items.map(createRouteCard));
   }
 
   function createCard(item) {
@@ -174,7 +326,18 @@
     list.replaceChildren(...visible.map(entry => entry.article));
     panel.hidden = visible.length === 0;
     renderFocusOperational();
+    renderRouting();
   }
+
+  routeButtons.forEach(button => {
+    button.addEventListener("click", () => {
+      const next = button.dataset.routeLens;
+      if (!LENSES.has(next)) return;
+      lens = next;
+      try { localStorage.setItem(LENS_KEY, next); } catch {}
+      renderRouting();
+    });
+  });
 
   document.addEventListener("central:app-ready", event => {
     focusId = event.detail?.focusId || focusId;
@@ -185,6 +348,9 @@
     focusId = event.detail?.id || focusId;
     render();
   });
+
+  document.addEventListener("central:project-opened", renderRouting);
+  document.addEventListener("central:history-cleared", renderRouting);
 
   document.addEventListener("central:contract-state", event => {
     const detail = event.detail;
