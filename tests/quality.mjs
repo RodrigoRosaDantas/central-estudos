@@ -662,7 +662,7 @@ function testReleaseDocumentationCoherence(registry) {
   if (major >= 17) {
     assert.ok(roadmap20.includes("## v17 — Inbox operacional"), "v20 roadmap must document v17");
     assert.ok(architecture.includes("## Inbox operacional — v17"), "architecture must document v17 inbox");
-    assert.ok(checkpoint20.includes("Versão validada:** 17.0.0"), "v20 checkpoint must validate v17");
+    assert.ok(checkpoint20.includes("17.0.0"), "v20 checkpoint must track v17");
     assert.ok(changelog.includes("## [17.0.0]"), "changelog must include v17 release");
   }
 

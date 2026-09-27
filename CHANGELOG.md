@@ -1,5 +1,18 @@
 # CHANGELOG — Central de Estudos
 
+## [17.0.0] — 2026-09-27
+- Inbox operacional consolidando ações publicadas e alertas dos contratos read-only;
+- filtros por Tudo / Ações / Alertas e por projeto;
+- provenance explícita para contrato publicado, cache recente e cache antigo;
+- estado stale separado como **Último estado**;
+- ordem de catálogo preservada, sem ranking, score ou prioridade calculada;
+- camada operacional sem chamadas de rede próprias;
+- fallback/no-JS, mobile-first, links diretos e independência dos projetos preservados;
+- quality gate recebeu contrato específico da v17 e coerência de cache baseada na versão do registry;
+- app shell rotacionado para `central-shell-v17.0.0`;
+- projetos externos permanecem read-only; zero writes.
+
+
 ## [16.0.0] — 2026-09-27
 - nova roadmap **Workspace PRO v16→v20** iniciada;
 - Command Palette com Ctrl/⌘+K;

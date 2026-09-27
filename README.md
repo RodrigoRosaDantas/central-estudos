@@ -6,9 +6,25 @@ Camada de entrada para os ambientes independentes TCE-GO, SEEDF e TJDFT.
 
 A Central não importa, altera ou replica o código dos projetos-filhos.
 
-## Estado atual — v16.0
+## Estado atual — v17.0
 
-A v16 inicia a geração **Workspace PRO v16→v20** com acesso rápido por teclado e toque.
+A v17 adiciona uma **Inbox operacional** local e explicável sobre os contratos read-only já validados pelos projetos.
+
+Evoluções da v17:
+- reúne ações publicadas e alertas no mesmo painel operacional;
+- filtros por **Tudo / Ações / Alertas** e por projeto;
+- provenance explícita para contrato publicado, cache recente e cache antigo;
+- estado stale aparece como **Último estado**, separado do estado atual;
+- ordem preserva o catálogo, sem ranking, score ou prioridade calculada;
+- nenhuma chamada de rede adicional na camada da inbox;
+- nenhum write em projetos externos;
+- fallback/no-JS e links diretos permanecem intactos;
+- app shell `central-shell-v17.0.0`;
+- orçamento da geração permanece em **128 KiB**.
+
+## Base v16 — Command Palette
+
+A v16 iniciou a geração **Workspace PRO v16→v20** com acesso rápido por teclado e toque.
 
 Evoluções da v16:
 - **Command Palette** aberta por Ctrl/⌘+K;
@@ -97,7 +113,7 @@ Capacidades consolidadas:
 - observabilidade somente leitura, não bloqueante, com disponibilidade, publicação técnica e deploy separados;
 - falhas de rede/rate limit tratadas sem falso estado offline;
 - linha do tempo local de acessos separada de atividade técnica e sem inferência pedagógica;
-- PWA network-first, app shell offline e cache `central-shell-v15.0.0` restrito à Central;
+- PWA network-first, app shell offline e cache `central-shell-v17.0.0` restrito à Central;
 - quality gate automatizado antes de todo deploy;
 - CSP, escape de conteúdo, HTTPS, contraste, teclado, forced colors e touch targets auditados;
 - orçamento de shell <= 128 KiB na geração v16+ (v15 fechou <= 120 KiB) e zero dependências externas de JS/CSS;
@@ -127,4 +143,4 @@ A fonte dinâmica de verdade é `config/projects.json` (schema v3). Cada item de
 
 ## Governança e auditoria
 
-A esteira histórica v1→v10 permanece congelada em `docs/V10-CHECKPOINT.md` e `docs/FINAL-AUDIT-V10.md`. A nova geração v11→v15 é governada por `docs/ROADMAP-V15.md`, `docs/V15-CHECKPOINT.md`, a arquitetura viva e `CHANGELOG.md`.
+A esteira histórica v1→v10 permanece congelada em `docs/V10-CHECKPOINT.md` e `docs/FINAL-AUDIT-V10.md`. A geração v11→v15 permanece congelada em `docs/ROADMAP-V15.md` e `docs/V15-CHECKPOINT.md`. A geração atual v16→v20 é governada por `docs/ROADMAP-V20.md`, `docs/V20-CHECKPOINT.md`, a arquitetura viva e `CHANGELOG.md`.

@@ -3,7 +3,7 @@
 ## Estado
 - **Versão de origem:** 15.0.0
 - **Versão validada:** 16.0.0
-- **Stage:** BLOCKED
+- **Stage:** VALIDATING
 - **Active major:** 17.0.0
 - **Next major:** 18.0.0
 - **Projetos externos:** READ-ONLY
@@ -61,3 +61,12 @@
 - Correção conservadora aplicada: registry restaurado para a versão validada `16.0.0` (`9172e826bb397df5c7723538d55459c38517c2d4`) e app-shell restaurado para `central-shell-v16.0.0` (`79b919738cbf11a5b2652c96d7d5469ba3f9b5b7`).
 - **Estado atual:** BLOCKED até o quality gate voltar a verde nessa base e a coerência documental/testes de release ser preparada para o fechamento v17.
 - **Regra:** continuar somente v17; não iniciar v18.
+
+
+## Release candidate v17 — validação final
+- **Gate de coerência corrigido:** commit `5c60c8dbb59489e4519f03cea24d2a8097739578`.
+- **Pipeline do gate:** `36329287429` — quality SUCCESS + deploy SUCCESS.
+- **Release metadata:** registry e app shell passam a 17.0.0 de forma atômica com README, arquitetura e changelog.
+- **Stage:** VALIDATING até quality + deploy + pós-deploy QA deste release candidate.
+- **Guarda obrigatória:** conferir novamente os HEADs de TCE-GO/SEEDF/TJDFT antes do fechamento.
+- **Regra:** não iniciar v18 nesta execução.

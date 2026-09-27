@@ -32,7 +32,7 @@ Busca, favoritos, ordenação, atalhos e ordem manual são camadas locais sobre 
 
 ## PWA e resiliência
 
-O service worker é limitado à origem e ao pathname da Central. O cache da release atual é `central-shell-v15.0.0` e contém somente o app shell da Central.
+O service worker é limitado à origem e ao pathname da Central. O cache da release atual é `central-shell-v17.0.0` e contém somente o app shell da Central.
 
 Estratégia:
 - navegações e assets conhecidos usam **network first**;
@@ -271,3 +271,22 @@ A Command Palette:
 A v15 encerrou em 122.134 bytes, muito próxima do teto antigo de 120 KiB. A v16 adiciona aproximadamente 7 KiB de produto real.
 
 A nova geração adota conscientemente teto de **128 KiB** (131.072 bytes), bloqueado pelo quality gate. O aumento é limitado e explícito; não há framework, bundle externo ou nova dependência.
+
+
+## Inbox operacional — v17
+
+A v17 reutiliza a camada operacional da v13/v14 para reunir, no mesmo painel, ações e alertas já publicados pelos contratos read-only validados na v12.
+
+### Regras
+
+- a inbox consome somente eventos `central:contract-state` já validados;
+- não realiza `fetch` próprio;
+- permite filtros por tipo (**Tudo / Ações / Alertas**) e por projeto;
+- provenance é explícita: contrato publicado, cache recente ou cache antigo;
+- `stale-cache` é apresentado como **Último estado**, nunca como estado atual;
+- a ordenação segue o catálogo e não cria ranking, score ou prioridade calculada;
+- foco e retomada continuam conceitos separados;
+- contratos indisponíveis não bloqueiam navegação nem links diretos;
+- nenhum write é realizado nos projetos-filhos.
+
+A v17 é progressive enhancement: sem JavaScript, o fallback estático e os acessos diretos continuam disponíveis. O orçamento do shell permanece em **128 KiB**.
