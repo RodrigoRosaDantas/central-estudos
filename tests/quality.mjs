@@ -232,7 +232,11 @@ function testTimelineContract(registry) {
   assert.ok(html.includes("./js/timeline-v8.js"), "v8 timeline script must be referenced");
   assert.ok(html.includes("./css/timeline-v8.css"), "v8 timeline stylesheet must be referenced");
   assert.ok(timeline.includes("central-estudos:access-history-v8"), "v8 access history must use its own local key");
-  assert.ok(timeline.includes(".slice(0,12)"), "v8 local history must be bounded");
+  const boundedHistory = timeline.includes(".slice(0,12)") || (
+    /\.\s*slice\(\s*0\s*,\s*MAX_ACCESS_HISTORY\s*\)/.test(timeline) &&
+    /MAX_ACCESS_HISTORY\s*=\s*12/.test(timeline)
+  );
+  assert.ok(boundedHistory, "v8 local history must be bounded");
   assert.ok(timeline.includes("central:project-opened"), "v8 must distinguish local access events");
   assert.ok(timeline.includes("central:technical-state"), "v8 must consume technical state separately");
   assert.ok(timeline.includes("não determina a causa"), "v8 diagnosis must avoid unsupported causes");
