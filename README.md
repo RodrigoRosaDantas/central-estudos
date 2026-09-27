@@ -6,46 +6,28 @@ Camada de entrada para os ambientes independentes TCE-GO, SEEDF e TJDFT.
 
 A Central não importa, altera ou replica o código dos projetos-filhos.
 
-## Estado atual — v20.0
+## Estado atual — v21.0
 
-A v20 encerra a geração **Workspace PRO v16→v20** com uma auditoria terminal integral, sem adicionar nova responsabilidade funcional.
+A v21 abre a esteira terminal **Presença e Ritmo**, com uma recepção mais acolhedora e uma apresentação mais clara do horário de Brasília.
 
-Consolidação da v20:
-- regressões históricas v10 e v15 revalidadas;
-- contratos e recursos v16→v19 preservados pelo quality gate;
-- mobile, teclado, acessibilidade e offline auditados estruturalmente;
-- segurança, CSP, HTTPS, escaping e secrets revalidados;
-- PWA continua restrita ao app shell da Central;
-- registry, documentação, changelog e cache sincronizados;
-- zero dependência obrigatória dos projetos-filhos;
-- zero writes externos na v20;
-- app shell `central-shell-v20.0.0`;
-- orçamento permanece **<= 128 KiB**.
+- frase original de incentivo, estável durante o dia e renovada pelo calendário de America/Sao_Paulo;
+- saudação, relógio em destaque, dia da semana e data por extenso;
+- relógio atualiza a cada minuto e quando a aba volta ao primeiro plano;
+- foco, retomada, acessos, evolução e diagnóstico v20 permanecem no mesmo fluxo;
+- nenhuma frase afirma estudo feito, progresso, desempenho ou aprovação;
+- sem backend, telemetria ou dependência externa nova;
+- shell first-party: **130.650 bytes / 131.072 bytes**, com **422 bytes** de margem;
+- projetos-filhos TCE-GO, SEEDF e TJDFT permanecem somente leitura.
 
-### Manutenção UX da v20
+### Base v20 — Workspace PRO estável
 
-- saudação e relógio usam explicitamente o horário de Brasília (`America/Sao_Paulo`);
-- navegação usa rótulos mais diretos: **Concursos** e **Status**;
-- preferências aparecem como **Opções da Central**;
-- **Evolução dos projetos** resume fase, ciclo, unidade e próxima ação publicadas pelos contratos, sem estimar percentual inexistente;
-- a experiência mobile de uma área por vez continua preservada.
+A v20 fechou a geração **Workspace PRO v16→v20** e preservou o shell central-shell-v20.0.0 como baseline histórico.
 
-### Polimento UX contínuo
-
-- botão **Opções** no cabeçalho abre as preferências locais diretamente;
-- saudação mostra **dia/data + horário de Brasília** e atualiza a cada minuto;
-- o resumo de evolução informa quantos projetos estão efetivamente acompanhados por contrato válido;
-- a navegação principal foi consolidada em **5 colunas**, sem regras antigas conflitantes;
-- shell reduzido para **130.771 bytes**, mantendo o teto de 128 KiB.
-
-### Home mobile e evolução
-
-- no celular, a Home evita repetir os blocos completos de foco e retomada;
-- navegação usa rótulos mais diretos: **Acessos**, **Concursos**, **Histórico** e **Status**;
-- **Evolução dos projetos** aparece antes de “Como entrar”;
-- **Atualizar tudo** recarrega os contratos dos projetos usando o fluxo read-only já existente;
-- nenhum projeto-filho é modificado.
-
+- regressões históricas v10/v15 e contratos v16→v19 preservados;
+- navegação e cartões consolidados para foco e retomada;
+- mobile, teclado, acessibilidade, PWA e segurança cobertos pelo gate existente;
+- observabilidade read-only e dependências dos projetos-filhos opcionais;
+- a v20 terminou com Stage COMPLETE; a v21 foi aberta depois por autorização explícita do usuário.
 ## Base v19 — Views locais
 
 A v19 adiciona **Views locais** nomeadas sem backend, usando somente preferências allowlisted da própria Central.
@@ -217,4 +199,4 @@ A fonte dinâmica de verdade é `config/projects.json` (schema v3). Cada item de
 
 ## Governança e auditoria
 
-A esteira histórica v1→v10 permanece congelada em `docs/V10-CHECKPOINT.md` e `docs/FINAL-AUDIT-V10.md`. A geração v11→v15 permanece congelada em `docs/ROADMAP-V15.md` e `docs/V15-CHECKPOINT.md`. A geração v16→v20 é encerrada pela auditoria terminal em `docs/FINAL-AUDIT-V20.md`, com governança registrada em `docs/ROADMAP-V20.md` e `docs/V20-CHECKPOINT.md`.
+A esteira histórica v1→v10 permanece congelada em `docs/V10-CHECKPOINT.md` e `docs/FINAL-AUDIT-V10.md`. A geração v11→v15 permanece congelada em `docs/ROADMAP-V15.md` e `docs/V15-CHECKPOINT.md`. A geração v16→v20 é encerrada pela auditoria terminal em `docs/FINAL-AUDIT-V20.md`. A esteira terminal v21 Presença e Ritmo está registrada em `docs/ROADMAP-V21.md` e `docs/V21-CHECKPOINT.md`.
