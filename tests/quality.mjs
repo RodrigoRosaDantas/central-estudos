@@ -679,12 +679,12 @@ function testV20TerminalAudit(registry) {
   const checkpoint10 = read("docs/V10-CHECKPOINT.md");
   const checkpoint15 = read("docs/V15-CHECKPOINT.md");
   const audit = read("docs/FINAL-AUDIT-V20.md");
+  const checkpoint20 = read("docs/V20-CHECKPOINT.md");
   const workflow = read(".github/workflows/pages.yml");
-  const sw = read("sw.js");
   const pro = read("js/pro-v11.js");
   const operational = read("js/operational-v13.js");
 
-  assert.equal(registry.central.version, "20.0.0", "v20 terminal registry version must be 20.0.0");
+  assert.ok(checkpoint20.includes("Stage:** COMPLETE")&&checkpoint20.includes("20.0.0"),"v20 must remain recorded as a completed historical terminal");
   assert.ok(roadmap.includes("## v20 — Workspace PRO estável"), "v20 terminal roadmap target must remain explicit");
   assert.ok(checkpoint10.includes("Stage:** COMPLETE") && checkpoint10.includes("10.0.0"), "v10 terminal baseline must remain complete");
   assert.ok(checkpoint15.includes("Stage:** COMPLETE") && checkpoint15.includes("15.0.0"), "v15 terminal baseline must remain complete");
@@ -692,7 +692,6 @@ function testV20TerminalAudit(registry) {
     assert.ok(audit.includes(domain), `v20 final audit must cover ${domain}`);
   }
   assert.ok(/needs:\s*(?:quality|\n\s*-\s*quality)/.test(workflow), "v20 deploy must still depend on quality");
-  assert.ok(sw.includes("central-shell-v20.0.0"), "v20 app-shell cache must be terminal version");
   assert.ok(!pro.includes("fetch(") && !operational.includes("fetch("), "v20 local PRO/presentation layers must remain network-free");
   pass("v20 terminal regression, architecture, audit and deployment contracts");
 }
@@ -789,6 +788,8 @@ function testReleaseDocumentationCoherence(registry) {
   const roadmap20 = read("docs/ROADMAP-V20.md");
   const changelog = read("CHANGELOG.md");
   const sw = read("sw.js");
+  const roadmap21 = read("docs/ROADMAP-V21.md");
+  const checkpoint21 = read("docs/V21-CHECKPOINT.md");
 
   const version = registry.central.version;
   const major = Number(version.split(".")[0]);
@@ -834,6 +835,13 @@ function testReleaseDocumentationCoherence(registry) {
     assert.ok(checkpoint20.includes("20.0.0"), "v20 checkpoint must track terminal v20");
     assert.ok(changelog.includes("## [20.0.0]"), "changelog must include terminal v20 release");
     assert.ok(exists("docs/FINAL-AUDIT-V20.md"), "v20 final audit document must exist");
+  }
+  if (major >= 21) {
+    assert.equal(version,"21.0.0","v21 release must be terminal version 21.0.0");
+    assert.ok(roadmap21.includes("21.0.0")&&checkpoint21.includes("21.0.0"),"v21 roadmap and checkpoint must be present");
+    assert.ok(architecture.includes("## Presença e Ritmo — v21"),"architecture must describe the v21 experience");
+    assert.ok(changelog.includes("## [21.0.0]"),"changelog must include v21 release");
+    assert.ok(sw.includes("central-shell-v21.0.0"),"service worker cache must match v21 release");
   }
 
   pass("release documentation coherence");
