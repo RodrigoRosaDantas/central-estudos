@@ -213,12 +213,7 @@ function openProject(project) {
 rememberProject(project);
 window.location.assign(project.url);
 }
-function getGreeting() {
-const hour = new Date().getHours();
-if (hour < 12) return "Bom dia, Rodrigo.";
-if (hour < 18) return "Boa tarde, Rodrigo.";
-return "Boa noite, Rodrigo.";
-}
+function getGreeting(){const t=new Intl.DateTimeFormat("pt-BR",{timeZone:"America/Sao_Paulo",hour:"2-digit",minute:"2-digit",hourCycle:"h23"}).format(new Date()),h=+t.slice(0,2);return`${h<12?"Bom dia":h<18?"Boa tarde":"Boa noite"}, Rodrigo. · Brasília ${t}`}
 function readHealthCache() {
 const raw = safeStorageGet(HEALTH_CACHE_KEY);
 if (!raw) return {};

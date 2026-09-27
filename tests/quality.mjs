@@ -706,6 +706,15 @@ function testV20MobileScrollHotfix() {
   pass("v20 mobile single-view navigation and nested-scroll hotfix");
 }
 
+function testV20UxEnhancement() {
+  const html=read("index.html"),app=read("js/app.js"),operational=read("js/operational-v13.js");
+  assert.ok(html.includes("Opções da Central")&&html.includes("Evolução dos projetos"),"v20 UX must clarify options and project evolution");
+  assert.ok(app.includes('timeZone:"America/Sao_Paulo"')&&app.includes("Brasília"),"v20 UX must use Brasília time");
+  assert.ok(operational.includes("renderEvolution")&&operational.includes("currentUnit")&&operational.includes("nextAction"),"project evolution must use published contract state");
+  assert.ok(!operational.includes("percentage"),"project evolution must not invent percentages");
+  pass("v20 UX Brasília clock, clearer interface and trustworthy project evolution");
+}
+
 function testReleaseDocumentationCoherence(registry) {
   const readme = read("README.md");
   const architecture = read("docs/ARCHITECTURE.md");
@@ -837,6 +846,7 @@ testV18ProvenanceFreshness(registry);
 testV19LocalViews(registry);
 testV20TerminalAudit(registry);
 testV20MobileScrollHotfix();
+testV20UxEnhancement();
 testReleaseDocumentationCoherence(registry);
 testSecurityAndContracts(registry);
 
