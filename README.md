@@ -6,9 +6,26 @@ Camada de entrada para os ambientes independentes TCE-GO, SEEDF e TJDFT.
 
 A Central não importa, altera ou replica o código dos projetos-filhos.
 
-## Estado atual — v17.0
+## Estado atual — v18.0
 
-A v17 adiciona uma **Inbox operacional** local e explicável sobre os contratos read-only já validados pelos projetos.
+A v18 torna **proveniência e frescor** dos contratos read-only visíveis sem transformar idade em diagnóstico.
+
+Evoluções da v18:
+- idade descritiva do contrato e da fonte publicada;
+- exposição de `source.kind`, `source.ref`, `source.status` e `schemaVersion`;
+- compatibilidade mostrada somente para contratos que passaram pela validação existente;
+- refresh manual por projeto, acionado explicitamente pelo usuário;
+- refresh reutiliza GET read-only, timeout, validação, cache e fallback stale da v12;
+- deduplicação de refresh simultâneo e zero polling;
+- camada de apresentação continua sem `fetch`;
+- nenhum write em projetos externos;
+- fallback/no-JS, links diretos, foco e retomada preservados;
+- app shell `central-shell-v18.0.0`;
+- shell funcional auditado em **130.986 bytes / 131.072 bytes**.
+
+## Base v17 — Inbox operacional
+
+A v17 adicionou uma **Inbox operacional** local e explicável sobre os contratos read-only já validados pelos projetos.
 
 Evoluções da v17:
 - reúne ações publicadas e alertas no mesmo painel operacional;
@@ -113,7 +130,7 @@ Capacidades consolidadas:
 - observabilidade somente leitura, não bloqueante, com disponibilidade, publicação técnica e deploy separados;
 - falhas de rede/rate limit tratadas sem falso estado offline;
 - linha do tempo local de acessos separada de atividade técnica e sem inferência pedagógica;
-- PWA network-first, app shell offline e cache `central-shell-v17.0.0` restrito à Central;
+- PWA network-first, app shell offline e cache `central-shell-v18.0.0` restrito à Central;
 - quality gate automatizado antes de todo deploy;
 - CSP, escape de conteúdo, HTTPS, contraste, teclado, forced colors e touch targets auditados;
 - orçamento de shell <= 128 KiB na geração v16+ (v15 fechou <= 120 KiB) e zero dependências externas de JS/CSS;

@@ -32,7 +32,7 @@ Busca, favoritos, ordenação, atalhos e ordem manual são camadas locais sobre 
 
 ## PWA e resiliência
 
-O service worker é limitado à origem e ao pathname da Central. O cache da release atual é `central-shell-v17.0.0` e contém somente o app shell da Central.
+O service worker é limitado à origem e ao pathname da Central. O cache da release atual é `central-shell-v18.0.0` e contém somente o app shell da Central.
 
 Estratégia:
 - navegações e assets conhecidos usam **network first**;
@@ -290,3 +290,28 @@ A v17 reutiliza a camada operacional da v13/v14 para reunir, no mesmo painel, a�
 - nenhum write é realizado nos projetos-filhos.
 
 A v17 é progressive enhancement: sem JavaScript, o fallback estático e os acessos diretos continuam disponíveis. O orçamento do shell permanece em **128 KiB**.
+
+
+## Proveniência e frescor — v18
+
+A v18 torna explícitos dados que já existem no contrato validado, sem criar nova autoridade nem alterar os projetos-filhos.
+
+### Apresentação
+
+A inbox exibe:
+- idade descritiva de `publishedAt`;
+- idade descritiva de `source.updatedAt`, quando publicada;
+- `source.kind`, `source.ref` e `source.status`;
+- `schemaVersion` e compatibilidade somente após validação bem-sucedida.
+
+Idade é informação temporal, não diagnóstico. Contrato antigo não implica falha, abandono, atraso ou causa específica.
+
+### Refresh manual
+
+A camada operacional não faz rede. O botão **Atualizar contrato** emite `central:contract-refresh` com o ID do projeto. O consumidor v12 aceita apenas IDs já carregados do registry e executa o mesmo fluxo GET read-only com timeout, validação, `no-store`, cache local e fallback stale.
+
+Refresh simultâneo do mesmo projeto é deduplicado. Não há polling, `setInterval`, write externo, alteração automática de foco/retomada nem bloqueio dos links diretos.
+
+### Limites
+
+A v18 não altera schema dos filhos, não exige atualização de contratos externos, não cria score de frescor e não converte idade em prioridade.

@@ -1,5 +1,18 @@
 # CHANGELOG — Central de Estudos
 
+## [18.0.0] — 2026-09-27
+- provenance e frescor explícitos na Inbox operacional;
+- idade descritiva de contrato e fonte publicada;
+- `source.kind`, `source.ref`, `source.status` e schema compatível visíveis;
+- refresh manual por projeto via evento local, reutilizando GET read-only/timeout/validação/cache;
+- refresh simultâneo deduplicado; zero polling;
+- apresentação continua sem `fetch` e sem inferência causal baseada em idade;
+- fallback/no-JS, mobile, links diretos, foco/retomada e contratos stale preservados;
+- zero writes nos projetos externos;
+- app shell rotacionado para `central-shell-v18.0.0`;
+- shell funcional auditado em 130.986 bytes <= 131.072 bytes.
+
+
 ## [17.0.0] — 2026-09-27
 - Inbox operacional consolidando ações publicadas e alertas dos contratos read-only;
 - filtros por Tudo / Ações / Alertas e por projeto;

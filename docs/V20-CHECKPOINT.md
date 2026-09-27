@@ -3,7 +3,7 @@
 ## Estado
 - **Versão de origem:** 15.0.0
 - **Versão validada:** 17.0.0
-- **Stage:** IN_PROGRESS
+- **Stage:** VALIDATING
 - **Active major:** 18.0.0
 - **Next major:** 18.0.0
 - **Projetos externos:** READ-ONLY
@@ -104,3 +104,19 @@
 - **Riscos:** shell v17 = 130.106/131.072 bytes, apenas 966 bytes livres; a v18 deve recuperar espaço por compactação/refatoração das camadas existentes, sem remover contratos já validados. Datas dos filhos têm granularidades diferentes (date-only e timestamp), portanto idade deve ser descritiva e nunca usada como diagnóstico causal. Refresh manual não pode virar polling nem nova observabilidade automática.
 - **Writes externos autorizados:** nenhum.
 - **Regra:** processar somente v18 nesta execução; ideias de v19/v20 permanecem fora do escopo.
+
+
+## Validação funcional v18 — 2026-09-27
+- **Commit funcional:** `26863649a47859b5c3fda20b569599633b066ad7`.
+- **Pipeline funcional:** `36330011572` — quality SUCCESS + deploy SUCCESS.
+- **Artefato Pages:** `10934957909`, digest `sha256:d072481a179ceb6e3d5487cb0a4558b9548113331b084f5f94cc68b53793f158`.
+- **Shell:** 130.986 bytes <= 131.072 bytes.
+- **Idade do contrato/fonte:** PASS.
+- **source/ref/status/schema + compatibilidade:** PASS.
+- **Refresh manual:** PASS; evento local → consumidor v12 → GET read-only validado; sem polling.
+- **Diagnóstico:** idade permanece descritiva; nenhuma causa é inferida.
+- **Fallback/no-JS e links diretos:** PASS.
+- **Guarda intermediária dos filhos:** TCE-GO `889017ba83143be268a84358229882a2b3ef9289`; SEEDF `b68431e2aa4944199705400c8821bf28505299d1`; TJDFT `99877771dcd008594d6855c08f077e1563e609bd` — intactos.
+- **Release metadata:** registry, app shell, README, arquitetura e changelog promovidos atomicamente para 18.0.0.
+- **Estado:** VALIDATING até quality + deploy + pós-deploy QA do release candidate.
+- **Regra:** não iniciar v19 nesta execução.
