@@ -12,7 +12,8 @@
 - service worker não cacheia contratos dos filhos;
 - cache da Central atualizado para `central-shell-v12.0.0`;
 - **Writes autorizados nos filhos:** somente `public/central-status.json`;
-- **Commit/deploy final:** preencher após pipeline final.
+- **Commit de release validado:** `554063372968b6e128ccf7dc70d22f14b564bd1a`;
+- **Deploy validado:** workflow run `36285194809` — quality `success` + deploy `success`.
 
 ## [11.0.0] — 2026-09-27
 - nova geração da Central iniciada após o fechamento terminal da v10;
