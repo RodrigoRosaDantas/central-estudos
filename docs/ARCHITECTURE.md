@@ -133,3 +133,39 @@ Regras:
 Cada projeto recebeu somente `public/central-status.json`, por autorização específica desta etapa. Nenhum banco, Supabase, Notion, componente, pipeline ou lógica interna foi alterado.
 
 A v13 poderá usar os campos operacionais já autorizados pelo contrato.
+
+
+## Estado operacional — v13
+
+A v13 transforma o contrato v12 em informação visível, sem alterar a fonte de autoridade.
+
+### Regra central
+
+A Central **apresenta**, mas não calcula o estado operacional.
+
+Campos consumidos:
+- `phase`;
+- `cycle`;
+- `currentUnit`;
+- `nextAction`;
+- `nextActionKind`;
+- `alerts`.
+
+### Semântica
+
+- `operational`: estado operacional explícito publicado pelo projeto;
+- `planned`: ação prevista em calendário/plano público, sem afirmar progresso confirmado;
+- `manual`: publicação manual autorizada;
+- `stale-cache`: mostrado como **Último estado conhecido**.
+
+O foco continua sendo uma escolha local do usuário e não é recalculado a partir desses estados.
+
+A camada `operational-v13.js` não realiza fetch. Ela consome somente eventos `central:contract-state` já validados pela v12.
+
+Não fazem parte da v13:
+- ranking;
+- pontuação;
+- prioridade secreta;
+- mentor global;
+- inferência de progresso;
+- writes nos projetos-filhos.
