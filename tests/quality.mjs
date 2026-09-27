@@ -789,6 +789,19 @@ function testV22CommandCenter() {
   pass("v22 command center and trusted-state reuse");
 }
 
+function testV23TodayMentor() {
+  const html=read("index.html"),pro=read("js/pro-v11.js"),operational=read("js/operational-v13.js"),sw=read("sw.js");
+  assert.ok(html.includes(">Hoje<")&&html.includes("PLANO DE HOJE")&&html.includes("HOJE · V23"),"v23 must expose Hoje in the command center");
+  assert.ok(html.includes("RADAR OPERACIONAL")&&html.includes("Situação dos concursos"),"v23 radar must be visible");
+  assert.ok(html.includes(">MENTOR<")&&html.includes("Mentor de execução"),"v23 mentor must be visible");
+  assert.ok(html.includes('href="#routing-panel">Mentor</a>')&&html.includes('href="#activity-panel">Histórico</a>'),"v23 home shortcuts must expose mentor and history");
+  assert.ok(pro.includes("Ir para Hoje")&&pro.includes("Ir para Mentor"),"v23 command palette must expose Hoje and Mentor");
+  assert.ok(operational.includes("HOJE · Sem próxima ação publicada pelo foco")&&operational.includes("HOJE · ${prefix}"),"v23 must distinguish missing vs published action");
+  assert.ok(operational.includes("A Central não troca sua prioridade sozinha"),"v23 mentor must preserve human-selected focus");
+  assert.ok(sw.includes("central-shell-v23.0.0"),"v23 service worker cache must match release");
+  pass("v23 Hoje, Radar and Mentor contracts");
+}
+
 function testReleaseDocumentationCoherence(registry) {
   const readme = read("README.md");
   const architecture = read("docs/ARCHITECTURE.md");
@@ -804,6 +817,9 @@ function testReleaseDocumentationCoherence(registry) {
   const checkpoint22 = read("docs/V22-CHECKPOINT.md");
   const acceptance22 = read("docs/ACCEPTANCE-V22.md");
   const audit22 = read("docs/FINAL-AUDIT-V22.md");
+  const roadmap23 = read("docs/ROADMAP-V23.md");
+  const checkpoint23 = read("docs/V23-CHECKPOINT.md");
+  const acceptance23 = read("docs/ACCEPTANCE-V23.md");
 
   const version = registry.central.version;
   const major = Number(version.split(".")[0]);
@@ -868,6 +884,13 @@ function testReleaseDocumentationCoherence(registry) {
     assert.ok(exists("docs/FINAL-AUDIT-V22.md"),"v22 final audit must exist");
     assert.ok(architecture.includes("## Centro de Comando — v22")&&changelog.includes("## [22.0.0]"),"v22 docs missing");
     assert.ok(sw.includes("central-shell-v22.0.0"),"service worker must match v22");
+  }
+
+  if (major >= 23) {
+    assert.equal(version,"23.0.0","v23 release must be 23.0.0");
+    assert.ok(roadmap23.includes("23.0.0")&&checkpoint23.includes("23.0.0")&&acceptance23.includes("Hoje + Radar + Mentor"),"v23 governance files must exist");
+    assert.ok(architecture.includes("## Hoje + Radar + Mentor — v23")&&changelog.includes("## [23.0.0]"),"v23 docs must be coherent");
+    assert.ok(sw.includes("central-shell-v23.0.0"),"service worker must match v23");
   }
 
   pass("release documentation coherence");
@@ -953,6 +976,7 @@ testV20EvolutionRefreshAll();
 testV21PresenceRuntime();
 testV21PresenceExperience();
 testV22CommandCenter();
+testV23TodayMentor();
 testReleaseDocumentationCoherence(registry);
 testSecurityAndContracts(registry);
 

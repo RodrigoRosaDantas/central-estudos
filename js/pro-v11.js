@@ -40,11 +40,12 @@ function openProject(p){if(!p?.url)return;if(p.status==="active"){const at=new D
 function views(){try{const a=JSON.parse(read(VIEWS)||"[]"),ids=activeIds();return Array.isArray(a)&&a.length<=MAX_VIEWS&&a.every(x=>viewOk(x,ids))?a:[]}catch{return[]}}function saveView(){const name=(window.prompt("Nome da view local:")||"").trim(),ids=activeIds(),a=views(),x={name,tab,lens:read(LENS)||"focus",type:read(IT)||"all",project:read(IP)||"all"};if(!viewOk(x,ids))return;const i=a.findIndex(v=>v.name===name);if(i>=0)a[i]=x;else if(a.length<MAX_VIEWS)a.push(x);else return;write(VIEWS,JSON.stringify(a));if(WS)WS.textContent=`View “${name}” salva neste navegador.`}function applyView(){const a=views(),name=(window.prompt(`Aplicar view: ${a.map(v=>v.name).join(", ")}`)||"").trim(),x=a.find(v=>v.name===name);if(!x)return;[[TAB,x.tab],[LENS,x.lens],[IT,x.type],[IP,x.project]].forEach(([k,v])=>write(k,v));location.reload()}function defaultsView(){[[TAB,"active"],[LENS,"focus"],[IT,"all"],[IP,"all"]].forEach(([k,v])=>write(k,v));location.reload()}
 function commands(){
 const a=[
-["Ir para Agora","Navegação","agora início home",()=>location.hash="agora"],
+["Ir para Hoje","Navegação","hoje agora início home",()=>location.hash="agora"],
 ["Ir para Projetos","Navegação","projetos ambientes catálogo",()=>location.hash="projetos"],
 ["Ir para Workspace","Navegação","workspace concursos",()=>location.hash="workspace"],
 ["Ir para Atividade","Navegação","atividade histórico",()=>location.hash="activity-panel"],
 ["Ir para Diagnóstico","Navegação","diagnóstico técnico",()=>location.hash="diagnostico"],
+["Ir para Mentor","Navegação","mentor foco retomada ações alertas",()=>location.hash="routing-panel"],
 ["Salvar view local","Views","salvar filtros abas lentes",saveView],["Aplicar view local","Views","aplicar filtros abas lentes",applyView],["Restaurar view padrão","Views","restaurar defaults filtros abas lentes",defaultsView]
 ].map(([label,meta,keys,run])=>({label,meta,keys,run}));
 const focus=$("pro-now-focus-link"),focusName=$("pro-now-focus-name")?.textContent?.trim();if(focus?.href&&focusName)a.unshift({label:`Continuar foco — ${focusName}`,meta:"Foco atual",keys:"foco continuar",run:()=>focus.click()});

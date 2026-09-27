@@ -376,3 +376,13 @@ A mudança é progressive enhancement: fallback estático, links diretos, foco/r
 A v22 mantém a arquitetura navigation-first e read-only e reorganiza a primeira dobra como cockpit operacional. Usa somente foco local, fase do registry, disponibilidade técnica, retomada local e estado publicado pelos contratos. Não calcula progresso, nota, ranking, contagem regressiva ou prioridade pedagógica.
 
 A implementação permanece em HTML/CSS/JavaScript nativos, sem backend, telemetria ou dependência externa, preservando IDs/eventos históricos e a independência dos projetos-filhos.
+
+## Hoje + Radar + Mentor — v23
+
+A v23 não cria um motor pedagógico global. Ela reorganiza capacidades já existentes em três superfícies: **Hoje**, **Radar operacional** e **Mentor de execução**.
+
+**Hoje** usa foco local, fase do registry, saúde técnica, retomada e a próxima ação publicada pelo contrato. Quando não existe ação publicada, a interface explicita a ausência e oferece navegação, sem completar a lacuna com inferência.
+
+O **Radar operacional** continua sendo uma leitura ordenada dos contratos validados. O **Mentor** reaproveita as lentes escolhidas pelo usuário — foco, retomada, ações publicadas e alertas — e explica por que cada projeto aparece. A ordem continua sendo a do catálogo e não existe score, ranking ou troca automática de prioridade.
+
+A arquitetura permanece read-only, sem backend, telemetria, polling novo ou dependência externa.

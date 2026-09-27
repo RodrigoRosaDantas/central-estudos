@@ -6,17 +6,23 @@ Camada de entrada para os ambientes independentes TCE-GO, SEEDF e TJDFT.
 
 A Central não importa, altera ou replica o código dos projetos-filhos.
 
-## Estado atual — v22.0
+## Estado atual — v23.0
 
-A v22 inaugura o **Centro de Comando**: evolução visual e operacional inspirada na clareza do TDAS, sem copiar dados ou lógica pedagógica dos projetos-filhos.
+A v23 transforma o Centro de Comando em uma camada de **execução diária**: **Hoje + Radar + Mentor**.
 
-- foco, fase, saúde técnica, evolução e retomada reunidos na primeira dobra;
-- relógio de Brasília e diretriz diária integrados ao painel;
-- próxima ação publicada pelo projeto ganha destaque sem inferência da Central;
-- retomada, troca de foco e atalhos ficam a um toque;
-- teal/violeta, superfícies profundas e navegação mobile mais legível;
-- contratos, provenance, Inbox, Views, histórico, preferências, PWA e diagnóstico preservados;
-- nenhum write externo em TCE-GO, SEEDF, TJDFT ou SEDES/DF histórico.
+- a entrada principal passa a ser “Hoje”, com foco e ação publicada no mesmo contexto;
+- quando o foco não publica próxima ação, a Central declara a ausência em vez de inventar uma;
+- o antigo bloco de evolução vira **Radar operacional**, mantendo fase, ciclo, unidade e ação publicados;
+- “Como entrar” vira **Mentor de execução**, com lentes de foco, retomada, ações e alertas;
+- o Mentor organiza sinais confiáveis, mas não muda foco, não ranqueia e não decide pelo usuário;
+- atalhos da Home priorizam Mentor, Acessos e Histórico;
+- Command Palette ganha acesso direto ao Mentor;
+- contratos, provenance, Inbox, Views, histórico, preferências, diagnóstico e PWA continuam preservados;
+- TCE-GO, SEEDF e TJDFT permanecem READ-ONLY.
+
+### Base v22 — Centro de Comando
+
+A v22 consolidou a primeira dobra como cockpit operacional com linguagem visual inspirada no TDAS.
 
 ### Base v21 — Presença e Ritmo
 

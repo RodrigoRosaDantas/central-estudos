@@ -1,5 +1,20 @@
 # CHANGELOG — Central de Estudos
 
+## [23.0.0] - 2026-09-27
+
+### Changed
+- “Agora” evolui para **Hoje**, com foco e ação publicada como centro da abertura.
+- “Evolução dos projetos” evolui para **Radar operacional**.
+- “Como entrar” evolui para **Mentor de execução** com as lentes já confiáveis.
+- Ausência de próxima ação passa a ser declarada explicitamente, sem inferência.
+- Command Palette ganha acesso direto ao Mentor.
+- Atalhos da Home priorizam Mentor, Acessos e Histórico.
+
+### Preserved
+- Foco continua definido pelo usuário.
+- Radar e Mentor não ranqueiam, pontuam ou trocam prioridade.
+- Contratos e projetos-filhos permanecem read-only.
+
 ## [22.0.0] - 2026-09-27
 
 ### Changed
