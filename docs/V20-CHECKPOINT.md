@@ -3,10 +3,11 @@
 ## Estado
 - **Versão de origem:** 15.0.0
 - **Versão validada:** 16.0.0
-- **Stage:** READY
-- **Next major:** 17.0.0
+- **Stage:** IN_PROGRESS
+- **Active major:** 17.0.0
+- **Next major:** 18.0.0
 - **Projetos externos:** READ-ONLY
-- **Automação:** nenhuma
+- **Automação:** ativa até o fechamento terminal v20
 
 ## Baseline v16
 - **Central HEAD inicial:** `d2854585560b58a86a13ae9d16c4061dd85436d9`
@@ -33,7 +34,6 @@
 
 - **Decisão de budget v16:** a Command Palette adicionou funcionalidade real e levou o shell de 122.134 para ~129,4 KB. Em vez de refatoração agressiva dos módulos antigos apenas para preservar o número anterior, o teto da nova geração passa conscientemente de 120 KiB para 128 KiB. O quality gate continua bloqueando qualquer crescimento acima disso.
 
-
 ## QA v16
 - Command Palette: implementada.
 - Ctrl/Cmd+K com guarda de campos editáveis: PASS.
@@ -48,7 +48,6 @@
 - Shell atual: ~129,4 KB <= 128 KiB.
 - Pipeline de implementação: `36312740627` — quality success + deploy success.
 - Estado: aguardando pipeline final da release 16.0.0.
-
 
 ## Fechamento v16.0.0
 - **Resultado:** PASS
@@ -65,3 +64,15 @@
 - **Projetos externos:** zero writes; HEADs finais iguais ao preflight v16
 - **Próxima etapa autorizada:** v17.0.0 — Inbox operacional
 - **Regra:** não iniciar v17 nesta mesma execução.
+
+## Preflight v17.0.0
+- **Objetivo:** reunir ações publicadas e alertas em uma inbox local, filtrável e explicável.
+- **Versão de origem validada:** 16.0.0.
+- **Central HEAD antes de qualquer write v17:** `2a3d7d6a2a0ab372749480079060bf90a23ca787`.
+- **Último deploy antes da v17:** workflow `36313034426` — success.
+- **TCE-GO:** `889017ba83143be268a84358229882a2b3ef9289`.
+- **SEEDF:** `b68431e2aa4944199705400c8821bf28505299d1`.
+- **TJDFT:** `99877771dcd008594d6855c08f077e1563e609bd`.
+- **Acceptance v17:** inbox reúne somente ações/alertas vindos de contratos já validados; filtros por ação/alerta/projeto; provenance explícita; stale separado de atual; ordem sem ranking/score; zero fetch próprio; zero writes externos; fallback/mobile preservados; shell <= 128 KiB; quality + deploy + pós-deploy QA obrigatórios.
+- **Riscos:** shell v16 encerrou em 129.424/131.072 bytes, deixando ~1,6 KiB; v17 deve priorizar reuso/refatoração da camada operacional em vez de duplicar UI. Contratos podem estar indisponíveis/stale e isso não pode bloquear navegação.
+- **Writes externos autorizados:** nenhum.
