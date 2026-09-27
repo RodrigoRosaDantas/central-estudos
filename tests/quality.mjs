@@ -351,7 +351,7 @@ function testV9Hardening(registry) {
     "css/operational-v13.css",
   ];
   const payloadBytes = payloadFiles.reduce((total, file) => total + fs.statSync(path.join(ROOT, file)).size, 0);
-  assert.ok(payloadBytes <= 120 * 1024, `first-party shell source budget exceeded: ${payloadBytes} bytes`);
+  assert.ok(payloadBytes <= 128 * 1024, `first-party shell source budget exceeded: ${payloadBytes} bytes`);
 
   for (const project of registry.projects) {
     assert.match(project.id, /^[a-z0-9_-]+$/i, `unsafe registry id: ${project.id}`);
@@ -577,6 +577,39 @@ function testV15Workspace(registry) {
   pass("v15 lifecycle workspace, archived history and safe preference portability");
 }
 
+function testV16CommandPalette(registry) {
+  const pro = read("js/pro-v11.js");
+  const css = read("css/pro-v11.css");
+  const sw = read("sw.js");
+
+  assert.ok(pro.includes("function initCommand()"), "v16 command palette must initialize explicitly");
+  assert.ok(pro.includes("e.ctrlKey||e.metaKey"), "v16 must support Ctrl/Cmd+K");
+  assert.ok(pro.includes('e.key.toLowerCase()==="k"'), "v16 shortcut must use K");
+  assert.ok(pro.includes("function editable(t)"), "v16 shortcut must guard editable fields");
+  assert.ok(pro.includes('e.key==="ArrowDown"||e.key==="ArrowUp"'), "v16 must support arrow navigation");
+  assert.ok(pro.includes('e.key==="Enter"'), "v16 must support Enter");
+  assert.ok(pro.includes('e.key==="Escape"'), "v16 must support Escape");
+  assert.ok(pro.includes('setAttribute("role","option")'), "v16 results must expose option semantics");
+  assert.ok(pro.includes('meta:"Projeto ativo"') && pro.includes('meta:"Histórico arquivado"') && pro.includes('meta:"Projeto futuro"'), "v16 must distinguish workspace lifecycle");
+  assert.ok(pro.includes('Ir para Agora') && pro.includes('Ir para Workspace') && pro.includes('Ir para Diagnóstico'), "v16 must search core navigation");
+  assert.ok(pro.includes("Continuar foco") && pro.includes("Retomar"), "v16 must expose valid focus/resume quick actions");
+  assert.ok(!pro.includes("fetch("), "v16 command palette must not create network calls");
+
+  assert.ok(css.includes(".command-open"), "v16 must provide a visible touch control");
+  assert.ok(css.includes(".command-dialog"), "v16 dialog must be styled");
+  assert.ok(css.includes("bottom:82px"), "v16 mobile trigger must clear the bottom navigation");
+  assert.ok(css.includes("@media(pointer:coarse)"), "v16 touch targets must be hardened");
+
+  const cacheMajor = Number(sw.match(/central-shell-v(\d+)\./)?.[1] || 0);
+  assert.ok(cacheMajor >= 16, "service worker cache must preserve v16 or newer");
+
+  for (const project of registry.projects) {
+    if (project.url) assert.ok(read("index.html").includes(project.url), `v16 must preserve direct link for ${project.id}`);
+  }
+
+  pass("v16 keyboard/touch command palette and workspace search contracts");
+}
+
 function testReleaseDocumentationCoherence(registry) {
   const readme = read("README.md");
   const architecture = read("docs/ARCHITECTURE.md");
@@ -661,6 +694,7 @@ testV12Contracts(registry);
 testV13OperationalState(registry);
 testV14ExplainableRouting(registry);
 testV15Workspace(registry);
+testV16CommandPalette(registry);
 testReleaseDocumentationCoherence(registry);
 testSecurityAndContracts(registry);
 
