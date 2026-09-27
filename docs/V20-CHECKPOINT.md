@@ -3,7 +3,7 @@
 ## Estado
 - **Versão de origem:** 15.0.0
 - **Versão validada:** 16.0.0
-- **Stage:** IN_PROGRESS
+- **Stage:** BLOCKED
 - **Active major:** 17.0.0
 - **Next major:** 18.0.0
 - **Projetos externos:** READ-ONLY
@@ -76,3 +76,10 @@
 - **Acceptance v17:** inbox reúne somente ações/alertas vindos de contratos já validados; filtros por ação/alerta/projeto; provenance explícita; stale separado de atual; ordem sem ranking/score; zero fetch próprio; zero writes externos; fallback/mobile preservados; shell <= 128 KiB; quality + deploy + pós-deploy QA obrigatórios.
 - **Riscos:** shell v16 encerrou em 129.424/131.072 bytes, deixando ~1,6 KiB; v17 deve priorizar reuso/refatoração da camada operacional em vez de duplicar UI. Contratos podem estar indisponíveis/stale e isso não pode bloquear navegação.
 - **Writes externos autorizados:** nenhum.
+
+## Bloqueio v17 — pipeline de implementação
+- **Commit:** `f208bd605aa7b43189daee707073d056747544dd`.
+- **Pipeline:** `36319858954` — quality failure; deploy corretamente skipped.
+- **Falha:** teste de regressão v13 procurava literalmente `kind === "planned"`, enquanto a refatoração compactou a expressão para `kind==="planned"`; a semântica planned permanece implementada.
+- **Ação permitida:** correção mínima do quality gate para testar a semântica sem depender de espaçamento; depois reexecutar quality/deploy e continuar a mesma v17.
+- **Filhos no bloqueio:** TCE-GO `889017ba83143be268a84358229882a2b3ef9289`; SEEDF `b68431e2aa4944199705400c8821bf28505299d1`; TJDFT `99877771dcd008594d6855c08f077e1563e609bd` — intactos.
