@@ -75,6 +75,9 @@ function validateConfig(config) {
   if (!config || typeof config !== "object") {
     throw new Error("Configuração da Central inválida.");
   }
+  if (config.schemaVersion !== 2) {
+    throw new Error("Schema do registry não suportado.");
+  }
   if (!config.central || typeof config.central.defaultProject !== "string") {
     throw new Error("Configuração central incompleta.");
   }
@@ -98,7 +101,7 @@ function validateConfig(config) {
     if (ids.has(project.id)) throw new Error(`ID de projeto duplicado: ${project.id}.`);
     ids.add(project.id);
 
-    for (const field of ["url", "repository"]) {
+    for (const field of ["url", "repository", ...(project.statusUrl ? ["statusUrl"] : [])]) {
       let parsed;
       try {
         parsed = new URL(project[field]);
@@ -131,6 +134,7 @@ function normalizeProject(project) {
     icon: project.icon.trim(),
     url: new URL(project.url).href,
     repository: new URL(project.repository).href,
+    statusUrl: project.statusUrl ? new URL(project.statusUrl).href : null,
     health: "checking",
     healthMetaState: "checking",
     healthCheckedAt: null,
@@ -863,7 +867,12 @@ async function init() {
       document.dispatchEvent(new CustomEvent("central:app-ready", {
         detail: {
           focusId: state.focus?.id || null,
-          projectCount: state.projects.length
+          projectCount: state.projects.length,
+          projects: state.projects.map(project => ({
+            id: project.id,
+            name: project.name,
+            statusUrl: project.statusUrl
+          }))
         }
       }));
     }
