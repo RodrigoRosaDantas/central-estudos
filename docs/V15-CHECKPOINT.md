@@ -2,9 +2,9 @@
 
 ## Estado
 - **Versão de origem:** 10.0.0
-- **Versão ativa:** 11.0.0
-- **Stage:** VALIDATING
-- **Próxima versão após fechamento:** 12.0.0
+- **Versão validada:** 11.0.0
+- **Stage:** READY
+- **Next major:** 12.0.0
 - **Projetos-filhos:** READ-ONLY / NO WRITES
 - **Automação:** nenhuma
 
@@ -38,3 +38,18 @@
 - Quality gate de implementação: PASS — run `36284354940`.
 - Deploy de implementação: PASS — run `36284354940`.
 - Estado: aguardando pipeline final já com versão/documentação 11.0.0.
+
+
+## Fechamento v11.0.0
+- **Resultado:** PASS
+- **Commit validado:** `7090e201e82192fd53703f5d5e35637f20bbf5f7`
+- **Pipeline:** `36284442637` — quality success + deploy success
+- **Visão Agora:** PASS
+- **Navegação PRO:** PASS
+- **Eventos locais / zero polling:** PASS
+- **Rede adicional na camada v11:** zero
+- **Fallback/no-JS:** PASS
+- **PWA:** `central-shell-v11.0.0`
+- **Projetos-filhos:** SHAs finais iguais ao baseline; zero writes
+- **Próxima etapa autorizada:** v12.0.0 — contratos read-only opcionais
+- **Regra:** publicar contrato dentro dos projetos-filhos continua exigindo autorização explícita para write neles.
