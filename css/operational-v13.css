@@ -1,0 +1,114 @@
+.pro-now-operational{
+  display:block;
+  margin-top:2px;
+  color:#e7eefb;
+  font-size:.78rem;
+  line-height:1.45;
+  font-weight:750
+}
+.pro-now-operational[data-kind="planned"]{color:var(--warning)}
+.pro-now-operational[data-stale="true"]{color:var(--muted)}
+
+.operational-panel{
+  margin-top:18px
+}
+.operational-grid{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:10px
+}
+.operational-card{
+  min-width:0;
+  padding:16px;
+  border:1px solid var(--border);
+  border-radius:14px;
+  background:rgba(255,255,255,.022)
+}
+.operational-card[data-focus="true"]{
+  border-color:rgba(119,167,255,.28);
+  background:linear-gradient(135deg,rgba(119,167,255,.08),transparent 68%),rgba(255,255,255,.022)
+}
+.operational-head{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:12px
+}
+.operational-name{
+  margin:0;
+  font-size:.96rem;
+  letter-spacing:-.02em
+}
+.operational-badge{
+  flex:0 0 auto;
+  padding:4px 7px;
+  border:1px solid var(--border);
+  border-radius:999px;
+  color:var(--muted);
+  font-size:.63rem;
+  font-weight:850;
+  letter-spacing:.06em;
+  text-transform:uppercase
+}
+.operational-badge.is-operational{
+  color:var(--success);
+  border-color:rgba(140,225,177,.22)
+}
+.operational-badge.is-planned{
+  color:var(--warning);
+  border-color:rgba(240,198,116,.22)
+}
+.operational-badge.is-stale{
+  color:var(--muted)
+}
+.operational-context{
+  margin:9px 0 0;
+  color:var(--muted);
+  font-size:.72rem;
+  line-height:1.45;
+  overflow-wrap:anywhere
+}
+.operational-action{
+  margin:8px 0 0;
+  color:var(--text);
+  font-size:.84rem;
+  line-height:1.45;
+  font-weight:800;
+  overflow-wrap:anywhere
+}
+.operational-alerts{
+  display:grid;
+  gap:5px;
+  margin-top:9px
+}
+.operational-alert{
+  margin:0;
+  padding:7px 9px;
+  border-radius:9px;
+  background:rgba(240,198,116,.06);
+  color:var(--muted);
+  font-size:.69rem;
+  line-height:1.4
+}
+.operational-footer{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  margin-top:12px
+}
+.operational-source{
+  color:var(--muted);
+  font-size:.65rem
+}
+.operational-link{
+  color:#d9e6fb;
+  font-size:.73rem;
+  font-weight:800;
+  text-decoration:none
+}
+.operational-link:hover{text-decoration:underline}
+
+@media(min-width:720px){
+  .operational-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
