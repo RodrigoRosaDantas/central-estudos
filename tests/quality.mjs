@@ -203,7 +203,7 @@ function testCriticalAppLogic(registry) {
 
   const missingDefault = clone(registry);
   missingDefault.central.defaultProject = "missing-project";
-  assert.throws(() => context.validateConfig(missingDefault), /Projeto padrão não existe/i, "missing defaultProject must fail");
+  assert.throws(() => context.validateConfig(missingDefault), /Projeto padrão.*ativo|Projeto padrão.*registry/i, "missing or inactive defaultProject must fail");
 
   localStorage.clear();
   const defaultFocus = context.chooseFocus(valid.projects, valid.central.defaultProject);
