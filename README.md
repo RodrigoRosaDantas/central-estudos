@@ -8,7 +8,7 @@ A Central não importa, altera ou replica o código dos projetos-filhos.
 
 ## Estado atual — v21.0
 
-A v21 abre a esteira terminal **Presença e Ritmo**, com uma recepção mais acolhedora e uma apresentação mais clara do horário de Brasília.
+A v21 conclui a esteira terminal **Presença e Ritmo**, com uma recepção mais acolhedora e uma apresentação mais clara do horário de Brasília.
 
 - frase original de incentivo, estável durante o dia e renovada pelo calendário de America/Sao_Paulo;
 - saudação, relógio em destaque, dia da semana e data por extenso;
@@ -17,7 +17,9 @@ A v21 abre a esteira terminal **Presença e Ritmo**, com uma recepção mais aco
 - nenhuma frase afirma estudo feito, progresso, desempenho ou aprovação;
 - sem backend, telemetria ou dependência externa nova;
 - shell first-party: **130.650 bytes / 131.072 bytes**, com **422 bytes** de margem;
-- projetos-filhos TCE-GO, SEEDF e TJDFT permanecem somente leitura.
+- projetos-filhos TCE-GO, SEEDF e TJDFT permanecem somente leitura; zero writes.
+- quality + deploy SUCCESS no workflow 36346724227; artefato 10941231310.
+- inspeção visual desktop PASS; inspeção mobile em viewport real não executada e não declarada como aprovada.
 
 ### Base v20 — Workspace PRO estável
 
