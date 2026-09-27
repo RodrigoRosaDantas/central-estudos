@@ -3,9 +3,10 @@
 ## Estado
 - **Versão de origem:** 10.0.0
 - **Versão validada:** 11.0.0
-- **Stage:** READY
-- **Next major:** 12.0.0
-- **Projetos-filhos:** READ-ONLY / NO WRITES
+- **Stage:** IN_PROGRESS
+- **Active major:** 12.0.0
+- **Next major:** 13.0.0
+- **Projetos-filhos:** writes restritos e autorizados nesta v12 apenas para `public/central-status.json`; demais arquivos READ-ONLY
 - **Automação:** nenhuma
 
 ## Baseline
@@ -53,3 +54,12 @@
 - **Projetos-filhos:** SHAs finais iguais ao baseline; zero writes
 - **Próxima etapa autorizada:** v12.0.0 — contratos read-only opcionais
 - **Regra:** publicar contrato dentro dos projetos-filhos continua exigindo autorização explícita para write neles.
+
+
+## Snapshot v12.0.0
+- **Objetivo:** contratos read-only opcionais, versionados e desacoplados.
+- **Autorização desta execução:** publicar somente `public/central-status.json` em TCE-GO, SEEDF e TJDFT.
+- **Child HEADs antes do write:** TCE-GO `2986dabf2ddb3ed6b22fa58b9a5151981a678dbf`; SEEDF `bb006c3bc896534716e6b568849669a7fe4424c8`; TJDFT `8aa366c0068f6f705fb2d27a44b7a522f90003d9`.
+- **Contratos publicados:** TCE-GO `889017ba83143be268a84358229882a2b3ef9289`; SEEDF `b68431e2aa4944199705400c8821bf28505299d1`; TJDFT `99877771dcd008594d6855c08f077e1563e609bd`.
+- **Limite:** nenhum outro arquivo dos filhos pode ser alterado nesta major.
+- **Acceptance v12:** registry aceita `statusUrl`; schema v1 documentado; fetch com timeout/cache; contrato inválido/ausente não bloqueia; Diagnóstico indica disponibilidade do contrato; Home v11 ainda não consome `nextAction`; quality + deploy passam.
