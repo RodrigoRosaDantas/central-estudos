@@ -709,7 +709,7 @@ function testV20MobileScrollHotfix() {
 function testV20UxEnhancement() {
   const html=read("index.html"),app=read("js/app.js"),operational=read("js/operational-v13.js");
   assert.ok(html.includes("Opções da Central")&&html.includes("Evolução dos projetos"),"v20 UX must clarify options and project evolution");
-  assert.ok(app.includes('timeZone:"America/Sao_Paulo"')&&app.includes("Brasília"),"v20 UX must use Brasília time");
+  assert.ok(app.includes('const zone="America/Sao_Paulo"')&&html.includes("HORÁRIO DE BRASÍLIA"),"Central time must remain anchored to Brasília");
   assert.ok(operational.includes("renderEvolution")&&operational.includes("currentUnit")&&operational.includes("nextAction"),"project evolution must use published contract state");
   assert.ok(!operational.includes("percentage"),"project evolution must not invent percentages");
   pass("v20 UX Brasília clock, clearer interface and trustworthy project evolution");
@@ -718,7 +718,7 @@ function testV20UxEnhancement() {
 function testV20UxPolish() {
   const html=read("index.html"),app=read("js/app.js"),operational=read("js/operational-v13.js"),css=read("css/pro-v11.css");
   assert.ok(html.includes('id="quick-options"')&&html.includes(">Opções<"),"v20 polish must expose quick options");
-  assert.ok(app.includes("setInterval(tick,60000)")&&app.includes('weekday:"short"'),"Brasília clock must include date and refresh");
+  assert.ok(app.includes("setInterval(tick,60000)")&&app.includes('weekday:"long"'),"Brasília clock must include a full date and refresh");
   assert.ok(operational.includes("acompanhados"),"evolution summary must expose followed project count");
   assert.ok(css.includes("repeat(5,minmax(0,1fr))")&&!css.includes("repeat(4,minmax(0,1fr))"),"main navigation must use five columns");
   pass("v20 quick options, live Brasília date/time and evolution polish");
@@ -747,6 +747,38 @@ function testV20EvolutionRefreshAll() {
   assert.ok(html.includes('id="refresh-all-contracts"'),"evolution must expose refresh all");
   assert.ok(operational.includes("central:contract-refresh")&&operational.includes("allProjects().forEach"),"refresh all must reuse read-only contract refresh events");
   pass("v20 evolution heading and read-only refresh all");
+}
+
+function testV21PresenceRuntime() {
+  const {context}=loadAppForTests(),nodes={greeting:{},"brasilia-time":{},"brasilia-date":{},"daily-motivation":{}};
+  context.document.getElementById=id=>nodes[id]||null;
+  let instant=Date.parse("2026-09-27T03:15:00Z");
+  class FixedDate extends Date { constructor(...args){super(...(args.length?args:[instant]))} }
+  context.Date=FixedDate;
+  vm.runInContext("renderPresence()",context);
+  assert.equal(nodes["brasilia-time"].textContent,"00:15","clock must use Brasília time rather than device timezone");
+  assert.equal(nodes.greeting.textContent,"Bom dia, Rodrigo.","greeting must follow Brasília hour");
+  const expectedDate=new Intl.DateTimeFormat("pt-BR",{timeZone:"America/Sao_Paulo",weekday:"long",day:"numeric",month:"long"}).format(new Date(instant));
+  assert.equal(nodes["brasilia-date"].textContent,expectedDate[0].toUpperCase()+expectedDate.slice(1),"calendar date must use Brasília and Portuguese");
+  const first=nodes["daily-motivation"].textContent;
+  vm.runInContext("renderPresence()",context);
+  assert.equal(nodes["daily-motivation"].textContent,first,"motivation must remain stable during the Brasília day");
+  instant+=86400000;vm.runInContext("renderPresence()",context);
+  assert.notEqual(nodes["daily-motivation"].textContent,first,"motivation must advance with the Brasília calendar day");
+  pass("v21 Brasília clock and date-based motivation runtime behavior");
+}
+
+function testV21PresenceExperience() {
+  const html=read("index.html"),app=read("js/app.js"),css=read("css/pro-v11.css"),roadmap=read("docs/ROADMAP-V21.md"),acceptance=read("docs/ACCEPTANCE-V21.md");
+  assert.ok(html.indexOf('id="daily-motivation"')<html.indexOf('<nav class="pro-nav"'),"motivation must appear at the start of the page");
+  assert.ok(html.includes('<time id="brasilia-time"')&&html.includes('id="brasilia-date"')&&html.includes("HORÁRIO DE BRASÍLIA"),"v21 must expose an accessible Brasília clock and date");
+  assert.ok(app.includes('const zone="America/Sao_Paulo"')&&app.includes("dayKey%dailyQuotes.length"),"daily motivation and clock must use the Brasília calendar date");
+  assert.ok(app.includes("setInterval(tick,60000)")&&app.includes("visibilitychange"),"clock must refresh by minute and when the tab resumes");
+  const presence=app.slice(app.indexOf("function renderPresence"),app.indexOf("function readHealthCache"));
+  assert.ok(presence&&!presence.includes("fetch("),"v21 presence UI must not add a remote dependency");
+  assert.ok(css.includes(".presence-v21")&&css.includes(".presence-clock")&&css.includes("font-variant-numeric:tabular-nums")&&css.includes("@media(max-width:719px)"),"v21 welcome and clock must have responsive styling");
+  assert.ok(roadmap.includes("21.0.0")&&acceptance.includes("Experiência inicial"),"v21 governance and acceptance must be explicit");
+  pass("v21 welcome, daily motivation and Brasília clock");
 }
 
 function testReleaseDocumentationCoherence(registry) {
@@ -884,6 +916,8 @@ testV20UxEnhancement();
 testV20UxPolish();
 testV20MobileHomeSimplification();
 testV20EvolutionRefreshAll();
+testV21PresenceRuntime();
+testV21PresenceExperience();
 testReleaseDocumentationCoherence(registry);
 testSecurityAndContracts(registry);
 
