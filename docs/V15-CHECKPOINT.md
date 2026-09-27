@@ -3,7 +3,7 @@
 ## Estado
 - **Versão de origem:** 10.0.0
 - **Versão validada:** 12.0.0
-- **Stage:** IN_PROGRESS
+- **Stage:** VALIDATING
 - **Active major:** 13.0.0
 - **Next major:** 14.0.0
 - **Projetos-filhos:** READ-ONLY na v13; contratos v12 já publicados
@@ -99,3 +99,16 @@
 - **Child HEADs:** TCE-GO `889017ba83143be268a84358229882a2b3ef9289`; SEEDF `b68431e2aa4944199705400c8821bf28505299d1`; TJDFT `99877771dcd008594d6855c08f077e1563e609bd`.
 - **Writes nos filhos:** proibidos nesta v13.
 - **Acceptance v13:** exibir phase/cycle/currentUnit/nextAction/alerts somente quando contrato válido existir; distinguir `operational` de `planned`; contrato ausente/invalid/stale não bloquear; foco continua escolha humana; sem ranking, score ou mentor global; mobile/fallback preservados; quality + deploy passam.
+
+
+## QA v13
+- Estado operacional na Visão Agora: implementado.
+- Cards operacionais por projeto: implementados.
+- Distinção operational/planned/stale: implementada.
+- Alertas públicos: implementados.
+- Foco humano permanece independente: PASS.
+- Rede própria da camada v13: zero.
+- Ranking/score/mentor global: ausentes.
+- App shell: `central-shell-v13.0.0`.
+- Pipeline de implementação: `36285812564` — quality success + deploy success.
+- Estado: aguardando pipeline final já com versão/documentação 13.0.0.
