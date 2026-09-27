@@ -658,6 +658,22 @@ function testV18ProvenanceFreshness(registry) {
   pass("v18 contract provenance, freshness, compatibility and safe manual refresh");
 }
 
+function testV19LocalViews(registry) {
+  const pro = read("js/pro-v11.js");
+  const operational = read("js/operational-v13.js");
+  assert.ok(pro.includes('VIEWS="central-estudos:views-v19"') && pro.includes("MAX_VIEWS=8"), "v19 views must be dedicated and bounded");
+  assert.ok(pro.includes("Salvar view local") && pro.includes("Aplicar view local") && pro.includes("Restaurar view padrão"), "v19 views must be reachable from the command palette");
+  assert.ok(pro.includes("viewOk") && pro.includes("[TAB,x.tab],[LENS,x.lens],[IT,x.type],[IP,x.project]"), "v19 views must validate and apply only tab/lens/inbox state");
+  const prefStart=pro.indexOf("const PREF=["),prefEnd=pro.indexOf("];",prefStart),allowlist=pro.slice(prefStart,prefEnd);
+  assert.ok(allowlist.includes("VIEWS")&&allowlist.includes("IT")&&allowlist.includes("IP"), "v19 view preferences must be explicitly allowlisted");
+  for(const forbidden of ["last-project","access-history","health-v9","repo-meta-v3","contracts-v12"])assert.ok(!allowlist.includes(forbidden),`v19 backup must exclude ${forbidden}`);
+  assert.ok(operational.includes('IT_KEY="central-estudos:inbox-type-v19"')&&operational.includes('IP_KEY="central-estudos:inbox-project-v19"'), "v19 inbox filters must persist locally");
+  assert.ok(operational.includes("writeLocal(IT_KEY,value)")&&operational.includes("writeLocal(IP_KEY,inboxProject)"), "v19 inbox filter changes must persist");
+  assert.ok(!pro.includes("fetch(")&&!operational.includes("fetch("), "v19 local views must not add network calls");
+  for(const project of registry.projects)if(project.url)assert.ok(read("index.html").includes(project.url),`v19 must preserve direct link for ${project.id}`);
+  pass("v19 named bounded local views and allowlisted backup");
+}
+
 function testReleaseDocumentationCoherence(registry) {
   const readme = read("README.md");
   const architecture = read("docs/ARCHITECTURE.md");
@@ -771,6 +787,7 @@ testV15Workspace(registry);
 testV16CommandPalette(registry);
 testV17OperationalInbox(registry);
 testV18ProvenanceFreshness(registry);
+testV19LocalViews(registry);
 testReleaseDocumentationCoherence(registry);
 testSecurityAndContracts(registry);
 

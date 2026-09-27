@@ -6,7 +6,6 @@ const HEALTH_CACHE_KEY = "central-estudos:health-v9";
 const HEALTH_CACHE_TTL_MS = 2 * 60 * 1000;
 const META_CACHE_KEY = "central-estudos:repo-meta-v3";
 const META_CACHE_TTL_MS = 15 * 60 * 1000;
-
 const state = {
 config: null,
 projects: [],
@@ -14,11 +13,9 @@ focus: null,
 storageAvailable: true,
 githubApiState: "checking"
 };
-
 function byId(id) {
 return document.getElementById(id);
 }
-
 function escapeHtml(value) {
 return String(value)
 .replace(/&/g, "&amp;")
@@ -27,7 +24,6 @@ return String(value)
 .replace(/"/g, "&quot;")
 .replace(/'/g, "&#039;");
 }
-
 function safeStorageGet(key) {
 try {
 return window.localStorage.getItem(key);
@@ -36,7 +32,6 @@ state.storageAvailable = false;
 return null;
 }
 }
-
 function safeStorageSet(key, value) {
 try {
 window.localStorage.setItem(key, value);
@@ -46,7 +41,6 @@ state.storageAvailable = false;
 return false;
 }
 }
-
 function safeStorageRemove(key) {
 try {
 window.localStorage.removeItem(key);
@@ -56,21 +50,18 @@ state.storageAvailable = false;
 return false;
 }
 }
-
 function showSystemNotice(message, kind = "info") {
 const notice = byId("system-notice");
 if (!notice) return;
 notice.textContent = message;
 notice.className = `system-notice is-${kind}`;
 }
-
 function hideSystemNotice() {
 const notice = byId("system-notice");
 if (!notice) return;
 notice.textContent = "";
 notice.className = "system-notice is-hidden";
 }
-
 function validateConfig(config) {
 if (!config || typeof config !== "object") {
 throw new Error("Configuração da Central inválida.");
@@ -84,18 +75,15 @@ throw new Error("Configuração central incompleta.");
 if (!Array.isArray(config.projects) || config.projects.length === 0) {
 throw new Error("Nenhum ambiente configurado.");
 }
-
 const required = ["id", "name", "description", "phase", "status", "priority", "icon"];
 const lifecycle = new Set(["active", "archived", "future"]);
 const ids = new Set();
-
 config.projects.forEach(project => {
 required.forEach(field => {
 if (typeof project[field] !== "string" || !project[field].trim()) {
 throw new Error(`Projeto com campo obrigatório inválido: ${field}.`);
 }
 });
-
 if (!lifecycle.has(project.status)) {
 throw new Error(`Status de projeto inválido: ${project.id}.`);
 }
@@ -104,15 +92,12 @@ throw new Error(`ID de projeto inválido: ${project.id}.`);
 }
 if (ids.has(project.id)) throw new Error(`ID de projeto duplicado: ${project.id}.`);
 ids.add(project.id);
-
 const urlFields = project.status === "future"
 ? [...(project.url ? ["url"] : []), ...(project.repository ? ["repository"] : []), ...(project.statusUrl ? ["statusUrl"] : [])]
 : ["url", "repository", ...(project.statusUrl ? ["statusUrl"] : [])];
-
 if (project.status !== "future" && (!project.url || !project.repository)) {
 throw new Error(`Projeto ${project.id} precisa de URL e repositório.`);
 }
-
 for (const field of urlFields) {
 let parsed;
 try {
@@ -122,12 +107,10 @@ throw new Error(`URL inválida em ${project.id}.`);
 }
 if (parsed.protocol !== "https:") throw new Error(`URL não segura em ${project.id}.`);
 }
-
 if (project.archiveNote !== undefined && typeof project.archiveNote !== "string") {
 throw new Error(`Nota de arquivo inválida em ${project.id}.`);
 }
 });
-
 const defaultProject = config.projects.find(project => project.id === config.central.defaultProject);
 if (!defaultProject || defaultProject.status !== "active") {
 throw new Error("Projeto padrão precisa existir e estar ativo no registry.");
@@ -135,10 +118,8 @@ throw new Error("Projeto padrão precisa existir e estar ativo no registry.");
 if (typeof config.central.version !== "string" || !/^\d+\.\d+\.\d+$/.test(config.central.version)) {
 throw new Error("Versão central inválida.");
 }
-
 return config;
 }
-
 function normalizeProject(project) {
 return {
 ...project,
@@ -164,15 +145,12 @@ deployUpdatedAt: null,
 deployMetaState: "checking"
 };
 }
-
 function activeProjects() {
 return state.projects.filter(project => project.status === "active");
 }
-
 function readLastVisit() {
 const raw = safeStorageGet(STORAGE_KEY);
 if (!raw) return null;
-
 try {
 const parsed = JSON.parse(raw);
 if (parsed && typeof parsed.id === "string") {
@@ -182,22 +160,18 @@ visitedAt: typeof parsed.visitedAt === "string" ? parsed.visitedAt : null
 };
 }
 } catch {}
-
 if (/^[a-z0-9_-]+$/i.test(raw)) return { id: raw, visitedAt: null };
 safeStorageRemove(STORAGE_KEY);
 return null;
 }
-
 function readFocusPreference() {
 const value = safeStorageGet(FOCUS_STORAGE_KEY);
 return value && /^[a-z0-9_-]+$/i.test(value) ? value : null;
 }
-
 function chooseFocus(projects, defaultProject) {
 const preferredId = readFocusPreference();
 const preferred = projects.find(project => project.id === preferredId);
 if (preferredId && !preferred) safeStorageRemove(FOCUS_STORAGE_KEY);
-
 return (
 preferred ||
 projects.find(project => project.id === defaultProject) ||
@@ -205,31 +179,26 @@ projects.find(project => project.priority === "focus") ||
 projects[0]
 );
 }
-
 function setFocusProject(project) {
 safeStorageSet(FOCUS_STORAGE_KEY, project.id);
 state.focus = project;
 renderFocus(project);
 renderProjects();
-
 if (typeof CustomEvent === "function") {
 document.dispatchEvent(new CustomEvent("central:focus-changed", {
 detail: { id: project.id, name: project.name }
 }));
 }
-
 if (!state.storageAvailable) {
 showSystemNotice("A preferência de foco vale apenas nesta sessão porque o armazenamento local não está disponível.", "warning");
 }
 }
-
 function rememberProject(project) {
 const visitedAt = new Date().toISOString();
 safeStorageSet(STORAGE_KEY, JSON.stringify({
 id: project.id,
 visitedAt
 }));
-
 if (typeof CustomEvent === "function") {
 document.dispatchEvent(new CustomEvent("central:project-opened", {
 detail: {
@@ -240,23 +209,19 @@ visitedAt
 }));
 }
 }
-
 function openProject(project) {
 rememberProject(project);
 window.location.assign(project.url);
 }
-
 function getGreeting() {
 const hour = new Date().getHours();
 if (hour < 12) return "Bom dia, Rodrigo.";
 if (hour < 18) return "Boa tarde, Rodrigo.";
 return "Boa noite, Rodrigo.";
 }
-
 function readHealthCache() {
 const raw = safeStorageGet(HEALTH_CACHE_KEY);
 if (!raw) return {};
-
 try {
 const parsed = JSON.parse(raw);
 return parsed && typeof parsed === "object" ? parsed : {};
@@ -265,11 +230,9 @@ safeStorageRemove(HEALTH_CACHE_KEY);
 return {};
 }
 }
-
 function writeHealthCache(cache) {
 safeStorageSet(HEALTH_CACHE_KEY, JSON.stringify(cache));
 }
-
 function readRepoMetaCache() {
 const raw = safeStorageGet(META_CACHE_KEY);
 if (!raw) return {};
@@ -281,11 +244,9 @@ safeStorageRemove(META_CACHE_KEY);
 return {};
 }
 }
-
 function writeRepoMetaCache(cache) {
 safeStorageSet(META_CACHE_KEY, JSON.stringify(cache));
 }
-
 function githubRepoParts(project) {
 try {
 const url = new URL(project.repository);
@@ -296,29 +257,24 @@ return { owner: parts[0], repo: parts[1] };
 return null;
 }
 }
-
 function githubApiBase(project) {
 const parts = githubRepoParts(project);
 return parts ? `https://api.github.com/repos/${parts.owner}/${parts.repo}` : null;
 }
-
 function relativeTimeFromNow(isoDate) {
 if (!isoDate) return null;
 const date = new Date(isoDate);
 if (Number.isNaN(date.getTime())) return null;
-
 const diffMs = date.getTime() - Date.now();
 const absMs = Math.abs(diffMs);
 const rtf = new Intl.RelativeTimeFormat("pt-BR", { numeric: "auto" });
 const minute = 60 * 1000;
 const hour = 60 * minute;
 const day = 24 * hour;
-
 if (absMs < hour) return rtf.format(Math.round(diffMs / minute), "minute");
 if (absMs < day) return rtf.format(Math.round(diffMs / hour), "hour");
 return rtf.format(Math.round(diffMs / day), "day");
 }
-
 function exactDateTime(isoDate) {
 if (!isoDate) return "";
 const date = new Date(isoDate);
@@ -328,32 +284,26 @@ dateStyle: "short",
 timeStyle: "short"
 }).format(date);
 }
-
 function isRateLimited(response) {
 return response.status === 429 ||
 (response.status === 403 && response.headers.get("x-ratelimit-remaining") === "0");
 }
-
 async function fetchGithubJson(url) {
 const controller = new AbortController();
 const timeout = setTimeout(() => controller.abort(), META_TIMEOUT_MS);
-
 try {
 const response = await fetch(url, {
 headers: { Accept: "application/vnd.github+json" },
 cache: "no-store",
 signal: controller.signal
 });
-
 if (isRateLimited(response)) {
 state.githubApiState = "rate-limited";
 return { ok: false, reason: "rate-limited", data: null };
 }
-
 if (!response.ok) {
 return { ok: false, reason: `http-${response.status}`, data: null };
 }
-
 if (state.githubApiState !== "rate-limited") state.githubApiState = "online";
 return { ok: true, reason: null, data: await response.json() };
 } catch {
@@ -363,16 +313,13 @@ return { ok: false, reason: "network", data: null };
 clearTimeout(timeout);
 }
 }
-
 function repoFreshnessMarkup(project) {
 if (project.repoMetaState === "checking") {
 return '<div class="observability-row"><span class="observability-icon">↻</span><span class="observability-copy"><span class="observability-label is-muted">Publicação técnica: verificando…</span><span class="observability-meta">Fonte: GitHub público</span></span></div>';
 }
-
 if (!project.repoUpdatedAt) {
 return '<div class="observability-row"><span class="observability-icon">·</span><span class="observability-copy"><span class="observability-label is-muted">Publicação técnica: não verificada</span><span class="observability-meta">Fonte: GitHub público</span></span></div>';
 }
-
 const relative = relativeTimeFromNow(project.repoUpdatedAt) || "em data conhecida";
 const exact = exactDateTime(project.repoUpdatedAt);
 const stale = project.repoMetaState === "stale-cache";
@@ -382,19 +329,15 @@ const label = stale
 const meta = stale
 ? `Dado preservado em cache · última checagem ${relativeTimeFromNow(project.repoCheckedAt) || "anterior"}`
 : `GitHub público · ${exact}`;
-
 return `<div class="observability-row"><span class="observability-icon">${stale ? "◷" : "↑"}</span><span class="observability-copy"><span class="observability-label ${stale ? "is-warning" : ""}">${label}</span><span class="observability-meta">${meta}</span></span></div>`;
 }
-
 function deployMarkup(project) {
 if (project.deployMetaState === "checking") {
 return '<div class="observability-row"><span class="observability-icon">↻</span><span class="observability-copy"><span class="observability-label is-muted">Deploy: verificando…</span><span class="observability-meta">Workflow público do GitHub</span></span></div>';
 }
-
 if (project.deployStatus === "unknown") {
 return '<div class="observability-row"><span class="observability-icon">·</span><span class="observability-copy"><span class="observability-label is-muted">Deploy: não verificado</span><span class="observability-meta">Nenhum workflow público de deploy identificado</span></span></div>';
 }
-
 const stale = project.deployMetaState === "stale-cache";
 const statusMap = {
 success: ["Publicado", "is-success", "✓"],
@@ -408,17 +351,14 @@ const relative = relativeTimeFromNow(project.deployUpdatedAt);
 const meta = stale
 ? `Dado em cache · ${relative || "checagem anterior"}`
 : `Workflow público${relative ? ` · ${relative}` : ""}`;
-
 return `<div class="observability-row"><span class="observability-icon">${icon}</span><span class="observability-copy"><span class="observability-label ${stale ? "is-warning" : className}">${stale ? "Deploy em cache: " : "Deploy: "}${label}</span><span class="observability-meta">${meta}</span></span></div>`;
 }
-
 function healthLabel(status) {
 if (status === "online") return "Site acessível";
 if (status === "offline") return "Site respondeu com erro";
 if (status === "unknown") return "Disponibilidade não verificada";
 return "Verificando disponibilidade";
 }
-
 function healthMarkup(project) {
 const status = project.health;
 const cached = project.healthMetaState === "cached" || project.healthMetaState === "stale-cache";
@@ -437,10 +377,8 @@ const meta = cached
 : status === "unknown"
 ? "Falha de rede ou verificação inconclusiva; o link continua disponível"
 : "Tentativa técnica direta ao site";
-
 return `<div class="observability-row"><span class="observability-icon">${icon}</span><span class="observability-copy"><span class="observability-label ${className}">${label}</span><span class="observability-meta">${meta}</span></span></div>`;
 }
-
 function updatePulse() {
 const projects = activeProjects();
 const projectCount = projects.length;
@@ -451,19 +389,16 @@ const knownDates = projects
 .map(project => project.repoUpdatedAt ? new Date(project.repoUpdatedAt) : null)
 .filter(date => date && !Number.isNaN(date.getTime()))
 .sort((a, b) => b - a);
-
 const projectEl = byId("pulse-projects");
 const onlineEl = byId("pulse-online");
 const freshnessEl = byId("pulse-freshness");
 if (!projectEl || !onlineEl || !freshnessEl) return;
-
 projectEl.textContent = String(projectCount);
 onlineEl.textContent = healthPending
 ? "Verificando"
 : cachedCount
 ? `${onlineCount}/${projectCount} agora · ${cachedCount} cache`
 : `${onlineCount}/${projectCount} acessíveis`;
-
 if (knownDates.length) {
 const latest = relativeTimeFromNow(knownDates[0].toISOString());
 const anyStale = projects.some(project => project.repoMetaState === "stale-cache");
@@ -474,7 +409,6 @@ freshnessEl.textContent = anyStale
 const metaPending = projects.some(project => project.repoMetaState === "checking");
 freshnessEl.textContent = metaPending ? "Verificando" : "Não verificado";
 }
-
 const source = byId("observability-source");
 if (source) {
 source.textContent = state.githubApiState === "rate-limited"
@@ -482,31 +416,25 @@ source.textContent = state.githubApiState === "rate-limited"
 : "Fonte: sites públicos + GitHub público. Cache local de 15 minutos. Dados técnicos não representam estudo.";
 }
 }
-
 async function fetchProjectObservability(project) {
 const cache = readRepoMetaCache();
 const cached = cache[project.id] || {};
 const now = Date.now();
-
 const repoCacheFresh = cached.repoCheckedAt &&
 now - cached.repoCheckedAt < META_CACHE_TTL_MS;
 const deployCacheFresh = cached.deployCheckedAt &&
 now - cached.deployCheckedAt < META_CACHE_TTL_MS;
-
 if (repoCacheFresh) {
 project.repoUpdatedAt = cached.pushedAt || null;
 project.repoCheckedAt = cached.repoCheckedAt;
 project.repoMetaState = project.repoUpdatedAt ? "cached" : "unknown";
 }
-
 if (deployCacheFresh) {
 project.deployStatus = cached.deployStatus || "unknown";
 project.deployUpdatedAt = cached.deployUpdatedAt || null;
 project.deployMetaState = project.deployStatus !== "unknown" ? "cached" : "unknown";
 }
-
 if (repoCacheFresh && deployCacheFresh) return;
-
 const apiBase = githubApiBase(project);
 if (!apiBase) {
 if (!repoCacheFresh) project.repoMetaState = cached.pushedAt ? "stale-cache" : "unknown";
@@ -519,12 +447,9 @@ project.deployMetaState = cached.deployStatus && cached.deployStatus !== "unknow
 }
 return;
 }
-
 let repoRateLimited = false;
-
 if (!repoCacheFresh) {
 const repoResult = await fetchGithubJson(apiBase);
-
 if (repoResult.ok) {
 project.repoUpdatedAt = repoResult.data.pushed_at || repoResult.data.updated_at || null;
 project.repoCheckedAt = now;
@@ -540,7 +465,6 @@ project.repoMetaState = "unknown";
 }
 }
 }
-
 if (!deployCacheFresh) {
 if (repoRateLimited) {
 project.deployStatus = cached.deployStatus || "unknown";
@@ -555,7 +479,6 @@ const targetedResult = await fetchGithubJson(
 const runsResult = targetedResult.ok || targetedResult.reason === "rate-limited"
 ? targetedResult
 : await fetchGithubJson(`${apiBase}/actions/runs?branch=main&per_page=30`);
-
 if (runsResult.ok && Array.isArray(runsResult.data.workflow_runs)) {
 const runs = runsResult.data.workflow_runs;
 const run = targetedResult.ok
@@ -563,7 +486,6 @@ const run = targetedResult.ok
 : runs.find(item => /deploy-pages\.ya?ml$/i.test(item.path || "")) ||
 runs.find(item => /deploy.*pages|pages.*deploy|publish/i.test(item.name || "")) ||
 runs.find(item => /pages|deploy|publish/i.test(item.path || ""));
-
 if (run) {
 project.deployStatus = run.status === "completed"
 ? (run.conclusion || "unknown")
@@ -585,7 +507,6 @@ project.deployMetaState = "unknown";
 }
 }
 }
-
 cache[project.id] = {
 pushedAt: project.repoUpdatedAt || cached.pushedAt || null,
 repoCheckedAt: project.repoMetaState === "online"
@@ -597,24 +518,19 @@ deployCheckedAt: project.deployMetaState === "online"
 ? now
 : (cached.deployCheckedAt || null)
 };
-
 writeRepoMetaCache(cache);
 }
-
 function renderFocus(project) {
 if (!project) return;
-
 byId("focus-title").textContent = project.name;
 byId("focus-description").textContent = project.description;
 byId("focus-phase").textContent = project.phase;
-
 const focusNote = byId("focus-note");
 if (focusNote) {
 focusNote.textContent = readFocusPreference()
 ? "Foco escolhido por você neste aparelho."
 : "Prioridade padrão configurada na Central.";
 }
-
 const health = byId("focus-health");
 const healthCached = project.healthMetaState === "cached" || project.healthMetaState === "stale-cache";
 const shortHealth = healthCached
@@ -628,24 +544,20 @@ const shortHealth = healthCached
 : "Não verificado";
 health.className = `health health-${healthCached ? "unknown" : project.health}`;
 health.innerHTML = `<span class="dot"></span>${shortHealth}`;
-
 const button = byId("continue-button");
 button.href = project.url;
 button.onclick = event => {
 event.preventDefault();
 openProject(project);
 };
-
 const newTab = byId("focus-new-tab");
 newTab.href = project.url;
 newTab.onclick = () => rememberProject(project);
 }
-
 function renderProjects() {
 const grid = byId("projects-grid");
 const lastVisit = readLastVisit();
 grid.innerHTML = "";
-
 activeProjects().forEach((project, projectIndex) => {
 const isLast = project.id === lastVisit?.id;
 const isFocus = project.id === state.focus?.id;
@@ -676,39 +588,32 @@ ${isFocus ? "★ Foco atual" : "☆ Definir foco"}
 </button>
 </div>
 `;
-
 article.querySelector(".project-link").addEventListener("click", event => {
 event.preventDefault();
 openProject(project);
 });
-
 const focusButton = article.querySelector(".focus-toggle");
 if (focusButton && !isFocus) {
 focusButton.addEventListener("click", () => setFocusProject(project));
 }
-
 grid.appendChild(article);
 });
 }
-
 function formatVisitDate(isoDate) {
 if (!isoDate) return null;
 const date = new Date(isoDate);
 if (Number.isNaN(date.getTime())) return null;
-
 return new Intl.DateTimeFormat("pt-BR", {
 dateStyle: "short",
 timeStyle: "short"
 }).format(date);
 }
-
 function renderResume() {
 const lastVisit = readLastVisit();
 const project = activeProjects().find(item => item.id === lastVisit?.id);
 const visitedAt = formatVisitDate(lastVisit?.visitedAt);
 const resumeButton = byId("resume-button");
 const clearButton = byId("clear-history");
-
 if (!project) {
 if (lastVisit?.id) safeStorageRemove(STORAGE_KEY);
 byId("last-project-text").textContent =
@@ -717,10 +622,8 @@ resumeButton.classList.add("is-hidden");
 clearButton.disabled = true;
 return;
 }
-
 byId("last-project-text").textContent =
 `Último ambiente aberto: ${project.name}${visitedAt ? ` em ${visitedAt}` : ""}.`;
-
 resumeButton.textContent = `Retomar ${project.name} →`;
 resumeButton.href = project.url;
 resumeButton.classList.remove("is-hidden");
@@ -730,7 +633,6 @@ openProject(project);
 };
 clearButton.disabled = false;
 }
-
 async function checkHealth(project) {
 const cache = readHealthCache();
 const cached = cache[project.id];
@@ -738,7 +640,6 @@ const now = Date.now();
 const validCached = cached &&
 ["online", "offline"].includes(cached.status) &&
 Number.isFinite(cached.checkedAt);
-
 if (validCached && now - cached.checkedAt < HEALTH_CACHE_TTL_MS) {
 return {
 status: cached.status,
@@ -746,16 +647,13 @@ checkedAt: cached.checkedAt,
 metaState: "cached"
 };
 }
-
 if (typeof navigator !== "undefined" && navigator.onLine === false) {
 return validCached
 ? { status: cached.status, checkedAt: cached.checkedAt, metaState: "stale-cache" }
 : { status: "unknown", checkedAt: null, metaState: "unknown" };
 }
-
 const controller = new AbortController();
 const timeout = setTimeout(() => controller.abort(), HEALTH_TIMEOUT_MS);
-
 try {
 const response = await fetch(project.url, {
 method: "HEAD",
@@ -774,10 +672,8 @@ return validCached
 clearTimeout(timeout);
 }
 }
-
 function emitTechnicalState(project) {
 if (typeof CustomEvent !== "function") return;
-
 document.dispatchEvent(new CustomEvent("central:technical-state", {
 detail: {
 id: project.id,
@@ -794,7 +690,6 @@ deployMetaState: project.deployMetaState
 }
 }));
 }
-
 async function updateHealth() {
 await Promise.all(
 activeProjects().map(async project => {
@@ -810,28 +705,22 @@ updatePulse();
 })
 );
 }
-
 async function updateRepositoryMetadata() {
 await Promise.all(
 activeProjects().map(async project => {
 await fetchProjectObservability(project);
-
 const repoSlot = document.querySelector(`[data-repo="${project.id}"]`);
 if (repoSlot) repoSlot.innerHTML = repoFreshnessMarkup(project);
-
 const deploySlot = document.querySelector(`[data-deploy="${project.id}"]`);
 if (deploySlot) deploySlot.innerHTML = deployMarkup(project);
-
 emitTechnicalState(project);
 updatePulse();
 })
 );
 }
-
 function bindClearHistory() {
 const clearButton = byId("clear-history");
 if (!clearButton) return;
-
 clearButton.addEventListener("click", () => {
 safeStorageRemove(STORAGE_KEY);
 if (typeof CustomEvent === "function") {
@@ -839,53 +728,43 @@ document.dispatchEvent(new CustomEvent("central:history-cleared"));
 }
 renderResume();
 renderProjects();
-
 if (!state.storageAvailable) {
 showSystemNotice("O histórico não pôde ser alterado porque o armazenamento local está indisponível.", "warning");
 }
 });
 }
-
 function enterFallbackMode(error) {
 console.warn("Central em modo de fallback:", error);
 showSystemNotice(
 "A camada dinâmica não carregou. Os três acessos diretos abaixo continuam funcionando normalmente.",
 "warning"
 );
-
 const health = byId("focus-health");
 if (health) {
 health.className = "health health-unknown";
 health.innerHTML = '<span class="dot"></span>Modo direto';
 }
-
 const lastProjectText = byId("last-project-text");
 if (lastProjectText) {
 lastProjectText.textContent =
 "Retomada dinâmica indisponível. Use os acessos diretos dos ambientes.";
 }
-
 const clearButton = byId("clear-history");
 if (clearButton) clearButton.disabled = true;
 }
-
 async function init() {
 const greeting = byId("greeting");
 if (greeting) greeting.textContent = getGreeting();
-
 try {
 const response = await fetch("./config/projects.json", { cache: "no-store" });
 if (!response.ok) throw new Error("Registro de projetos indisponível.");
-
 state.config = validateConfig(await response.json());
 state.projects = state.config.projects.map(normalizeProject);
 state.focus = chooseFocus(activeProjects(), state.config.central.defaultProject);
-
 renderFocus(state.focus);
 renderResume();
 renderProjects();
 bindClearHistory();
-
 if (typeof CustomEvent === "function") {
 document.dispatchEvent(new CustomEvent("central:app-ready", {
 detail: {
@@ -898,7 +777,6 @@ statusUrl: project.statusUrl
 }))
 }
 }));
-
 document.dispatchEvent(new CustomEvent("central:workspace-ready", {
 detail: {
 projects: state.projects.map(project => ({
@@ -915,12 +793,10 @@ archiveNote: project.archiveNote || ""
 }
 }));
 }
-
 const version = byId("app-version");
 if (version && state.config.central.version) {
 version.textContent = `v${state.config.central.version}`;
 }
-
 if (!state.storageAvailable) {
 showSystemNotice(
 "Preferências e retomada local estão indisponíveis neste navegador; a navegação continua normal.",
@@ -929,7 +805,6 @@ showSystemNotice(
 } else {
 hideSystemNotice();
 }
-
 updatePulse();
 updateHealth();
 updateRepositoryMetadata();
@@ -937,6 +812,4 @@ updateRepositoryMetadata();
 enterFallbackMode(error);
 }
 }
-
 document.addEventListener("DOMContentLoaded", init);
-
