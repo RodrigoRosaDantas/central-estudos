@@ -3,7 +3,7 @@
 const LAST="central-estudos:last-project",TAB="central-estudos:workspace-tab-v15",LENS="central-estudos:route-lens-v14",IT="central-estudos:inbox-type-v19",IP="central-estudos:inbox-project-v19",VIEWS="central-estudos:views-v19",MAX_VIEWS=8;
 const PREF=["central-estudos:focus-project","central-estudos:favorites-v4","central-estudos:catalog-order-v4","central-estudos:catalog-sort-v4","central-estudos:density-v5","central-estudos:technical-cards-v5",LENS,TAB,IT,IP,VIEWS];
 const $=id=>document.getElementById(id),nav=[...document.querySelectorAll(".pro-nav-link")],grid=$("projects-grid");
-const F=$("pro-now-focus-name"),FM=$("pro-now-focus-meta"),FL=$("pro-now-focus-link"),R=$("pro-now-resume-name"),RM=$("pro-now-resume-meta"),RL=$("pro-now-resume-link"),PC=$("pro-now-project-count"),PM=$("pro-now-project-meta");
+const F=$("pro-now-focus-name"),FM=$("pro-now-focus-meta"),FL=$("pro-now-focus-link"),R=$("pro-now-resume-name"),RM=$("pro-now-resume-meta"),RL=$("resume-button"),PC=$("pro-now-project-count"),PM=$("pro-now-project-meta");
 const WL=$("workspace-list"),WS=$("workspace-portability-status"),WI=$("workspace-import");
 if(!F||!FM||!FL||!R||!RM||!RL||!PC||!PM)return;
 let projects=[],tab=read(TAB)||"active";
@@ -15,9 +15,9 @@ function last(){try{const v=JSON.parse(read(LAST));return v&&typeof v.id==="stri
 function cards(){return[...document.querySelectorAll(".project-card")].map(c=>({id:c.dataset.projectId||"",name:c.querySelector("h3")?.textContent?.trim()||"Ambiente",phase:c.querySelector(".project-phase")?.textContent?.trim()||"",href:c.querySelector(".project-link")?.href||""})).filter(x=>x.id&&x.href)}
 function when(v){const d=new Date(v);return v&&!Number.isNaN(d.getTime())?new Intl.DateTimeFormat("pt-BR",{dateStyle:"short",timeStyle:"short"}).format(d):"Último acesso salvo neste navegador."}
 function refresh(){
-F.textContent=$("focus-title")?.textContent?.trim()||"Foco atual";FM.textContent=$("focus-phase")?.textContent?.trim()||"Prioridade atual";FL.href=$("continue-button")?.href||"#projetos";
+F.textContent=$("pro-now-focus-name")?.textContent?.trim()||"Foco atual";FM.textContent=$("pro-now-focus-meta")?.textContent?.trim()||"Prioridade atual";FL.href=$("pro-now-focus-link")?.href||"#projetos";
 const ps=cards();PC.textContent=`${ps.length} ${ps.length===1?"ativo":"ativos"}`;PM.textContent=ps.map(x=>x.name).join(" · ")||"Nenhum ambiente disponível";
-const v=last(),p=v&&ps.find(x=>x.id===v.id);if(p){R.textContent=p.name;RM.textContent=`${p.phase||"Ambiente"} · ${when(v.visitedAt)}`;RL.href=p.href;RL.classList.remove("is-hidden")}else{R.textContent="Nenhum acesso ainda";RM.textContent="Abra um ambiente pela Central para criar um ponto de retomada.";RL.removeAttribute("href");RL.classList.add("is-hidden")}
+const v=last(),p=v&&ps.find(x=>x.id===v.id);if(p){R.textContent=p.name;RM.textContent=`Último acesso ${when(v.visitedAt)}`;RL.href=p.href;RL.classList.remove("is-hidden")}else{R.textContent="Nenhum projeto aberto";RM.textContent="O último ambiente aberto pela Central aparecerá aqui.";RL.removeAttribute("href");RL.classList.add("is-hidden")}
 }
 function activeNav(){const ss=nav.map(a=>document.querySelector(a.getAttribute("href"))).filter(Boolean);if(!("IntersectionObserver"in window)||!ss.length)return;const o=new IntersectionObserver(es=>{const v=es.filter(e=>e.isIntersecting).sort((a,b)=>b.intersectionRatio-a.intersectionRatio)[0];if(!v)return;nav.forEach(a=>{const on=a.getAttribute("href")===`#${v.target.id}`;a.classList.toggle("is-active",on);on?a.setAttribute("aria-current","location"):a.removeAttribute("aria-current")})},{rootMargin:"-18% 0px -62% 0px",threshold:[0,.2,.5,.8]});ss.forEach(s=>o.observe(s))}
 function n(tag,cls,text){const e=document.createElement(tag);if(cls)e.className=cls;if(text!==undefined)e.textContent=text;return e}
@@ -47,8 +47,8 @@ const a=[
 ["Ir para Diagnóstico","Navegação","diagnóstico técnico",()=>location.hash="diagnostico"],
 ["Salvar view local","Views","salvar filtros abas lentes",saveView],["Aplicar view local","Views","aplicar filtros abas lentes",applyView],["Restaurar view padrão","Views","restaurar defaults filtros abas lentes",defaultsView]
 ].map(([label,meta,keys,run])=>({label,meta,keys,run}));
-const focus=$("continue-button"),focusName=$("focus-title")?.textContent?.trim();if(focus?.href&&focusName)a.unshift({label:`Continuar foco — ${focusName}`,meta:"Foco atual",keys:"foco continuar",run:()=>focus.click()});
-const resume=$("resume-button");if(resume?.href&&!resume.classList.contains("is-hidden"))a.unshift({label:`Retomar — ${$("last-project-text")?.textContent?.trim()||"último acesso"}`,meta:"Retomada",keys:"retomar último acesso",run:()=>resume.click()});
+const focus=$("pro-now-focus-link"),focusName=$("pro-now-focus-name")?.textContent?.trim();if(focus?.href&&focusName)a.unshift({label:`Continuar foco — ${focusName}`,meta:"Foco atual",keys:"foco continuar",run:()=>focus.click()});
+const resume=$("resume-button");if(resume?.href&&!resume.classList.contains("is-hidden"))a.unshift({label:`Abrir último ambiente — ${$("pro-now-resume-name")?.textContent?.trim()||"último acesso"}`,meta:"Último acesso",keys:"abrir último ambiente último acesso",run:()=>resume.click()});
 projects.forEach(p=>a.push({label:p.name,meta:p.status==="active"?"Projeto ativo":p.status==="archived"?"Histórico arquivado":"Projeto futuro",keys:`${p.description||""} ${p.phase||""} ${p.status}`,run:()=>p.url?openProject(p):(tab="future",write(TAB,tab),renderWorkspace(),location.hash="workspace")}));
 return a}
 function renderCommands(){
