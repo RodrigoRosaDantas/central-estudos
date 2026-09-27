@@ -11,7 +11,6 @@ const APP_SHELL = [
   './css/timeline-v8.css',
   './css/pro-v11.css',
   './css/operational-v13.css',
-  './css/routing-v14.css',
   './js/app.js',
   './js/catalog-v4.js',
   './js/personalization-v5.js',
@@ -20,7 +19,6 @@ const APP_SHELL = [
   './js/pro-v11.js',
   './js/contracts-v12.js',
   './js/operational-v13.js',
-  './js/routing-v14.js',
   './config/projects.json'
 ];
 
