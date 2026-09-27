@@ -2,9 +2,9 @@
 
 ## Estado
 - **Versão de origem:** 15.0.0
-- **Versão validada:** 16.0.0
-- **Stage:** VALIDATING
-- **Active major:** 17.0.0
+- **Versão validada:** 17.0.0
+- **Stage:** READY
+- **Active major:** none
 - **Next major:** 18.0.0
 - **Projetos externos:** READ-ONLY
 - **Automação:** ativa até o fechamento terminal v20
@@ -70,3 +70,23 @@
 - **Stage:** VALIDATING até quality + deploy + pós-deploy QA deste release candidate.
 - **Guarda obrigatória:** conferir novamente os HEADs de TCE-GO/SEEDF/TJDFT antes do fechamento.
 - **Regra:** não iniciar v18 nesta execução.
+
+
+## Fechamento v17.0.0
+- **Resultado:** PASS.
+- **Commit de release validado:** `1dad7e93f708dd9fdb6361d1da6e65c7687cef64`.
+- **Pipeline de release:** `36329426775` — quality SUCCESS + deploy SUCCESS.
+- **Pós-deploy QA:** PASS sobre o artefato GitHub Pages `10934629623`, vinculado ao HEAD da release.
+- **Digest do artefato:** `sha256:78f719be03520ab255b883896f949f299cb0f4154eccd3781cd42c51749d8540`.
+- **Shell auditado no artefato:** 130.106 bytes <= 131.072 bytes.
+- **Inbox:** Tudo/Ações/Alertas + filtro por projeto — PASS.
+- **Provenance:** contrato publicado/cache recente/cache antigo — PASS.
+- **Stale:** “Último estado”, separado de atual — PASS.
+- **Ordenação:** catálogo, sem ranking/score/prioridade calculada — PASS.
+- **Rede própria da inbox:** zero `fetch(` — PASS.
+- **Fallback/no-JS e links diretos:** PASS.
+- **Segredos óbvios no shell:** nenhum detectado.
+- **Guarda final dos filhos:** TCE-GO `889017ba83143be268a84358229882a2b3ef9289`; SEEDF `b68431e2aa4944199705400c8821bf28505299d1`; TJDFT `99877771dcd008594d6855c08f077e1563e609bd` — iguais ao preflight; zero writes.
+- **Próxima etapa autorizada:** v18.0.0 — Proveniência e frescor.
+- **Estado após fechamento:** Stage=READY; Active major=none; Next major=18.0.0.
+- **Regra:** não iniciar v18 nesta mesma execução.

@@ -11,6 +11,9 @@
 - quality gate recebeu contrato específico da v17 e coerência de cache baseada na versão do registry;
 - app shell rotacionado para `central-shell-v17.0.0`;
 - projetos externos permanecem read-only; zero writes.
+- **Commit de release validado:** `1dad7e93f708dd9fdb6361d1da6e65c7687cef64`;
+- **Deploy validado:** workflow `36329426775` — quality `success` + deploy `success`;
+- **Pós-deploy QA:** artefato Pages `10934629623` — PASS; shell 130.106 bytes <= 128 KiB.
 
 
 ## [16.0.0] — 2026-09-27
