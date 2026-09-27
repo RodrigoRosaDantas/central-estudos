@@ -66,3 +66,14 @@ Previsto:
 - inclusão de novos projetos via registry/contrato;
 - exportação/importação local das preferências da Central;
 - nenhuma base mestre obrigatória.
+
+
+## Estado final
+
+- v11 — Central PRO / UX: COMPLETE
+- v12 — Contratos read-only opcionais: COMPLETE
+- v13 — Estado operacional: COMPLETE
+- v14 — Roteamento explicável: COMPLETE
+- v15 — Workspace de concursos: COMPLETE
+
+A próxima evolução, se desejada, deve abrir uma nova roadmap; não existe v16 automática nesta esteira.
