@@ -820,6 +820,7 @@ function testReleaseDocumentationCoherence(registry) {
   const roadmap23 = read("docs/ROADMAP-V23.md");
   const checkpoint23 = read("docs/V23-CHECKPOINT.md");
   const acceptance23 = read("docs/ACCEPTANCE-V23.md");
+  const audit23 = read("docs/FINAL-AUDIT-V23.md");
 
   const version = registry.central.version;
   const major = Number(version.split(".")[0]);
@@ -888,7 +889,9 @@ function testReleaseDocumentationCoherence(registry) {
 
   if (major >= 23) {
     assert.equal(version,"23.0.0","v23 release must be 23.0.0");
-    assert.ok(roadmap23.includes("23.0.0")&&checkpoint23.includes("23.0.0")&&acceptance23.includes("Hoje + Radar + Mentor"),"v23 governance files must exist");
+    assert.ok(roadmap23.includes("Stage:** COMPLETE")&&checkpoint23.includes("Stage:** COMPLETE")&&acceptance23.includes("Hoje + Radar + Mentor"),"v23 governance must be closed");
+    assert.ok(audit23.includes("4dcc9d5320ea590418069aefe409790e1c0e5a88")&&audit23.includes("36350011045")&&audit23.includes("10941832458"),"v23 audit must bind release, workflow and artifact");
+    assert.ok(exists("docs/FINAL-AUDIT-V23.md"),"v23 final audit must exist");
     assert.ok(architecture.includes("## Hoje + Radar + Mentor — v23")&&changelog.includes("## [23.0.0]"),"v23 docs must be coherent");
     assert.ok(sw.includes("central-shell-v23.0.0"),"service worker must match v23");
   }
