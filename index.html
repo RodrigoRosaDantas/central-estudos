@@ -25,6 +25,7 @@
 <nav class="pro-nav" aria-label="Navegação principal da Central">
 <a class="pro-nav-link" href="#agora"><span aria-hidden="true">⌂</span><span>Agora</span></a>
 <a class="pro-nav-link" href="#projetos"><span aria-hidden="true">◎</span><span>Projetos</span></a>
+<a class="pro-nav-link" href="#workspace"><span aria-hidden="true">▦</span><span>Workspace</span></a>
 <a class="pro-nav-link" href="#activity-panel"><span aria-hidden="true">◷</span><span>Atividade</span></a>
 <a class="pro-nav-link" href="#diagnostico"><span aria-hidden="true">◇</span><span>Diagnóstico</span></a>
 </nav>
@@ -115,6 +116,16 @@
 <article class="project-card project-tjdft" data-project-id="tjdft" data-project-order="2"><div class="project-top"><span class="project-icon" aria-hidden="true">⚖️</span><span class="project-status">Ativo</span></div><h3>TJDFT</h3><p class="muted">Técnico + Analista — Área Administrativa</p><p class="project-phase">Preparação</p><div class="project-observability"><span class="mini-health">Disponibilidade não verificada</span><span class="repo-freshness">Atualização técnica não verificada</span></div><div class="project-actions"><a class="project-link" href="https://rodrigorosadantas.github.io/tjdft-dashboard/">Abrir ambiente →</a><span class="mini-health">Acesso direto</span></div></article>
 </div>
 <p id="catalog-empty" class="catalog-empty" hidden>Nenhum ambiente encontrado para esta busca.</p>
+</section>
+<section id="workspace" class="section workspace-panel" aria-labelledby="workspace-title">
+<div class="section-heading"><div><p class="eyebrow">WORKSPACE</p><h2 id="workspace-title">Seus concursos</h2></div><p class="muted compact">Ativos, históricos e futuros ficam no mesmo catálogo, sem misturar execução entre projetos.</p></div>
+<div class="workspace-tabs" role="group" aria-label="Filtrar concursos por ciclo de vida">
+<button type="button" class="workspace-tab is-active" data-workspace-tab="active" aria-pressed="true">Ativos <span id="workspace-count-active">3</span></button>
+<button type="button" class="workspace-tab" data-workspace-tab="archived" aria-pressed="false">Arquivados <span id="workspace-count-archived">1</span></button>
+<button type="button" class="workspace-tab" data-workspace-tab="future" aria-pressed="false">Futuros <span id="workspace-count-future">0</span></button>
+</div>
+<div id="workspace-list" class="workspace-list" aria-live="polite"><noscript><article class="workspace-card"><strong>SEDES/DF — TDAS</strong><p>Histórico preservado.</p><a href="https://rodrigorosadantas.github.io/sedes-tdas-dashboard/">Abrir histórico →</a></article></noscript></div>
+<div class="workspace-portability"><div><p class="eyebrow">PORTABILIDADE LOCAL</p><strong>Preferências da Central</strong><p class="muted compact">Exporta somente configurações. Histórico de acesso e caches técnicos ficam fora do arquivo.</p></div><div class="workspace-portability-actions"><button id="workspace-export" class="button button-ghost" type="button">Exportar preferências</button><button id="workspace-import-button" class="button button-ghost" type="button">Importar preferências</button><input id="workspace-import" type="file" accept="application/json,.json" hidden /></div><p id="workspace-portability-status" class="workspace-status" aria-live="polite">Dados ficam somente neste aparelho.</p></div>
 </section>
 <section id="activity-panel" class="section activity-panel" aria-labelledby="activity-title" hidden>
 <div class="section-heading">
