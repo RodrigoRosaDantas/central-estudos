@@ -3,7 +3,7 @@
 ## Estado
 - **Versão de origem:** 10.0.0
 - **Versão validada:** 11.0.0
-- **Stage:** IN_PROGRESS
+- **Stage:** VALIDATING
 - **Active major:** 12.0.0
 - **Next major:** 13.0.0
 - **Projetos-filhos:** writes restritos e autorizados nesta v12 apenas para `public/central-status.json`; demais arquivos READ-ONLY
@@ -63,3 +63,16 @@
 - **Contratos publicados:** TCE-GO `889017ba83143be268a84358229882a2b3ef9289`; SEEDF `b68431e2aa4944199705400c8821bf28505299d1`; TJDFT `99877771dcd008594d6855c08f077e1563e609bd`.
 - **Limite:** nenhum outro arquivo dos filhos pode ser alterado nesta major.
 - **Acceptance v12:** registry aceita `statusUrl`; schema v1 documentado; fetch com timeout/cache; contrato inválido/ausente não bloqueia; Diagnóstico indica disponibilidade do contrato; Home v11 ainda não consome `nextAction`; quality + deploy passam.
+
+
+## QA v12
+- Registry schema v2 + statusUrl: implementado.
+- Schema de contrato v1: implementado.
+- Consumer read-only: implementado.
+- Timeout/cache/stale: implementados.
+- Diagnóstico: integrado sem expor próxima ação.
+- Child contracts: publicados e validados pelos pipelines próprios.
+- TCE-GO: quality `36284728160` + Pages `36284741821` — success.
+- SEEDF: quality `36284732377` + Pages `36284732375` — success.
+- TJDFT: Pages `36284736984` + smoke `36284780388` + visual/E2E `36284736987` — success.
+- Estado: aguardando pipeline final da Central v12.0.0.
