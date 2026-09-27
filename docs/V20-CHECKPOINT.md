@@ -252,3 +252,15 @@
 - **Guarda final dos filhos:** TCE-GO `889017ba83143be268a84358229882a2b3ef9289`; SEEDF `b68431e2aa4944199705400c8821bf28505299d1`; TJDFT `99877771dcd008594d6855c08f077e1563e609bd` — iguais ao preflight; zero writes.
 - **Estado terminal:** Stage=COMPLETE; Active major=none; Next major=none.
 - **Regra terminal:** não criar v21 ou qualquer versão além do roadmap v20 sem nova esteira explicitamente definida.
+
+
+## Manutenção UX pós-terminal — v20
+- **Estado da esteira:** permanece COMPLETE; nenhuma v21 foi aberta.
+- **Commit funcional:** `6692cfc6361a712131bb34f36ee3899413cd0607`.
+- **Pipeline:** `36333688144` — quality SUCCESS + deploy SUCCESS.
+- **Artefato Pages:** `10936411822`, digest `sha256:fea4f8b59ce3bd318150ce2c4e63e86143a4fbee9d66935ee880391fc7ae0562`.
+- **Shell:** 130.973 bytes <= 131.072 bytes; margem 99 bytes.
+- **UX:** navegação com rótulos mais claros (`Concursos` e `Status`), opções renomeadas e experiência mobile anterior preservada.
+- **Horário:** saudação usa explicitamente `America/Sao_Paulo` e mostra horário de Brasília.
+- **Evolução:** área operacional passa a apresentar fase/ciclo/unidade/próxima ação publicados pelos contratos; resumo usa unidade atual ou identificador da próxima ação, sem percentual inventado.
+- **Projetos-filhos:** continuam read-only; nenhuma alteração realizada.

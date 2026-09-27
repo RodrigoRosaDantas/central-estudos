@@ -15,6 +15,9 @@
 - **Estado terminal:** COMPLETE; nenhuma v21 definida.
 
 
+- **Manutenção UX pós-terminal:** horário de Brasília no cabeçalho, rótulos de navegação mais claros, “Opções da Central” e evolução confiável dos projetos baseada nos contratos publicados.
+- **Hotfix UX validado:** commit `6692cfc6361a712131bb34f36ee3899413cd0607`, workflow `36333688144`, shell 130.973 bytes.
+
 ## [19.0.0] — 2026-09-27
 - Views locais nomeadas e limitadas a 8 por navegador;
 - snapshots restritos a aba do Workspace, lente e filtros da Inbox;

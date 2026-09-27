@@ -22,6 +22,14 @@ Consolidação da v20:
 - app shell `central-shell-v20.0.0`;
 - orçamento permanece **<= 128 KiB**.
 
+### Manutenção UX da v20
+
+- saudação e relógio usam explicitamente o horário de Brasília (`America/Sao_Paulo`);
+- navegação usa rótulos mais diretos: **Concursos** e **Status**;
+- preferências aparecem como **Opções da Central**;
+- **Evolução dos projetos** resume fase, ciclo, unidade e próxima ação publicadas pelos contratos, sem estimar percentual inexistente;
+- a experiência mobile de uma área por vez continua preservada.
+
 ## Base v19 — Views locais
 
 A v19 adiciona **Views locais** nomeadas sem backend, usando somente preferências allowlisted da própria Central.
