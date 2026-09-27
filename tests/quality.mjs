@@ -334,12 +334,14 @@ function testV9Hardening(registry) {
     "js/pro-v11.js",
     "js/contracts-v12.js",
     "js/operational-v13.js",
+    "js/routing-v14.js",
     "css/app.css",
     "css/catalog-v4.css",
     "css/personalization-v5.css",
     "css/timeline-v8.css",
     "css/pro-v11.css",
-    "css/operational-v13.css"
+    "css/operational-v13.css",
+    "css/routing-v14.css"
   ];
   const payloadBytes = payloadFiles.reduce((total, file) => total + fs.statSync(path.join(ROOT, file)).size, 0);
   assert.ok(payloadBytes <= 120 * 1024, `first-party shell source budget exceeded: ${payloadBytes} bytes`);
@@ -476,6 +478,48 @@ function testV13OperationalState(registry) {
   pass("v13 published operational state, provenance and no-ranking contracts");
 }
 
+function testV14ExplainableRouting(registry) {
+  const html = read("index.html");
+  const routing = read("js/routing-v14.js");
+  const css = read("css/routing-v14.css");
+  const sw = read("sw.js");
+
+  assert.ok(html.includes('id="routing-panel"'), "v14 routing panel must exist");
+  for (const lens of ["focus", "resume", "published", "alerts"]) {
+    assert.ok(html.includes(`data-route-lens="${lens}"`), `v14 routing lens missing: ${lens}`);
+  }
+
+  assert.ok(routing.includes('LENS_KEY = "central-estudos:route-lens-v14"'), "v14 selected lens must be local");
+  assert.ok(routing.includes('return LENSES.has(value) ? value : "focus"'), "v14 default lens must be focus");
+  assert.ok(routing.includes("Por que aparece aqui?"), "v14 must explain why an item appears");
+  assert.ok(routing.includes("A ordem é a do catálogo, sem ranking."), "v14 published lens must explain catalog order");
+  assert.ok(routing.includes("A ordem é a do catálogo, sem pontuação."), "v14 alerts lens must explain catalog order");
+  assert.ok(routing.includes(".sort((a, b) => a.order - b.order)"), "v14 multi-item routing must preserve catalog order");
+
+  assert.ok(routing.includes("central:focus-changed"), "v14 focus lens must follow human-selected focus");
+  assert.ok(routing.includes("central:project-opened"), "v14 resume lens must follow local access");
+  assert.ok(routing.includes("central:contract-state"), "v14 published/alerts lenses must use validated contracts");
+  assert.ok(!routing.includes("fetch("), "v14 routing layer must not create network calls");
+
+  assert.ok(!/score|ranking calculado|recomenda[cç][aã]o autom[aá]tica|melhor projeto|prioridade calculada/i.test(routing), "v14 must not rank, score or auto-recommend projects");
+  assert.ok(routing.includes('status === "stale-cache"'), "v14 must distinguish stale operational data");
+  assert.ok(routing.includes("Último estado conhecido"), "v14 stale route must be labeled as last known state");
+
+  assert.ok(css.includes(".routing-lenses"), "v14 lenses must be styled");
+  assert.ok(css.includes("@media(pointer:coarse)"), "v14 touch targets must be hardened");
+
+  const cacheMajor = Number(sw.match(/central-shell-v(\d+)\./)?.[1] || 0);
+  assert.ok(cacheMajor >= 14, "service worker cache must preserve v14 or newer");
+  assert.ok(sw.includes("./js/routing-v14.js"), "v14 JS must be in app shell");
+  assert.ok(sw.includes("./css/routing-v14.css"), "v14 CSS must be in app shell");
+
+  for (const project of registry.projects) {
+    assert.ok(html.includes(project.url), `v14 must preserve direct link for ${project.id}`);
+  }
+
+  pass("v14 user-selected, explainable and non-ranking routing contracts");
+}
+
 function testSecurityAndContracts(registry) {
   const frontendFiles = [
     "index.html",
@@ -522,6 +566,7 @@ const syntaxFiles = [
   "js/pro-v11.js",
   "js/contracts-v12.js",
   "js/operational-v13.js",
+  "js/routing-v14.js",
   "sw.js"
 ];
 
@@ -541,6 +586,7 @@ testV9Hardening(registry);
 testV11Pro(registry);
 testV12Contracts(registry);
 testV13OperationalState(registry);
+testV14ExplainableRouting(registry);
 testSecurityAndContracts(registry);
 
 console.log("\nQuality gate PASS");
