@@ -1,5 +1,19 @@
 # CHANGELOG — Central de Estudos
 
+## [12.0.0] — 2026-09-27
+- registry atualizado para schema v2 com `statusUrl`;
+- contrato público de estado operacional v1 definido e documentado;
+- TCE-GO, SEEDF e TJDFT publicam `public/central-status.json`;
+- consumidor read-only com GET, timeout de 3,5 s e cache de 5 min;
+- ID/schema/estrutura do contrato validados antes do uso;
+- graceful degradation para unavailable/invalid/stale-cache;
+- Diagnóstico passa a indicar disponibilidade do contrato operacional;
+- Visão Agora ainda não usa `nextAction` ou `currentUnit` — reservado à v13;
+- service worker não cacheia contratos dos filhos;
+- cache da Central atualizado para `central-shell-v12.0.0`;
+- **Writes autorizados nos filhos:** somente `public/central-status.json`;
+- **Commit/deploy final:** preencher após pipeline final.
+
 ## [11.0.0] — 2026-09-27
 - nova geração da Central iniciada após o fechamento terminal da v10;
 - adicionada **Visão Agora** com foco, retomada e catálogo;
