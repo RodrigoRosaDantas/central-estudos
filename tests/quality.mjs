@@ -697,6 +697,15 @@ function testV20TerminalAudit(registry) {
   pass("v20 terminal regression, architecture, audit and deployment contracts");
 }
 
+function testV20MobileScrollHotfix() {
+  const css = read("css/pro-v11.css");
+  const pro = read("js/pro-v11.js");
+  assert.ok(css.includes("body:has(main>:is(#projetos,#workspace,#activity-panel,#diagnostico):target)"), "mobile v20 hotfix must switch primary sections instead of stacking them");
+  assert.ok(css.includes(".command-results{max-height:none;overflow:visible}"), "mobile command results must not create nested scrolling");
+  assert.ok(pro.includes(".slice(0,7)"), "command palette must keep the visible result list bounded");
+  pass("v20 mobile single-view navigation and nested-scroll hotfix");
+}
+
 function testReleaseDocumentationCoherence(registry) {
   const readme = read("README.md");
   const architecture = read("docs/ARCHITECTURE.md");
@@ -827,6 +836,7 @@ testV17OperationalInbox(registry);
 testV18ProvenanceFreshness(registry);
 testV19LocalViews(registry);
 testV20TerminalAudit(registry);
+testV20MobileScrollHotfix();
 testReleaseDocumentationCoherence(registry);
 testSecurityAndContracts(registry);
 
