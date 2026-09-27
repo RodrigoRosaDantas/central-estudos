@@ -12,7 +12,8 @@
 - novos assets `operational-v13.css` e `operational-v13.js`;
 - app shell atualizado para `central-shell-v13.0.0`;
 - **Projetos-filhos:** read-only nesta major; zero writes;
-- **Commit/deploy final:** preencher após pipeline final.
+- **Commit de release validado:** `83696d8471fc24c84fdb72c965bcffd5a2fa58ea`;
+- **Deploy validado:** workflow run `36285904184` — quality `success` + deploy `success`.
 
 ## [12.0.0] — 2026-09-27
 - registry atualizado para schema v2 com `statusUrl`;
