@@ -52,9 +52,9 @@ return a}
 function renderCommands(){
 const q=norm(cmdInput?.value),all=commands();cmdVisible=all.filter(x=>!q||norm(`${x.label} ${x.meta} ${x.keys}`).includes(q)).slice(0,10);cmdIndex=Math.min(cmdIndex,Math.max(0,cmdVisible.length-1));cmdList.replaceChildren();
 if(!cmdVisible.length){cmdList.append(n("p","command-empty","Nenhum resultado."));return}
-cmdVisible.forEach((x,i)=>{const b=n("button","command-result");b.type="button";b.dataset.index=i;b.setAttribute("aria-selected",String(i===cmdIndex));b.append(n("strong","",x.label),n("span","",x.meta));b.addEventListener("click",()=>{closeCommand();x.run()});cmdList.append(b)})}
+cmdVisible.forEach((x,i)=>{const b=n("button","command-result");b.type="button";b.dataset.index=i;b.setAttribute("role","option");b.setAttribute("aria-selected",String(i===cmdIndex));b.append(n("strong","",x.label),n("span","",x.meta));b.addEventListener("click",()=>{closeCommand();x.run()});cmdList.append(b)})}
 function moveCommand(d){if(!cmdVisible.length)return;cmdIndex=(cmdIndex+d+cmdVisible.length)%cmdVisible.length;[...cmdList.querySelectorAll(".command-result")].forEach((b,i)=>b.setAttribute("aria-selected",String(i===cmdIndex)));cmdList.querySelector(`[data-index="${cmdIndex}"]`)?.scrollIntoView({block:"nearest"})}
-function openCommand(){if(!cmdDialog)return;cmdIndex=0;cmdInput.value="";renderCommands();typeof cmdDialog.showModal==="function"?cmdDialog.showModal():cmdDialog.setAttribute("open","");setTimeout(()=>cmdInput.focus(),0)}
+function openCommand(){if(!cmdDialog)return;if(cmdDialog.open){cmdInput.focus();return}cmdIndex=0;cmdInput.value="";renderCommands();typeof cmdDialog.showModal==="function"?cmdDialog.showModal():cmdDialog.setAttribute("open","");setTimeout(()=>cmdInput.focus(),0)}
 function closeCommand(){if(!cmdDialog)return;typeof cmdDialog.close==="function"&&cmdDialog.open?cmdDialog.close():cmdDialog.removeAttribute("open")}
 function initCommand(){
 const open=n("button","command-open","⌕");open.type="button";open.setAttribute("aria-label","Abrir acesso rápido — Ctrl ou Command + K");open.title="Acesso rápido · Ctrl/⌘ + K";
