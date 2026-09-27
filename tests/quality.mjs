@@ -88,7 +88,7 @@ function loadAppForTests() {
 }
 
 function testRegistry(registry, html) {
-  assert.equal(registry.schemaVersion, 1, "registry schemaVersion must be 1");
+  assert.equal(registry.schemaVersion, 2, "registry schemaVersion must be 2");
   assert.match(registry.central.version, /^\d+\.\d+\.\d+$/, "central version must be semver");
   assert.ok(Array.isArray(registry.projects) && registry.projects.length > 0, "registry must contain projects");
 
@@ -105,6 +105,10 @@ function testRegistry(registry, html) {
 
     assert.equal(new URL(project.url).protocol, "https:", `${project.id}.url must use HTTPS`);
     assert.equal(new URL(project.repository).protocol, "https:", `${project.id}.repository must use HTTPS`);
+    if (project.statusUrl) {
+      assert.equal(new URL(project.statusUrl).protocol, "https:", `${project.id}.statusUrl must use HTTPS`);
+      assert.ok(project.statusUrl.endsWith("/central-status.json"), `${project.id}.statusUrl must target central-status.json`);
+    }
     assert.ok(html.includes(project.url), `static HTML fallback must include ${project.id} URL`);
   }
 
@@ -328,6 +332,7 @@ function testV9Hardening(registry) {
     "js/pwa-v6.js",
     "js/timeline-v8.js",
     "js/pro-v11.js",
+    "js/contracts-v12.js",
     "css/app.css",
     "css/catalog-v4.css",
     "css/personalization-v5.css",
@@ -388,6 +393,46 @@ function testV11Pro(registry) {
   pass("v11 PRO navigation, now view and no-fake-state contracts");
 }
 
+function testV12Contracts(registry) {
+  const contracts = read("js/contracts-v12.js");
+  const timeline = read("js/timeline-v8.js");
+  const pro = read("js/pro-v11.js");
+  const sw = read("sw.js");
+  const schema = JSON.parse(read("config/status-contract.schema.json"));
+
+  assert.equal(schema.properties.schemaVersion.const, 1, "status contract schema must remain v1");
+  assert.ok(schema.required.includes("projectId"), "status contract schema must require projectId");
+  assert.ok(schema.required.includes("state"), "status contract schema must require state");
+
+  for (const project of registry.projects) {
+    assert.equal(typeof project.statusUrl, "string", `${project.id} must publish statusUrl in v12`);
+    assert.equal(new URL(project.statusUrl).protocol, "https:", `${project.id}.statusUrl must use HTTPS`);
+  }
+
+  assert.ok(contracts.includes('CACHE_TTL_MS = 5 * 60 * 1000'), "v12 contracts must use short cache");
+  assert.ok(contracts.includes("TIMEOUT_MS = 3500"), "v12 contracts must use timeout");
+  assert.ok(contracts.includes('method: "GET"'), "v12 contract transport must be read-only GET");
+  assert.ok(!contracts.includes('method: "POST"') && !contracts.includes('method: "PUT"') && !contracts.includes('method: "PATCH"') && !contracts.includes('method: "DELETE"'), "v12 consumer must never write");
+  assert.ok(contracts.includes("validateContract"), "v12 must validate contract before use");
+  assert.ok(contracts.includes("project-id-mismatch"), "v12 must bind contract to registry project");
+  assert.ok(contracts.includes("stale-cache"), "v12 must degrade to stale cache");
+  assert.ok(contracts.includes("central:contract-state"), "v12 must publish contract state events");
+  assert.ok(timeline.includes("central:contract-state"), "diagnostics must consume v12 contract state");
+  assert.ok(timeline.includes("contrato operacional inválido"), "diagnostics must explain invalid contract");
+  assert.ok(timeline.includes("isso não afeta o projeto nem seus links"), "contract failure must not affect navigation");
+
+  assert.ok(!pro.includes("nextAction"), "v12 must not expose nextAction in the Home before v13");
+  assert.ok(!pro.includes("currentUnit"), "v12 must not expose currentUnit in the Home before v13");
+
+  assert.ok(sw.includes("central-shell-v12.0.0"), "v12 app shell cache must be versioned");
+  assert.ok(sw.includes("./js/contracts-v12.js"), "v12 contract consumer must be in app shell");
+  for (const project of registry.projects) {
+    assert.ok(!sw.includes(project.statusUrl), `service worker must not cache child contract: ${project.id}`);
+  }
+
+  pass("v12 optional read-only contract, cache and graceful-degradation contracts");
+}
+
 function testSecurityAndContracts(registry) {
   const frontendFiles = [
     "index.html",
@@ -429,6 +474,7 @@ const syntaxFiles = [
   "js/pwa-v6.js",
   "js/timeline-v8.js",
   "js/pro-v11.js",
+  "js/contracts-v12.js",
   "sw.js"
 ];
 
@@ -446,6 +492,7 @@ testCriticalAppLogic(registry);
 testTimelineContract(registry);
 testV9Hardening(registry);
 testV11Pro(registry);
+testV12Contracts(registry);
 testSecurityAndContracts(registry);
 
 console.log("\nQuality gate PASS");
