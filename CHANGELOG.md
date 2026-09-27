@@ -1,5 +1,20 @@
 # CHANGELOG — Central de Estudos
 
+## [11.0.0] — 2026-09-27
+- nova geração da Central iniciada após o fechamento terminal da v10;
+- adicionada **Visão Agora** com foco, retomada e catálogo;
+- navegação principal: Agora, Projetos, Atividade e Diagnóstico;
+- navegação sticky no desktop e inferior fixa no mobile;
+- integração baseada em eventos locais, sem polling;
+- zero chamadas de rede adicionais na camada v11;
+- dados técnicos mantidos como camada secundária;
+- nenhuma próxima ação pedagógica, progresso ou desempenho é inventado;
+- novos assets `pro-v11.css` e `pro-v11.js` incluídos no app shell;
+- cache PWA atualizado para `central-shell-v11.0.0`;
+- quality gate cobre os contratos específicos da v11;
+- **Projetos-filhos:** somente leitura; zero writes;
+- **Commit/deploy final:** preencher após pipeline final da release.
+
 ## [10.0.0] — 2026-09-26
 - release estável terminal da esteira v10;
 - auditoria integral registrada em `docs/FINAL-AUDIT-V10.md`;
