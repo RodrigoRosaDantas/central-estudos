@@ -2,9 +2,8 @@
 
 ## Estado
 - **Versão de origem:** 10.0.0
-- **Versão validada:** 12.0.0
-- **Stage:** VALIDATING
-- **Active major:** 13.0.0
+- **Versão validada:** 13.0.0
+- **Stage:** READY
 - **Next major:** 14.0.0
 - **Projetos-filhos:** READ-ONLY na v13; contratos v12 já publicados
 - **Automação:** nenhuma
@@ -112,3 +111,16 @@
 - App shell: `central-shell-v13.0.0`.
 - Pipeline de implementação: `36285812564` — quality success + deploy success.
 - Estado: aguardando pipeline final já com versão/documentação 13.0.0.
+
+
+## Fechamento v13.0.0
+- **Resultado:** PASS
+- **Commit validado:** `83696d8471fc24c84fdb72c965bcffd5a2fa58ea`
+- **Pipeline:** `36285904184` — quality success + deploy success
+- **Estado operacional publicado:** PASS
+- **Distinção operational/planned/stale:** PASS
+- **Foco humano independente:** PASS
+- **Rede adicional da camada v13:** zero
+- **Ranking/score/mentor global:** ausentes
+- **Projetos-filhos:** sem novos writes na v13; HEADs mantidos nos contratos v12
+- **Próxima etapa autorizada:** v14.0.0 — roteamento explicável, sem decidir pelo usuário.
