@@ -1,14 +1,11 @@
 (() => {
   "use strict";
 
-  const panel = document.getElementById("operational-panel");
-  const list = document.getElementById("operational-list");
-  const focusOperational = document.getElementById("pro-now-focus-operational");
-  const routeList = document.getElementById("routing-list");
-  const routeExplanation = document.getElementById("routing-explanation");
+  const $ = id => document.getElementById(id);
+  const panel = $("operational-panel"), list = $("operational-list"), focusLine = $("pro-now-focus-operational");
+  const routeList = $("routing-list"), routeText = $("routing-explanation");
   const routeButtons = [...document.querySelectorAll("[data-route-lens]")];
-
-  if (!panel || !list || !focusOperational) return;
+  if (!panel || !list || !focusLine) return;
 
   const contracts = new Map();
   const LENS_KEY = "central-estudos:route-lens-v14";
@@ -19,108 +16,111 @@
     try {
       const value = localStorage.getItem(LENS_KEY);
       return LENSES.has(value) ? value : "focus";
-    } catch {
-      return "focus";
-    }
+    } catch { return "focus"; }
   })();
 
-  function projectInfo(id) {
-    const card = [...document.querySelectorAll(".project-card")]
-      .find(item => item.dataset.projectId === id);
+  const node = (tag, className, text) => {
+    const element = document.createElement(tag);
+    if (className) element.className = className;
+    if (text !== undefined) element.textContent = text;
+    return element;
+  };
 
+  const projectInfo = id => {
+    const card = [...document.querySelectorAll(".project-card")].find(item => item.dataset.projectId === id);
     return {
+      id,
       name: card?.querySelector("h3")?.textContent?.trim() || id,
+      phase: card?.querySelector(".project-phase")?.textContent?.trim() || "",
       href: card?.querySelector(".project-link")?.href || "#projetos",
       order: Number(card?.dataset.projectOrder ?? Number.MAX_SAFE_INTEGER)
     };
-  }
+  };
 
-  function kindMeta(kind, status) {
-    if (status === "stale-cache") {
-      return {
-        label: "Último estado",
-        className: "is-stale",
-        actionPrefix: "Último estado conhecido"
-      };
+  const allProjects = () => [...document.querySelectorAll(".project-card")]
+    .map(card => projectInfo(card.dataset.projectId || ""))
+    .filter(item => item.id);
+
+  const visible = item => Boolean(item?.contract?.state && ["live", "cached", "stale-cache"].includes(item.status));
+  const contractFor = id => {
+    const item = contracts.get(id);
+    return visible(item) ? item : null;
+  };
+
+  const kindMeta = (kind, status) => {
+    if (status === "stale-cache") return ["Último estado", "is-stale", "Último estado conhecido"];
+    if (kind === "planned") return ["Planejado", "is-planned", "Planejado"];
+    if (kind === "manual") return ["Publicado", "is-operational", "Ação publicada"];
+    return ["Operacional", "is-operational", "Próxima ação"];
+  };
+
+  const contextText = state => [state.phase, state.cycle, state.currentUnit].filter(Boolean).join(" · ");
+  const sourceText = status => status === "stale-cache"
+    ? "Fonte: contrato em cache antigo"
+    : status === "cached"
+      ? "Fonte: contrato em cache recente"
+      : "Fonte: contrato publicado pelo projeto";
+
+  function operationalCard(item) {
+    const info = projectInfo(item.id), state = item.contract.state;
+    const [label, badgeClass, prefix] = kindMeta(state.nextActionKind, item.status);
+    const card = node("article", "operational-card");
+    card.dataset.projectId = item.id;
+    card.dataset.focus = String(item.id === focusId);
+
+    const head = node("div", "operational-head");
+    head.append(node("h3", "operational-name", info.name), node("span", `operational-badge ${badgeClass}`, label));
+    card.append(head, node("p", "operational-context", contextText(state) || "Estado operacional publicado"));
+
+    if (state.nextAction) card.append(node("p", "operational-action", `${prefix}: ${state.nextAction}`));
+    if (state.alerts?.length) {
+      const alerts = node("div", "operational-alerts");
+      state.alerts.slice(0, 3).forEach(message => alerts.append(node("p", "operational-alert", message)));
+      card.append(alerts);
     }
 
-    if (kind === "planned") {
-      return {
-        label: "Planejado",
-        className: "is-planned",
-        actionPrefix: "Planejado"
-      };
+    const footer = node("div", "operational-footer");
+    const link = node("a", "operational-link", "Abrir projeto →");
+    link.href = info.href;
+    footer.append(node("span", "operational-source", sourceText(item.status)), link);
+    card.append(footer);
+    return { article: card, order: info.order };
+  }
+
+  function renderFocus() {
+    const item = focusId ? contractFor(focusId) : null;
+    const state = item?.contract?.state;
+    if (!state?.nextAction) {
+      focusLine.textContent = "";
+      focusLine.classList.add("is-hidden");
+      return;
     }
-
-    if (kind === "manual") {
-      return {
-        label: "Publicado",
-        className: "is-operational",
-        actionPrefix: "Ação publicada"
-      };
-    }
-
-    return {
-      label: "Operacional",
-      className: "is-operational",
-      actionPrefix: "Próxima ação"
-    };
+    const [, , prefix] = kindMeta(state.nextActionKind, item.status);
+    focusLine.textContent = `${prefix}: ${state.nextAction}`;
+    focusLine.dataset.kind = state.nextActionKind;
+    focusLine.dataset.stale = String(item.status === "stale-cache");
+    focusLine.classList.remove("is-hidden");
   }
 
-  function contextText(state) {
-    const parts = [];
-    if (state.phase) parts.push(state.phase);
-    if (state.cycle) parts.push(state.cycle);
-    if (state.currentUnit) parts.push(state.currentUnit);
-    return parts.join(" · ");
-  }
-
-  function sourceText(item) {
-    if (item.status === "stale-cache") return "Fonte: contrato em cache antigo";
-    if (item.status === "cached") return "Fonte: contrato em cache recente";
-    return "Fonte: contrato publicado pelo projeto";
-  }
-
-  function validVisibleItem(detail) {
-    if (!detail?.contract?.state) return false;
-    return ["live", "cached", "stale-cache"].includes(detail.status);
-  }
-
-  function routeProjects() {
-    return [...document.querySelectorAll(".project-card")].map(card => ({
-      id: card.dataset.projectId || "",
-      order: Number(card.dataset.projectOrder ?? Number.MAX_SAFE_INTEGER),
-      name: card.querySelector("h3")?.textContent?.trim() || "Ambiente",
-      phase: card.querySelector(".project-phase")?.textContent?.trim() || "",
-      href: card.querySelector(".project-link")?.href || "#projetos"
-    })).filter(item => item.id);
-  }
-
-  function lastProjectId() {
+  const readLastId = () => {
     try {
       const value = JSON.parse(localStorage.getItem(LAST_KEY) || "null");
       return typeof value?.id === "string" ? value.id : null;
-    } catch {
-      return null;
-    }
-  }
+    } catch { return null; }
+  };
 
-  function routeContract(id) {
-    const item = contracts.get(id);
-    return validVisibleItem(item) ? item : null;
-  }
-
-  function routeExplanationText() {
-    if (lens === "resume") return "Mostra o último ambiente aberto pela Central neste navegador.";
-    if (lens === "published") return "Mostra projetos que publicaram uma próxima ação. A ordem é a do catálogo, sem ranking.";
-    if (lens === "alerts") return "Mostra projetos cujo contrato publicou alertas. A ordem é a do catálogo, sem pontuação.";
-    return "Mostra somente o foco que você definiu na Central.";
-  }
+  const lensExplanation = () => lens === "resume"
+    ? "Mostra o último ambiente aberto pela Central neste navegador."
+    : lens === "published"
+      ? "Mostra projetos que publicaram uma próxima ação. A ordem é a do catálogo, sem ranking."
+      : lens === "alerts"
+        ? "Mostra projetos cujo contrato publicou alertas. A ordem é a do catálogo, sem pontuação."
+        : "Mostra somente o foco que você definiu na Central.";
 
   function routedProjects() {
-    const last = lastProjectId();
-    return routeProjects().filter(item => {
-      const contract = routeContract(item.id);
+    const last = readLastId();
+    return allProjects().filter(item => {
+      const contract = contractFor(item.id);
       if (lens === "focus") return item.id === focusId;
       if (lens === "resume") return item.id === last;
       if (lens === "published") return Boolean(contract?.contract?.state?.nextAction);
@@ -140,229 +140,83 @@
     return "Aparece porque você definiu este projeto como foco na Central.";
   }
 
-  function createRouteCard(item) {
-    const contract = routeContract(item.id);
-    const state = contract?.contract?.state;
-    const card = document.createElement("article");
-    card.className = "routing-card";
-
-    const head = document.createElement("div");
-    head.className = "routing-card-head";
-    const name = document.createElement("h3");
-    name.textContent = item.name;
-    const tag = document.createElement("span");
-    tag.className = "routing-tag";
-    tag.textContent = lens === "focus" ? "Foco escolhido" : lens === "resume" ? "Último acesso" : lens === "alerts" ? "Com alerta" : "Ação publicada";
-    head.append(name, tag);
-    card.append(head);
-
-    const meta = document.createElement("p");
-    meta.className = "routing-meta";
-    meta.textContent = item.phase || "Ambiente ativo";
-    card.append(meta);
+  function routeCard(item) {
+    const contract = contractFor(item.id), state = contract?.contract?.state;
+    const card = node("article", "routing-card"), head = node("div", "routing-card-head");
+    const tag = lens === "focus" ? "Foco escolhido" : lens === "resume" ? "Último acesso" : lens === "alerts" ? "Com alerta" : "Ação publicada";
+    head.append(node("h3", "", item.name), node("span", "routing-tag", tag));
+    card.append(head, node("p", "routing-meta", item.phase || "Ambiente ativo"));
 
     if (state?.nextAction) {
-      const action = document.createElement("p");
-      action.className = "routing-operational";
-      action.textContent = contract.status === "stale-cache"
+      const text = contract.status === "stale-cache"
         ? `Último estado conhecido: ${state.nextAction}`
         : state.nextActionKind === "planned"
           ? `Planejado: ${state.nextAction}`
           : `Próxima ação publicada: ${state.nextAction}`;
-      card.append(action);
+      card.append(node("p", "routing-operational", text));
     }
+    if (lens === "alerts" && state?.alerts?.length) card.append(node("p", "routing-alert", state.alerts[0]));
 
-    if (lens === "alerts" && state?.alerts?.length) {
-      const alert = document.createElement("p");
-      alert.className = "routing-alert";
-      alert.textContent = state.alerts[0];
-      card.append(alert);
-    }
-
-    const why = document.createElement("details");
-    why.className = "routing-why";
-    const summary = document.createElement("summary");
-    summary.textContent = "Por que aparece aqui?";
-    const reason = document.createElement("p");
-    reason.textContent = routeReason(contract);
-    why.append(summary, reason);
-    card.append(why);
-
-    const link = document.createElement("a");
-    link.className = "routing-open";
+    const why = node("details", "routing-why"), summary = node("summary", "", "Por que aparece aqui?");
+    why.append(summary, node("p", "", routeReason(contract)));
+    const link = node("a", "routing-open", "Abrir projeto →");
     link.href = item.href;
-    link.textContent = "Abrir projeto →";
-    card.append(link);
+    card.append(why, link);
     return card;
   }
 
   function renderRouting() {
-    if (!routeList || !routeExplanation || !routeButtons.length) return;
-
+    if (!routeList || !routeText || !routeButtons.length) return;
     routeButtons.forEach(button => {
       const active = button.dataset.routeLens === lens;
       button.classList.toggle("is-active", active);
       button.setAttribute("aria-pressed", String(active));
     });
-    routeExplanation.textContent = routeExplanationText();
+    routeText.textContent = lensExplanation();
 
     const items = routedProjects();
-    if (!items.length) {
-      const empty = document.createElement("p");
-      empty.className = "routing-empty";
-      empty.textContent = lens === "resume"
-        ? "Ainda não há um último acesso registrado neste navegador."
-        : lens === "alerts"
-          ? "Nenhum alerta publicado nesta lente."
-          : lens === "published"
-            ? "Nenhuma próxima ação publicada está disponível nesta lente."
-            : "O foco ainda não pôde ser identificado.";
-      routeList.replaceChildren(empty);
-      return;
-    }
+    if (items.length) return routeList.replaceChildren(...items.map(routeCard));
 
-    routeList.replaceChildren(...items.map(createRouteCard));
-  }
-
-  function createCard(item) {
-    const info = projectInfo(item.id);
-    const state = item.contract.state;
-    const meta = kindMeta(state.nextActionKind, item.status);
-
-    const article = document.createElement("article");
-    article.className = "operational-card";
-    article.dataset.projectId = item.id;
-    article.dataset.focus = String(item.id === focusId);
-
-    const head = document.createElement("div");
-    head.className = "operational-head";
-
-    const name = document.createElement("h3");
-    name.className = "operational-name";
-    name.textContent = info.name;
-
-    const badge = document.createElement("span");
-    badge.className = `operational-badge ${meta.className}`;
-    badge.textContent = meta.label;
-
-    head.append(name, badge);
-    article.append(head);
-
-    const context = document.createElement("p");
-    context.className = "operational-context";
-    context.textContent = contextText(state) || "Estado operacional publicado";
-    article.append(context);
-
-    if (state.nextAction) {
-      const action = document.createElement("p");
-      action.className = "operational-action";
-      action.textContent = `${meta.actionPrefix}: ${state.nextAction}`;
-      article.append(action);
-    }
-
-    if (Array.isArray(state.alerts) && state.alerts.length) {
-      const alerts = document.createElement("div");
-      alerts.className = "operational-alerts";
-
-      state.alerts.slice(0, 3).forEach(message => {
-        const alert = document.createElement("p");
-        alert.className = "operational-alert";
-        alert.textContent = message;
-        alerts.append(alert);
-      });
-
-      article.append(alerts);
-    }
-
-    const footer = document.createElement("div");
-    footer.className = "operational-footer";
-
-    const source = document.createElement("span");
-    source.className = "operational-source";
-    source.textContent = sourceText(item);
-
-    const link = document.createElement("a");
-    link.className = "operational-link";
-    link.href = info.href;
-    link.textContent = "Abrir projeto →";
-
-    footer.append(source, link);
-    article.append(footer);
-
-    return { article, order: info.order };
-  }
-
-  function renderFocusOperational() {
-    const item = focusId ? contracts.get(focusId) : null;
-
-    if (!item || !validVisibleItem(item)) {
-      focusOperational.textContent = "";
-      focusOperational.classList.add("is-hidden");
-      focusOperational.removeAttribute("data-kind");
-      focusOperational.removeAttribute("data-stale");
-      return;
-    }
-
-    const state = item.contract.state;
-    if (!state.nextAction) {
-      focusOperational.textContent = "";
-      focusOperational.classList.add("is-hidden");
-      return;
-    }
-
-    const meta = kindMeta(state.nextActionKind, item.status);
-    focusOperational.textContent = `${meta.actionPrefix}: ${state.nextAction}`;
-    focusOperational.dataset.kind = state.nextActionKind;
-    focusOperational.dataset.stale = String(item.status === "stale-cache");
-    focusOperational.classList.remove("is-hidden");
+    const text = lens === "resume"
+      ? "Ainda não há um último acesso registrado neste navegador."
+      : lens === "alerts"
+        ? "Nenhum alerta publicado nesta lente."
+        : lens === "published"
+          ? "Nenhuma próxima ação publicada está disponível nesta lente."
+          : "O foco ainda não pôde ser identificado.";
+    routeList.replaceChildren(node("p", "routing-empty", text));
   }
 
   function render() {
-    const visible = [...contracts.values()]
-      .filter(validVisibleItem)
-      .map(item => ({ item, ...createCard(item) }))
-      .sort((a, b) => a.order - b.order);
-
-    list.replaceChildren(...visible.map(entry => entry.article));
-    panel.hidden = visible.length === 0;
-    renderFocusOperational();
+    const cards = [...contracts.values()].filter(visible).map(operationalCard).sort((a, b) => a.order - b.order);
+    list.replaceChildren(...cards.map(item => item.article));
+    panel.hidden = cards.length === 0;
+    renderFocus();
     renderRouting();
   }
 
-  routeButtons.forEach(button => {
-    button.addEventListener("click", () => {
-      const next = button.dataset.routeLens;
-      if (!LENSES.has(next)) return;
-      lens = next;
-      try { localStorage.setItem(LENS_KEY, next); } catch {}
-      renderRouting();
-    });
-  });
+  routeButtons.forEach(button => button.addEventListener("click", () => {
+    const next = button.dataset.routeLens;
+    if (!LENSES.has(next)) return;
+    lens = next;
+    try { localStorage.setItem(LENS_KEY, next); } catch {}
+    renderRouting();
+  }));
 
   document.addEventListener("central:app-ready", event => {
     focusId = event.detail?.focusId || focusId;
     render();
   });
-
   document.addEventListener("central:focus-changed", event => {
     focusId = event.detail?.id || focusId;
     render();
   });
-
   document.addEventListener("central:project-opened", renderRouting);
   document.addEventListener("central:history-cleared", renderRouting);
-
   document.addEventListener("central:contract-state", event => {
     const detail = event.detail;
     if (!detail || typeof detail.id !== "string") return;
-
-    contracts.set(detail.id, {
-      id: detail.id,
-      status: detail.status,
-      contract: detail.contract || null,
-      checkedAt: detail.checkedAt || null
-    });
-
+    contracts.set(detail.id, { id: detail.id, status: detail.status, contract: detail.contract || null, checkedAt: detail.checkedAt || null });
     render();
   });
 })();
