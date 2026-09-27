@@ -30,6 +30,14 @@ Consolidação da v20:
 - **Evolução dos projetos** resume fase, ciclo, unidade e próxima ação publicadas pelos contratos, sem estimar percentual inexistente;
 - a experiência mobile de uma área por vez continua preservada.
 
+### Polimento UX contínuo
+
+- botão **Opções** no cabeçalho abre as preferências locais diretamente;
+- saudação mostra **dia/data + horário de Brasília** e atualiza a cada minuto;
+- o resumo de evolução informa quantos projetos estão efetivamente acompanhados por contrato válido;
+- a navegação principal foi consolidada em **5 colunas**, sem regras antigas conflitantes;
+- shell reduzido para **130.771 bytes**, mantendo o teto de 128 KiB.
+
 ## Base v19 — Views locais
 
 A v19 adiciona **Views locais** nomeadas sem backend, usando somente preferências allowlisted da própria Central.

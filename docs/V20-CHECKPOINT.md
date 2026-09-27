@@ -264,3 +264,16 @@
 - **Horário:** saudação usa explicitamente `America/Sao_Paulo` e mostra horário de Brasília.
 - **Evolução:** área operacional passa a apresentar fase/ciclo/unidade/próxima ação publicados pelos contratos; resumo usa unidade atual ou identificador da próxima ação, sem percentual inventado.
 - **Projetos-filhos:** continuam read-only; nenhuma alteração realizada.
+
+
+## Manutenção UX contínua — v20
+- **Estado da esteira:** permanece COMPLETE; nenhuma v21 foi aberta.
+- **Commit funcional:** `9d04c2efef0a78622333929e53f2a85f19dc0b18`.
+- **Pipeline:** `36336455463` — quality SUCCESS + deploy SUCCESS.
+- **Artefato Pages:** `10937705227`, digest `sha256:89391d7a5753e369b0d6947364b08a6823a8068fdd7aa52ee2510e054b0f0441`.
+- **Shell:** 130.771 bytes <= 131.072 bytes; margem 301 bytes.
+- **Cabeçalho:** botão `Opções` abre diretamente as preferências locais.
+- **Horário:** cabeçalho mostra dia/data + horário de Brasília e atualiza a cada minuto.
+- **Evolução:** resumo passa a mostrar quantos projetos possuem contrato válido acompanhado.
+- **Navegação:** removidas regras antigas redundantes de 4 colunas; grade principal usa 5 itens.
+- **Projetos-filhos:** TCE-GO `889017ba83143be268a84358229882a2b3ef9289`; SEEDF `b68431e2aa4944199705400c8821bf28505299d1`; TJDFT `99877771dcd008594d6855c08f077e1563e609bd` — intactos; zero writes.
