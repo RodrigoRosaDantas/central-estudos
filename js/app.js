@@ -186,6 +186,12 @@ function setFocusProject(project) {
   renderFocus(project);
   renderProjects();
 
+  if (typeof CustomEvent === "function") {
+    document.dispatchEvent(new CustomEvent("central:focus-changed", {
+      detail: { id: project.id, name: project.name }
+    }));
+  }
+
   if (!state.storageAvailable) {
     showSystemNotice("A preferência de foco vale apenas nesta sessão porque o armazenamento local não está disponível.", "warning");
   }
@@ -852,6 +858,15 @@ async function init() {
     renderResume();
     renderProjects();
     bindClearHistory();
+
+    if (typeof CustomEvent === "function") {
+      document.dispatchEvent(new CustomEvent("central:app-ready", {
+        detail: {
+          focusId: state.focus?.id || null,
+          projectCount: state.projects.length
+        }
+      }));
+    }
 
     const version = byId("app-version");
     if (version && state.config.central.version) {
