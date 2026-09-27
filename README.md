@@ -94,10 +94,8 @@ A Central nunca é requisito para os projetos funcionarem. TCE-GO, SEEDF e TJDFT
 
 ## Adicionar um projeto
 
-A fonte dinâmica de verdade é `config/projects.json`. O `index.html` mantém uma cópia mínima dos links para fallback; ao adicionar ambiente, mantenha o fallback coerente e consulte `docs/ARCHITECTURE.md`.
+A fonte dinâmica de verdade é `config/projects.json` (schema v3). Cada item declara lifecycle `active`, `archived` ou `future`. O `index.html` mantém fallback mínimo para acessos reais; consulte `docs/ARCHITECTURE.md` antes de adicionar ou arquivar um projeto.
 
 ## Governança e auditoria
 
-A evolução até v10 é governada por `docs/COMMAND-V10.md`, `docs/ROADMAP-V10.md`, `docs/ACCEPTANCE-V10.md`, `docs/AUDIT-PROTOCOL.md`, `docs/V10-CHECKPOINT.md`, `docs/BACKLOG-V10.md`, `docs/FINAL-AUDIT-V10.md` e `CHANGELOG.md`.
-
-A v10 é terminal para esta esteira: após validação final, o checkpoint fica `COMPLETE — v10.0.0` e nenhuma v11 é iniciada automaticamente.
+A esteira histórica v1→v10 permanece congelada em `docs/V10-CHECKPOINT.md` e `docs/FINAL-AUDIT-V10.md`. A nova geração v11→v15 é governada por `docs/ROADMAP-V15.md`, `docs/V15-CHECKPOINT.md`, a arquitetura viva e `CHANGELOG.md`.
