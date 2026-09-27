@@ -803,6 +803,7 @@ function testReleaseDocumentationCoherence(registry) {
   const roadmap22 = read("docs/ROADMAP-V22.md");
   const checkpoint22 = read("docs/V22-CHECKPOINT.md");
   const acceptance22 = read("docs/ACCEPTANCE-V22.md");
+  const audit22 = read("docs/FINAL-AUDIT-V22.md");
 
   const version = registry.central.version;
   const major = Number(version.split(".")[0]);
@@ -862,7 +863,9 @@ function testReleaseDocumentationCoherence(registry) {
 
   if (major >= 22) {
     assert.equal(version,"22.0.0","v22 release must be 22.0.0");
-    assert.ok(roadmap22.includes("22.0.0")&&checkpoint22.includes("22.0.0")&&acceptance22.includes("Centro de Comando"),"v22 governance missing");
+    assert.ok(roadmap22.includes("Stage:** COMPLETE")&&checkpoint22.includes("Stage:** COMPLETE")&&acceptance22.includes("Centro de Comando"),"v22 governance must be closed");
+    assert.ok(audit22.includes("d767b82e395f704db9958521a8e8872229120dfb")&&audit22.includes("36349217897")&&audit22.includes("10940509659"),"v22 audit must bind release, workflow and artifact");
+    assert.ok(exists("docs/FINAL-AUDIT-V22.md"),"v22 final audit must exist");
     assert.ok(architecture.includes("## Centro de Comando — v22")&&changelog.includes("## [22.0.0]"),"v22 docs missing");
     assert.ok(sw.includes("central-shell-v22.0.0"),"service worker must match v22");
   }
