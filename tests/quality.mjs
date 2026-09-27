@@ -810,6 +810,19 @@ function testV24ScreensAndViews(registry) {
   const html=read("index.html"),router=read("js/workspace-v24.js"),pro=read("js/pro-v11.js"),operational=read("js/operational-v13.js"),css=read("css/workspace-v24.css"),sw=read("sw.js");
   const screens=[["agora","today"],["retomada","resume"],["projetos","projects"],["inbox","inbox"],["activity-panel","history"],["evolucao","evolution"]];
   for(const [id,key] of screens){assert.ok(html.includes(`href="#${id}"`)&&html.includes(`id="${id}"`)&&router.includes(`${key}:"${id}"`),`v24 direct screen route missing: ${id}`)}
+  const mainStart=html.indexOf('<main id="conteudo">'),mainEnd=html.indexOf("</main>",mainStart);
+  assert.ok(mainStart>=0&&mainEnd>mainStart,"v24 main landmark must remain present");
+  const mainMarkup=html.slice(mainStart,mainEnd),sectionParents=new Map(),sectionStack=[];
+  for(const match of mainMarkup.matchAll(/<\/?section\b[^>]*>/g)){
+    const tag=match[0];
+    if(tag.startsWith("</")){assert.ok(sectionStack.length,"section markup must be balanced");sectionStack.pop();continue}
+    const id=tag.match(/\bid="([^"]+)"/)?.[1];
+    if(id)sectionParents.set(id,sectionStack.at(-1)||"main");
+    sectionStack.push(id||"(anonymous)");
+  }
+  assert.equal(sectionStack.length,0,"section markup must be balanced");
+  for(const id of ["agora","retomada","projetos","workspace","inbox","activity-panel","evolucao"])assert.equal(sectionParents.get(id),"main",`v24 screen ${id} must be a direct main section`);
+  assert.equal(sectionParents.get("diagnostico"),"evolucao","v24 diagnostic must remain inside Evolution");
   assert.ok(html.includes('id="inbox-list"')&&html.includes('id="inbox-toolbar"')&&html.includes('id="operational-list"'),"v24 Inbox and Radar need separate containers");
   assert.ok(operational.includes('s("inbox-list")')&&operational.includes('s("operational-list")')&&operational.includes("inbox-list")&&operational.includes("operational-panel"),"Radar and Inbox must render independently from validated state");
   assert.ok(html.includes('id="resume-focus-name"')&&html.includes('id="pro-now-resume-name"')&&pro.includes("não representa estudo ou progresso"),"Retomada must separate human focus and local access");
