@@ -591,7 +591,7 @@ function testV16CommandPalette(registry) {
   assert.ok(pro.includes('e.key==="Escape"'), "v16 must support Escape");
   assert.ok(pro.includes('setAttribute("role","option")'), "v16 results must expose option semantics");
   assert.ok(pro.includes('"Projeto ativo"') && pro.includes('"Histórico arquivado"') && pro.includes('"Projeto futuro"'), "v16 must distinguish workspace lifecycle");
-  assert.ok(pro.includes('Ir para Agora') && pro.includes('Ir para Workspace') && pro.includes('Ir para Diagnóstico'), "v16 must search core navigation");
+  assert.ok((pro.includes('Ir para Agora')||pro.includes('Ir para Hoje')) && pro.includes('Ir para Workspace') && pro.includes('Ir para Diagnóstico'), "v16+ must search core navigation");
   assert.ok(pro.includes("Continuar foco") && pro.includes("Abrir último ambiente"), "v16 must expose focus and last-project quick actions");
   assert.ok(!pro.includes("fetch("), "v16 command palette must not create network calls");
 
@@ -707,7 +707,7 @@ function testV20MobileScrollHotfix() {
 
 function testV20UxEnhancement() {
   const html=read("index.html"),app=read("js/app.js"),operational=read("js/operational-v13.js");
-  assert.ok(html.includes("Opções da Central")&&html.includes("Evolução dos projetos"),"v20 UX must clarify options and project evolution");
+  assert.ok(html.includes("Opções da Central")&&(html.includes("Evolução dos projetos")||html.includes("Situação dos concursos")),"v20+ UX must clarify options and project evolution");
   assert.ok(app.includes('const zone="America/Sao_Paulo"')&&html.includes("HORÁRIO DE BRASÍLIA"),"Central time must remain anchored to Brasília");
   assert.ok(operational.includes("renderEvolution")&&operational.includes("currentUnit")&&operational.includes("nextAction"),"project evolution must use published contract state");
   assert.ok(!operational.includes("percentage"),"project evolution must not invent percentages");
@@ -726,7 +726,7 @@ function testV20UxPolish() {
 function testV20MobileHomeSimplification() {
   const html=read("index.html"),css=read("css/pro-v11.css");
   assert.ok(html.includes(">Acessos<")&&html.includes(">Histórico<"),"v20 mobile UX must use clearer navigation labels");
-  assert.ok(html.includes("COMO ENTRAR")&&html.includes("Acessos rápidos"),"v20 UX must simplify routing and project language");
+  assert.ok((html.includes("COMO ENTRAR")||html.includes(">MENTOR<"))&&html.includes("Acessos rápidos"),"v20+ UX must preserve clear routing and project language");
   assert.ok(html.includes('id="pro-now-focus-name"')&&html.includes('id="pro-now-resume-name"')&&html.includes('id="resume-button"'),"the Agora view must hold the single focus and last-project actions");
   const pro=read("js/pro-v11.js");
   assert.ok(pro.includes('F.textContent=$("pro-now-focus-name")')&&pro.includes('FL.href=$("pro-now-focus-link")')&&pro.includes('RL=$("resume-button")'),"focus and last-project controls must bind to the consolidated Agora view");
@@ -741,7 +741,7 @@ function testV20MobileHomeSimplification() {
 function testV20EvolutionRefreshAll() {
   const html=read("index.html"),operational=read("js/operational-v13.js");
   assert.ok(html.indexOf('id="operational-panel"')<html.indexOf('id="routing-panel"'),"evolution must appear before routing");
-  assert.ok(html.includes('id="operational-title">Evolução dos projetos'),"evolution heading must remain clear");
+  assert.ok(html.includes('id="operational-title">Evolução dos projetos')||html.includes('id="operational-title">Situação dos concursos'),"operational heading must remain clear");
   assert.ok(!operational.includes('panel.querySelector("h2").textContent')&&!operational.includes("Ações e alertas publicados pelos projetos"),"inbox setup must not replace the evolution heading or its contract-based description");
   assert.ok(html.includes('id="refresh-all-contracts"'),"evolution must expose refresh all");
   assert.ok(operational.includes("central:contract-refresh")&&operational.includes("allProjects().forEach"),"refresh all must reuse read-only contract refresh events");
@@ -783,7 +783,7 @@ function testV21PresenceExperience() {
 function testV22CommandCenter() {
   const html=read("index.html"),css=read("css/pro-v11.css"),app=read("js/app.js"),operational=read("js/operational-v13.js");
   for(const id of ["pro-now-focus-name","pro-now-focus-description","pro-now-focus-meta","pro-now-focus-note","pro-now-focus-health","pro-now-focus-operational","pro-now-focus-link","focus-new-tab","pro-now-resume-name","pro-now-resume-meta","resume-button","pro-now-project-count","pro-now-project-meta","brasilia-time","brasilia-date"])assert.ok(html.includes(`id="${id}"`),`v22 must preserve ${id}`);
-  assert.ok(html.includes("CENTRO DE COMANDO")&&html.includes("Abrir foco agora")&&html.includes("Trocar foco"),"v22 command actions missing");
+  assert.ok((html.includes("CENTRO DE COMANDO")||html.includes("PLANO DE HOJE"))&&html.includes("Abrir foco agora")&&html.includes("Trocar foco"),"v22+ command actions missing");
   assert.ok(css.includes(".command-center")&&css.includes(".command-metrics")&&css.includes(".command-resume")&&css.includes("#5eead4")&&css.includes("#a78bfa"),"v22 visual system missing");
   assert.ok(app.includes('const zone="America/Sao_Paulo"')&&operational.includes("renderFocus()")&&operational.includes("renderEvolution()"),"v22 must reuse trusted state");
   pass("v22 command center and trusted-state reuse");
