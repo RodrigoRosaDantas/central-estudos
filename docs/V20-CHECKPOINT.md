@@ -290,3 +290,16 @@
 - **Prioridade visual:** Evolução dos projetos aparece antes do roteamento explicável.
 - **Refresh global:** `Atualizar tudo` reutiliza somente eventos `central:contract-refresh`; a camada operacional continua sem `fetch`.
 - **Projetos-filhos:** TCE-GO `889017ba83143be268a84358229882a2b3ef9289`; SEEDF `b68431e2aa4944199705400c8821bf28505299d1`; TJDFT `99877771dcd008594d6855c08f077e1563e609bd` — intactos; zero writes.
+
+
+## Manutenção UX — foco, retomada e evolução v20
+- **Estado da esteira:** permanece COMPLETE; nenhuma v21 foi aberta.
+- **Commit funcional:** `fa47c154cbf377c55c006869c23ab1794357b373`.
+- **Pipeline:** `36339824154` — quality SUCCESS + deploy SUCCESS.
+- **Artefato Pages:** `10937469381`, digest `sha256:f765d120cfce8983a349ca13ee3a4b23c95cd76cc30e91af22078b4af7d9b140`.
+- **Shell:** 130.229 bytes <= 131.072 bytes; margem de 843 bytes.
+- **Visão Agora:** foco e último ambiente aberto foram consolidados em cards únicos; o cartão de foco preserva fase, disponibilidade e abertura em nova guia.
+- **Retomada:** informa o último projeto aberto e seu horário quando disponível; não promete posição de aula, estudo ou progresso.
+- **Histórico:** ação “Limpar histórico” fica na seção Histórico.
+- **Evolução:** o título “Evolução dos projetos” e a explicação dos dados publicados permanecem após a inicialização da Inbox.
+- **Projetos-filhos:** TCE-GO `889017ba83143be268a84358229882a2b3ef9289`; SEEDF `b68431e2aa4944199705400c8821bf28505299d1`; TJDFT `99877771dcd008594d6855c08f077e1563e609bd` — intactos; zero writes.
