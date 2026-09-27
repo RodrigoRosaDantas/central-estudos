@@ -1,7 +1,7 @@
 # Roadmap v24 — seis telas da Central
 
 **Release:** 24.0.0  
-**Stage:** IN PROGRESS
+**Stage:** COMPLETE — v24.0.0 publicada
 
 ## Objetivo
 

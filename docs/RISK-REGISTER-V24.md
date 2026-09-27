@@ -6,5 +6,6 @@
 | Inbox filtrada contaminar a visão geral do Radar | Listas e renderizadores separados, ambos usando contratos já validados | teste confirma filtros isolados |
 | Views v19 tornarem-se inválidas com o campo novo | `screen` opcional e default Hoje na leitura | teste de compatibilidade antiga e nova |
 | Retomada parecer medida de estudo | Copy distingue foco escolhido de último acesso e diz que acesso não é progresso | critérios de aceitação + strings verificadas |
+| Tela aninhada sumir no roteamento por telas | Seções `data-screen` ficam diretamente em `main`; diagnóstico permanece dentro de Evolução | gate verifica a árvore de seções; seis rotas verificadas no Pages |
 | Shell ultrapassar 128 KiB | Medir o payload e minificar o runtime depois de implementar; manter limite existente | quality gate e audit final |
 | Mudança afetar projetos-filhos | Repositório alvo único, zero operações de escrita neles | hashes dos filhos ficam fora deste commit |

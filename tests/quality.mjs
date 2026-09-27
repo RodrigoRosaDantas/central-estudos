@@ -929,8 +929,12 @@ function testReleaseDocumentationCoherence(registry) {
   }
 
   if (major >= 24) {
-    const roadmap24=read("docs/ROADMAP-V24.md"),checkpoint24=read("docs/V24-CHECKPOINT.md"),acceptance24=read("docs/ACCEPTANCE-V24.md"),risks24=read("docs/RISK-REGISTER-V24.md");
+    const roadmap24=read("docs/ROADMAP-V24.md"),checkpoint24=read("docs/V24-CHECKPOINT.md"),acceptance24=read("docs/ACCEPTANCE-V24.md"),risks24=read("docs/RISK-REGISTER-V24.md"),audit24=read("docs/FINAL-AUDIT-V24.md");
     assert.ok(roadmap24.includes("seis telas")&&checkpoint24.includes("24.0.0")&&acceptance24.includes("Inbox")&&risks24.includes("128 KiB"),"v24 governance must define scope, checkpoint, acceptance and payload risk");
+    assert.ok(roadmap24.includes("Stage:** COMPLETE")&&checkpoint24.includes("Stage:** COMPLETE")&&exists("docs/FINAL-AUDIT-V24.md"),"v24 roadmap, checkpoint and final audit must be closed");
+    assert.ok(audit24.includes("01ccefa385f306c13c86e736e6d9a7a49d16adb4")&&audit24.includes("36358103801")&&audit24.includes("10943764161")&&audit24.includes("beae227ecac1214edbd9f6872701e019adfe2b9dabd422b80779705d8ae8f427"),"v24 audit must bind the release commit, successful workflow and Pages artifact");
+    assert.ok(audit24.includes("120.555 bytes")&&audit24.includes("131.072 bytes")&&acceptance24.includes("[ ] QA visual manual em viewport móvel"),"v24 audit must record payload and remaining mobile visual QA limit");
+    assert.ok(architecture.includes("filha direta de `<main>`")&&risks24.includes("Tela aninhada sumir"),"v24 screen hierarchy regression must remain documented");
     assert.ok(architecture.includes("## Seis telas de trabalho — v24")&&changelog.includes("## [24.0.0]"),"v24 architecture and changelog must match release");
   }
 

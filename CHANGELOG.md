@@ -16,6 +16,8 @@
 - Leitura somente dos projetos-filhos e dos contratos publicados.
 - Nenhuma chamada de rede adicional, gravação externa, pontuação ou progresso inferido.
 - Fallback sem JavaScript e links diretos para os ambientes.
+- **Release validada:** commit `01ccefa385f306c13c86e736e6d9a7a49d16adb4`; workflow `36358103801` — Quality + Deploy SUCCESS; artefato Pages `10943764161`, digest `sha256:beae227ecac1214edbd9f6872701e019adfe2b9dabd422b80779705d8ae8f427`; payload do shell 120.555 / 131.072 bytes.
+- **QA pós-deploy:** seis telas, navegação por hash, anterior/seguinte e atualização verificados no desktop; viewport móvel real não inspecionado visualmente.
 
 ## [23.0.0] - 2026-09-27
 
