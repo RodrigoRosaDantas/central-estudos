@@ -2,11 +2,11 @@
 
 ## Registro da esteira
 - **Major:** 21.0.0
-- **Estado:** IN_PROGRESS
-- **Stage:** VALIDATING
+- **Estado:** COMPLETE
+- **Stage:** COMPLETE
 - **Versão de origem:** 20.0.0, fechada como terminal em 2026-09-27.
 - **Versão terminal desta esteira:** 21.0.0.
-- **Active major:** 21.0.0.
+- **Active major:** none.
 - **Next major:** none.
 - **Projetos externos:** READ-ONLY; nenhum trabalho em repositório-filho está autorizado por esta esteira.
 
@@ -44,6 +44,12 @@ Os critérios completos estão em [`ACCEPTANCE-V21.md`](ACCEPTANCE-V21.md). Em r
 - **Orçamento para código novo:** só o que couber após economia líquida demonstrada; o teto não muda.
 - **Writes externos:** zero; os repositórios-filhos continuam somente leitura.
 - **Validação:** suíte `node tests/quality.mjs`, verificações de sintaxe/segurança, revisão de acessibilidade, inspeção visual desktop e mobile em viewport real, workflow de quality + deploy e pós-deploy QA. Se algum tipo de inspeção não estiver disponível, registrar como não executado, sem inferir aprovação.
+
+## Resultado da execução — 2026-09-27
+- **Release:** `418231a98699a52b07bdce6d94d6d00a3c1e01bd`; workflow `36346724227` (run 330), quality + deploy SUCCESS.
+- **Artefato:** `10941231310`; digest `sha256:c56665778704a12a0823ddb07e58e1a8925b3ecf25af10a9565c9d5a8eccfb80`.
+- **Shell:** 130.650 bytes; margem de 422 bytes.
+- **QA visual desktop:** PASS; inspeção mobile em viewport real não executada, conforme limitação registrada no checkpoint e na auditoria.
 
 ## Regra terminal
 Executar somente a v21.0.0 nesta esteira. Após release e auditoria, marcar `Stage=COMPLETE`, `Active major=none` e `Next major=none`. Não iniciar v22.
