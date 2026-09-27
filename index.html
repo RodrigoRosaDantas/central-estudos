@@ -15,14 +15,50 @@
   <link rel="stylesheet" href="./css/catalog-v4.css" />
   <link rel="stylesheet" href="./css/personalization-v5.css" />
   <link rel="stylesheet" href="./css/timeline-v8.css" />
+  <link rel="stylesheet" href="./css/pro-v11.css" />
 </head>
 <body>
   <a class="skip-link" href="#conteudo">Ir para o conteúdo</a>
   <div class="shell">
     <header class="topbar"><div><p class="eyebrow">CENTRAL</p><h1>Central de Estudos</h1><p id="greeting" class="topbar-greeting">Seus ambientes de estudo, em um só lugar.</p></div><div class="user-pill" aria-label="Usuário atual"><span class="avatar" aria-hidden="true">R</span><span>Rodrigo</span></div></header>
+    <nav class="pro-nav" aria-label="Navegação principal da Central">
+      <a class="pro-nav-link" href="#agora"><span aria-hidden="true">⌂</span><span>Agora</span></a>
+      <a class="pro-nav-link" href="#projetos"><span aria-hidden="true">◎</span><span>Projetos</span></a>
+      <a class="pro-nav-link" href="#activity-panel"><span aria-hidden="true">◷</span><span>Atividade</span></a>
+      <a class="pro-nav-link" href="#diagnostico"><span aria-hidden="true">◇</span><span>Diagnóstico</span></a>
+    </nav>
     <main id="conteudo">
       <div id="system-notice" class="system-notice is-hidden" role="status" aria-live="polite"></div>
       <div id="pwa-update-notice" class="system-notice pwa-update-notice is-hidden" role="status" aria-live="polite"></div>
+      <section id="agora" class="pro-now" aria-labelledby="pro-now-title">
+        <div class="pro-now-heading">
+          <div>
+            <p class="eyebrow">VISÃO AGORA</p>
+            <h2 id="pro-now-title">Entre no ponto certo</h2>
+          </div>
+          <p class="muted compact">A Central organiza foco, retomada e acesso. O conteúdo de estudo continua dentro de cada projeto.</p>
+        </div>
+        <div class="pro-now-grid">
+          <article class="pro-now-card pro-now-card-primary">
+            <span class="pro-now-kicker">FOCO</span>
+            <strong id="pro-now-focus-name">TCE-GO</strong>
+            <span id="pro-now-focus-meta" class="pro-now-meta">Edital publicado</span>
+            <a id="pro-now-focus-link" class="pro-now-action" href="https://rodrigorosadantas.github.io/tce-go-dashboard/">Continuar foco →</a>
+          </article>
+          <article class="pro-now-card">
+            <span class="pro-now-kicker">RETOMADA</span>
+            <strong id="pro-now-resume-name">Nenhum acesso ainda</strong>
+            <span id="pro-now-resume-meta" class="pro-now-meta">Abra um ambiente pela Central para criar um ponto de retomada.</span>
+            <a id="pro-now-resume-link" class="pro-now-action is-hidden" href="#">Retomar →</a>
+          </article>
+          <article class="pro-now-card">
+            <span class="pro-now-kicker">AMBIENTES</span>
+            <strong id="pro-now-project-count">3 ativos</strong>
+            <span id="pro-now-project-meta" class="pro-now-meta">TCE-GO · SEEDF · TJDFT</span>
+            <a class="pro-now-action" href="#projetos">Ver projetos ↓</a>
+          </article>
+        </div>
+      </section>
       <section class="hero" aria-labelledby="focus-title">
         <div class="hero-copy"><p class="eyebrow">FOCO ATUAL</p><h2 id="focus-title">TCE-GO</h2><p id="focus-description" class="muted">Controle Externo</p><p id="focus-note" class="focus-note">Ambiente prioritário configurado na Central.</p><div class="hero-meta"><span id="focus-phase" class="badge">Edital publicado</span><span id="focus-health" class="health health-checking"><span class="dot"></span>Verificando</span></div></div>
         <div class="hero-actions"><a id="continue-button" class="button button-primary" href="https://rodrigorosadantas.github.io/tce-go-dashboard/">Entrar no foco <span aria-hidden="true">→</span></a><a id="focus-new-tab" class="button button-ghost" href="https://rodrigorosadantas.github.io/tce-go-dashboard/" target="_blank" rel="noopener">Abrir em nova guia</a></div>
@@ -40,7 +76,7 @@
           <div class="preferences-footer"><p id="preferences-status" class="preferences-status" aria-live="polite">Preferências salvas somente neste navegador.</p><button id="preferences-reset" class="button button-ghost" type="button">Restaurar padrões</button></div>
         </div>
       </details>
-      <section class="section" aria-labelledby="projects-title">
+      <section id="projetos" class="section" aria-labelledby="projects-title">
         <div class="section-heading"><div><p class="eyebrow">AMBIENTES</p><h2 id="projects-title">Seus projetos</h2></div><p class="muted compact">Cada ambiente continua independente. A Central apenas organiza o acesso.</p></div>
         <div class="catalog-toolbar" role="search" aria-label="Organizar ambientes" aria-describedby="catalog-hint"><label class="catalog-field"><span>Buscar</span><input id="catalog-search" type="search" inputmode="search" autocomplete="off" placeholder="Nome, área ou fase" aria-controls="projects-grid" /></label><label class="catalog-field"><span>Ordenar</span><select id="catalog-sort" aria-controls="projects-grid"><option value="default">Ordem padrão</option><option value="favorites">Favoritos primeiro</option><option value="name">Nome A–Z</option></select></label><span id="catalog-count" class="catalog-count" aria-live="polite">3 de 3 ambientes</span></div>
         <p id="catalog-hint" class="catalog-hint">☆ Favoritos ficam só neste aparelho. No desktop, Alt+1, Alt+2… abre os ambientes visíveis sem interferir na digitação.</p>
@@ -87,7 +123,7 @@
         </div>
         <p class="activity-footnote">A Central registra somente acessos feitos por ela neste navegador. Atualização técnica vem de fontes públicas e pode estar em cache. Diagnósticos descrevem o que foi observado, sem afirmar a causa de uma falha.</p>
       </section>
-      <section class="section technical-summary" aria-labelledby="technical-title"><div class="section-heading"><div><p class="eyebrow">ESTADO TÉCNICO</p><h2 id="technical-title">Pulso da Central</h2></div><p class="muted compact">Informação auxiliar e somente leitura. Nunca bloqueia o acesso aos ambientes.</p></div><section class="pulse" aria-label="Pulso da Central"><div class="pulse-item"><span id="pulse-projects" class="pulse-value">3</span><span class="pulse-label">ambientes</span></div><div class="pulse-item"><span id="pulse-online" class="pulse-value">Verificando</span><span class="pulse-label">disponibilidade</span></div><div class="pulse-item"><span id="pulse-freshness" class="pulse-value">Verificando</span><span class="pulse-label">última publicação</span></div></section><div class="technical-explainer"><p id="observability-source" class="source-note">Fonte: sites públicos + GitHub público. Cache local de 15 minutos.</p><details><summary>Como interpretar estes dados</summary><div class="technical-help"><p><strong>Disponibilidade</strong> é uma tentativa técnica de alcançar o site agora. Falha de rede vira “não verificado”, não uma conclusão de que o projeto caiu.</p><p><strong>Publicação técnica</strong> é o último <code>push</code> público conhecido no GitHub. Não representa estudo realizado, progresso ou desempenho.</p><p><strong>Deploy</strong> usa o workflow público de publicação mais recente quando ele pode ser identificado. Se a API estiver limitada, a Central preserva o último dado conhecido e o marca como cache.</p></div></details></div></section>
+      <section id="diagnostico" class="section technical-summary" aria-labelledby="technical-title"><div class="section-heading"><div><p class="eyebrow">ESTADO TÉCNICO</p><h2 id="technical-title">Pulso da Central</h2></div><p class="muted compact">Informação auxiliar e somente leitura. Nunca bloqueia o acesso aos ambientes.</p></div><section class="pulse" aria-label="Pulso da Central"><div class="pulse-item"><span id="pulse-projects" class="pulse-value">3</span><span class="pulse-label">ambientes</span></div><div class="pulse-item"><span id="pulse-online" class="pulse-value">Verificando</span><span class="pulse-label">disponibilidade</span></div><div class="pulse-item"><span id="pulse-freshness" class="pulse-value">Verificando</span><span class="pulse-label">última publicação</span></div></section><div class="technical-explainer"><p id="observability-source" class="source-note">Fonte: sites públicos + GitHub público. Cache local de 15 minutos.</p><details><summary>Como interpretar estes dados</summary><div class="technical-help"><p><strong>Disponibilidade</strong> é uma tentativa técnica de alcançar o site agora. Falha de rede vira “não verificado”, não uma conclusão de que o projeto caiu.</p><p><strong>Publicação técnica</strong> é o último <code>push</code> público conhecido no GitHub. Não representa estudo realizado, progresso ou desempenho.</p><p><strong>Deploy</strong> usa o workflow público de publicação mais recente quando ele pode ser identificado. Se a API estiver limitada, a Central preserva o último dado conhecido e o marca como cache.</p></div></details></div></section>
     </main>
     <footer><span>Central de Estudos <span id="app-version"></span></span><span class="footer-separator">•</span><span>3 ambientes autônomos</span></footer>
   </div>
@@ -97,5 +133,6 @@
   <script src="./js/personalization-v5.js" defer></script>
   <script src="./js/pwa-v6.js" defer></script>
   <script src="./js/timeline-v8.js" defer></script>
+  <script src="./js/pro-v11.js" defer></script>
 </body>
 </html>
