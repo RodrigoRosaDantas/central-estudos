@@ -3,8 +3,8 @@
 ## Estado
 - **Versão de origem:** 15.0.0
 - **Versão validada:** 18.0.0
-- **Stage:** READY
-- **Active major:** none
+- **Stage:** IN_PROGRESS
+- **Active major:** 19.0.0
 - **Next major:** 19.0.0
 - **Projetos externos:** READ-ONLY
 - **Automação:** ativa até o fechamento terminal v20
@@ -141,3 +141,18 @@
 - **Próxima etapa autorizada:** v19.0.0 — Views locais.
 - **Estado após fechamento:** Stage=READY; Active major=none; Next major=19.0.0.
 - **Regra:** não iniciar v19 nesta mesma execução.
+
+
+## Preflight v19.0.0
+- **Objetivo:** permitir views nomeadas e salvas somente neste navegador, compostas exclusivamente por preferências locais já existentes.
+- **Versão de origem validada:** 18.0.0.
+- **Central HEAD antes de qualquer write v19:** `729295d03da224e70246ec6379a62a206fd364ca`.
+- **Último deploy antes da v19:** workflow `36330290685` — completed / success.
+- **TCE-GO:** `889017ba83143be268a84358229882a2b3ef9289`.
+- **SEEDF:** `b68431e2aa4944199705400c8821bf28505299d1`.
+- **TJDFT:** `99877771dcd008594d6855c08f077e1563e609bd`.
+- **Acceptance v19:** salvar e nomear views locais; cada view pode capturar somente aba do Workspace, lente de roteamento e filtros da Inbox; aplicar view não altera foco, retomada, favoritos, histórico, contratos nem projetos; restaurar defaults dessas dimensões sem apagar histórico; views são limitadas e validadas; somente a chave allowlisted de views entra no backup de preferências; caches, último acesso e dados técnicos continuam excluídos; zero backend/fetch novo/write externo; fallback/no-JS/mobile preservados; shell <= 131.072 bytes; quality + deploy + pós-deploy QA obrigatórios.
+- **Riscos:** shell v18 = 130.986/131.072 bytes, restando apenas 86 bytes. A implementação exige recuperar espaço por refatoração/compactação de código existente antes ou junto da feature; não é permitido elevar o budget. Views não podem virar novo estado global autoritativo nem carregar foco/retomada. Importação exige validação estrita de nomes e valores para não introduzir chaves arbitrárias.
+- **Estratégia de estado:** view = snapshot local de `workspace-tab-v15`, `route-lens-v14`, `inbox-type-v19` e `inbox-project-v19`; aplicar view grava somente essas quatro preferências e recarrega a Central. A lista de views usa chave própria allowlisted e permanece limitada.
+- **Writes externos autorizados:** nenhum.
+- **Regra:** processar somente v19 nesta execução; v20 permanece fora do escopo.
