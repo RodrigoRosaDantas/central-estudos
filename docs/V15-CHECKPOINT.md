@@ -201,3 +201,11 @@
 - **Roadmap v11→v15:** COMPLETE
 - **Próxima major:** none
 - **Regra terminal:** nenhuma v16 automática; nova evolução exige nova roadmap explícita.
+
+
+## Reconciliação pós-fechamento v15
+- README corrigido de v14 para v15.
+- Arquitetura consolidada com seção própria do Workspace v15.
+- Quality gate passa a exigir coerência entre registry, README, arquitetura, checkpoint e changelog.
+- Nenhuma nova major foi aberta.
+- Projetos externos permanecem sem writes.
