@@ -1,5 +1,20 @@
 # CHANGELOG — Central de Estudos
 
+## [15.0.0] — 2026-09-27
+- Workspace de concursos com lifecycle `active / archived / future`;
+- TCE-GO, SEEDF e TJDFT permanecem ativos;
+- SEDES/DF — TDAS adicionado como primeiro histórico arquivado, com Pages verificado;
+- arquivados/futuros ficam fora de foco, retomada e observabilidade ativa;
+- nova navegação para **Workspace** e filtros Ativos / Arquivados / Futuros;
+- exportação/importação de preferências com allowlist explícita e limite de 64 KB;
+- backup exclui último acesso, histórico e caches técnicos/operacionais;
+- registry atualizado para schema v3;
+- app shell rotacionado para `central-shell-v15.0.0`;
+- shell final auditado em 122.134 bytes <= 120 KiB (122.880 bytes);
+- **Projetos externos:** zero writes durante a v15;
+- **Commit de produto validado:** `e70063822dd0185fcade890aa4320b37c03a5315`;
+- **Deploy validado:** workflow run `36287841226` — quality `success` + deploy `success`.
+
 ## [14.0.0] — 2026-09-27
 - roteamento explicável por lentes escolhidas pelo usuário;
 - lentes: Foco, Retomada, Ações publicadas e Alertas;
