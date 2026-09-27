@@ -610,6 +610,29 @@ function testV16CommandPalette(registry) {
   pass("v16 keyboard/touch command palette and workspace search contracts");
 }
 
+function testV17OperationalInbox(registry) {
+  const html = read("index.html");
+  const operational = read("js/operational-v13.js");
+
+  assert.ok(html.includes('id="operational-panel"'), "v17 inbox must reuse the operational panel");
+  assert.ok(operational.includes("function initInbox()"), "v17 inbox must initialize explicitly");
+  assert.ok(operational.includes('"all","Tudo"') && operational.includes('"action","Ações"') && operational.includes('"alert","Alertas"'), "v17 must expose all/action/alert filters");
+  assert.ok(operational.includes('aria-label","Filtrar inbox por projeto"'), "v17 must expose a project filter");
+  assert.ok(operational.includes("sourceText"), "v17 must expose provenance text");
+  assert.ok(operational.includes("Fonte: contrato publicado pelo projeto"), "v17 live provenance must be explicit");
+  assert.ok(operational.includes("Fonte: contrato em cache antigo"), "v17 stale provenance must be explicit");
+  assert.ok(operational.includes("Último estado"), "v17 stale state must remain distinct from current state");
+  assert.ok(operational.includes(".sort((a,b)=>a.order-b.order)"), "v17 inbox order must follow the catalog");
+  assert.ok(!operational.includes("fetch("), "v17 inbox must reuse validated contract events without extra fetch");
+  assert.ok(!/score calculado|ranking calculado|melhor projeto|prioridade calculada/i.test(operational), "v17 inbox must not rank or score projects");
+
+  for (const project of registry.projects) {
+    if (project.url) assert.ok(html.includes(project.url), `v17 must preserve direct link for ${project.id}`);
+  }
+
+  pass("v17 local operational inbox, provenance, stale separation and no-ranking contracts");
+}
+
 function testReleaseDocumentationCoherence(registry) {
   const readme = read("README.md");
   const architecture = read("docs/ARCHITECTURE.md");
@@ -633,7 +656,14 @@ function testReleaseDocumentationCoherence(registry) {
     assert.ok(architecture.includes("## Command Palette — v16"), "architecture must document v16 command palette");
     assert.ok(checkpoint20.includes("16.0.0"), "v20 checkpoint must track v16");
     assert.ok(changelog.includes("## [16.0.0]"), "changelog must include v16 release");
-    assert.ok(sw.includes("central-shell-v16.0.0"), "service worker must match v16 release");
+    assert.ok(sw.includes(`central-shell-v${version}`), "service worker cache must match registry release");
+  }
+
+  if (major >= 17) {
+    assert.ok(roadmap20.includes("## v17 — Inbox operacional"), "v20 roadmap must document v17");
+    assert.ok(architecture.includes("## Inbox operacional — v17"), "architecture must document v17 inbox");
+    assert.ok(checkpoint20.includes("Versão validada:** 17.0.0"), "v20 checkpoint must validate v17");
+    assert.ok(changelog.includes("## [17.0.0]"), "changelog must include v17 release");
   }
 
   pass("release documentation coherence");
@@ -707,6 +737,7 @@ testV13OperationalState(registry);
 testV14ExplainableRouting(registry);
 testV15Workspace(registry);
 testV16CommandPalette(registry);
+testV17OperationalInbox(registry);
 testReleaseDocumentationCoherence(registry);
 testSecurityAndContracts(registry);
 
