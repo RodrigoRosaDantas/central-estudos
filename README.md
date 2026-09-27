@@ -6,9 +6,24 @@ Camada de entrada para os ambientes independentes TCE-GO, SEEDF e TJDFT.
 
 A Central não importa, altera ou replica o código dos projetos-filhos.
 
-## Estado atual — v14.0
+## Estado atual — v15.0
 
-A v14 adiciona roteamento explicável sem decidir pelo usuário.
+A v15 transforma a Central em um workspace de concursos sem criar banco mestre.
+
+Evoluções da v15:
+- lifecycle explícito `active / archived / future` no registry;
+- TCE-GO, SEEDF e TJDFT permanecem ativos;
+- SEDES/DF — TDAS aparece como histórico arquivado com link verificado;
+- arquivados e futuros ficam fora de foco, retomada e observabilidade ativa;
+- nova área **Workspace** com filtros Ativos / Arquivados / Futuros;
+- exportação/importação local de preferências com allowlist explícita e limite de 64 KB;
+- backup não inclui último acesso, histórico nem caches técnicos/operacionais;
+- registry atualizado para schema v3;
+- app shell atualizado para `central-shell-v15.0.0`;
+- shell final auditado dentro do orçamento de 120 KiB;
+- nenhuma base mestre ou autenticação compartilhada foi introduzida.
+
+A v14 continua fornecendo roteamento explicável sem decidir pelo usuário.
 
 Evoluções da v14:
 - quatro lentes escolhidas explicitamente: **Foco, Retomada, Ações publicadas e Alertas**;
@@ -68,7 +83,7 @@ Capacidades consolidadas:
 - observabilidade somente leitura, não bloqueante, com disponibilidade, publicação técnica e deploy separados;
 - falhas de rede/rate limit tratadas sem falso estado offline;
 - linha do tempo local de acessos separada de atividade técnica e sem inferência pedagógica;
-- PWA network-first, app shell offline e cache `central-shell-v14.0.0` restrito à Central;
+- PWA network-first, app shell offline e cache `central-shell-v15.0.0` restrito à Central;
 - quality gate automatizado antes de todo deploy;
 - CSP, escape de conteúdo, HTTPS, contraste, teclado, forced colors e touch targets auditados;
 - orçamento de shell <= 120 KiB e zero dependências externas de JS/CSS;
