@@ -186,3 +186,52 @@ Lentes:
 Cada item explica por que aparece. Múltiplos resultados preservam a ordem do catálogo.
 
 A camada v14 reutiliza o mesmo mapa de contratos e inventário de projetos da v13 e foi consolidada em `operational-v13.js`/CSS para reduzir duplicação. Não há novo fetch, score, ranking, recomendação automática ou prioridade calculada.
+
+
+## Workspace de concursos — v15
+
+A v15 conclui a esteira v11→v15 transformando o catálogo em um workspace com lifecycle explícito, sem criar banco mestre.
+
+### Lifecycle
+
+O registry usa `schemaVersion: 3` e cada projeto declara um estado:
+
+- `active`: participa de foco, retomada, catálogo principal, observabilidade e contratos;
+- `archived`: preservado para consulta histórica, fora de foco/retomada/health ativo;
+- `future`: reservado para projetos ainda não publicados; pode existir sem URL até o ambiente ser criado.
+
+Projetos não ativos nunca devem virar foco, retomada ou alvo de observabilidade ativa.
+
+### Workspace
+
+A interface possui uma área **Workspace** com filtros:
+
+- Ativos;
+- Arquivados;
+- Futuros.
+
+SEDES/DF — TDAS é o primeiro projeto arquivado verificado e permanece acessível apenas como histórico.
+
+### Portabilidade local
+
+A Central pode exportar/importar somente preferências allowlisted da própria Central.
+
+O backup:
+- não contém último acesso;
+- não contém histórico;
+- não contém caches técnicos;
+- não contém contratos/cache operacional;
+- não contém tokens ou dados sensíveis;
+- possui limite de 64 KB na importação.
+
+### Limites arquiteturais
+
+A v15 não introduz:
+- banco mestre;
+- autenticação compartilhada;
+- Supabase compartilhado;
+- escrita em dados internos dos projetos;
+- roteamento obrigatório;
+- mentor global.
+
+O app shell da v15 é `central-shell-v15.0.0` e permanece dentro do orçamento de 120 KiB definido pelo quality gate.
