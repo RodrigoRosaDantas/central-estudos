@@ -3,8 +3,8 @@
 ## Estado
 - **Versão de origem:** 15.0.0
 - **Versão validada:** 19.0.0
-- **Stage:** READY
-- **Active major:** none
+- **Stage:** IN_PROGRESS
+- **Active major:** 20.0.0
 - **Next major:** 20.0.0
 - **Projetos externos:** READ-ONLY
 - **Automação:** ativa até o fechamento terminal v20
@@ -198,3 +198,18 @@
 - **Próxima etapa autorizada:** v20.0.0 — Workspace PRO estável / auditoria terminal.
 - **Estado após fechamento:** Stage=READY; Active major=none; Next major=20.0.0.
 - **Regra:** não iniciar v20 nesta mesma execução.
+
+
+## Preflight v20.0.0 — auditoria terminal
+- **Objetivo:** auditar e consolidar a geração v16→v20 sem adicionar nova responsabilidade funcional.
+- **Versão de origem validada:** 19.0.0.
+- **Central HEAD antes de qualquer write v20:** `058efaf7d7fac8a41f93d0dbc1556063cfbf43d5`.
+- **Último deploy antes da v20:** workflow `36331412124` — completed / success.
+- **TCE-GO:** `889017ba83143be268a84358229882a2b3ef9289`.
+- **SEEDF:** `b68431e2aa4944199705400c8821bf28505299d1`.
+- **TJDFT:** `99877771dcd008594d6855c08f077e1563e609bd`.
+- **Acceptance v20:** regressão histórica v10/v15 preservada; contracts v12→v19 preservados; mobile/teclado/a11y estruturalmente auditados; shell <= 131.072 bytes; PWA/offline restritos à Central; segurança/CSP/HTTPS/secrets/escape auditados; registry e documentação coerentes; quality precede deploy; artefato Pages corresponde ao HEAD; zero dependência obrigatória dos projetos externos; zero writes nos filhos; auditoria final integral documentada.
+- **Riscos:** shell v19 = 130.983/131.072 bytes, restando apenas 89 bytes; v20 não pode adicionar payload funcional. A inspeção visual interativa real pode não estar disponível, portanto mobile/desktop/a11y/offline serão classificados como estrutural/automatizado quando aplicável, sem inventar validação visual. A rotação `19.0.0→20.0.0` deve manter registry, service worker e documentação sincronizados.
+- **Writes externos autorizados:** nenhum.
+- **Estratégia:** v20 é major de auditoria/consolidação. Alterações no shell limitam-se à rotação de versão/cache; testes/documentos podem ser ampliados sem entrar no budget de fonte própria.
+- **Regra terminal:** não criar v21. Fechar somente após quality + deploy + pós-deploy QA + guarda final dos HEADs-filhos; então Stage=COMPLETE, Active major=none e Next major=none.
