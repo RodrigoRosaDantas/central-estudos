@@ -577,6 +577,23 @@ function testV15Workspace(registry) {
   pass("v15 lifecycle workspace, archived history and safe preference portability");
 }
 
+function testReleaseDocumentationCoherence(registry) {
+  const readme = read("README.md");
+  const architecture = read("docs/ARCHITECTURE.md");
+  const checkpoint = read("docs/V15-CHECKPOINT.md");
+  const changelog = read("CHANGELOG.md");
+
+  const version = registry.central.version;
+  assert.ok(readme.includes(`## Estado atual — v${version.split(".").slice(0,2).join(".")}`), "README current-state version must match registry");
+  assert.ok(architecture.includes("## Workspace de concursos — v15"), "architecture must document the v15 workspace");
+  assert.ok(architecture.includes("schemaVersion: 3"), "architecture must document registry schema v3");
+  assert.ok(architecture.includes("central-shell-v15.0.0"), "architecture must document current app-shell cache");
+  assert.ok(checkpoint.includes("Status:** COMPLETE — v15.0.0"), "v15 checkpoint must remain terminal");
+  assert.ok(changelog.includes("## [15.0.0]"), "changelog must include v15 release");
+
+  pass("release documentation coherence");
+}
+
 function testSecurityAndContracts(registry) {
   const frontendFiles = [
     "index.html",
@@ -644,6 +661,7 @@ testV12Contracts(registry);
 testV13OperationalState(registry);
 testV14ExplainableRouting(registry);
 testV15Workspace(registry);
+testReleaseDocumentationCoherence(registry);
 testSecurityAndContracts(registry);
 
 console.log("\nQuality gate PASS");
