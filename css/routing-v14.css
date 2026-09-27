@@ -1,0 +1,26 @@
+.routing-panel{margin-top:18px}
+.routing-lenses{display:flex;flex-wrap:wrap;gap:7px;margin:0 0 10px}
+.routing-lens{
+  min-height:40px;padding:0 11px;border:1px solid var(--border);border-radius:999px;
+  background:transparent;color:var(--muted);font:inherit;font-size:.72rem;font-weight:800;cursor:pointer
+}
+.routing-lens:hover,.routing-lens.is-active{color:var(--text);background:rgba(255,255,255,.055)}
+.routing-lens.is-active{border-color:rgba(119,167,255,.3)}
+.routing-explanation{margin:0 0 12px;color:var(--muted);font-size:.72rem;line-height:1.5}
+.routing-list{display:grid;grid-template-columns:1fr;gap:9px}
+.routing-card{min-width:0;padding:14px;border:1px solid var(--border);border-radius:13px;background:rgba(255,255,255,.02)}
+.routing-card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.routing-card h3{margin:0;font-size:.92rem;letter-spacing:-.02em}
+.routing-tag{flex:0 0 auto;padding:4px 7px;border:1px solid var(--border);border-radius:999px;color:var(--muted);font-size:.61rem;font-weight:850}
+.routing-meta,.routing-operational,.routing-alert,.routing-why p{overflow-wrap:anywhere}
+.routing-meta{margin:7px 0 0;color:var(--muted);font-size:.69rem}
+.routing-operational{margin:7px 0 0;color:var(--text);font-size:.79rem;font-weight:750;line-height:1.45}
+.routing-alert{margin:7px 0 0;padding:7px 9px;border-radius:8px;background:rgba(240,198,116,.06);color:var(--muted);font-size:.68rem;line-height:1.4}
+.routing-why{margin-top:9px;color:var(--muted);font-size:.67rem}
+.routing-why summary{width:max-content;max-width:100%;cursor:pointer;color:#c9d6e9;font-weight:750}
+.routing-why p{margin:6px 0 0;line-height:1.45}
+.routing-open{display:inline-block;margin-top:10px;color:#d9e6fb;font-size:.72rem;font-weight:800;text-decoration:none}
+.routing-open:hover{text-decoration:underline}
+.routing-empty{margin:0;padding:12px;border:1px dashed var(--border);border-radius:11px;color:var(--muted);font-size:.72rem;line-height:1.45}
+@media(min-width:720px){.routing-list{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(pointer:coarse){.routing-lens{min-height:44px}}
