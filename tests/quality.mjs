@@ -732,6 +732,14 @@ function testV20MobileHomeSimplification() {
   pass("v20 mobile home simplification and clearer navigation");
 }
 
+function testV20EvolutionRefreshAll() {
+  const html=read("index.html"),operational=read("js/operational-v13.js");
+  assert.ok(html.indexOf('id="operational-panel"')<html.indexOf('id="routing-panel"'),"evolution must appear before routing");
+  assert.ok(html.includes('id="refresh-all-contracts"'),"evolution must expose refresh all");
+  assert.ok(operational.includes("central:contract-refresh")&&operational.includes("allProjects().forEach"),"refresh all must reuse read-only contract refresh events");
+  pass("v20 evolution-first layout and read-only refresh all");
+}
+
 function testReleaseDocumentationCoherence(registry) {
   const readme = read("README.md");
   const architecture = read("docs/ARCHITECTURE.md");
@@ -866,6 +874,7 @@ testV20MobileScrollHotfix();
 testV20UxEnhancement();
 testV20UxPolish();
 testV20MobileHomeSimplification();
+testV20EvolutionRefreshAll();
 testReleaseDocumentationCoherence(registry);
 testSecurityAndContracts(registry);
 
