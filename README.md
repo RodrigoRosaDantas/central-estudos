@@ -6,7 +6,23 @@ Camada de entrada para os ambientes independentes TCE-GO, SEEDF e TJDFT.
 
 A Central não importa, altera ou replica o código dos projetos-filhos.
 
-## Estado atual — v19.0
+## Estado atual — v20.0
+
+A v20 encerra a geração **Workspace PRO v16→v20** com uma auditoria terminal integral, sem adicionar nova responsabilidade funcional.
+
+Consolidação da v20:
+- regressões históricas v10 e v15 revalidadas;
+- contratos e recursos v16→v19 preservados pelo quality gate;
+- mobile, teclado, acessibilidade e offline auditados estruturalmente;
+- segurança, CSP, HTTPS, escaping e secrets revalidados;
+- PWA continua restrita ao app shell da Central;
+- registry, documentação, changelog e cache sincronizados;
+- zero dependência obrigatória dos projetos-filhos;
+- zero writes externos na v20;
+- app shell `central-shell-v20.0.0`;
+- orçamento permanece **<= 128 KiB**.
+
+## Base v19 — Views locais
 
 A v19 adiciona **Views locais** nomeadas sem backend, usando somente preferências allowlisted da própria Central.
 
@@ -147,7 +163,7 @@ Capacidades consolidadas:
 - observabilidade somente leitura, não bloqueante, com disponibilidade, publicação técnica e deploy separados;
 - falhas de rede/rate limit tratadas sem falso estado offline;
 - linha do tempo local de acessos separada de atividade técnica e sem inferência pedagógica;
-- PWA network-first, app shell offline e cache `central-shell-v19.0.0` restrito à Central;
+- PWA network-first, app shell offline e cache `central-shell-v20.0.0` restrito à Central;
 - quality gate automatizado antes de todo deploy;
 - CSP, escape de conteúdo, HTTPS, contraste, teclado, forced colors e touch targets auditados;
 - orçamento de shell <= 128 KiB na geração v16+ (v15 fechou <= 120 KiB) e zero dependências externas de JS/CSS;
@@ -177,4 +193,4 @@ A fonte dinâmica de verdade é `config/projects.json` (schema v3). Cada item de
 
 ## Governança e auditoria
 
-A esteira histórica v1→v10 permanece congelada em `docs/V10-CHECKPOINT.md` e `docs/FINAL-AUDIT-V10.md`. A geração v11→v15 permanece congelada em `docs/ROADMAP-V15.md` e `docs/V15-CHECKPOINT.md`. A geração atual v16→v20 é governada por `docs/ROADMAP-V20.md`, `docs/V20-CHECKPOINT.md`, a arquitetura viva e `CHANGELOG.md`.
+A esteira histórica v1→v10 permanece congelada em `docs/V10-CHECKPOINT.md` e `docs/FINAL-AUDIT-V10.md`. A geração v11→v15 permanece congelada em `docs/ROADMAP-V15.md` e `docs/V15-CHECKPOINT.md`. A geração v16→v20 é encerrada pela auditoria terminal em `docs/FINAL-AUDIT-V20.md`, com governança registrada em `docs/ROADMAP-V20.md` e `docs/V20-CHECKPOINT.md`.

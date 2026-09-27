@@ -674,6 +674,29 @@ function testV19LocalViews(registry) {
   pass("v19 named bounded local views and allowlisted backup");
 }
 
+function testV20TerminalAudit(registry) {
+  const roadmap = read("docs/ROADMAP-V20.md");
+  const checkpoint10 = read("docs/V10-CHECKPOINT.md");
+  const checkpoint15 = read("docs/V15-CHECKPOINT.md");
+  const audit = read("docs/FINAL-AUDIT-V20.md");
+  const workflow = read(".github/workflows/pages.yml");
+  const sw = read("sw.js");
+  const pro = read("js/pro-v11.js");
+  const operational = read("js/operational-v13.js");
+
+  assert.equal(registry.central.version, "20.0.0", "v20 terminal registry version must be 20.0.0");
+  assert.ok(roadmap.includes("## v20 — Workspace PRO estável"), "v20 terminal roadmap target must remain explicit");
+  assert.ok(checkpoint10.includes("Stage:** COMPLETE") && checkpoint10.includes("10.0.0"), "v10 terminal baseline must remain complete");
+  assert.ok(checkpoint15.includes("Stage:** COMPLETE") && checkpoint15.includes("15.0.0"), "v15 terminal baseline must remain complete");
+  for (const domain of ["Arquitetura","Mobile","Acessibilidade","Performance","Segurança","PWA","Contratos","Documentação","Projetos-filhos"]) {
+    assert.ok(audit.includes(domain), `v20 final audit must cover ${domain}`);
+  }
+  assert.ok(workflow.includes("needs: quality"), "v20 deploy must still depend on quality");
+  assert.ok(sw.includes("central-shell-v20.0.0"), "v20 app-shell cache must be terminal version");
+  assert.ok(!pro.includes("fetch(") && !operational.includes("fetch("), "v20 local PRO/presentation layers must remain network-free");
+  pass("v20 terminal regression, architecture, audit and deployment contracts");
+}
+
 function testReleaseDocumentationCoherence(registry) {
   const readme = read("README.md");
   const architecture = read("docs/ARCHITECTURE.md");
@@ -719,6 +742,14 @@ function testReleaseDocumentationCoherence(registry) {
     assert.ok(architecture.includes("## Views locais — v19"), "architecture must document v19");
     assert.ok(checkpoint20.includes("19.0.0"), "v20 checkpoint must track v19");
     assert.ok(changelog.includes("## [19.0.0]"), "changelog must include v19 release");
+  }
+
+  if (major >= 20) {
+    assert.ok(roadmap20.includes("## v20 — Workspace PRO estável"), "v20 roadmap must document terminal v20");
+    assert.ok(architecture.includes("## Workspace PRO estável — v20"), "architecture must document terminal v20");
+    assert.ok(checkpoint20.includes("20.0.0"), "v20 checkpoint must track terminal v20");
+    assert.ok(changelog.includes("## [20.0.0]"), "changelog must include terminal v20 release");
+    assert.ok(exists("docs/FINAL-AUDIT-V20.md"), "v20 final audit document must exist");
   }
 
   pass("release documentation coherence");
@@ -795,6 +826,7 @@ testV16CommandPalette(registry);
 testV17OperationalInbox(registry);
 testV18ProvenanceFreshness(registry);
 testV19LocalViews(registry);
+testV20TerminalAudit(registry);
 testReleaseDocumentationCoherence(registry);
 testSecurityAndContracts(registry);
 

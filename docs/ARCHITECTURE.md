@@ -32,7 +32,7 @@ Busca, favoritos, ordenação, atalhos e ordem manual são camadas locais sobre 
 
 ## PWA e resiliência
 
-O service worker é limitado à origem e ao pathname da Central. O cache da release atual é `central-shell-v19.0.0` e contém somente o app shell da Central.
+O service worker é limitado à origem e ao pathname da Central. O cache da release atual é `central-shell-v20.0.0` e contém somente o app shell da Central.
 
 Estratégia:
 - navegações e assets conhecidos usam **network first**;
@@ -342,3 +342,22 @@ Salvar, aplicar e restaurar defaults reutiliza a Command Palette da v16, evitand
 A chave de views e os filtros da Inbox entram no backup somente porque foram adicionados explicitamente à allowlist de preferências da v15. Último acesso, histórico, observabilidade e cache de contratos continuam excluídos.
 
 A v19 não realiza `fetch`, não cria sincronização entre dispositivos e não escreve nos projetos-filhos.
+
+
+## Workspace PRO estável — v20
+
+A v20 não acrescenta uma nova camada funcional. Ela consolida e audita a arquitetura da geração v16→v20.
+
+### Invariantes terminais
+
+- a Central permanece camada de navegação, preferências e observabilidade leve;
+- registry continua sendo a fonte dinâmica local de catálogo;
+- foco e retomada permanecem semanticamente separados;
+- contratos externos continuam opcionais, read-only e não bloqueantes;
+- Inbox, proveniência, refresh manual e Views locais permanecem progressive enhancement;
+- projetos-filhos continuam independentes e acessíveis diretamente;
+- service worker limita-se ao app shell da Central e não transforma filhos em offline;
+- não existe backend, banco mestre, autenticação compartilhada, ranking global ou decisão automática;
+- o shell da geração v16+ permanece limitado a 128 KiB.
+
+A evidência terminal está consolidada em `docs/FINAL-AUDIT-V20.md`.

@@ -3,7 +3,7 @@
 ## Estado
 - **Versão de origem:** 15.0.0
 - **Versão validada:** 19.0.0
-- **Stage:** IN_PROGRESS
+- **Stage:** VALIDATING
 - **Active major:** 20.0.0
 - **Next major:** 20.0.0
 - **Projetos externos:** READ-ONLY
@@ -213,3 +213,12 @@
 - **Writes externos autorizados:** nenhum.
 - **Estratégia:** v20 é major de auditoria/consolidação. Alterações no shell limitam-se à rotação de versão/cache; testes/documentos podem ser ampliados sem entrar no budget de fonte própria.
 - **Regra terminal:** não criar v21. Fechar somente após quality + deploy + pós-deploy QA + guarda final dos HEADs-filhos; então Stage=COMPLETE, Active major=none e Next major=none.
+
+
+## Release candidate v20.0.0 — auditoria terminal
+- **Preflight pipeline:** `36331917584` — quality SUCCESS + deploy SUCCESS.
+- **Release metadata:** registry, app-shell, README, arquitetura e changelog promovidos de forma atômica para 20.0.0.
+- **Auditoria terminal:** registrada em `docs/FINAL-AUDIT-V20.md`.
+- **Escopo:** sem nova feature funcional; somente consolidação, auditoria e rotação de versão/cache.
+- **Stage:** VALIDATING até quality + deploy + pós-deploy QA + guarda final dos filhos.
+- **Regra terminal:** não iniciar v21.

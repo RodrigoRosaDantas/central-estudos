@@ -1,5 +1,16 @@
 # CHANGELOG — Central de Estudos
 
+## [20.0.0] — 2026-09-27
+- auditoria terminal integral da geração v16→v20;
+- regressões v10/v15 e contratos v16→v19 revalidados;
+- mobile/teclado/a11y/offline auditados estruturalmente pelo gate existente;
+- segurança, PWA, registry, documentação e independência consolidados;
+- nenhum novo recurso funcional adicionado ao shell;
+- zero writes em TCE-GO, SEEDF e TJDFT;
+- app shell rotacionado para `central-shell-v20.0.0`;
+- auditoria terminal documentada em `docs/FINAL-AUDIT-V20.md`.
+
+
 ## [19.0.0] — 2026-09-27
 - Views locais nomeadas e limitadas a 8 por navegador;
 - snapshots restritos a aba do Workspace, lente e filtros da Inbox;
