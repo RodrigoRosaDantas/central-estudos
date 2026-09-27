@@ -3,8 +3,8 @@
 ## Estado
 - **Versão de origem:** 15.0.0
 - **Versão validada:** 17.0.0
-- **Stage:** READY
-- **Active major:** none
+- **Stage:** IN_PROGRESS
+- **Active major:** 18.0.0
 - **Next major:** 18.0.0
 - **Projetos externos:** READ-ONLY
 - **Automação:** ativa até o fechamento terminal v20
@@ -90,3 +90,17 @@
 - **Próxima etapa autorizada:** v18.0.0 — Proveniência e frescor.
 - **Estado após fechamento:** Stage=READY; Active major=none; Next major=18.0.0.
 - **Regra:** não iniciar v18 nesta mesma execução.
+
+
+## Preflight v18.0.0
+- **Objetivo:** tornar origem, compatibilidade e frescor dos contratos read-only transparentes, sem inferir causa e sem criar nova autoridade de dados.
+- **Versão de origem validada:** 17.0.0.
+- **Central HEAD antes de qualquer write v18:** `1223c8e29bac578e8735c7ed6ebbee6c2a029b1d`.
+- **Último deploy antes da v18:** workflow `36329643685` — completed / success.
+- **TCE-GO:** `889017ba83143be268a84358229882a2b3ef9289`.
+- **SEEDF:** `b68431e2aa4944199705400c8821bf28505299d1`.
+- **TJDFT:** `99877771dcd008594d6855c08f077e1563e609bd`.
+- **Acceptance v18:** exibir idade do contrato e da fonte quando datas válidas estiverem publicadas; expor `source.kind`, `source.ref`, `source.status` e `schemaVersion`; indicar compatibilidade do schema sem inferir causa; oferecer refresh manual somente por ação explícita do usuário, reutilizando GET read-only, timeout, validação, cache e fallback stale já existentes; refresh não altera foco/retomada e não bloqueia links; zero writes externos; fallback/no-JS e mobile preservados; shell <= 131.072 bytes; quality + deploy + pós-deploy QA obrigatórios.
+- **Riscos:** shell v17 = 130.106/131.072 bytes, apenas 966 bytes livres; a v18 deve recuperar espaço por compactação/refatoração das camadas existentes, sem remover contratos já validados. Datas dos filhos têm granularidades diferentes (date-only e timestamp), portanto idade deve ser descritiva e nunca usada como diagnóstico causal. Refresh manual não pode virar polling nem nova observabilidade automática.
+- **Writes externos autorizados:** nenhum.
+- **Regra:** processar somente v18 nesta execução; ideias de v19/v20 permanecem fora do escopo.
