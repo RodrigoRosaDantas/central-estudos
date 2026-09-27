@@ -13,7 +13,8 @@
 - shell mantido dentro do orçamento de 120 KiB sem aumentar o limite;
 - app shell atualizado para `central-shell-v14.0.0`;
 - **Projetos-filhos:** read-only; zero writes;
-- **Commit/deploy final:** preencher após pipeline final.
+- **Commit de release validado:** `589ae593d2ab9107555760dc6e6c5e57851a619d`;
+- **Deploy validado:** workflow run `36286790166` — quality `success` + deploy `success`.
 
 ## [13.0.0] — 2026-09-27
 - estado operacional dos contratos v12 passa a ser apresentado na interface;
