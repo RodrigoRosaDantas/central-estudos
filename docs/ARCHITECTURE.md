@@ -32,7 +32,7 @@ Busca, favoritos, ordenação, atalhos e ordem manual são camadas locais sobre 
 
 ## PWA e resiliência
 
-O service worker é limitado à origem e ao pathname da Central. O cache da release atual é `central-shell-v20.0.0` e contém somente o app shell da Central.
+O service worker é limitado à origem e ao pathname da Central. O cache da release atual é `central-shell-v21.0.0` e contém somente o app shell da Central.
 
 Estratégia:
 - navegações e assets conhecidos usam **network first**;
@@ -361,3 +361,12 @@ A v20 não acrescenta uma nova camada funcional. Ela consolida e audita a arquit
 - o shell da geração v16+ permanece limitado a 128 KiB.
 
 A evidência terminal está consolidada em `docs/FINAL-AUDIT-V20.md`.
+
+
+## Presença e Ritmo — v21
+
+A v21 reorganiza a recepção da Central em torno de saudação, frase original do dia, relógio e foco atual. A frase é selecionada de forma estável pela data de America/Sao_Paulo e não declara progresso, estudo realizado ou resultado.
+
+O relógio exibe hora/minuto sem segundos, dia da semana e data por extenso em português brasileiro. A leitura e a escolha da frase usam o fuso America/Sao_Paulo; o timer atualiza por minuto e recalcula quando a aba volta a ficar visível. Nenhuma API adicional é usada para esta apresentação.
+
+A mudança é progressive enhancement: fallback estático, links diretos, foco/retomada, contratos read-only, navegação, cache PWA e independência dos projetos-filhos permanecem preservados. O app shell continua limitado a 128 KiB.
