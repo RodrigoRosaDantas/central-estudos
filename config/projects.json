@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "central": {
     "name": "Central de Estudos",
     "owner": "Rodrigo",
@@ -16,7 +16,8 @@
       "priority": "focus",
       "icon": "🏛️",
       "url": "https://rodrigorosadantas.github.io/tce-go-dashboard/",
-      "repository": "https://github.com/RodrigoRosaDantas/tce-go-dashboard"
+      "repository": "https://github.com/RodrigoRosaDantas/tce-go-dashboard",
+      "statusUrl": "https://rodrigorosadantas.github.io/tce-go-dashboard/central-status.json"
     },
     {
       "id": "seedf",
@@ -27,7 +28,8 @@
       "priority": "normal",
       "icon": "📚",
       "url": "https://rodrigorosadantas.github.io/seedf-ppge-dashboard/",
-      "repository": "https://github.com/RodrigoRosaDantas/seedf-ppge-dashboard"
+      "repository": "https://github.com/RodrigoRosaDantas/seedf-ppge-dashboard",
+      "statusUrl": "https://rodrigorosadantas.github.io/seedf-ppge-dashboard/central-status.json"
     },
     {
       "id": "tjdft",
@@ -38,7 +40,8 @@
       "priority": "normal",
       "icon": "⚖️",
       "url": "https://rodrigorosadantas.github.io/tjdft-dashboard/",
-      "repository": "https://github.com/RodrigoRosaDantas/tjdft-dashboard"
+      "repository": "https://github.com/RodrigoRosaDantas/tjdft-dashboard",
+      "statusUrl": "https://rodrigorosadantas.github.io/tjdft-dashboard/central-status.json"
     }
   ]
 }
