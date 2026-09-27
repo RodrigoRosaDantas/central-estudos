@@ -277,3 +277,16 @@
 - **Evolução:** resumo passa a mostrar quantos projetos possuem contrato válido acompanhado.
 - **Navegação:** removidas regras antigas redundantes de 4 colunas; grade principal usa 5 itens.
 - **Projetos-filhos:** TCE-GO `889017ba83143be268a84358229882a2b3ef9289`; SEEDF `b68431e2aa4944199705400c8821bf28505299d1`; TJDFT `99877771dcd008594d6855c08f077e1563e609bd` — intactos; zero writes.
+
+
+## Manutenção UX — Home e evolução v20
+- **Estado da esteira:** permanece COMPLETE; nenhuma v21 foi aberta.
+- **Commit funcional:** `9f4ab37745c85b23908fa29acedbabebbea34034`.
+- **Pipeline:** `36337115700` — quality SUCCESS + deploy SUCCESS.
+- **Artefato Pages:** `10936824711`, digest `sha256:6f3690203e4e4b3b73ba2f228d79d2e9a553f922aa9f920ea0d15b700a9958eb`.
+- **Shell:** 130.989 bytes <= 131.072 bytes; margem 83 bytes.
+- **Home mobile:** blocos completos de foco/retomada duplicados ficam ocultos; ações equivalentes permanecem na visão Agora.
+- **Navegação:** rótulos simplificados para Acessos / Concursos / Histórico / Status; roteamento passa a “Como entrar”.
+- **Prioridade visual:** Evolução dos projetos aparece antes do roteamento explicável.
+- **Refresh global:** `Atualizar tudo` reutiliza somente eventos `central:contract-refresh`; a camada operacional continua sem `fetch`.
+- **Projetos-filhos:** TCE-GO `889017ba83143be268a84358229882a2b3ef9289`; SEEDF `b68431e2aa4944199705400c8821bf28505299d1`; TJDFT `99877771dcd008594d6855c08f077e1563e609bd` — intactos; zero writes.

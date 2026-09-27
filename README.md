@@ -38,6 +38,14 @@ Consolidação da v20:
 - a navegação principal foi consolidada em **5 colunas**, sem regras antigas conflitantes;
 - shell reduzido para **130.771 bytes**, mantendo o teto de 128 KiB.
 
+### Home mobile e evolução
+
+- no celular, a Home evita repetir os blocos completos de foco e retomada;
+- navegação usa rótulos mais diretos: **Acessos**, **Concursos**, **Histórico** e **Status**;
+- **Evolução dos projetos** aparece antes de “Como entrar”;
+- **Atualizar tudo** recarrega os contratos dos projetos usando o fluxo read-only já existente;
+- nenhum projeto-filho é modificado.
+
 ## Base v19 — Views locais
 
 A v19 adiciona **Views locais** nomeadas sem backend, usando somente preferências allowlisted da própria Central.
