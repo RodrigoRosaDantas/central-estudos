@@ -7,6 +7,9 @@
 - estilos obsoletos de cartões removidos e shell mantido em 130.650 bytes / 131.072 bytes;
 - regressões v10→v20 e comportamento do relógio/frase verificados por quality gate;
 - projetos-filhos permanecem READ-ONLY e sem writes.
+- **Release:** `418231a98699a52b07bdce6d94d6d00a3c1e01bd`; workflow `36346724227` — quality + deploy SUCCESS.
+- **Artefato:** `10941231310`, digest `sha256:c56665778704a12a0823ddb07e58e1a8925b3ecf25af10a9565c9d5a8eccfb80`.
+- **QA:** desktop PASS; inspeção visual mobile em viewport real não executada.
 
 
 ## [20.0.0] — 2026-09-27
