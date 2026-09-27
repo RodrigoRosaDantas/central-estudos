@@ -11,6 +11,9 @@
 - zero writes nos projetos externos;
 - app shell rotacionado para `central-shell-v18.0.0`;
 - shell funcional auditado em 130.986 bytes <= 131.072 bytes.
+- **Commit de release validado:** `4f6c02c08045eb3a2022953f50af7c54dd0606a4`;
+- **Deploy validado:** workflow `36330175487` — quality `success` + deploy `success`;
+- **Pós-deploy QA:** artefato Pages `10935502046` — PASS.
 
 
 ## [17.0.0] — 2026-09-27
