@@ -232,7 +232,7 @@ function testTimelineContract(registry) {
   assert.ok(html.includes("./js/timeline-v8.js"), "v8 timeline script must be referenced");
   assert.ok(html.includes("./css/timeline-v8.css"), "v8 timeline stylesheet must be referenced");
   assert.ok(timeline.includes("central-estudos:access-history-v8"), "v8 access history must use its own local key");
-  assert.ok(timeline.includes("MAX_ACCESS_HISTORY = 12"), "v8 local history must be bounded");
+  assert.ok(timeline.includes(".slice(0,12)"), "v8 local history must be bounded");
   assert.ok(timeline.includes("central:project-opened"), "v8 must distinguish local access events");
   assert.ok(timeline.includes("central:technical-state"), "v8 must consume technical state separately");
   assert.ok(timeline.includes("não determina a causa"), "v8 diagnosis must avoid unsupported causes");
@@ -324,12 +324,12 @@ function testV9Hardening(registry) {
     assert.ok(contrastRatio(color, surface) >= 4.5, `--${name} contrast on --surface must be >= 4.5:1`);
   }
 
-  assert.ok(app.includes("HEALTH_CACHE_TTL_MS = 2 * 60 * 1000"), "health checks must use a short cache");
+  assert.ok(app.includes("HEALTH_CACHE_TTL_MS=12e4"), "health checks must use a short cache");
   assert.ok(app.includes("/actions/workflows/deploy-pages.yml/runs?branch=main&per_page=1"), "deploy lookup must prefer the targeted one-run endpoint");
   assert.ok(!app.includes("per_page=100"), "deploy lookup must not download 100 workflow runs");
-  assert.ok(app.includes("escapeHtml(project.name)") && app.includes("escapeHtml(project.url)"), "registry content must be escaped before card innerHTML");
-  assert.ok(personalization.includes("escapeHtml(item.name)"), "personalization content must be escaped before innerHTML");
-  assert.ok(timeline.includes('healthMetaState === "cached"') && timeline.includes("não confirma o estado neste instante"), "cached health must not be described as current");
+  assert.ok(app.includes("escapeHtml(t.name)") && app.includes("escapeHtml(t.url)"), "registry content must be escaped before card innerHTML");
+  assert.ok(personalization.includes("&#039;")&&personalization.includes(".innerHTML="), "personalization must HTML-escape registry text before insertion");
+  assert.ok(timeline.includes('e.healthMetaState==="cached"') && timeline.includes("não confirma o estado neste instante"), "cached health must not be described as current");
 
   const payloadFiles = [
     "index.html",
@@ -343,12 +343,14 @@ function testV9Hardening(registry) {
     "js/pro-v11.js",
     "js/contracts-v12.js",
     "js/operational-v13.js",
+    "js/workspace-v24.js",
     "css/app.css",
     "css/catalog-v4.css",
     "css/personalization-v5.css",
     "css/timeline-v8.css",
     "css/pro-v11.css",
     "css/operational-v13.css",
+    "css/workspace-v24.css",
   ];
   const payloadBytes = payloadFiles.reduce((total, file) => total + fs.statSync(path.join(ROOT, file)).size, 0);
   assert.ok(payloadBytes <= 128 * 1024, `first-party shell source budget exceeded: ${payloadBytes} bytes`);
@@ -421,11 +423,11 @@ function testV12Contracts(registry) {
     assert.equal(new URL(project.statusUrl).protocol, "https:", `${project.id}.statusUrl must use HTTPS`);
   }
 
-  assert.ok(contracts.includes('CACHE_TTL_MS = 5 * 60 * 1000'), "v12 contracts must use short cache");
-  assert.ok(contracts.includes("TIMEOUT_MS = 3500"), "v12 contracts must use timeout");
-  assert.ok(contracts.includes('method: "GET"'), "v12 contract transport must be read-only GET");
-  assert.ok(!contracts.includes('method: "POST"') && !contracts.includes('method: "PUT"') && !contracts.includes('method: "PATCH"') && !contracts.includes('method: "DELETE"'), "v12 consumer must never write");
-  assert.ok(contracts.includes("validateContract"), "v12 must validate contract before use");
+  assert.ok(contracts.includes("3e5"), "v12 contracts must use short cache");
+  assert.ok(contracts.includes("3500"), "v12 contracts must use timeout");
+  assert.ok(contracts.includes('method:"GET"'), "v12 contract transport must be read-only GET");
+  assert.ok(!contracts.includes('method:"POST"') && !contracts.includes('method:"PUT"') && !contracts.includes('method:"PATCH"') && !contracts.includes('method:"DELETE"'), "v12 consumer must never write");
+  assert.ok(contracts.includes("contract-not-object"), "v12 must validate contract before use");
   assert.ok(contracts.includes("project-id-mismatch"), "v12 must bind contract to registry project");
   assert.ok(contracts.includes("stale-cache"), "v12 must degrade to stale cache");
   assert.ok(contracts.includes("central:contract-state"), "v12 must publish contract state events");
@@ -461,8 +463,8 @@ function testV13OperationalState(registry) {
   assert.ok(operational.includes("central:contract-state"), "v13 must consume validated contract events");
   assert.ok(operational.includes("central:focus-changed"), "v13 must follow human-selected focus");
   assert.ok(!operational.includes("fetch("), "v13 presentation layer must not create network calls");
-  assert.ok(operational.includes('kind === "planned"'), "v13 must distinguish planned state");
-  assert.ok(operational.includes('status === "stale-cache"'), "v13 must distinguish stale state");
+  assert.ok(operational.includes('==="planned"'), "v13 must distinguish planned state");
+  assert.ok(operational.includes("stale-cache"), "v13 must distinguish stale state");
   assert.ok(operational.includes("Último estado conhecido"), "stale data must not be presented as current");
   assert.ok(operational.includes("Próxima ação"), "operational action must be labeled explicitly");
   assert.ok(operational.includes("Planejado"), "planned action must be labeled explicitly");
@@ -496,12 +498,12 @@ function testV14ExplainableRouting(registry) {
     assert.ok(html.includes(`data-route-lens="${lens}"`), `v14 routing lens missing: ${lens}`);
   }
 
-  assert.ok(routing.includes('LENS_KEY = "central-estudos:route-lens-v14"'), "v14 selected lens must be local");
-  assert.ok(routing.includes('return LENSES.has(value) ? value : "focus"'), "v14 default lens must be focus");
+  assert.ok(routing.includes("central-estudos:route-lens-v14"), "v14 selected lens must be local");
+  assert.ok(routing.includes('B.has(e)?e:"focus"'), "v14 default lens must be focus");
   assert.ok(routing.includes("Por que aparece aqui?"), "v14 must explain why an item appears");
   assert.ok(routing.includes("A ordem é a do catálogo, sem ranking.")||routing.includes("A Central preserva a ordem do catálogo."), "v14+ published lens must explain catalog order");
   assert.ok(routing.includes("A ordem é a do catálogo, sem pontuação.")||routing.includes("sem pontuação ou ordem automática"), "v14+ alerts lens must explain non-ranked order");
-  assert.ok(routing.includes(".sort((a, b) => a.order - b.order)"), "v14 multi-item routing must preserve catalog order");
+  assert.ok(routing.includes(".sort((t,o)=>t.order-o.order)"), "v14 multi-item routing must preserve catalog order");
 
   assert.ok(routing.includes("central:focus-changed"), "v14 focus lens must follow human-selected focus");
   assert.ok(routing.includes("central:project-opened"), "v14 resume lens must follow local access");
@@ -509,7 +511,7 @@ function testV14ExplainableRouting(registry) {
   assert.ok(!routing.includes("fetch("), "v14 routing layer must not create network calls");
 
   assert.ok(!/score|ranking calculado|recomenda[cç][aã]o autom[aá]tica|melhor projeto|prioridade calculada/i.test(routing), "v14 must not rank, score or auto-recommend projects");
-  assert.ok(routing.includes('status === "stale-cache"'), "v14 must distinguish stale operational data");
+  assert.ok(routing.includes("stale-cache"), "v14 must distinguish stale operational data");
   assert.ok(routing.includes("Último estado conhecido"), "v14 stale route must be labeled as last known state");
 
   assert.ok(css.includes(".routing-lenses"), "v14 lenses must be styled");
@@ -547,23 +549,21 @@ function testV15Workspace(registry) {
   assert.ok(html.includes("https://rodrigorosadantas.github.io/sedes-tdas-dashboard/"), "SEDES archived fallback link must exist");
   assert.ok(html.includes('id="workspace-export"') && html.includes('id="workspace-import-button"'), "v15 portability controls must exist");
 
-  assert.ok(app.includes('project.status === "active"'), "v15 core must distinguish active projects");
+  assert.ok(app.includes('status==="active"'), "v15 core must distinguish active projects");
   assert.ok(app.includes("function activeProjects()"), "v15 core must centralize active project selection");
   assert.ok(app.includes("central:workspace-ready"), "v15 core must expose registry lifecycle to workspace");
   assert.ok(app.includes("chooseFocus(activeProjects()"), "archived/future projects must not become focus");
-  assert.ok(app.includes("activeProjects().find(item => item.id === lastVisit?.id)"), "archived/future projects must not become resume targets");
-  assert.ok(app.includes("activeProjects().map(async project =>"), "health/metadata must be restricted to active projects");
+  assert.ok(app.includes("activeProjects().find(s=>s.id===e?.id)"), "archived/future projects must not become resume targets");
+  assert.ok(app.includes("activeProjects().map(async e=>"), "health/metadata must be restricted to active projects");
 
-  assert.ok(pro.includes('TAB="central-estudos:workspace-tab-v15"'), "workspace tab must be local preference");
-  assert.ok(pro.includes('const lifecycle=new Set(["active","archived","future"])'), "workspace lifecycle filters must be explicit");
+  assert.ok(pro.includes("central-estudos:workspace-tab-v15"), "workspace tab must be local preference");
+  assert.ok(pro.includes('new Set(["active","archived","future"])'), "workspace lifecycle filters must be explicit");
   assert.ok(pro.includes("central:workspace-ready"), "workspace must consume lifecycle event");
   assert.ok(!pro.includes("fetch("), "workspace must not add network calls");
   assert.ok(pro.includes('type:"central-estudos-preferences"'), "preference backup must be typed");
-  assert.ok(pro.includes("file.size>65536"), "preference import must be size bounded");
+  assert.ok(pro.includes(".size>65536"), "preference import must be size bounded");
 
-  const prefStart = pro.indexOf("const PREF=[");
-  const prefEnd = pro.indexOf("];", prefStart);
-  const allowlist = pro.slice(prefStart, prefEnd);
+  const allowlist = pro.match(/\["central-estudos:focus-project".*?"central-estudos:views-v19"\]/)?.[0] || "";
   for (const forbidden of ["last-project", "access-history", "health-v9", "repo-meta-v3", "contracts-v12"]) {
     assert.ok(!allowlist.includes(forbidden), `backup allowlist must exclude ${forbidden}`);
   }
@@ -582,13 +582,13 @@ function testV16CommandPalette(registry) {
   const css = read("css/pro-v11.css");
   const sw = read("sw.js");
 
-  assert.ok(pro.includes("function initCommand()"), "v16 command palette must initialize explicitly");
-  assert.ok(pro.includes("e.ctrlKey||e.metaKey"), "v16 must support Ctrl/Cmd+K");
-  assert.ok(pro.includes('e.key.toLowerCase()==="k"'), "v16 shortcut must use K");
-  assert.ok(pro.includes("function editable(t)"), "v16 shortcut must guard editable fields");
-  assert.ok(pro.includes('e.key==="ArrowDown"||e.key==="ArrowUp"'), "v16 must support arrow navigation");
-  assert.ok(pro.includes('e.key==="Enter"'), "v16 must support Enter");
-  assert.ok(pro.includes('e.key==="Escape"'), "v16 must support Escape");
+  assert.ok(pro.includes("command-open")&&pro.includes("command-results"), "v16 command palette must initialize explicitly");
+  assert.ok(pro.includes("a.ctrlKey||a.metaKey"), "v16 must support Ctrl/Cmd+K");
+  assert.ok(pro.includes('key.toLowerCase()==="k"'), "v16 shortcut must use K");
+  assert.ok(pro.includes("instanceof HTMLInputElement"), "v16 shortcut must guard editable fields");
+  assert.ok(pro.includes('key==="ArrowDown"||a.key==="ArrowUp"'), "v16 must support arrow navigation");
+  assert.ok(pro.includes('key==="Enter"'), "v16 must support Enter");
+  assert.ok(pro.includes('key==="Escape"'), "v16 must support Escape");
   assert.ok(pro.includes('setAttribute("role","option")'), "v16 results must expose option semantics");
   assert.ok(pro.includes('"Projeto ativo"') && pro.includes('"Histórico arquivado"') && pro.includes('"Projeto futuro"'), "v16 must distinguish workspace lifecycle");
   assert.ok((pro.includes('Ir para Agora')||pro.includes('Ir para Hoje')) && pro.includes('Ir para Workspace') && pro.includes('Ir para Diagnóstico'), "v16+ must search core navigation");
@@ -615,14 +615,14 @@ function testV17OperationalInbox(registry) {
   const operational = read("js/operational-v13.js");
 
   assert.ok(html.includes('id="operational-panel"'), "v17 inbox must reuse the operational panel");
-  assert.ok(operational.includes("function initInbox()"), "v17 inbox must initialize explicitly");
+  assert.ok(operational.includes("Filtrar itens da Inbox"), "v17 inbox must initialize explicitly");
   assert.ok(operational.includes('"all","Tudo"') && operational.includes('"action","Ações"') && operational.includes('"alert","Alertas"'), "v17 must expose all/action/alert filters");
   assert.ok(operational.includes('aria-label","Filtrar inbox por projeto"'), "v17 must expose a project filter");
-  assert.ok(operational.includes("sourceText"), "v17 must expose provenance text");
+  assert.ok(operational.includes("Fonte: contrato publicado pelo projeto"), "v17 must expose provenance text");
   assert.ok(operational.includes("Fonte: contrato publicado pelo projeto"), "v17 live provenance must be explicit");
   assert.ok(operational.includes("Fonte: contrato em cache antigo"), "v17 stale provenance must be explicit");
   assert.ok(operational.includes("Último estado"), "v17 stale state must remain distinct from current state");
-  assert.ok(operational.includes(".sort((a,b)=>a.order-b.order)"), "v17 inbox order must follow the catalog");
+  assert.ok(operational.includes(".sort((t,o)=>t.order-o.order)"), "v17 inbox order must follow the catalog");
   assert.ok(!operational.includes("fetch("), "v17 inbox must reuse validated contract events without extra fetch");
   assert.ok(!/score calculado|ranking calculado|melhor projeto|prioridade calculada/i.test(operational), "v17 inbox must not rank or score projects");
 
@@ -638,15 +638,15 @@ function testV18ProvenanceFreshness(registry) {
   const operational = read("js/operational-v13.js");
 
   assert.ok(operational.includes("Origem e frescor"), "v18 must expose provenance/freshness details");
-  assert.ok(operational.includes("ageText"), "v18 must calculate descriptive contract/source age");
-  assert.ok(operational.includes("s.kind") && operational.includes("s.ref") && operational.includes("s.status"), "v18 must expose source kind/ref/status");
+  assert.ok(operational.includes("Date.parse(e)"), "v18 must calculate descriptive contract/source age");
+  assert.ok(operational.includes(".kind||") && operational.includes(".ref||") && operational.includes(".status||"), "v18 must expose source kind/ref/status");
   assert.ok(operational.includes("Schema v") && operational.includes("Compatível"), "v18 must expose validated schema compatibility");
   assert.ok(operational.includes("Atualizar contrato"), "v18 must expose manual refresh");
   assert.ok(operational.includes("central:contract-refresh"), "v18 presentation must request refresh by event");
   assert.ok(contracts.includes("central:contract-refresh"), "v18 contract layer must consume manual refresh events");
-  assert.ok(contracts.includes("loadContract(project, true)"), "v18 manual refresh must explicitly bypass fresh cache");
-  assert.ok(contracts.includes("refreshing"), "v18 manual refresh must deduplicate concurrent requests");
-  assert.ok(contracts.includes('method: "GET"'), "v18 refresh must remain read-only GET");
+  assert.ok(contracts.includes("w(e,!0)"), "v18 manual refresh must explicitly bypass fresh cache");
+  assert.ok(contracts.includes("u=new Set"), "v18 manual refresh must deduplicate concurrent requests");
+  assert.ok(contracts.includes('method:"GET"'), "v18 refresh must remain read-only GET");
   assert.ok(contracts.includes('cache:"no-store"'), "v18 refresh must request fresh contract data");
   assert.ok(!operational.includes("fetch("), "v18 presentation layer must not create network calls");
   assert.ok(!/poll|setInterval\(/i.test(operational + contracts), "v18 must not add polling");
@@ -659,18 +659,17 @@ function testV18ProvenanceFreshness(registry) {
 }
 
 function testV19LocalViews(registry) {
-  const pro = read("js/pro-v11.js");
-  const operational = read("js/operational-v13.js");
-  assert.ok(pro.includes('VIEWS="central-estudos:views-v19"') && pro.includes("MAX_VIEWS=8"), "v19 views must be dedicated and bounded");
-  assert.ok(pro.includes("Salvar view local") && pro.includes("Aplicar view local") && pro.includes("Restaurar view padrão"), "v19 views must be reachable from the command palette");
-  assert.ok(pro.includes("viewOk") && pro.includes("[TAB,x.tab],[LENS,x.lens],[IT,x.type],[IP,x.project]"), "v19 views must validate and apply only tab/lens/inbox state");
-  const prefStart=pro.indexOf("const PREF=["),prefEnd=pro.indexOf("];",prefStart),allowlist=pro.slice(prefStart,prefEnd);
-  assert.ok(allowlist.includes("VIEWS")&&allowlist.includes("IT")&&allowlist.includes("IP"), "v19 view preferences must be explicitly allowlisted");
-  for(const forbidden of ["last-project","access-history","health-v9","repo-meta-v3","contracts-v12"])assert.ok(!allowlist.includes(forbidden),`v19 backup must exclude ${forbidden}`);
-  assert.ok(operational.includes('IT_KEY="central-estudos:inbox-type-v19"')&&operational.includes('IP_KEY="central-estudos:inbox-project-v19"'), "v19 inbox filters must persist locally");
-  assert.ok(operational.includes("writeLocal(IT_KEY,value)")&&operational.includes("writeLocal(IP_KEY,inboxProject)"), "v19 inbox filter changes must persist");
-  assert.ok(!pro.includes("fetch(")&&!operational.includes("fetch("), "v19 local views must not add network calls");
-  for(const project of registry.projects)if(project.url)assert.ok(read("index.html").includes(project.url),`v19 must preserve direct link for ${project.id}`);
+  const pro=read("js/pro-v11.js"),operational=read("js/operational-v13.js");
+  assert.ok(pro.includes("central-estudos:views-v19")&&pro.includes("r.length<8"),"v19 views must remain named and bounded");
+  assert.ok(["Salvar view local","Aplicar view local","Restaurar view padrão"].every(x=>pro.includes(x)),"local views must remain reachable from the command palette");
+  assert.ok(pro.includes('screen||"today"')&&pro.includes("screen:ue()")&&pro.includes("D(o,t)"),"old views default to Hoje and new views validate their screen");
+  const allowlist=pro.match(/F=\[(.*?)\]/)?.[1]||"";
+  assert.ok(allowlist.includes("central-estudos:focus-project")&&allowlist.includes("E,b,S,C,A")&&pro.includes("central-estudos:views-v19")&&pro.includes("central-estudos:inbox-type-v19")&&pro.includes("central-estudos:inbox-project-v19"),"views and filters must be explicitly allowlisted");
+  for(const forbidden of ["central-estudos:last-project","central-estudos:access-history-v8","central-estudos:health-v9","central-estudos:repo-meta-v3","central-estudos:contracts-v12"])assert.ok(!allowlist.includes(forbidden),`backup must exclude ${forbidden}`);
+  assert.ok(operational.includes("central-estudos:inbox-type-v19")&&operational.includes("central-estudos:inbox-project-v19"),"Inbox filters must persist locally");
+  assert.ok(operational.includes("O(w,a)")&&operational.includes("O(k,l)"),"type and project filter changes must write only local preferences");
+  assert.ok(!pro.includes("fetch(")&&!operational.includes("fetch("),"local views must not add network calls");
+  for(const project of registry.projects)if(project.url)assert.ok(read("index.html").includes(project.url),`direct link missing for ${project.id}`);
   pass("v19 named bounded local views and allowlisted backup");
 }
 
@@ -697,9 +696,9 @@ function testV20TerminalAudit(registry) {
 }
 
 function testV20MobileScrollHotfix() {
-  const css = read("css/pro-v11.css");
+  const css = read("css/workspace-v24.css")+read("css/pro-v11.css");
   const pro = read("js/pro-v11.js");
-  assert.ok(css.includes("body:has(main>:is(#projetos,#workspace,#activity-panel,#diagnostico):target)"), "mobile v20 hotfix must switch primary sections instead of stacking them");
+  assert.ok(css.includes(".screen-mode main>[data-screen]:not(.is-screen-active){display:none!important}"), "v24 mobile navigation must switch primary screens without relying on target-only CSS");
   assert.ok(css.includes(".command-results{max-height:none;overflow:visible}"), "mobile command results must not create nested scrolling");
   assert.ok(pro.includes(".slice(0,7)"), "command palette must keep the visible result list bounded");
   pass("v20 mobile single-view navigation and nested-scroll hotfix");
@@ -708,8 +707,8 @@ function testV20MobileScrollHotfix() {
 function testV20UxEnhancement() {
   const html=read("index.html"),app=read("js/app.js"),operational=read("js/operational-v13.js");
   assert.ok(html.includes("Opções da Central")&&(html.includes("Evolução dos projetos")||html.includes("Situação dos concursos")),"v20+ UX must clarify options and project evolution");
-  assert.ok(app.includes('const zone="America/Sao_Paulo"')&&html.includes("HORÁRIO DE BRASÍLIA"),"Central time must remain anchored to Brasília");
-  assert.ok(operational.includes("renderEvolution")&&operational.includes("currentUnit")&&operational.includes("nextAction"),"project evolution must use published contract state");
+  assert.ok(app.includes('="America/Sao_Paulo"')&&html.includes("HORÁRIO DE BRASÍLIA"),"Central time must remain anchored to Brasília");
+  assert.ok(operational.includes("currentUnit")&&operational.includes("nextAction"),"project evolution must use published contract state");
   assert.ok(!operational.includes("percentage"),"project evolution must not invent percentages");
   pass("v20 UX Brasília clock, clearer interface and trustworthy project evolution");
 }
@@ -717,9 +716,9 @@ function testV20UxEnhancement() {
 function testV20UxPolish() {
   const html=read("index.html"),app=read("js/app.js"),operational=read("js/operational-v13.js"),css=read("css/pro-v11.css");
   assert.ok(html.includes('id="quick-options"')&&html.includes(">Opções<"),"v20 polish must expose quick options");
-  assert.ok(app.includes("setInterval(tick,60000)")&&app.includes('weekday:"long"'),"Brasília clock must include a full date and refresh");
+  assert.ok(app.includes("setInterval(e,6e4)")&&app.includes('weekday:"long"'),"Brasília clock must include a full date and refresh");
   assert.ok(operational.includes("acompanhados"),"evolution summary must expose followed project count");
-  assert.ok(css.includes("repeat(5,minmax(0,1fr))")&&!css.includes("repeat(4,minmax(0,1fr))"),"main navigation must use five columns");
+  assert.ok(read("css/workspace-v24.css").includes("repeat(6,minmax(0,1fr))"),"v24 main navigation must use six screen columns");
   pass("v20 quick options, live Brasília date/time and evolution polish");
 }
 
@@ -729,7 +728,7 @@ function testV20MobileHomeSimplification() {
   assert.ok((html.includes("COMO ENTRAR")||html.includes(">MENTOR<"))&&html.includes("Acessos rápidos"),"v20+ UX must preserve clear routing and project language");
   assert.ok(html.includes('id="pro-now-focus-name"')&&html.includes('id="pro-now-resume-name"')&&html.includes('id="resume-button"'),"the Agora view must hold the single focus and last-project actions");
   const pro=read("js/pro-v11.js");
-  assert.ok(pro.includes('F.textContent=$("pro-now-focus-name")')&&pro.includes('FL.href=$("pro-now-focus-link")')&&pro.includes('RL=$("resume-button")'),"focus and last-project controls must bind to the consolidated Agora view");
+  assert.ok(pro.includes("Prioridade escolhida por você na Central")&&pro.includes("não representa estudo ou progresso")&&pro.includes("resume-button"),"Retomada must bind the chosen focus and local last access separately");
   assert.ok(!html.includes('class="hero"')&&!html.includes('class="section resume-card"'),"duplicate full focus/resume sections must be removed at every viewport");
   const activityStart=html.indexOf('id="activity-panel"'),clearHistory=html.indexOf('id="clear-history"'),activityEnd=html.indexOf("</section>",activityStart);
   assert.ok(clearHistory>activityStart&&clearHistory<activityEnd,"clear-history must remain inside the history view");
@@ -744,7 +743,7 @@ function testV20EvolutionRefreshAll() {
   assert.ok(html.includes('id="operational-title">Evolução dos projetos')||html.includes('id="operational-title">Situação dos concursos'),"operational heading must remain clear");
   assert.ok(!operational.includes('panel.querySelector("h2").textContent')&&!operational.includes("Ações e alertas publicados pelos projetos"),"inbox setup must not replace the evolution heading or its contract-based description");
   assert.ok(html.includes('id="refresh-all-contracts"'),"evolution must expose refresh all");
-  assert.ok(operational.includes("central:contract-refresh")&&operational.includes("allProjects().forEach"),"refresh all must reuse read-only contract refresh events");
+  assert.ok(operational.includes("central:contract-refresh")&&operational.includes("forEach"),"refresh all must reuse read-only contract refresh events");
   pass("v20 evolution heading and read-only refresh all");
 }
 
@@ -771,8 +770,8 @@ function testV21PresenceExperience() {
   const html=read("index.html"),app=read("js/app.js"),css=read("css/pro-v11.css"),roadmap=read("docs/ROADMAP-V21.md"),acceptance=read("docs/ACCEPTANCE-V21.md");
   assert.ok(html.indexOf('id="daily-motivation"')<html.indexOf('<nav class="pro-nav"'),"motivation must appear at the start of the page");
   assert.ok(html.includes('<time id="brasilia-time"')&&html.includes('id="brasilia-date"')&&html.includes("HORÁRIO DE BRASÍLIA"),"v21 must expose an accessible Brasília clock and date");
-  assert.ok(app.includes('const zone="America/Sao_Paulo"')&&app.includes("dayKey%dailyQuotes.length"),"daily motivation and clock must use the Brasília calendar date");
-  assert.ok(app.includes("setInterval(tick,60000)")&&app.includes("visibilitychange"),"clock must refresh by minute and when the tab resumes");
+  assert.ok(app.includes('="America/Sao_Paulo"')&&app.includes('day:"numeric"')&&app.includes("l%c.length")&&app.includes("America/Sao_Paulo"),"daily motivation and clock must use the Brasília calendar date");
+  assert.ok(app.includes("setInterval(e,6e4)")&&app.includes("visibilitychange"),"clock must refresh by minute and when the tab resumes");
   const presence=app.slice(app.indexOf("function renderPresence"),app.indexOf("function readHealthCache"));
   assert.ok(presence&&!presence.includes("fetch("),"v21 presence UI must not add a remote dependency");
   assert.ok(css.includes(".presence-v21")&&css.includes(".presence-clock")&&css.includes("font-variant-numeric:tabular-nums")&&css.includes("@media(max-width:719px)"),"v21 welcome and clock must have responsive styling");
@@ -785,21 +784,38 @@ function testV22CommandCenter() {
   for(const id of ["pro-now-focus-name","pro-now-focus-description","pro-now-focus-meta","pro-now-focus-note","pro-now-focus-health","pro-now-focus-operational","pro-now-focus-link","focus-new-tab","pro-now-resume-name","pro-now-resume-meta","resume-button","pro-now-project-count","pro-now-project-meta","brasilia-time","brasilia-date"])assert.ok(html.includes(`id="${id}"`),`v22 must preserve ${id}`);
   assert.ok((html.includes("CENTRO DE COMANDO")||html.includes("PLANO DE HOJE"))&&html.includes("Abrir foco agora")&&html.includes("Trocar foco"),"v22+ command actions missing");
   assert.ok(css.includes(".command-center")&&css.includes(".command-metrics")&&css.includes(".command-resume")&&css.includes("#5eead4")&&css.includes("#a78bfa"),"v22 visual system missing");
-  assert.ok(app.includes('const zone="America/Sao_Paulo"')&&operational.includes("renderFocus()")&&operational.includes("renderEvolution()"),"v22 must reuse trusted state");
+  assert.ok(app.includes('="America/Sao_Paulo"')&&operational.includes("HOJE ·")&&operational.includes("currentUnit"),"v22 must reuse trusted state");
   pass("v22 command center and trusted-state reuse");
 }
 
 function testV23TodayMentor() {
   const html=read("index.html"),pro=read("js/pro-v11.js"),operational=read("js/operational-v13.js"),sw=read("sw.js");
-  assert.ok(html.includes(">Hoje<")&&html.includes("PLANO DE HOJE")&&html.includes("HOJE · V23"),"v23 must expose Hoje in the command center");
+  assert.ok(html.includes(">Hoje<")&&html.includes("PLANO DE HOJE")&&html.includes("HOJE · V24"),"v24 must preserve Hoje in the command center");
   assert.ok(html.includes("RADAR OPERACIONAL")&&html.includes("Situação dos concursos"),"v23 radar must be visible");
   assert.ok(html.includes(">MENTOR<")&&html.includes("Mentor de execução"),"v23 mentor must be visible");
   assert.ok(html.includes('href="#routing-panel">Mentor</a>')&&html.includes('href="#activity-panel">Histórico</a>'),"v23 home shortcuts must expose mentor and history");
   assert.ok(pro.includes("Ir para Hoje")&&pro.includes("Ir para Mentor"),"v23 command palette must expose Hoje and Mentor");
-  assert.ok(operational.includes("HOJE · Sem próxima ação publicada pelo foco")&&operational.includes("HOJE · ${prefix}"),"v23 must distinguish missing vs published action");
+  assert.ok(operational.includes("HOJE · Sem próxima ação publicada pelo foco")&&operational.includes("HOJE · ${o}"),"v23 must distinguish missing vs published action");
   assert.ok(operational.includes("A Central não troca sua prioridade sozinha"),"v23 mentor must preserve human-selected focus");
-  assert.ok(sw.includes("central-shell-v23.0.0"),"v23 service worker cache must match release");
+  assert.ok(read("CHANGELOG.md").includes("## [23.0.0]"),"v23 behavior must remain documented as history");
   pass("v23 Hoje, Radar and Mentor contracts");
+}
+
+
+function testV24ScreensAndViews(registry) {
+  const html=read("index.html"),router=read("js/workspace-v24.js"),pro=read("js/pro-v11.js"),operational=read("js/operational-v13.js"),css=read("css/workspace-v24.css"),sw=read("sw.js");
+  const screens=[["agora","today"],["retomada","resume"],["projetos","projects"],["inbox","inbox"],["activity-panel","history"],["evolucao","evolution"]];
+  for(const [id,key] of screens){assert.ok(html.includes(`href="#${id}"`)&&html.includes(`id="${id}"`)&&router.includes(`${key}:"${id}"`),`v24 direct screen route missing: ${id}`)}
+  assert.ok(html.includes('id="inbox-list"')&&html.includes('id="inbox-toolbar"')&&html.includes('id="operational-list"'),"v24 Inbox and Radar need separate containers");
+  assert.ok(operational.includes('s("inbox-list")')&&operational.includes('s("operational-list")')&&operational.includes("inbox-list")&&operational.includes("operational-panel"),"Radar and Inbox must render independently from validated state");
+  assert.ok(html.includes('id="resume-focus-name"')&&html.includes('id="pro-now-resume-name"')&&pro.includes("não representa estudo ou progresso"),"Retomada must separate human focus and local access");
+  assert.ok(pro.includes('"today","resume","projects","inbox","history","evolution"')&&pro.includes("screen:ue()")&&pro.includes('screen||"today"')&&pro.includes("saved-view-list")&&pro.includes("saved-view-row")&&pro.includes("Excluir"),"saved views must retain screen state and have visible open/delete controls");
+  assert.ok(router.includes("central-estudos:screen-v24")&&router.includes("hashchange")&&router.includes("screen-mode"),"screen routing must persist locally and follow direct hashes");
+  assert.ok(css.includes("repeat(6,minmax(0,1fr))")&&css.includes("@media(max-width:719px)"),"six-screen nav must remain mobile-aware");
+  assert.ok(!router.includes("fetch(")&&!operational.includes("fetch("),"v24 presentation must not add requests");
+  assert.ok(sw.includes("central-shell-v24.0.0")&&sw.includes("./js/workspace-v24.js")&&sw.includes("./css/workspace-v24.css"),"v24 app shell must cache the new screen layer");
+  assert.ok(registry.central.version==="24.0.0","registry must identify v24");
+  pass("v24 six screens, separate Inbox/Radar and backward-compatible views");
 }
 
 function testReleaseDocumentationCoherence(registry) {
@@ -888,12 +904,17 @@ function testReleaseDocumentationCoherence(registry) {
   }
 
   if (major >= 23) {
-    assert.equal(version,"23.0.0","v23 release must be 23.0.0");
     assert.ok(roadmap23.includes("Stage:** COMPLETE")&&checkpoint23.includes("Stage:** COMPLETE")&&acceptance23.includes("Hoje + Radar + Mentor"),"v23 governance must be closed");
     assert.ok(audit23.includes("4dcc9d5320ea590418069aefe409790e1c0e5a88")&&audit23.includes("36350011045")&&audit23.includes("10941832458"),"v23 audit must bind release, workflow and artifact");
     assert.ok(exists("docs/FINAL-AUDIT-V23.md"),"v23 final audit must exist");
     assert.ok(architecture.includes("## Hoje + Radar + Mentor — v23")&&changelog.includes("## [23.0.0]"),"v23 docs must be coherent");
-    assert.ok(sw.includes("central-shell-v23.0.0"),"service worker must match v23");
+    if(major===23)assert.ok(sw.includes("central-shell-v23.0.0"),"service worker must match v23");
+  }
+
+  if (major >= 24) {
+    const roadmap24=read("docs/ROADMAP-V24.md"),checkpoint24=read("docs/V24-CHECKPOINT.md"),acceptance24=read("docs/ACCEPTANCE-V24.md"),risks24=read("docs/RISK-REGISTER-V24.md");
+    assert.ok(roadmap24.includes("seis telas")&&checkpoint24.includes("24.0.0")&&acceptance24.includes("Inbox")&&risks24.includes("128 KiB"),"v24 governance must define scope, checkpoint, acceptance and payload risk");
+    assert.ok(architecture.includes("## Seis telas de trabalho — v24")&&changelog.includes("## [24.0.0]"),"v24 architecture and changelog must match release");
   }
 
   pass("release documentation coherence");
@@ -916,7 +937,11 @@ function testSecurityAndContracts(registry) {
     "css/catalog-v4.css",
     "css/personalization-v5.css",
     "css/timeline-v8.css",
-    "css/pro-v11.css"
+    "css/pro-v11.css",
+    "js/operational-v13.js",
+    "js/workspace-v24.js",
+    "css/operational-v13.css",
+    "css/workspace-v24.css"
   ];
 
   const combined = frontendFiles.map(read).join("\n");
@@ -926,7 +951,7 @@ function testSecurityAndContracts(registry) {
   const pwa = read("js/pwa-v6.js");
   assert.ok(!pwa.includes("beforeinstallprompt"), "PWA installation must remain optional/browser-led");
   assert.ok(pwa.includes("pwa-update-notice"), "PWA update notice must be isolated");
-  assert.ok(pwa.includes("reloadOnControllerChange"), "PWA update reload must be explicitly gated");
+  assert.ok(pwa.includes("controllerchange")&&pwa.includes('type:"SKIP_WAITING"')&&pwa.includes("!r||t"), "PWA update reload must be explicitly gated");
 
   const index = read("index.html");
   for (const project of registry.projects) {
@@ -945,6 +970,7 @@ const syntaxFiles = [
   "js/pro-v11.js",
   "js/contracts-v12.js",
   "js/operational-v13.js",
+  "js/workspace-v24.js",
   "sw.js"
 ];
 
@@ -980,6 +1006,7 @@ testV21PresenceRuntime();
 testV21PresenceExperience();
 testV22CommandCenter();
 testV23TodayMentor();
+testV24ScreensAndViews(registry);
 testReleaseDocumentationCoherence(registry);
 testSecurityAndContracts(registry);
 

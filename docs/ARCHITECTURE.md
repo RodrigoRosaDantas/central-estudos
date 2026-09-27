@@ -32,7 +32,7 @@ Busca, favoritos, ordenação, atalhos e ordem manual são camadas locais sobre 
 
 ## PWA e resiliência
 
-O service worker é limitado à origem e ao pathname da Central. O cache da release atual é `central-shell-v21.0.0` e contém somente o app shell da Central.
+O service worker é limitado à origem e ao pathname da Central. O cache da release atual é `central-shell-v24.0.0` e contém somente o app shell da Central.
 
 Estratégia:
 - navegações e assets conhecidos usam **network first**;
@@ -386,3 +386,18 @@ A v23 não cria um motor pedagógico global. Ela reorganiza capacidades já exis
 O **Radar operacional** continua sendo uma leitura ordenada dos contratos validados. O **Mentor** reaproveita as lentes escolhidas pelo usuário — foco, retomada, ações publicadas e alertas — e explica por que cada projeto aparece. A ordem continua sendo a do catálogo e não existe score, ranking ou troca automática de prioridade.
 
 A arquitetura permanece read-only, sem backend, telemetria, polling novo ou dependência externa.
+
+
+## Seis telas de trabalho — v24
+
+A navegação v24 expõe Hoje, Retomada, Projetos, Inbox, Histórico e Evolução como telas com âncoras diretas. O estado ativo é local, pode ser reaberto por URL e não exige JavaScript para os links diretos existentes.
+
+- Retomada separa o foco escolhido do último ambiente acessado; nenhum deles representa estudo ou progresso.
+- Projetos mantém catálogo e lifecycle de concursos no mesmo contexto.
+- Inbox apresenta filtros próprios sobre eventos de contratos já validados; Radar preserva a lista geral sem herdar esses filtros.
+- Evolução reúne Radar, Mentor, preferências e estado técnico.
+- Views existentes aceitam opcionalmente o campo `screen`; registros v19 sem ele são interpretados como Hoje.
+- A lista local de views permite abrir e excluir sem prompt; o backup continua limitado à allowlist e não leva histórico, foco ou contratos.
+- `workspace-v24.js` não faz rede. A renderização do Inbox reutiliza eventos da camada read-only v12.
+- Scripts de runtime são distribuídos minificados em UTF-8 para manter o app shell dentro do limite de 128 KiB; verificações de sintaxe, contratos e execução seguem no quality gate.
+

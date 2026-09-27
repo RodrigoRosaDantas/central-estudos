@@ -6,19 +6,22 @@ Camada de entrada para os ambientes independentes TCE-GO, SEEDF e TJDFT.
 
 A Central não importa, altera ou replica o código dos projetos-filhos.
 
-## Estado atual — v23.0
+## Estado atual — v24.0
 
-A v23 transforma o Centro de Comando em uma camada de **execução diária**: **Hoje + Radar + Mentor**.
+A v24 organiza a Central em seis telas de trabalho com navegação direta e persistente: Hoje, Retomada, Projetos, Inbox, Histórico e Evolução.
 
-- a entrada principal passa a ser “Hoje”, com foco e ação publicada no mesmo contexto;
-- quando o foco não publica próxima ação, a Central declara a ausência em vez de inventar uma;
-- o antigo bloco de evolução vira **Radar operacional**, mantendo fase, ciclo, unidade e ação publicados;
-- “Como entrar” vira **Mentor de execução**, com lentes de foco, retomada, ações e alertas;
-- o Mentor organiza sinais confiáveis, mas não muda foco, não ranqueia e não decide pelo usuário;
-- atalhos da Home priorizam Mentor, Acessos e Histórico;
-- Command Palette ganha acesso direto ao Mentor;
-- contratos, provenance, Inbox, Views, histórico, preferências, diagnóstico e PWA continuam preservados;
+- Retomada mostra separadamente o foco escolhido e o último acesso local; acesso não representa estudo ou progresso.
+- Projetos reúne acessos ativos e o Workspace de concursos.
+- Inbox tem filtros próprios por tipo e projeto; o Radar mantém a visão completa dos contratos disponíveis.
+- Evolução reúne Radar, Mentor, preferências e estado técnico.
+- Views locais salvam também a tela atual; views anteriores sem esse campo continuam abrindo em Hoje.
+- Cada tela possui âncora direta; sem JavaScript, os links diretos dos projetos continuam disponíveis.
+- contratos read-only, sem chamadas novas, sem ranking ou progresso inferido;
 - TCE-GO, SEEDF e TJDFT permanecem READ-ONLY.
+
+### Base v23 — Hoje, Radar e Mentor
+
+A v23 consolidou o Centro de Comando em execução diária, com foco escolhido, Radar Operacional e Mentor de execução.
 
 ### Base v22 — Centro de Comando
 

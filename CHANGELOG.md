@@ -1,5 +1,22 @@
 # CHANGELOG — Central de Estudos
 
+## [24.0.0] - 2026-09-27
+
+### Changed
+- Navegação principal organizada em seis telas: Hoje, Retomada, Projetos, Inbox, Histórico e Evolução.
+- Retomada mostra foco escolhido e último acesso em cartões separados, com rótulos que não sugerem progresso de estudo.
+- Projetos reúne os acessos rápidos e o Workspace de concursos.
+- Inbox recebe filtros próprios por tipo e projeto; Radar preserva o conjunto de contratos válidos sem filtros da Inbox.
+- Views nomeadas passam a lembrar a tela; registros antigos sem `screen` abrem em Hoje.
+- Atalhos antigos continuam levando à tela correspondente.
+- Scripts do shell minificados em UTF-8 para fechar abaixo do teto histórico de 128 KiB; teste de payload permanece estrito.
+- Service worker atualizado para `central-shell-v24.0.0`.
+
+### Preserved
+- Leitura somente dos projetos-filhos e dos contratos publicados.
+- Nenhuma chamada de rede adicional, gravação externa, pontuação ou progresso inferido.
+- Fallback sem JavaScript e links diretos para os ambientes.
+
 ## [23.0.0] - 2026-09-27
 
 ### Changed
