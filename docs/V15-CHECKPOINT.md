@@ -3,7 +3,7 @@
 ## Estado
 - **Versão de origem:** 10.0.0
 - **Versão validada:** 11.0.0
-- **Stage:** VALIDATING
+- **Stage:** BLOCKED
 - **Active major:** 12.0.0
 - **Next major:** 13.0.0
 - **Projetos-filhos:** writes restritos e autorizados nesta v12 apenas para `public/central-status.json`; demais arquivos READ-ONLY
@@ -76,3 +76,5 @@
 - SEEDF: quality `36284732377` + Pages `36284732375` — success.
 - TJDFT: Pages `36284736984` + smoke `36284780388` + visual/E2E `36284736987` — success.
 - Estado: aguardando pipeline final da Central v12.0.0.
+
+- **Bloqueio operacional v12:** o run `36285092201` permaneceu `in_progress` no job Quality gate sem steps/logs disponíveis, segurando o run final `36285097988` em `pending`. Código/contratos-filhos já validados estruturalmente; não fechar v12 até um pipeline final da Central concluir `quality + deploy success`.
