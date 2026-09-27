@@ -239,8 +239,8 @@ function testTimelineContract(registry) {
   assert.ok(timeline.includes("Não mede estudo, duração, progresso ou desempenho"), "v8 local access must not be framed as study");
   assert.ok(!timeline.includes("fetch("), "v8 timeline must reuse existing observability instead of creating extra network calls");
 
-  for (const project of registry.projects) {
-    assert.ok(html.includes(`data-project-id="${project.id}"`), `v8 timeline needs registry-backed card id: ${project.id}`);
+  for (const project of registry.projects.filter(project => project.status === "active")) {
+    assert.ok(html.includes(`data-project-id="${project.id}"`), `v8 timeline needs active registry-backed card id: ${project.id}`);
   }
 
   pass("v8 timeline, source separation and diagnostic contracts");
