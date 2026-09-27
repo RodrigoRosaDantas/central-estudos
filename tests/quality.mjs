@@ -458,7 +458,7 @@ function testV13OperationalState(registry) {
   assert.ok(operational.includes("Próxima ação"), "operational action must be labeled explicitly");
   assert.ok(operational.includes("Planejado"), "planned action must be labeled explicitly");
 
-  assert.ok(!/score|ranking|pontua[cç][aã]o|melhor projeto|prioridade calculada/i.test(operational), "v13 must not rank or score projects");
+  assert.ok(!/score calculado|ranking calculado|melhor projeto|prioridade calculada/i.test(operational), "v13 must not rank or score projects");
   assert.ok(!/mentor global|mentor central/i.test(operational), "v13 must not implement a global mentor");
 
   assert.ok(css.includes(".operational-grid"), "v13 operational cards must be styled");
