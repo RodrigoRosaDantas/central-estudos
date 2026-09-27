@@ -17,6 +17,7 @@
   <link rel="stylesheet" href="./css/timeline-v8.css" />
   <link rel="stylesheet" href="./css/pro-v11.css" />
   <link rel="stylesheet" href="./css/operational-v13.css" />
+  <link rel="stylesheet" href="./css/routing-v14.css" />
 </head>
 <body>
   <a class="skip-link" href="#conteudo">Ir para o conteúdo</a>
@@ -60,6 +61,23 @@
             <a class="pro-now-action" href="#projetos">Ver projetos ↓</a>
           </article>
         </div>
+      </section>
+      <section id="routing-panel" class="section routing-panel" aria-labelledby="routing-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">ROTEAMENTO EXPLICÁVEL</p>
+            <h2 id="routing-title">Escolha como quer entrar</h2>
+          </div>
+          <p class="muted compact">Você escolhe a lente. A Central apenas filtra sinais já conhecidos e explica por que cada projeto aparece.</p>
+        </div>
+        <div class="routing-lenses" role="group" aria-label="Escolher lente de roteamento">
+          <button class="routing-lens is-active" type="button" data-route-lens="focus" aria-pressed="true">Foco</button>
+          <button class="routing-lens" type="button" data-route-lens="resume" aria-pressed="false">Retomada</button>
+          <button class="routing-lens" type="button" data-route-lens="published" aria-pressed="false">Ações publicadas</button>
+          <button class="routing-lens" type="button" data-route-lens="alerts" aria-pressed="false">Alertas</button>
+        </div>
+        <p id="routing-explanation" class="routing-explanation">Mostra somente o foco que você definiu na Central.</p>
+        <div id="routing-list" class="routing-list" aria-live="polite" aria-atomic="false"></div>
       </section>
       <section id="operational-panel" class="section operational-panel" aria-labelledby="operational-title" hidden>
         <div class="section-heading">
@@ -148,5 +166,6 @@
   <script src="./js/pro-v11.js" defer></script>
   <script src="./js/contracts-v12.js" defer></script>
   <script src="./js/operational-v13.js" defer></script>
+  <script src="./js/routing-v14.js" defer></script>
 </body>
 </html>
