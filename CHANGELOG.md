@@ -11,6 +11,9 @@
 - compactação semântica de módulos existentes para manter o teto de 128 KiB;
 - app shell preparado para `central-shell-v19.0.0`;
 - shell funcional auditado em 130.983 bytes <= 131.072 bytes.
+- **Commit de release validado:** `de8881589d8103c4b114f9cba7356a2559148b6b`;
+- **Deploy validado:** workflow `36331287103` — quality `success` + deploy `success`;
+- **Pós-deploy QA:** artefato Pages `10935921078` — PASS.
 
 
 ## [18.0.0] — 2026-09-27
