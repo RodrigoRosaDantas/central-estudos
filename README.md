@@ -6,9 +6,23 @@ Camada de entrada para os ambientes independentes TCE-GO, SEEDF e TJDFT.
 
 A Central não importa, altera ou replica o código dos projetos-filhos.
 
-## Estado atual — v15.0
+## Estado atual — v16.0
 
-A v15 transforma a Central em um workspace de concursos sem criar banco mestre.
+A v16 inicia a geração **Workspace PRO v16→v20** com acesso rápido por teclado e toque.
+
+Evoluções da v16:
+- **Command Palette** aberta por Ctrl/⌘+K;
+- botão flutuante visível, inclusive no mobile;
+- busca por projetos ativos, arquivados e futuros;
+- navegação rápida para Agora, Projetos, Workspace, Atividade e Diagnóstico;
+- ações rápidas para foco e retomada quando válidos;
+- navegação por ↑/↓, Enter e Escape;
+- nenhuma chamada de rede adicional;
+- nenhum write em projetos externos;
+- app shell atualizado para `central-shell-v16.0.0`;
+- orçamento da nova geração limitado a **128 KiB**; shell atual ~126,4 KiB.
+
+A v15 permanece como baseline terminal da geração anterior e transforma a Central em um workspace de concursos sem criar banco mestre.
 
 Evoluções da v15:
 - lifecycle explícito `active / archived / future` no registry;
@@ -86,7 +100,7 @@ Capacidades consolidadas:
 - PWA network-first, app shell offline e cache `central-shell-v15.0.0` restrito à Central;
 - quality gate automatizado antes de todo deploy;
 - CSP, escape de conteúdo, HTTPS, contraste, teclado, forced colors e touch targets auditados;
-- orçamento de shell <= 120 KiB e zero dependências externas de JS/CSS;
+- orçamento de shell <= 128 KiB na geração v16+ (v15 fechou <= 120 KiB) e zero dependências externas de JS/CSS;
 - registry único em `config/projects.json`;
 - GitHub Pages automático após quality gate;
 - zero framework e zero etapa de build.
