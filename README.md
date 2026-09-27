@@ -6,9 +6,21 @@ Camada de entrada para os ambientes independentes TCE-GO, SEEDF e TJDFT.
 
 A Central não importa, altera ou replica o código dos projetos-filhos.
 
-## Estado atual — v10.0
+## Estado atual — v11.0
 
-A v10 é a release estável que consolida a evolução v2→v9 sem criar nova responsabilidade arquitetural. A auditoria terminal está documentada em `docs/FINAL-AUDIT-V10.md`.
+A v11 inicia uma nova geração sobre a base estável da v10.
+
+Evoluções da v11:
+- **Visão Agora** com foco, retomada e quantidade de ambientes;
+- navegação direta entre **Agora, Projetos, Atividade e Diagnóstico**;
+- navegação fixa no mobile e sticky no desktop;
+- foco e retomada atualizam a Visão Agora por eventos locais, sem polling;
+- nenhum dado pedagógico é inferido ou inventado;
+- informação técnica continua disponível, mas fica visualmente secundária;
+- zero chamadas de rede adicionais na camada v11;
+- nova esteira documentada em `docs/ROADMAP-V15.md` e `docs/V15-CHECKPOINT.md`.
+
+A v10 permanece registrada como baseline estável e auditada em `docs/FINAL-AUDIT-V10.md`.
 
 Capacidades consolidadas:
 
@@ -19,7 +31,7 @@ Capacidades consolidadas:
 - observabilidade somente leitura, não bloqueante, com disponibilidade, publicação técnica e deploy separados;
 - falhas de rede/rate limit tratadas sem falso estado offline;
 - linha do tempo local de acessos separada de atividade técnica e sem inferência pedagógica;
-- PWA network-first, app shell offline e cache `central-shell-v10.0.0` restrito à Central;
+- PWA network-first, app shell offline e cache `central-shell-v11.0.0` restrito à Central;
 - quality gate automatizado antes de todo deploy;
 - CSP, escape de conteúdo, HTTPS, contraste, teclado, forced colors e touch targets auditados;
 - orçamento de shell <= 120 KiB e zero dependências externas de JS/CSS;
