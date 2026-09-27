@@ -3,7 +3,7 @@
 ## Estado
 - **Versão de origem:** 15.0.0
 - **Versão validada:** 19.0.0
-- **Stage:** VALIDATING
+- **Stage:** BLOCKED
 - **Active major:** 20.0.0
 - **Next major:** 20.0.0
 - **Projetos externos:** READ-ONLY
@@ -222,3 +222,13 @@
 - **Escopo:** sem nova feature funcional; somente consolidação, auditoria e rotação de versão/cache.
 - **Stage:** VALIDATING até quality + deploy + pós-deploy QA + guarda final dos filhos.
 - **Regra terminal:** não iniciar v21.
+
+
+## Bloqueio v20 — contrato textual do workflow
+- **Commit:** `46af9817ae3f2199648cf137a9660d1fe6e5d68f`.
+- **Pipeline:** `36332053454` — quality FAILURE; deploy SKIPPED.
+- **Causa:** o novo teste terminal procurou literalmente `needs: quality`, enquanto o workflow vivo declara a dependência equivalente em YAML multilinha: `needs:` + `- quality`.
+- **Evidência:** todos os gates anteriores v9→v19 passaram antes da asserção terminal.
+- **Impacto funcional:** nenhum; o workflow continua com deploy dependente de quality.
+- **Correção autorizada:** ajustar somente a asserção terminal para aceitar a sintaxe YAML viva; nenhum write em produto ou filhos.
+- **Regra:** permanecer em v20; não marcar COMPLETE até novo quality + deploy + pós-deploy QA + guarda final.

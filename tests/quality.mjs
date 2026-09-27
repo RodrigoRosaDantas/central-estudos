@@ -691,7 +691,7 @@ function testV20TerminalAudit(registry) {
   for (const domain of ["Arquitetura","Mobile","Acessibilidade","Performance","Segurança","PWA","Contratos","Documentação","Projetos-filhos"]) {
     assert.ok(audit.includes(domain), `v20 final audit must cover ${domain}`);
   }
-  assert.ok(workflow.includes("needs: quality"), "v20 deploy must still depend on quality");
+  assert.ok(/needs:\s*(?:quality|\n\s*-\s*quality)/.test(workflow), "v20 deploy must still depend on quality");
   assert.ok(sw.includes("central-shell-v20.0.0"), "v20 app-shell cache must be terminal version");
   assert.ok(!pro.includes("fetch(") && !operational.includes("fetch("), "v20 local PRO/presentation layers must remain network-free");
   pass("v20 terminal regression, architecture, audit and deployment contracts");
