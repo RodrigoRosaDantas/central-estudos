@@ -75,7 +75,7 @@ function validateConfig(config) {
   if (!config || typeof config !== "object") {
     throw new Error("Configuração da Central inválida.");
   }
-  if (config.schemaVersion !== 2) {
+  if (config.schemaVersion !== 3) {
     throw new Error("Schema do registry não suportado.");
   }
   if (!config.central || typeof config.central.defaultProject !== "string") {
@@ -85,7 +85,8 @@ function validateConfig(config) {
     throw new Error("Nenhum ambiente configurado.");
   }
 
-  const required = ["id", "name", "description", "phase", "status", "priority", "icon", "url", "repository"];
+  const required = ["id", "name", "description", "phase", "status", "priority", "icon"];
+  const lifecycle = new Set(["active", "archived", "future"]);
   const ids = new Set();
 
   config.projects.forEach(project => {
@@ -95,13 +96,24 @@ function validateConfig(config) {
       }
     });
 
+    if (!lifecycle.has(project.status)) {
+      throw new Error(`Status de projeto inválido: ${project.id}.`);
+    }
     if (!/^[a-z0-9_-]+$/i.test(project.id)) {
       throw new Error(`ID de projeto inválido: ${project.id}.`);
     }
     if (ids.has(project.id)) throw new Error(`ID de projeto duplicado: ${project.id}.`);
     ids.add(project.id);
 
-    for (const field of ["url", "repository", ...(project.statusUrl ? ["statusUrl"] : [])]) {
+    const urlFields = project.status === "future"
+      ? [...(project.url ? ["url"] : []), ...(project.repository ? ["repository"] : []), ...(project.statusUrl ? ["statusUrl"] : [])]
+      : ["url", "repository", ...(project.statusUrl ? ["statusUrl"] : [])];
+
+    if (project.status !== "future" && (!project.url || !project.repository)) {
+      throw new Error(`Projeto ${project.id} precisa de URL e repositório.`);
+    }
+
+    for (const field of urlFields) {
       let parsed;
       try {
         parsed = new URL(project[field]);
@@ -110,10 +122,15 @@ function validateConfig(config) {
       }
       if (parsed.protocol !== "https:") throw new Error(`URL não segura em ${project.id}.`);
     }
+
+    if (project.archiveNote !== undefined && typeof project.archiveNote !== "string") {
+      throw new Error(`Nota de arquivo inválida em ${project.id}.`);
+    }
   });
 
-  if (!ids.has(config.central.defaultProject)) {
-    throw new Error("Projeto padrão não existe no registry.");
+  const defaultProject = config.projects.find(project => project.id === config.central.defaultProject);
+  if (!defaultProject || defaultProject.status !== "active") {
+    throw new Error("Projeto padrão precisa existir e estar ativo no registry.");
   }
   if (typeof config.central.version !== "string" || !/^\d+\.\d+\.\d+$/.test(config.central.version)) {
     throw new Error("Versão central inválida.");
@@ -132,9 +149,10 @@ function normalizeProject(project) {
     status: project.status.trim(),
     priority: project.priority.trim(),
     icon: project.icon.trim(),
-    url: new URL(project.url).href,
-    repository: new URL(project.repository).href,
+    url: project.url ? new URL(project.url).href : null,
+    repository: project.repository ? new URL(project.repository).href : null,
     statusUrl: project.statusUrl ? new URL(project.statusUrl).href : null,
+    archiveNote: typeof project.archiveNote === "string" ? project.archiveNote.trim() : "",
     health: "checking",
     healthMetaState: "checking",
     healthCheckedAt: null,
@@ -145,6 +163,10 @@ function normalizeProject(project) {
     deployUpdatedAt: null,
     deployMetaState: "checking"
   };
+}
+
+function activeProjects() {
+  return state.projects.filter(project => project.status === "active");
 }
 
 function readLastVisit() {
@@ -420,11 +442,12 @@ function healthMarkup(project) {
 }
 
 function updatePulse() {
-  const projectCount = state.projects.length;
-  const onlineCount = state.projects.filter(project => project.health === "online" && project.healthMetaState === "live").length;
-  const cachedCount = state.projects.filter(project => project.healthMetaState === "cached" || project.healthMetaState === "stale-cache").length;
-  const healthPending = state.projects.some(project => project.health === "checking");
-  const knownDates = state.projects
+  const projects = activeProjects();
+  const projectCount = projects.length;
+  const onlineCount = projects.filter(project => project.health === "online" && project.healthMetaState === "live").length;
+  const cachedCount = projects.filter(project => project.healthMetaState === "cached" || project.healthMetaState === "stale-cache").length;
+  const healthPending = projects.some(project => project.health === "checking");
+  const knownDates = projects
     .map(project => project.repoUpdatedAt ? new Date(project.repoUpdatedAt) : null)
     .filter(date => date && !Number.isNaN(date.getTime()))
     .sort((a, b) => b - a);
@@ -443,12 +466,12 @@ function updatePulse() {
 
   if (knownDates.length) {
     const latest = relativeTimeFromNow(knownDates[0].toISOString());
-    const anyStale = state.projects.some(project => project.repoMetaState === "stale-cache");
+    const anyStale = projects.some(project => project.repoMetaState === "stale-cache");
     freshnessEl.textContent = anyStale
       ? `Cache · ${latest || "conhecido"}`
       : `Atualizado ${latest || ""}`;
   } else {
-    const metaPending = state.projects.some(project => project.repoMetaState === "checking");
+    const metaPending = projects.some(project => project.repoMetaState === "checking");
     freshnessEl.textContent = metaPending ? "Verificando" : "Não verificado";
   }
 
@@ -623,7 +646,7 @@ function renderProjects() {
   const lastVisit = readLastVisit();
   grid.innerHTML = "";
 
-  state.projects.forEach((project, projectIndex) => {
+  activeProjects().forEach((project, projectIndex) => {
     const isLast = project.id === lastVisit?.id;
     const isFocus = project.id === state.focus?.id;
     const article = document.createElement("article");
@@ -681,7 +704,7 @@ function formatVisitDate(isoDate) {
 
 function renderResume() {
   const lastVisit = readLastVisit();
-  const project = state.projects.find(item => item.id === lastVisit?.id);
+  const project = activeProjects().find(item => item.id === lastVisit?.id);
   const visitedAt = formatVisitDate(lastVisit?.visitedAt);
   const resumeButton = byId("resume-button");
   const clearButton = byId("clear-history");
@@ -774,7 +797,7 @@ function emitTechnicalState(project) {
 
 async function updateHealth() {
   await Promise.all(
-    state.projects.map(async project => {
+    activeProjects().map(async project => {
       const healthResult = await checkHealth(project);
       project.health = healthResult.status;
       project.healthMetaState = healthResult.metaState;
@@ -790,7 +813,7 @@ async function updateHealth() {
 
 async function updateRepositoryMetadata() {
   await Promise.all(
-    state.projects.map(async project => {
+    activeProjects().map(async project => {
       await fetchProjectObservability(project);
 
       const repoSlot = document.querySelector(`[data-repo="${project.id}"]`);
@@ -856,7 +879,7 @@ async function init() {
 
     state.config = validateConfig(await response.json());
     state.projects = state.config.projects.map(normalizeProject);
-    state.focus = chooseFocus(state.projects, state.config.central.defaultProject);
+    state.focus = chooseFocus(activeProjects(), state.config.central.defaultProject);
 
     renderFocus(state.focus);
     renderResume();
@@ -867,11 +890,27 @@ async function init() {
       document.dispatchEvent(new CustomEvent("central:app-ready", {
         detail: {
           focusId: state.focus?.id || null,
-          projectCount: state.projects.length,
-          projects: state.projects.map(project => ({
+          projectCount: activeProjects().length,
+          projects: activeProjects().map(project => ({
             id: project.id,
             name: project.name,
             statusUrl: project.statusUrl
+          }))
+        }
+      }));
+
+      document.dispatchEvent(new CustomEvent("central:workspace-ready", {
+        detail: {
+          projects: state.projects.map(project => ({
+            id: project.id,
+            name: project.name,
+            description: project.description,
+            phase: project.phase,
+            status: project.status,
+            icon: project.icon,
+            url: project.url,
+            repository: project.repository,
+            archiveNote: project.archiveNote || ""
           }))
         }
       }));
