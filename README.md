@@ -6,9 +6,21 @@ Camada de entrada para os ambientes independentes TCE-GO, SEEDF e TJDFT.
 
 A Central não importa, altera ou replica o código dos projetos-filhos.
 
-## Estado atual — v13.0
+## Estado atual — v14.0
 
-A v13 apresenta na interface o estado operacional autorizado pelos contratos v12.
+A v14 adiciona roteamento explicável sem decidir pelo usuário.
+
+Evoluções da v14:
+- quatro lentes escolhidas explicitamente: **Foco, Retomada, Ações publicadas e Alertas**;
+- cada resultado possui **Por que aparece aqui?**;
+- quando há vários projetos, a ordem continua sendo a do catálogo;
+- a lente selecionada fica apenas neste navegador;
+- estado stale aparece como **Último estado conhecido**;
+- nenhuma chamada de rede adicional;
+- sem ranking, score, prioridade calculada, recomendação automática ou mentor global;
+- camada v13/v14 consolidada para manter o shell dentro do orçamento original de 120 KiB.
+
+A v13 continua apresentando na interface o estado operacional autorizado pelos contratos v12.
 
 Evoluções da v13:
 - nova seção **Próximas ações publicadas**;
@@ -56,7 +68,7 @@ Capacidades consolidadas:
 - observabilidade somente leitura, não bloqueante, com disponibilidade, publicação técnica e deploy separados;
 - falhas de rede/rate limit tratadas sem falso estado offline;
 - linha do tempo local de acessos separada de atividade técnica e sem inferência pedagógica;
-- PWA network-first, app shell offline e cache `central-shell-v13.0.0` restrito à Central;
+- PWA network-first, app shell offline e cache `central-shell-v14.0.0` restrito à Central;
 - quality gate automatizado antes de todo deploy;
 - CSP, escape de conteúdo, HTTPS, contraste, teclado, forced colors e touch targets auditados;
 - orçamento de shell <= 120 KiB e zero dependências externas de JS/CSS;
