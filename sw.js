@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'central-shell-v11.0.0';
+const CACHE_VERSION = 'central-shell-v12.0.0';
 const APP_SHELL = [
   './',
   './index.html',
@@ -16,6 +16,7 @@ const APP_SHELL = [
   './js/pwa-v6.js',
   './js/timeline-v8.js',
   './js/pro-v11.js',
+  './js/contracts-v12.js',
   './config/projects.json'
 ];
 
