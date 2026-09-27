@@ -1,5 +1,14 @@
 # CHANGELOG — Central de Estudos
 
+## [21.0.0] — 2026-09-27
+- nova recepção visual com frase original de incentivo estável por dia de Brasília;
+- saudação separada do relógio, com hora/minuto, dia da semana e data por extenso;
+- relógio e frase recalculados a cada minuto e ao retornar à aba;
+- estilos obsoletos de cartões removidos e shell mantido em 130.650 bytes / 131.072 bytes;
+- regressões v10→v20 e comportamento do relógio/frase verificados por quality gate;
+- projetos-filhos permanecem READ-ONLY e sem writes.
+
+
 ## [20.0.0] — 2026-09-27
 - auditoria terminal integral da geração v16→v20;
 - regressões v10/v15 e contratos v16→v19 revalidados;
