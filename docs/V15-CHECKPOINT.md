@@ -2,11 +2,11 @@
 
 ## Estado
 - **Versão de origem:** 10.0.0
-- **Versão validada:** 14.0.0
-- **Stage:** IN_PROGRESS
-- **Active major:** 15.0.0
+- **Versão validada:** 15.0.0
+- **Stage:** COMPLETE
 - **Next major:** none
-- **Projetos-filhos:** READ-ONLY na v15; contratos v12 preservados
+- **Status:** COMPLETE — v15.0.0
+- **Projetos externos:** READ-ONLY no fechamento v15; contratos v12 preservados
 - **Automação:** nenhuma
 
 ## Baseline
@@ -173,3 +173,31 @@
 - **Child HEADs ativos:** TCE-GO `889017ba83143be268a84358229882a2b3ef9289`; SEEDF `b68431e2aa4944199705400c8821bf28505299d1`; TJDFT `99877771dcd008594d6855c08f077e1563e609bd`.
 - **Writes fora da Central:** proibidos nesta v15.
 - **Acceptance v15:** lifecycle active/archived/future no registry; arquivados não entram em foco/retomada/health; workspace mostra categorias e estados vazios; SEDES histórico com link verificado; export/import somente de preferências allowlisted; histórico/caches não entram no backup; sem banco mestre; orçamento <=120 KiB; quality + deploy passam.
+
+
+## QA v15
+- Registry schema v3 / lifecycle: PASS.
+- Ativos / Arquivados / Futuros: PASS.
+- SEDES/DF arquivado com Pages verificado: PASS.
+- Arquivados fora de foco/retomada/health/metadata: PASS.
+- Workspace e navegação: PASS.
+- Export/import allowlist: PASS.
+- Último acesso/histórico/caches fora do backup: PASS.
+- Sem banco mestre: PASS.
+- App shell: `central-shell-v15.0.0`.
+- Payload final: 122.134 bytes <= 122.880 bytes.
+- Pipeline de produto: `36287841226` — quality success + deploy success.
+- Projetos externos: zero writes nesta v15.
+
+## Fechamento v15.0.0
+- **Resultado:** COMPLETE
+- **Commit de produto validado:** `e70063822dd0185fcade890aa4320b37c03a5315`
+- **Pipeline de produto:** `36287841226` — quality success + deploy success
+- **TCE-GO:** `889017ba83143be268a84358229882a2b3ef9289`
+- **SEEDF:** `b68431e2aa4944199705400c8821bf28505299d1`
+- **TJDFT:** `99877771dcd008594d6855c08f077e1563e609bd`
+- **SEDES/DF histórico:** `0841f333a63d7d7a7bb84e64518c83ad4d7f4bf5`
+- **Writes externos na v15:** zero
+- **Roadmap v11→v15:** COMPLETE
+- **Próxima major:** none
+- **Regra terminal:** nenhuma v16 automática; nova evolução exige nova roadmap explícita.
