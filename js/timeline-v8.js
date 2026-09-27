@@ -146,6 +146,16 @@
     return "deploy público não verificado";
   }
 
+  function contractLabel(status) {
+    if (status === "live") return "estado operacional publicado";
+    if (status === "cached") return "estado operacional em cache";
+    if (status === "stale-cache") return "estado operacional em cache antigo";
+    if (status === "invalid") return "contrato operacional inválido";
+    if (status === "unavailable") return "contrato operacional indisponível";
+    if (status === "unsupported") return "sem contrato operacional";
+    return "contrato operacional aguardando";
+  }
+
   function diagnosis(item) {
     const notes = [];
     const healthCached = item.healthMetaState === "cached" || item.healthMetaState === "stale-cache";
@@ -170,6 +180,14 @@
 
     if (item.deployStatus === "failure" && item.health === "online") {
       notes.push("A falha do último deploy conhecido não implica que o site atual esteja indisponível.");
+    }
+
+    if (item.contractStatus === "invalid") {
+      notes.push("O contrato operacional foi rejeitado pela validação; a Central ignora o conteúdo e mantém apenas o acesso normal.");
+    } else if (item.contractStatus === "unavailable") {
+      notes.push("O contrato operacional não pôde ser carregado; isso não afeta o projeto nem seus links.");
+    } else if (item.contractStatus === "stale-cache") {
+      notes.push("O estado operacional disponível veio de cache antigo e não é tratado como estado atual.");
     }
 
     return notes.join(" ");
@@ -203,7 +221,7 @@
           <span class="activity-marker" aria-hidden="true">●</span>
           <span class="activity-copy">
             <span class="activity-title">${escapeHtml(item.name)}</span>
-            <span class="activity-meta">${publication} · ${deployLabel(item.deployStatus)} · fonte: ${source}</span>
+            <span class="activity-meta">${publication} · ${deployLabel(item.deployStatus)} · ${contractLabel(item.contractStatus)} · fonte: ${source}</span>
             <span class="activity-diagnostic">${diagnosis(item)}</span>
           </span>
         </div>
@@ -227,6 +245,21 @@
     technical.set(detail.id, {
       ...technical.get(detail.id),
       ...detail
+    });
+    renderTechnical();
+  });
+
+  document.addEventListener("central:contract-state", event => {
+    const detail = event.detail;
+    if (!detail || typeof detail.id !== "string") return;
+
+    technical.set(detail.id, {
+      ...technical.get(detail.id),
+      id: detail.id,
+      name: detail.name || technical.get(detail.id)?.name || detail.id,
+      contractStatus: detail.status,
+      contractCheckedAt: detail.checkedAt || null,
+      contractReason: detail.reason || null
     });
     renderTechnical();
   });
