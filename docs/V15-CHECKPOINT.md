@@ -3,7 +3,7 @@
 ## Estado
 - **Versão de origem:** 10.0.0
 - **Versão ativa:** 11.0.0
-- **Stage:** IN_PROGRESS
+- **Stage:** VALIDATING
 - **Próxima versão após fechamento:** 12.0.0
 - **Projetos-filhos:** READ-ONLY / NO WRITES
 - **Automação:** nenhuma
@@ -26,3 +26,15 @@
 - Mobile mantém alvos de toque e largura segura.
 - Quality gate passa antes de deploy.
 - Zero writes nos projetos-filhos.
+
+
+## QA v11
+- Visão Agora: implementada.
+- Navegação interna: implementada.
+- Eventos locais: implementados.
+- Rede adicional da camada v11: zero.
+- Fallback/no-JS: preservado.
+- App shell: `central-shell-v11.0.0`.
+- Quality gate de implementação: PASS — run `36284354940`.
+- Deploy de implementação: PASS — run `36284354940`.
+- Estado: aguardando pipeline final já com versão/documentação 11.0.0.
