@@ -2,9 +2,8 @@
 
 ## Estado
 - **Versão de origem:** 10.0.0
-- **Versão validada:** 13.0.0
-- **Stage:** VALIDATING
-- **Active major:** 14.0.0
+- **Versão validada:** 14.0.0
+- **Stage:** READY
 - **Next major:** 15.0.0
 - **Projetos-filhos:** READ-ONLY na v14; contratos v12 já publicados
 - **Automação:** nenhuma
@@ -147,3 +146,18 @@
 - Refactor de payload: v13/v14 consolidados sem elevar o orçamento.
 - Pipeline de implementação: `36286667986` — quality success + deploy success.
 - Estado: aguardando pipeline final já com versão/documentação 14.0.0.
+
+
+## Fechamento v14.0.0
+- **Resultado:** PASS
+- **Commit validado:** `589ae593d2ab9107555760dc6e6c5e57851a619d`
+- **Pipeline:** `36286790166` — quality success + deploy success
+- **Lentes escolhidas pelo usuário:** PASS
+- **Explicabilidade por item:** PASS
+- **Ordem múltipla = catálogo:** PASS
+- **Stale = Último estado conhecido:** PASS
+- **Rede adicional da v14:** zero
+- **Ranking/score/recomendação automática:** ausentes
+- **Orçamento de shell:** mantido <= 120 KiB sem elevar o limite
+- **Projetos-filhos:** sem novos writes; HEADs mantidos nos contratos v12
+- **Próxima etapa autorizada:** v15.0.0 — workspace de concursos.
