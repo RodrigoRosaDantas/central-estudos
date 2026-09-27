@@ -724,6 +724,14 @@ function testV20UxPolish() {
   pass("v20 quick options, live Brasília date/time and evolution polish");
 }
 
+function testV20MobileHomeSimplification() {
+  const html=read("index.html"),css=read("css/pro-v11.css");
+  assert.ok(html.includes(">Acessos<")&&html.includes(">Histórico<"),"v20 mobile UX must use clearer navigation labels");
+  assert.ok(html.includes("COMO ENTRAR")&&html.includes("Acessos rápidos"),"v20 UX must simplify routing and project language");
+  assert.ok(css.includes("main>.hero,main>.resume-card{display:none}"),"mobile home must hide duplicated focus/resume blocks");
+  pass("v20 mobile home simplification and clearer navigation");
+}
+
 function testReleaseDocumentationCoherence(registry) {
   const readme = read("README.md");
   const architecture = read("docs/ARCHITECTURE.md");
@@ -857,6 +865,7 @@ testV20TerminalAudit(registry);
 testV20MobileScrollHotfix();
 testV20UxEnhancement();
 testV20UxPolish();
+testV20MobileHomeSimplification();
 testReleaseDocumentationCoherence(registry);
 testSecurityAndContracts(registry);
 
