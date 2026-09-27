@@ -235,3 +235,39 @@ A v15 não introduz:
 - mentor global.
 
 O app shell da v15 é `central-shell-v15.0.0` e permanece dentro do orçamento de 120 KiB definido pelo quality gate.
+
+
+## Command Palette — v16
+
+A v16 inicia a roadmap `docs/ROADMAP-V20.md`.
+
+### Objetivo
+
+Reduzir o atrito de navegação sem adicionar uma nova fonte de dados.
+
+A Command Palette:
+- abre por `Ctrl+K` ou `Cmd+K` fora de campos editáveis;
+- possui um botão flutuante para toque/mobile;
+- usa o estado já carregado pelo workspace;
+- pesquisa projetos ativos, arquivados e futuros;
+- navega para seções internas;
+- reutiliza foco e retomada já existentes;
+- registra último acesso somente ao abrir projeto ativo, seguindo a semântica existente;
+- não realiza `fetch`;
+- não altera foco automaticamente;
+- não escreve em projetos externos.
+
+### Teclado e acessibilidade
+
+- ↑/↓ percorrem resultados;
+- Enter executa o item selecionado;
+- Escape fecha;
+- resultados usam semântica `role=option`;
+- `dialog` nativo fornece foco modal;
+- o atalho ignora input, textarea, select e conteúdo editável.
+
+### Performance
+
+A v15 encerrou em 122.134 bytes, muito próxima do teto antigo de 120 KiB. A v16 adiciona aproximadamente 7 KiB de produto real.
+
+A nova geração adota conscientemente teto de **128 KiB** (131.072 bytes), bloqueado pelo quality gate. O aumento é limitado e explícito; não há framework, bundle externo ou nova dependência.
