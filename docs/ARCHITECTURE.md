@@ -62,3 +62,45 @@ A plataforma usa CSP compatível com a observabilidade, HTTPS, validação/escap
 A v10 congela esta arquitetura para a esteira atual. A auditoria integral está em `docs/FINAL-AUDIT-V10.md`. Integrações futuras, se aprovadas fora desta esteira, devem continuar somente leitura, opcionais, versionadas e desacopladas do schema interno dos projetos-filhos.
 
 Não fazem parte desta arquitetura: iframe dos projetos, banco mestre, autenticação compartilhada, Supabase compartilhado, lógica pedagógica global, escrita nos projetos-filhos ou dependência externa obrigatória.
+
+
+## Nova geração — v11
+
+A v11 inicia uma nova esteira após o fechamento terminal da v10. A v10 continua sendo o baseline auditado; a nova evolução não altera retroativamente o checkpoint antigo.
+
+### Visão Agora
+
+A Home passa a organizar três conceitos operacionais:
+
+- **Foco:** projeto atualmente priorizado na Central;
+- **Retomada:** último ambiente aberto pela Central neste navegador;
+- **Ambientes:** catálogo de projetos disponíveis.
+
+A Visão Agora não conhece unidades de estudo, questões, revisões ou progresso interno. Sem contrato explícito de um projeto, ela não deve inventar “próxima ação”.
+
+### Navegação
+
+A navegação principal usa âncoras internas:
+
+- Agora;
+- Projetos;
+- Atividade;
+- Diagnóstico.
+
+No desktop ela permanece sticky; no mobile vira navegação inferior fixa. Isso não cria rotas novas nem dependência de JavaScript para acessar os projetos.
+
+### Integração
+
+A v11 reutiliza eventos locais:
+
+- `central:app-ready`;
+- `central:focus-changed`;
+- `central:project-opened`;
+- `central:history-cleared`;
+- `central:catalog-refresh`.
+
+A camada `pro-v11.js` não faz chamadas de rede. Ela apenas reflete estado já existente da Central.
+
+### Futuro
+
+A evolução v12→v15 está descrita em `docs/ROADMAP-V15.md`. Contratos read-only publicados dentro dos projetos-filhos continuam exigindo autorização explícita para qualquer write nesses repositórios.
