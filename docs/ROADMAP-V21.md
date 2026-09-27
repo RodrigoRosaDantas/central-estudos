@@ -3,7 +3,7 @@
 ## Registro da esteira
 - **Major:** 21.0.0
 - **Estado:** IN_PROGRESS
-- **Stage:** PLANNING
+- **Stage:** VALIDATING
 - **Versão de origem:** 20.0.0, fechada como terminal em 2026-09-27.
 - **Versão terminal desta esteira:** 21.0.0.
 - **Active major:** 21.0.0.
