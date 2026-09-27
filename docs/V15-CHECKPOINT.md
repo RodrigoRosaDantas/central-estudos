@@ -3,8 +3,9 @@
 ## Estado
 - **Versão de origem:** 10.0.0
 - **Versão validada:** 12.0.0
-- **Stage:** READY
-- **Next major:** 13.0.0
+- **Stage:** IN_PROGRESS
+- **Active major:** 13.0.0
+- **Next major:** 14.0.0
 - **Projetos-filhos:** READ-ONLY na v13; contratos v12 já publicados
 - **Automação:** nenhuma
 
@@ -89,3 +90,12 @@
 - **Projetos-filhos no fechamento:** TCE-GO `889017ba83143be268a84358229882a2b3ef9289`; SEEDF `b68431e2aa4944199705400c8821bf28505299d1`; TJDFT `99877771dcd008594d6855c08f077e1563e609bd`
 - **Próxima etapa autorizada:** v13.0.0 — estado operacional na Visão Agora
 - **Regra v13:** Central-only; nenhum write adicional nos filhos.
+
+
+## Snapshot v13.0.0
+- **Objetivo:** apresentar estado operacional autorizado na Visão Agora e nos projetos, sem inferência.
+- **Central HEAD inicial:** `4b72c99264092a657830049a9c15c362208d8f4b`
+- **Último deploy de release validado:** `36285194809` — v12 quality success + deploy success.
+- **Child HEADs:** TCE-GO `889017ba83143be268a84358229882a2b3ef9289`; SEEDF `b68431e2aa4944199705400c8821bf28505299d1`; TJDFT `99877771dcd008594d6855c08f077e1563e609bd`.
+- **Writes nos filhos:** proibidos nesta v13.
+- **Acceptance v13:** exibir phase/cycle/currentUnit/nextAction/alerts somente quando contrato válido existir; distinguir `operational` de `planned`; contrato ausente/invalid/stale não bloquear; foco continua escolha humana; sem ranking, score ou mentor global; mobile/fallback preservados; quality + deploy passam.
