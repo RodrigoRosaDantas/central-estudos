@@ -333,11 +333,13 @@ function testV9Hardening(registry) {
     "js/timeline-v8.js",
     "js/pro-v11.js",
     "js/contracts-v12.js",
+    "js/operational-v13.js",
     "css/app.css",
     "css/catalog-v4.css",
     "css/personalization-v5.css",
     "css/timeline-v8.css",
-    "css/pro-v11.css"
+    "css/pro-v11.css",
+    "css/operational-v13.css"
   ];
   const payloadBytes = payloadFiles.reduce((total, file) => total + fs.statSync(path.join(ROOT, file)).size, 0);
   assert.ok(payloadBytes <= 120 * 1024, `first-party shell source budget exceeded: ${payloadBytes} bytes`);
@@ -435,6 +437,45 @@ function testV12Contracts(registry) {
   pass("v12 optional read-only contract, cache and graceful-degradation contracts");
 }
 
+function testV13OperationalState(registry) {
+  const html = read("index.html");
+  const operational = read("js/operational-v13.js");
+  const css = read("css/operational-v13.css");
+  const sw = read("sw.js");
+
+  assert.ok(html.includes('id="operational-panel"'), "v13 operational panel must exist");
+  assert.ok(html.includes('id="operational-list"'), "v13 operational list must exist");
+  assert.ok(html.includes('id="pro-now-focus-operational"'), "v13 focus operational line must exist");
+  assert.ok(html.includes("./js/operational-v13.js"), "v13 operational script must be referenced");
+  assert.ok(html.includes("./css/operational-v13.css"), "v13 operational stylesheet must be referenced");
+
+  assert.ok(operational.includes("central:contract-state"), "v13 must consume validated contract events");
+  assert.ok(operational.includes("central:focus-changed"), "v13 must follow human-selected focus");
+  assert.ok(!operational.includes("fetch("), "v13 presentation layer must not create network calls");
+  assert.ok(operational.includes('kind === "planned"'), "v13 must distinguish planned state");
+  assert.ok(operational.includes('status === "stale-cache"'), "v13 must distinguish stale state");
+  assert.ok(operational.includes("Último estado conhecido"), "stale data must not be presented as current");
+  assert.ok(operational.includes("Próxima ação"), "operational action must be labeled explicitly");
+  assert.ok(operational.includes("Planejado"), "planned action must be labeled explicitly");
+
+  assert.ok(!/score|ranking|pontua[cç][aã]o|melhor projeto|prioridade calculada/i.test(operational), "v13 must not rank or score projects");
+  assert.ok(!/mentor global|mentor central/i.test(operational), "v13 must not implement a global mentor");
+
+  assert.ok(css.includes(".operational-grid"), "v13 operational cards must be styled");
+  assert.ok(css.includes("@media(min-width:720px)"), "v13 must support responsive grid");
+
+  const cacheMajor = Number(sw.match(/central-shell-v(\d+)\./)?.[1] || 0);
+  assert.ok(cacheMajor >= 13, "service worker cache must preserve v13 or newer");
+  assert.ok(sw.includes("./js/operational-v13.js"), "v13 JS must be in app shell");
+  assert.ok(sw.includes("./css/operational-v13.css"), "v13 CSS must be in app shell");
+
+  for (const project of registry.projects) {
+    assert.ok(html.includes(project.url), `v13 must preserve direct link for ${project.id}`);
+  }
+
+  pass("v13 published operational state, provenance and no-ranking contracts");
+}
+
 function testSecurityAndContracts(registry) {
   const frontendFiles = [
     "index.html",
@@ -480,6 +521,7 @@ const syntaxFiles = [
   "js/timeline-v8.js",
   "js/pro-v11.js",
   "js/contracts-v12.js",
+  "js/operational-v13.js",
   "sw.js"
 ];
 
@@ -498,6 +540,7 @@ testTimelineContract(registry);
 testV9Hardening(registry);
 testV11Pro(registry);
 testV12Contracts(registry);
+testV13OperationalState(registry);
 testSecurityAndContracts(registry);
 
 console.log("\nQuality gate PASS");
