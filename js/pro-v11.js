@@ -33,6 +33,38 @@ async function importPrefs(file){try{if(!file||file.size>65536)throw new Error("
 document.querySelectorAll("[data-workspace-tab]").forEach(b=>b.addEventListener("click",()=>{tab=b.dataset.workspaceTab;write(TAB,tab);renderWorkspace()}));
 $("workspace-export")?.addEventListener("click",exportPrefs);$("workspace-import-button")?.addEventListener("click",()=>WI?.click());WI?.addEventListener("change",()=>{importPrefs(WI.files?.[0]);WI.value=""});
 document.addEventListener("central:workspace-ready",e=>{projects=Array.isArray(e.detail?.projects)?e.detail.projects:[];renderWorkspace()});
+let cmdIndex=0,cmdVisible=[],cmdInput,cmdList,cmdDialog;
+const norm=v=>String(v||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
+function editable(t){return t instanceof HTMLInputElement||t instanceof HTMLTextAreaElement||t instanceof HTMLSelectElement||t?.isContentEditable}
+function openProject(p){if(!p?.url)return;if(p.status==="active"){const at=new Date().toISOString();write(LAST,JSON.stringify({id:p.id,visitedAt:at}));document.dispatchEvent(new CustomEvent("central:project-opened",{detail:{id:p.id,name:p.name,visitedAt:at}}))}location.href=p.url}
+function commands(){
+const a=[
+["Ir para Agora","Navegação","agora início home",()=>location.hash="agora"],
+["Ir para Projetos","Navegação","projetos ambientes catálogo",()=>location.hash="projetos"],
+["Ir para Workspace","Navegação","workspace concursos",()=>location.hash="workspace"],
+["Ir para Atividade","Navegação","atividade histórico",()=>location.hash="activity-panel"],
+["Ir para Diagnóstico","Navegação","diagnóstico técnico",()=>location.hash="diagnostico"]
+].map(([label,meta,keys,run])=>({label,meta,keys,run}));
+const focus=$("continue-button"),focusName=$("focus-title")?.textContent?.trim();if(focus?.href&&focusName)a.unshift({label:`Continuar foco — ${focusName}`,meta:"Foco atual",keys:"foco continuar",run:()=>focus.click()});
+const resume=$("resume-button");if(resume?.href&&!resume.classList.contains("is-hidden"))a.unshift({label:`Retomar — ${$("last-project-text")?.textContent?.trim()||"último acesso"}`,meta:"Retomada",keys:"retomar último acesso",run:()=>resume.click()});
+projects.forEach(p=>a.push({label:p.name,meta:p.status==="active"?"Projeto ativo":p.status==="archived"?"Histórico arquivado":"Projeto futuro",keys:`${p.description||""} ${p.phase||""} ${p.status}`,run:()=>p.url?openProject(p):(tab="future",write(TAB,tab),renderWorkspace(),location.hash="workspace")}));
+return a}
+function renderCommands(){
+const q=norm(cmdInput?.value),all=commands();cmdVisible=all.filter(x=>!q||norm(`${x.label} ${x.meta} ${x.keys}`).includes(q)).slice(0,10);cmdIndex=Math.min(cmdIndex,Math.max(0,cmdVisible.length-1));cmdList.replaceChildren();
+if(!cmdVisible.length){cmdList.append(n("p","command-empty","Nenhum resultado."));return}
+cmdVisible.forEach((x,i)=>{const b=n("button","command-result");b.type="button";b.dataset.index=i;b.setAttribute("aria-selected",String(i===cmdIndex));b.append(n("strong","",x.label),n("span","",x.meta));b.addEventListener("click",()=>{closeCommand();x.run()});cmdList.append(b)})}
+function moveCommand(d){if(!cmdVisible.length)return;cmdIndex=(cmdIndex+d+cmdVisible.length)%cmdVisible.length;[...cmdList.querySelectorAll(".command-result")].forEach((b,i)=>b.setAttribute("aria-selected",String(i===cmdIndex)));cmdList.querySelector(`[data-index="${cmdIndex}"]`)?.scrollIntoView({block:"nearest"})}
+function openCommand(){if(!cmdDialog)return;cmdIndex=0;cmdInput.value="";renderCommands();typeof cmdDialog.showModal==="function"?cmdDialog.showModal():cmdDialog.setAttribute("open","");setTimeout(()=>cmdInput.focus(),0)}
+function closeCommand(){if(!cmdDialog)return;typeof cmdDialog.close==="function"&&cmdDialog.open?cmdDialog.close():cmdDialog.removeAttribute("open")}
+function initCommand(){
+const open=n("button","command-open","⌕");open.type="button";open.setAttribute("aria-label","Abrir acesso rápido — Ctrl ou Command + K");open.title="Acesso rápido · Ctrl/⌘ + K";
+cmdDialog=document.createElement("dialog");cmdDialog.id="command-palette";cmdDialog.className="command-dialog";cmdDialog.setAttribute("aria-labelledby","command-title");
+const box=n("div","command-box"),head=n("div","command-head"),title=n("strong","");title.id="command-title";title.textContent="Acesso rápido";const close=n("button","command-close","×");close.type="button";close.setAttribute("aria-label","Fechar");
+cmdInput=document.createElement("input");cmdInput.className="command-search";cmdInput.type="search";cmdInput.placeholder="Buscar projeto, área ou seção…";cmdInput.autocomplete="off";cmdInput.setAttribute("aria-label","Buscar na Central");
+cmdList=n("div","command-results");cmdList.setAttribute("role","listbox");box.append(head,cmdInput,cmdList,n("p","command-help","↑ ↓ navegar · Enter abrir · Esc fechar"));head.append(title,close);cmdDialog.append(box);document.body.append(open,cmdDialog);
+open.addEventListener("click",openCommand);close.addEventListener("click",closeCommand);cmdDialog.addEventListener("click",e=>{if(e.target===cmdDialog)closeCommand()});cmdInput.addEventListener("input",()=>{cmdIndex=0;renderCommands()});cmdInput.addEventListener("keydown",e=>{if(e.key==="ArrowDown"||e.key==="ArrowUp"){e.preventDefault();moveCommand(e.key==="ArrowDown"?1:-1)}else if(e.key==="Enter"){e.preventDefault();cmdVisible[cmdIndex]?.run();closeCommand()}});
+document.addEventListener("keydown",e=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="k"&&!editable(e.target)){e.preventDefault();openCommand()}else if(e.key==="Escape"&&cmdDialog?.open)closeCommand()})
+}
 ["central:app-ready","central:focus-changed","central:project-opened","central:history-cleared","central:catalog-refresh"].forEach(e=>document.addEventListener(e,refresh));
 if(grid&&"MutationObserver"in window)new MutationObserver(()=>queueMicrotask(refresh)).observe(grid,{childList:true,subtree:false});
 document.addEventListener("DOMContentLoaded",()=>{refresh();activeNav();renderWorkspace()});
