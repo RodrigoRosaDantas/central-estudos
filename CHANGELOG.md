@@ -1,5 +1,20 @@
 # CHANGELOG — Central de Estudos
 
+## [16.0.0] — 2026-09-27
+- nova roadmap **Workspace PRO v16→v20** iniciada;
+- Command Palette com Ctrl/⌘+K;
+- botão flutuante para acesso por toque/mobile;
+- busca projetos ativos, arquivados e futuros;
+- navegação rápida entre Agora, Projetos, Workspace, Atividade e Diagnóstico;
+- ações rápidas para foco e retomada;
+- teclado ↑/↓/Enter/Escape e semântica de opções;
+- zero chamadas de rede adicionais;
+- zero writes em projetos externos;
+- cache atualizado para `central-shell-v16.0.0`;
+- orçamento da nova geração definido em 128 KiB;
+- **Pipeline de implementação:** `36312740627` — quality success + deploy success;
+- **Commit/deploy final:** preencher após pipeline final da release.
+
 ## [15.0.0] — 2026-09-27
 - Workspace de concursos com lifecycle `active / archived / future`;
 - TCE-GO, SEEDF e TJDFT permanecem ativos;
