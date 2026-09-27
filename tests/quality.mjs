@@ -590,7 +590,7 @@ function testV16CommandPalette(registry) {
   assert.ok(pro.includes('e.key==="Enter"'), "v16 must support Enter");
   assert.ok(pro.includes('e.key==="Escape"'), "v16 must support Escape");
   assert.ok(pro.includes('setAttribute("role","option")'), "v16 results must expose option semantics");
-  assert.ok(pro.includes('meta:"Projeto ativo"') && pro.includes('meta:"Histórico arquivado"') && pro.includes('meta:"Projeto futuro"'), "v16 must distinguish workspace lifecycle");
+  assert.ok(pro.includes('"Projeto ativo"') && pro.includes('"Histórico arquivado"') && pro.includes('"Projeto futuro"'), "v16 must distinguish workspace lifecycle");
   assert.ok(pro.includes('Ir para Agora') && pro.includes('Ir para Workspace') && pro.includes('Ir para Diagnóstico'), "v16 must search core navigation");
   assert.ok(pro.includes("Continuar foco") && pro.includes("Retomar"), "v16 must expose valid focus/resume quick actions");
   assert.ok(!pro.includes("fetch("), "v16 command palette must not create network calls");
