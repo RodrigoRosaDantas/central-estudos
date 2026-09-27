@@ -613,16 +613,28 @@ function testV16CommandPalette(registry) {
 function testReleaseDocumentationCoherence(registry) {
   const readme = read("README.md");
   const architecture = read("docs/ARCHITECTURE.md");
-  const checkpoint = read("docs/V15-CHECKPOINT.md");
+  const checkpoint15 = read("docs/V15-CHECKPOINT.md");
+  const checkpoint20 = read("docs/V20-CHECKPOINT.md");
+  const roadmap20 = read("docs/ROADMAP-V20.md");
   const changelog = read("CHANGELOG.md");
+  const sw = read("sw.js");
 
   const version = registry.central.version;
+  const major = Number(version.split(".")[0]);
   assert.ok(readme.includes(`## Estado atual — v${version.split(".").slice(0,2).join(".")}`), "README current-state version must match registry");
-  assert.ok(architecture.includes("## Workspace de concursos — v15"), "architecture must document the v15 workspace");
+  assert.ok(architecture.includes("## Workspace de concursos — v15"), "architecture must preserve the v15 workspace baseline");
   assert.ok(architecture.includes("schemaVersion: 3"), "architecture must document registry schema v3");
-  assert.ok(architecture.includes("central-shell-v15.0.0"), "architecture must document current app-shell cache");
-  assert.ok(checkpoint.includes("Status:** COMPLETE — v15.0.0"), "v15 checkpoint must remain terminal");
-  assert.ok(changelog.includes("## [15.0.0]"), "changelog must include v15 release");
+  assert.ok(checkpoint15.includes("Status:** COMPLETE — v15.0.0"), "v15 checkpoint must remain terminal");
+  assert.ok(changelog.includes("## [15.0.0]"), "changelog must preserve v15 release");
+
+  if (major >= 16) {
+    assert.ok(roadmap20.includes("## v16 — Command Palette"), "v20 roadmap must document v16");
+    assert.ok(roadmap20.includes("<= 128 KiB"), "v20 roadmap must document the v16+ shell budget");
+    assert.ok(architecture.includes("## Command Palette — v16"), "architecture must document v16 command palette");
+    assert.ok(checkpoint20.includes("16.0.0"), "v20 checkpoint must track v16");
+    assert.ok(changelog.includes("## [16.0.0]"), "changelog must include v16 release");
+    assert.ok(sw.includes("central-shell-v16.0.0"), "service worker must match v16 release");
+  }
 
   pass("release documentation coherence");
 }
