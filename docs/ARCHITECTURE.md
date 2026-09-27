@@ -169,3 +169,20 @@ Não fazem parte da v13:
 - mentor global;
 - inferência de progresso;
 - writes nos projetos-filhos.
+
+
+## Roteamento explicável — v14
+
+A v14 está documentada em `docs/ROUTING-V14.md`.
+
+O roteamento é **selecionado pelo usuário**, nunca calculado pela Central.
+
+Lentes:
+- Foco;
+- Retomada;
+- Ações publicadas;
+- Alertas.
+
+Cada item explica por que aparece. Múltiplos resultados preservam a ordem do catálogo.
+
+A camada v14 reutiliza o mesmo mapa de contratos e inventário de projetos da v13 e foi consolidada em `operational-v13.js`/CSS para reduzir duplicação. Não há novo fetch, score, ranking, recomendação automática ou prioridade calculada.
