@@ -88,31 +88,40 @@ function loadAppForTests() {
 }
 
 function testRegistry(registry, html) {
-  assert.equal(registry.schemaVersion, 2, "registry schemaVersion must be 2");
+  assert.equal(registry.schemaVersion, 3, "registry schemaVersion must be 3");
   assert.match(registry.central.version, /^\d+\.\d+\.\d+$/, "central version must be semver");
   assert.ok(Array.isArray(registry.projects) && registry.projects.length > 0, "registry must contain projects");
 
   const ids = registry.projects.map(project => project.id);
   assert.equal(new Set(ids).size, ids.length, "project ids must be unique");
-  assert.ok(ids.includes(registry.central.defaultProject), "defaultProject must exist in registry");
+  const defaultProject = registry.projects.find(project => project.id === registry.central.defaultProject);
+  assert.equal(defaultProject?.status, "active", "defaultProject must exist and be active");
 
-  const required = ["id", "name", "description", "phase", "status", "priority", "icon", "url", "repository"];
+  const lifecycle = new Set(["active", "archived", "future"]);
+  const required = ["id", "name", "description", "phase", "status", "priority", "icon"];
   for (const project of registry.projects) {
     for (const field of required) {
       assert.equal(typeof project[field], "string", `${project.id || "project"}.${field} must be a string`);
       assert.ok(project[field].trim(), `${project.id || "project"}.${field} must not be empty`);
     }
+    assert.ok(lifecycle.has(project.status), `invalid lifecycle: ${project.id}`);
 
-    assert.equal(new URL(project.url).protocol, "https:", `${project.id}.url must use HTTPS`);
-    assert.equal(new URL(project.repository).protocol, "https:", `${project.id}.repository must use HTTPS`);
+    if (project.status !== "future") {
+      assert.equal(new URL(project.url).protocol, "https:", `${project.id}.url must use HTTPS`);
+      assert.equal(new URL(project.repository).protocol, "https:", `${project.id}.repository must use HTTPS`);
+      assert.ok(html.includes(project.url), `static HTML fallback must include ${project.id} URL`);
+    } else {
+      if (project.url) assert.equal(new URL(project.url).protocol, "https:", `${project.id}.future URL must use HTTPS`);
+      if (project.repository) assert.equal(new URL(project.repository).protocol, "https:", `${project.id}.future repository must use HTTPS`);
+    }
+
     if (project.statusUrl) {
       assert.equal(new URL(project.statusUrl).protocol, "https:", `${project.id}.statusUrl must use HTTPS`);
       assert.ok(project.statusUrl.endsWith("/central-status.json"), `${project.id}.statusUrl must target central-status.json`);
     }
-    assert.ok(html.includes(project.url), `static HTML fallback must include ${project.id} URL`);
   }
 
-  pass("registry schema, ids, HTTPS and static fallback");
+  pass("registry v3 lifecycle, ids, HTTPS and static fallback");
 }
 
 function testInternalReferences(html) {
@@ -162,7 +171,7 @@ function testServiceWorker(registry) {
   assert.ok(!sw.includes("api.github.com"), "service worker must not cache GitHub API");
 
   for (const project of registry.projects) {
-    assert.ok(!sw.includes(project.url), `service worker must not cache project URL: ${project.id}`);
+    if (project.url) assert.ok(!sw.includes(project.url), `service worker must not cache project URL: ${project.id}`);
   }
 
   pass("service worker shell, versioning and external isolation");
@@ -407,8 +416,8 @@ function testV12Contracts(registry) {
   assert.ok(schema.required.includes("projectId"), "status contract schema must require projectId");
   assert.ok(schema.required.includes("state"), "status contract schema must require state");
 
-  for (const project of registry.projects) {
-    assert.equal(typeof project.statusUrl, "string", `${project.id} must publish statusUrl in v12`);
+  for (const project of registry.projects.filter(project => project.status === "active")) {
+    assert.equal(typeof project.statusUrl, "string", `${project.id} active project must publish statusUrl`);
     assert.equal(new URL(project.statusUrl).protocol, "https:", `${project.id}.statusUrl must use HTTPS`);
   }
 
@@ -431,7 +440,7 @@ function testV12Contracts(registry) {
   assert.ok(v12CacheMajor >= 12, "service worker cache must preserve v12 or newer");
   assert.ok(sw.includes("./js/contracts-v12.js"), "v12 contract consumer must be in app shell");
   for (const project of registry.projects) {
-    assert.ok(!sw.includes(project.statusUrl), `service worker must not cache child contract: ${project.id}`);
+    if (project.statusUrl) assert.ok(!sw.includes(project.statusUrl), `service worker must not cache child contract: ${project.id}`);
   }
 
   pass("v12 optional read-only contract, cache and graceful-degradation contracts");
@@ -470,7 +479,7 @@ function testV13OperationalState(registry) {
   assert.ok(sw.includes("./css/operational-v13.css"), "v13 CSS must be in app shell");
 
   for (const project of registry.projects) {
-    assert.ok(html.includes(project.url), `v13 must preserve direct link for ${project.id}`);
+    if (project.url) assert.ok(html.includes(project.url), `v13 must preserve direct link for ${project.id}`);
   }
 
   pass("v13 published operational state, provenance and no-ranking contracts");
@@ -512,10 +521,60 @@ function testV14ExplainableRouting(registry) {
   assert.ok(sw.includes("./css/operational-v13.css"), "v14 routing styles must remain in operational app-shell CSS");
 
   for (const project of registry.projects) {
-    assert.ok(html.includes(project.url), `v14 must preserve direct link for ${project.id}`);
+    if (project.url) assert.ok(html.includes(project.url), `v14 must preserve direct link for ${project.id}`);
   }
 
   pass("v14 user-selected, explainable and non-ranking routing contracts");
+}
+
+function testV15Workspace(registry) {
+  const html = read("index.html");
+  const app = read("js/app.js");
+  const pro = read("js/pro-v11.js");
+  const css = read("css/pro-v11.css");
+  const sw = read("sw.js");
+
+  const active = registry.projects.filter(project => project.status === "active");
+  const archived = registry.projects.filter(project => project.status === "archived");
+  assert.equal(active.length, 3, "v15 must keep the three current active projects");
+  assert.ok(archived.some(project => project.id === "sedes-tdas"), "v15 must include SEDES as archived history");
+  assert.ok(registry.projects.every(project => ["active", "archived", "future"].includes(project.status)), "v15 lifecycle must be explicit");
+
+  assert.ok(html.includes('id="workspace"'), "v15 workspace section must exist");
+  for (const tab of ["active", "archived", "future"]) {
+    assert.ok(html.includes(`data-workspace-tab="${tab}"`), `v15 workspace tab missing: ${tab}`);
+  }
+  assert.ok(html.includes("https://rodrigorosadantas.github.io/sedes-tdas-dashboard/"), "SEDES archived fallback link must exist");
+  assert.ok(html.includes('id="workspace-export"') && html.includes('id="workspace-import-button"'), "v15 portability controls must exist");
+
+  assert.ok(app.includes('project.status === "active"'), "v15 core must distinguish active projects");
+  assert.ok(app.includes("function activeProjects()"), "v15 core must centralize active project selection");
+  assert.ok(app.includes("central:workspace-ready"), "v15 core must expose registry lifecycle to workspace");
+  assert.ok(app.includes("chooseFocus(activeProjects()"), "archived/future projects must not become focus");
+  assert.ok(app.includes("activeProjects().find(item => item.id === lastVisit?.id)"), "archived/future projects must not become resume targets");
+  assert.ok(app.includes("activeProjects().map(async project =>"), "health/metadata must be restricted to active projects");
+
+  assert.ok(pro.includes('TAB="central-estudos:workspace-tab-v15"'), "workspace tab must be local preference");
+  assert.ok(pro.includes('const lifecycle=new Set(["active","archived","future"])'), "workspace lifecycle filters must be explicit");
+  assert.ok(pro.includes("central:workspace-ready"), "workspace must consume lifecycle event");
+  assert.ok(!pro.includes("fetch("), "workspace must not add network calls");
+  assert.ok(pro.includes('type:"central-estudos-preferences"'), "preference backup must be typed");
+  assert.ok(pro.includes("file.size>65536"), "preference import must be size bounded");
+
+  const prefStart = pro.indexOf("const PREF=[");
+  const prefEnd = pro.indexOf("];", prefStart);
+  const allowlist = pro.slice(prefStart, prefEnd);
+  for (const forbidden of ["last-project", "access-history", "health-v9", "repo-meta-v3", "contracts-v12"]) {
+    assert.ok(!allowlist.includes(forbidden), `backup allowlist must exclude ${forbidden}`);
+  }
+
+  assert.ok(css.includes(".workspace-panel") && css.includes(".workspace-list"), "v15 workspace must be styled");
+  assert.ok(css.includes("repeat(5"), "v15 primary navigation must accommodate Workspace");
+
+  const cacheMajor = Number(sw.match(/central-shell-v(\d+)\./)?.[1] || 0);
+  assert.ok(cacheMajor >= 15, "service worker cache must preserve v15 or newer");
+
+  pass("v15 lifecycle workspace, archived history and safe preference portability");
 }
 
 function testSecurityAndContracts(registry) {
@@ -549,7 +608,7 @@ function testSecurityAndContracts(registry) {
 
   const index = read("index.html");
   for (const project of registry.projects) {
-    assert.ok(index.includes(project.url), `direct project link missing: ${project.id}`);
+    if (project.url) assert.ok(index.includes(project.url), `direct project link missing: ${project.id}`);
   }
 
   pass("security scan and critical frontend contracts");
@@ -584,6 +643,7 @@ testV11Pro(registry);
 testV12Contracts(registry);
 testV13OperationalState(registry);
 testV14ExplainableRouting(registry);
+testV15Workspace(registry);
 testSecurityAndContracts(registry);
 
 console.log("\nQuality gate PASS");
