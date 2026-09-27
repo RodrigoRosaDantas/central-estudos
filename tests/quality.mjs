@@ -499,8 +499,8 @@ function testV14ExplainableRouting(registry) {
   assert.ok(routing.includes('LENS_KEY = "central-estudos:route-lens-v14"'), "v14 selected lens must be local");
   assert.ok(routing.includes('return LENSES.has(value) ? value : "focus"'), "v14 default lens must be focus");
   assert.ok(routing.includes("Por que aparece aqui?"), "v14 must explain why an item appears");
-  assert.ok(routing.includes("A ordem é a do catálogo, sem ranking."), "v14 published lens must explain catalog order");
-  assert.ok(routing.includes("A ordem é a do catálogo, sem pontuação."), "v14 alerts lens must explain catalog order");
+  assert.ok(routing.includes("A ordem é a do catálogo, sem ranking.")||routing.includes("A Central preserva a ordem do catálogo."), "v14+ published lens must explain catalog order");
+  assert.ok(routing.includes("A ordem é a do catálogo, sem pontuação.")||routing.includes("sem pontuação ou ordem automática"), "v14+ alerts lens must explain non-ranked order");
   assert.ok(routing.includes(".sort((a, b) => a.order - b.order)"), "v14 multi-item routing must preserve catalog order");
 
   assert.ok(routing.includes("central:focus-changed"), "v14 focus lens must follow human-selected focus");
