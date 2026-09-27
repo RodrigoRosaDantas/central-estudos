@@ -3,7 +3,7 @@
 ## Estado
 - **Versão de origem:** 15.0.0
 - **Versão ativa:** 16.0.0
-- **Stage:** IN_PROGRESS
+- **Stage:** VALIDATING
 - **Next major:** 17.0.0
 - **Projetos externos:** READ-ONLY
 - **Automação:** nenhuma
@@ -32,3 +32,19 @@
 - Zero writes externos.
 
 - **Decisão de budget v16:** a Command Palette adicionou funcionalidade real e levou o shell de 122.134 para ~129,4 KB. Em vez de refatoração agressiva dos módulos antigos apenas para preservar o número anterior, o teto da nova geração passa conscientemente de 120 KiB para 128 KiB. O quality gate continua bloqueando qualquer crescimento acima disso.
+
+
+## QA v16
+- Command Palette: implementada.
+- Ctrl/Cmd+K com guarda de campos editáveis: PASS.
+- Botão touch/mobile: PASS.
+- Busca lifecycle active/archived/future: PASS.
+- Agora/Projetos/Workspace/Atividade/Diagnóstico: PASS.
+- Foco/retomada válidos: PASS.
+- ↑/↓/Enter/Escape: PASS.
+- Rede própria da v16: zero.
+- Projetos externos: zero writes.
+- App shell: `central-shell-v16.0.0`.
+- Shell atual: ~129,4 KB <= 128 KiB.
+- Pipeline de implementação: `36312740627` — quality success + deploy success.
+- Estado: aguardando pipeline final da release 16.0.0.
