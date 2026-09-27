@@ -3,9 +3,10 @@
 ## Estado
 - **Versão de origem:** 10.0.0
 - **Versão validada:** 13.0.0
-- **Stage:** READY
-- **Next major:** 14.0.0
-- **Projetos-filhos:** READ-ONLY na v13; contratos v12 já publicados
+- **Stage:** IN_PROGRESS
+- **Active major:** 14.0.0
+- **Next major:** 15.0.0
+- **Projetos-filhos:** READ-ONLY na v14; contratos v12 já publicados
 - **Automação:** nenhuma
 
 ## Baseline
@@ -124,3 +125,12 @@
 - **Ranking/score/mentor global:** ausentes
 - **Projetos-filhos:** sem novos writes na v13; HEADs mantidos nos contratos v12
 - **Próxima etapa autorizada:** v14.0.0 — roteamento explicável, sem decidir pelo usuário.
+
+
+## Snapshot v14.0.0
+- **Objetivo:** roteamento explicável por sinais autorizados, sem decidir pelo usuário.
+- **Central HEAD inicial:** `0b2f9ec7e0b9ec4bdaa57b075764d785f65818a0`
+- **Último deploy validado:** `36285960169` — quality success + deploy success.
+- **Child HEADs:** TCE-GO `889017ba83143be268a84358229882a2b3ef9289`; SEEDF `b68431e2aa4944199705400c8821bf28505299d1`; TJDFT `99877771dcd008594d6855c08f077e1563e609bd`.
+- **Writes nos filhos:** proibidos nesta v14.
+- **Acceptance v14:** usuário escolhe a lente; lentes Foco/Retomada/Ações publicadas/Alertas; cada item explica por que aparece; sem ranking/score/recomendação automática; ordem de múltiplos itens segue o catálogo; stale explicitamente marcado; camada sem fetch; fallback/mobile preservados; quality + deploy passam.
