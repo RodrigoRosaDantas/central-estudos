@@ -32,7 +32,7 @@ Busca, favoritos, ordenação, atalhos e ordem manual são camadas locais sobre 
 
 ## PWA e resiliência
 
-O service worker é limitado à origem e ao pathname da Central. O cache da release atual é `central-shell-v18.0.0` e contém somente o app shell da Central.
+O service worker é limitado à origem e ao pathname da Central. O cache da release atual é `central-shell-v19.0.0` e contém somente o app shell da Central.
 
 Estratégia:
 - navegações e assets conhecidos usam **network first**;
@@ -315,3 +315,30 @@ Refresh simultâneo do mesmo projeto é deduplicado. Não há polling, `setInter
 ### Limites
 
 A v18 não altera schema dos filhos, não exige atualização de contratos externos, não cria score de frescor e não converte idade em prioridade.
+
+
+## Views locais — v19
+
+A v19 permite salvar combinações de preferências locais sem criar backend, banco mestre ou novo estado autoritativo.
+
+### Conteúdo de uma view
+
+Cada view pode conter somente:
+- aba do Workspace (`active / archived / future`);
+- lente de roteamento (`focus / resume / published / alerts`);
+- filtro de tipo da Inbox (`all / action / alert`);
+- filtro de projeto da Inbox (`all` ou projeto ativo válido).
+
+A view não contém foco, retomada/último acesso, favoritos, histórico, contratos, caches técnicos, progresso ou desempenho.
+
+### Persistência e aplicação
+
+As views usam `central-estudos:views-v19`, ficam limitadas a 8 itens e possuem nome de até 40 caracteres. Aplicar uma view grava apenas as quatro preferências autorizadas e recarrega a Central para que cada módulo reaplique seu próprio estado.
+
+Salvar, aplicar e restaurar defaults reutiliza a Command Palette da v16, evitando nova camada de navegação. A restauração de defaults não apaga histórico nem altera foco.
+
+### Portabilidade
+
+A chave de views e os filtros da Inbox entram no backup somente porque foram adicionados explicitamente à allowlist de preferências da v15. Último acesso, histórico, observabilidade e cache de contratos continuam excluídos.
+
+A v19 não realiza `fetch`, não cria sincronização entre dispositivos e não escreve nos projetos-filhos.

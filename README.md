@@ -6,7 +6,24 @@ Camada de entrada para os ambientes independentes TCE-GO, SEEDF e TJDFT.
 
 A Central não importa, altera ou replica o código dos projetos-filhos.
 
-## Estado atual — v18.0
+## Estado atual — v19.0
+
+A v19 adiciona **Views locais** nomeadas sem backend, usando somente preferências allowlisted da própria Central.
+
+Evoluções da v19:
+- salvar e nomear até 8 views neste navegador;
+- cada view captura somente aba do Workspace, lente de roteamento e filtros da Inbox;
+- salvar/aplicar/restaurar views pela Command Palette existente;
+- aplicar view não altera foco, retomada, favoritos, histórico ou contratos;
+- filtros da Inbox passam a persistir localmente para compor as views;
+- restaurar defaults volta para Ativos + Foco + Tudo/Todos;
+- views e filtros entram no backup apenas por allowlist explícita;
+- último acesso, histórico, caches técnicos e contratos continuam fora do backup;
+- zero backend, zero chamada de rede adicional e zero write externo;
+- app shell `central-shell-v19.0.0`;
+- shell funcional auditado em **130.983 bytes / 131.072 bytes**.
+
+## Base v18 — Proveniência e frescor
 
 A v18 torna **proveniência e frescor** dos contratos read-only visíveis sem transformar idade em diagnóstico.
 
@@ -130,7 +147,7 @@ Capacidades consolidadas:
 - observabilidade somente leitura, não bloqueante, com disponibilidade, publicação técnica e deploy separados;
 - falhas de rede/rate limit tratadas sem falso estado offline;
 - linha do tempo local de acessos separada de atividade técnica e sem inferência pedagógica;
-- PWA network-first, app shell offline e cache `central-shell-v18.0.0` restrito à Central;
+- PWA network-first, app shell offline e cache `central-shell-v19.0.0` restrito à Central;
 - quality gate automatizado antes de todo deploy;
 - CSP, escape de conteúdo, HTTPS, contraste, teclado, forced colors e touch targets auditados;
 - orçamento de shell <= 128 KiB na geração v16+ (v15 fechou <= 120 KiB) e zero dependências externas de JS/CSS;

@@ -714,6 +714,13 @@ function testReleaseDocumentationCoherence(registry) {
     assert.ok(changelog.includes("## [18.0.0]"), "changelog must include v18 release");
   }
 
+  if (major >= 19) {
+    assert.ok(roadmap20.includes("## v19 — Views locais"), "v20 roadmap must document v19");
+    assert.ok(architecture.includes("## Views locais — v19"), "architecture must document v19");
+    assert.ok(checkpoint20.includes("19.0.0"), "v20 checkpoint must track v19");
+    assert.ok(changelog.includes("## [19.0.0]"), "changelog must include v19 release");
+  }
+
   pass("release documentation coherence");
 }
 

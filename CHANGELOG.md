@@ -1,5 +1,18 @@
 # CHANGELOG — Central de Estudos
 
+## [19.0.0] — 2026-09-27
+- Views locais nomeadas e limitadas a 8 por navegador;
+- snapshots restritos a aba do Workspace, lente e filtros da Inbox;
+- salvar/aplicar/restaurar via Command Palette existente;
+- filtros da Inbox persistidos localmente para compor views;
+- foco, retomada, favoritos, histórico, contratos e caches ficam fora das views;
+- views/filtros adicionados explicitamente à allowlist do backup de preferências;
+- zero backend, zero fetch novo e zero writes externos;
+- compactação semântica de módulos existentes para manter o teto de 128 KiB;
+- app shell preparado para `central-shell-v19.0.0`;
+- shell funcional auditado em 130.983 bytes <= 131.072 bytes.
+
+
 ## [18.0.0] — 2026-09-27
 - provenance e frescor explícitos na Inbox operacional;
 - idade descritiva de contrato e fonte publicada;

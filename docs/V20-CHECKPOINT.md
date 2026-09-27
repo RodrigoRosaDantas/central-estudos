@@ -3,7 +3,7 @@
 ## Estado
 - **Versão de origem:** 15.0.0
 - **Versão validada:** 18.0.0
-- **Stage:** IN_PROGRESS
+- **Stage:** VALIDATING
 - **Active major:** 19.0.0
 - **Next major:** 19.0.0
 - **Projetos externos:** READ-ONLY
@@ -156,3 +156,22 @@
 - **Estratégia de estado:** view = snapshot local de `workspace-tab-v15`, `route-lens-v14`, `inbox-type-v19` e `inbox-project-v19`; aplicar view grava somente essas quatro preferências e recarrega a Central. A lista de views usa chave própria allowlisted e permanece limitada.
 - **Writes externos autorizados:** nenhum.
 - **Regra:** processar somente v19 nesta execução; v20 permanece fora do escopo.
+
+
+## Validação funcional v19 — 2026-09-27
+- **Commit funcional:** `800e9b33b002331d66d4f97b76a15ff9d2f3e5b3`.
+- **Pipeline funcional:** `36331143365` — quality SUCCESS + deploy SUCCESS.
+- **Artefato Pages:** `10934744543`, digest `sha256:104fa988f14cc71700f89652044583ccb0a47af72a5a8382dd62e87715ac8f36`.
+- **Shell funcional:** 130.983 bytes <= 131.072 bytes.
+- **Views:** nomeadas, limitadas a 8 e armazenadas somente no navegador — PASS.
+- **Escopo da view:** Workspace tab + lente + Inbox type/project — PASS.
+- **Foco/retomada/favoritos/histórico/contratos:** não capturados — PASS.
+- **Defaults:** active + focus + all/all, sem apagar histórico — PASS.
+- **Backup:** views e filtros entram somente pela allowlist; last-project/access-history/health/repo-meta/contracts permanecem excluídos — PASS.
+- **Rede própria v19:** zero `fetch(` — PASS.
+- **Compactação:** personalização, app, catálogo, PWA, timeline, service worker e manifest preservaram os contratos cobertos pelo quality gate.
+- **Fallback/no-JS e links diretos:** PASS.
+- **Guarda intermediária dos filhos:** TCE-GO `889017ba83143be268a84358229882a2b3ef9289`; SEEDF `b68431e2aa4944199705400c8821bf28505299d1`; TJDFT `99877771dcd008594d6855c08f077e1563e609bd` — intactos.
+- **Release metadata:** registry/app-shell/README/arquitetura/changelog preparados atomicamente para 19.0.0.
+- **Estado:** VALIDATING até quality + deploy + pós-deploy QA do release candidate.
+- **Regra:** não iniciar v20 nesta execução.
