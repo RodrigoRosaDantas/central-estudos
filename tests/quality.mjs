@@ -715,6 +715,15 @@ function testV20UxEnhancement() {
   pass("v20 UX Brasília clock, clearer interface and trustworthy project evolution");
 }
 
+function testV20UxPolish() {
+  const html=read("index.html"),app=read("js/app.js"),operational=read("js/operational-v13.js"),css=read("css/pro-v11.css");
+  assert.ok(html.includes('id="quick-options"')&&html.includes(">Opções<"),"v20 polish must expose quick options");
+  assert.ok(app.includes("setInterval(tick,60000)")&&app.includes('weekday:"short"'),"Brasília clock must include date and refresh");
+  assert.ok(operational.includes("acompanhados"),"evolution summary must expose followed project count");
+  assert.ok(css.includes("repeat(5,minmax(0,1fr))")&&!css.includes("repeat(4,minmax(0,1fr))"),"main navigation must use five columns");
+  pass("v20 quick options, live Brasília date/time and evolution polish");
+}
+
 function testReleaseDocumentationCoherence(registry) {
   const readme = read("README.md");
   const architecture = read("docs/ARCHITECTURE.md");
@@ -847,6 +856,7 @@ testV19LocalViews(registry);
 testV20TerminalAudit(registry);
 testV20MobileScrollHotfix();
 testV20UxEnhancement();
+testV20UxPolish();
 testReleaseDocumentationCoherence(registry);
 testSecurityAndContracts(registry);
 
