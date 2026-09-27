@@ -13,7 +13,8 @@
 - cache atualizado para `central-shell-v16.0.0`;
 - orçamento da nova geração definido em 128 KiB;
 - **Pipeline de implementação:** `36312740627` — quality success + deploy success;
-- **Commit/deploy final:** preencher após pipeline final da release.
+- **Commit de release validado:** `cfbac82a6bc1b9d924ef5b34f5f40884deb3be38`;
+- **Deploy validado:** workflow run `36312910219` — quality `success` + deploy `success`.
 
 ## [15.0.0] — 2026-09-27
 - Workspace de concursos com lifecycle `active / archived / future`;
