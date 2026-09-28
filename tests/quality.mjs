@@ -1147,7 +1147,7 @@ function testReleaseDocumentationCoherence(registry) {
     const roadmap2742=read("docs/ROADMAP-V27.4.2.md"),acceptance2742=read("docs/ACCEPTANCE-V27.4.2.md"),risk2742=read("docs/RISK-REGISTER-V27.4.2.md"),checkpoint2742=read("docs/V27.4.2-CHECKPOINT.md"),audit2742=read("docs/FINAL-AUDIT-V27.4.2.md");
     assert.ok(roadmap2742.includes("P4")&&acceptance2742.includes("P1")&&acceptance2742.includes("P4")&&risk2742.includes("duas colunas")&&checkpoint2742.includes("PUBLISHED")&&audit2742.includes("P1–P4")&&audit2742.includes("36445529505")&&audit2742.includes("10980661883"),"v27.4.2 governance must record the priority change, responsive behavior and published audit");
     const roadmap2743=read("docs/ROADMAP-V27.4.3.md"),acceptance2743=read("docs/ACCEPTANCE-V27.4.3.md"),risk2743=read("docs/RISK-REGISTER-V27.4.3.md"),checkpoint2743=read("docs/V27.4.3-CHECKPOINT.md"),audit2743=read("docs/FINAL-AUDIT-V27.4.3.md");
-    assert.ok(roadmap2743.includes("27.4.3")&&roadmap2743.includes("33 sessões")&&acceptance2743.includes("PRFADM33")&&acceptance2743.includes("Plataforma de Questões")&&risk2743.includes("Notion")&&checkpoint2743.includes("VALIDATING")&&audit2743.includes("PRFADM01–33"),"v27.4.3 must govern the 33-session PRF correction and PWA metadata");
+    assert.ok(roadmap2743.includes("27.4.3")&&roadmap2743.includes("33 sessões")&&acceptance2743.includes("PRFADM33")&&acceptance2743.includes("Plataforma de Questões")&&risk2743.includes("Notion")&&checkpoint2743.includes("PUBLISHED")&&acceptance2743.includes("Pages Deploy aprovados")&&audit2743.includes("PRFADM01–33")&&audit2743.includes("36460170138"),"v27.4.3 must record the 33-session PRF correction and successful publication");
   }
 
   pass("release documentation coherence");
