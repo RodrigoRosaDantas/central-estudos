@@ -13,5 +13,8 @@
 - [ ] Inspeção visual em viewport móvel real: navegador de QA ficou limitado a 1363×936; a emulação móvel segue pendente.
 - [x] `node tests/quality.mjs` passa.
 - [x] GitHub Actions Quality gate e Pages Deploy passam (`36363954600`).
+- [x] Patch V27.0.1 passa em Quality gate e Pages Deploy (`36365672226`).
 - [x] Página publicada confirma V27 e todos os sete cartões.
+- [x] Página publicada confirma V27.0.1, sete dias, tarefas corretas e PRF Administrativo.
 - [x] Relógio publicado continua mostrando segundos e atualiza a cada segundo.
+- [x] Aviso de atualização do PWA encerra depois de selecionar “Atualizar agora”; a URL/tela Hoje e o foco permanecem.
