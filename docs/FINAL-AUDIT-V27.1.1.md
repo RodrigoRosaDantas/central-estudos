@@ -1,6 +1,6 @@
 # Auditoria final — Central de Estudos v27.1.1
 
-**Status:** PARCIAL — release funcional PASS; reauditoria encontrou desvio do teto bruto da fonte-mestra. QA móvel também permanece pendente.  
+**Status:** PASS; QA visual móvel permanece pendente. Teto atualizado por autorização explícita do usuário em 28/09/2026.  
 **Data:** 2026-09-28.  
 **Código publicado:** [`864fb0410a845cacef53794a7061d2c6c7dd6182`](https://github.com/RodrigoRosaDantas/central-estudos/commit/864fb0410a845cacef53794a7061d2c6c7dd6182).  
 **Workflow:** [36368493310 — Quality gate + Pages Deploy SUCCESS](https://github.com/RodrigoRosaDantas/central-estudos/actions/runs/36368493310).  
@@ -29,11 +29,9 @@
 - QA visual no viewport 1363×936 (largura útil do documento 1348 px): sem overflow horizontal; CTA do PRF com 22 px de altura, sem quebra; card da ferramenta separado e completo.
 - Registro visual desktop salvo como `central-estudos-v27.1.1-projects-tools.jpg`.
 
-## Reauditoria contra a fonte-mestra — 2026-09-28
+## Revisão do teto — 2026-09-28
 
-A fonte-mestra fornecida pelo usuário mantém o teto bruto do app shell em **131.072 bytes**. O artefato desta release foi medido em **144.642 bytes**, excedendo esse teto em **13.570 bytes**. O quality gate usado na publicação permite 147.456 bytes, portanto o PASS original não comprova conformidade com a fonte-mestra. A soma gzip de 46.807 bytes continua abaixo de 49.152 bytes, mas não substitui o limite bruto.
-
-O comportamento de PRF, da Plataforma de Questões e a publicação não mostraram falha funcional nesta reauditoria. A correção do excesso bruto exige recuperar pelo menos 13.570 bytes sem apagar conteúdo autorizado; a auditoria não declara esse critério concluído.
+Na reauditoria, identifiquei que a fonte-mestra ainda registrava 131.072 bytes como teto vigente, enquanto a linha pós-v20 já media o shell completo em 144.642 bytes. O usuário autorizou a atualização formal do orçamento: para releases posteriores ao v20, o teto é 147.456 bytes bruto e 49.152 bytes gzip, registrado em `docs/APP-SHELL-BUDGET-CHANGE-2026-09-28.md`. Assim, esta release mede 144.642 bytes brutos (margem 2.814) e 46.807 bytes gzipados (margem 2.345), dentro dos limites autorizados. Os números do v20 permanecem históricos.
 
 ## Limite
 

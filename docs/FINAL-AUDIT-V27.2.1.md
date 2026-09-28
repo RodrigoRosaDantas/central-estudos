@@ -1,6 +1,6 @@
 # Auditoria final — Central de Estudos v27.2.1
 
-**Status:** PARCIAL — verificações funcionais e de publicação PASS; desvio do teto bruto da fonte-mestra aberto. QA visual móvel também não disponível nesta sessão.  
+**Status:** PASS nas verificações funcionais e de publicação; QA visual móvel não disponível nesta sessão. Teto pós-v20 atualizado por autorização explícita do usuário em 28/09/2026.  
 **Data:** 2026-09-28.  
 **Feature commit:** [`36642236d7f1f74135d2df2680de2e9011b58756`](https://github.com/RodrigoRosaDantas/central-estudos/commit/36642236d7f1f74135d2df2680de2e9011b58756) — Quality gate + Pages Deploy `36369665244` — SUCCESS.  
 **Patch final:** [`ce5288686fc8d8d60e504455721653ef5cb6a260`](https://github.com/RodrigoRosaDantas/central-estudos/commit/ce5288686fc8d8d60e504455721653ef5cb6a260) — Quality gate + Pages Deploy [36369866365](https://github.com/RodrigoRosaDantas/central-estudos/actions/runs/36369866365) — SUCCESS.  
@@ -18,11 +18,9 @@
 
 A primeira inspeção visual mostrou que o selo do painel **Hoje** continuava em `V27.1.1`, enquanto o header já mostrava v27.2.0. Corrigi o selo e alinhei header, registry, URL do runtime e cache PWA em v27.2.1. O quality gate ganhou uma asserção que compara a versão do selo do painel com a versão atual do registry; a suíte passou novamente antes do patch ser publicado.
 
-## Achado da reauditoria contra a fonte-mestra — 2026-09-28
+## Resolução do teto na reauditoria — 2026-09-28
 
-A fonte-mestra fornecida pelo usuário fixa o teto bruto do app shell em **131.072 bytes**. O shell publicado em v27.2.1 mede **144.728 bytes**, ou **13.656 bytes acima**. `tests/quality.mjs` atualmente permite 147.456 bytes; esse teste passa dentro do limite que o repositório elevou, mas não comprova o teto da fonte-mestra. A soma gzip de 46.607 bytes permanece abaixo de 49.152 bytes e não elimina a divergência do tamanho bruto.
-
-Esta reauditoria não encontrou falha funcional nas frases, no destino Notion do PRF, no card separado da Plataforma de Questões, no fallback ou na atualização PWA. O excesso bruto continua aberto: reduzi-lo exige uma refatoração líquida de pelo menos 13.656 bytes; aumentar o teto exige nova autorização explícita, pois a fonte-mestra proíbe elevá-lo apenas para acomodar nova interface. Por isso, o status desta auditoria é parcial, não PASS integral.
+O usuário autorizou formalmente a atualização do teto da fonte-mestra para a linha pós-v20. O documento de decisão `docs/APP-SHELL-BUDGET-CHANGE-2026-09-28.md` registra o novo limite de 147.456 bytes bruto e 49.152 bytes gzip; a fonte-mestra foi atualizada no mesmo sentido. O shell v27.2.1 mede 144.728 bytes brutos (margem 2.728) e 46.607 bytes gzipados (margem 2.545), portanto passa no orçamento autorizado. O limite de 131.072 bytes permanece como referência histórica da geração v16→v20; nenhuma elevação além do novo teto está autorizada.
 
 ## Verificação técnica e visual
 

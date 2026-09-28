@@ -29,5 +29,5 @@ Tratar PRF Administrativo como projeto próprio na Central e dar acesso à Plata
 ## Verificação
 
 - `node tests/quality.mjs` cobre registry, destinos HTTPS, domínio Notion permitido, foco, ausência de telemetria, separação projeto/ferramenta, fallback, PWA e regressões históricas.
-- Limites do shell: 144 KiB bruto e 48 KiB como soma dos assets individualmente gzipados.
+- Limites do shell: 144 KiB bruto e 48 KiB gzip; adotados formalmente após autorização explícita do usuário em 28/09/2026, conforme `docs/APP-SHELL-BUDGET-CHANGE-2026-09-28.md`.
 - Deploy e inspeção publicados: `docs/FINAL-AUDIT-V27.1.1.md`; Quality gate e Pages Deploy passaram no workflow 36368493310.

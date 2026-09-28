@@ -15,5 +15,5 @@
 - [x] GitHub Actions Quality gate e Pages Deploy confirmam a publicação da release.
 - [x] Artigo publicado mostra versão V27.1.1, quatro projetos e card da Plataforma de Questões fora da contagem.
 - [x] QA publicado confirma destinos, PRF no Notion, ferramenta separada, CTA em uma linha e ausência de overflow em viewport 1363×936 (documento: 1348 px).
-- [ ] App shell bruto dentro do teto de 131.072 bytes da fonte-mestra: reauditoria mediu 144.642 bytes; desvio de 13.570 bytes registrado em `docs/FINAL-AUDIT-V27.1.1.md`.
+- [x] App shell dentro do teto pós-v20 autorizado em 28/09/2026: 144.642/147.456 bytes brutos e 46.807/49.152 bytes gzipados; decisão em `docs/APP-SHELL-BUDGET-CHANGE-2026-09-28.md`.
 - [ ] Inspeção visual móvel: não há viewport móvel/emulação disponível; contratos CSS e layout responsivo passam no Quality gate.

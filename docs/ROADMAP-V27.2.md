@@ -32,4 +32,4 @@ As origens selecionadas são o perfil `@caveiracadar09`, a página do Método C�
 
 ## Quality gate
 
-`node tests/quality.mjs` valida as seis variações diárias, atribuição, fontes autorizadas, fallback, URLs versionadas, cache e regressões históricas. O app shell continua limitado a 144 KiB bruto e 48 KiB na soma gzip.
+`node tests/quality.mjs` valida as seis variações diárias, atribuição, fontes autorizadas, fallback, URLs versionadas, cache e regressões históricas. O app shell fica limitado a 144 KiB bruto e 48 KiB na soma gzip, teto pós-v20 autorizado formalmente em 28/09/2026 e registrado em `docs/APP-SHELL-BUDGET-CHANGE-2026-09-28.md`.

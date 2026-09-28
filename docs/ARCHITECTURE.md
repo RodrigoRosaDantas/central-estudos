@@ -427,6 +427,8 @@ O shell `central-shell-v27.0.1` inclui `workspace-v27.css`; runtime e registro u
 - Links de projeto e da ferramenta também estão no HTML estático para fallback sem JavaScript. Os destinos mantêm seus próprios dados e rotinas.
 - Quality gate mede todos os 23 recursos únicos em `APP_SHELL`: 144.642 bytes brutos (limite 147.456) e soma gzip 46.807 bytes (limite 49.152), incluindo folhas v26/v27, registry, 404 e ícone. A auditoria detectou que o gate antigo omitia alguns recursos; agora a lista é derivada diretamente do app shell.
 
+O teto de **144 KiB bruto / 48 KiB gzip** para a linha pós-v20 foi autorizado explicitamente pelo usuário em 28/09/2026 após a reauditoria; o limite de 128 KiB continua registrado como histórico da geração v16→v20. `docs/APP-SHELL-BUDGET-CHANGE-2026-09-28.md` mantém a decisão e as margens da release atual. Novos aumentos continuam sujeitos a autorização explícita.
+
 
 ## Correção visual e cache PWA — v27.1.1
 

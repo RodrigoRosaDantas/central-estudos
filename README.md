@@ -10,6 +10,8 @@ A Central não importa, altera ou replica o conteúdo dos projetos. Ela mantém 
 
 A v27.2.1 mantém PRF Administrativo como projeto no Notion e a Plataforma de Questões como ferramenta transversal. A seção de frase diária agora usa seis frases curtas do Major Cadar, com autoria e link da origem em cada exibição. PRF não recebe prioridade numérica; a faixa principal continua SEEDF (P1), TJDFT (P2) e TCE-GO (P3). A agenda semanal continua indicando a execução PRF como complementar.
 
+O teto do app shell para a linha pós-v20 é 144 KiB bruto e 48 KiB gzip, autorizado em 28/09/2026 e registrado em [`docs/APP-SHELL-BUDGET-CHANGE-2026-09-28.md`](docs/APP-SHELL-BUDGET-CHANGE-2026-09-28.md). O limite histórico v16→v20 permanece 128 KiB; novos aumentos exigem autorização explícita.
+
 A V27 apresenta um cartão para cada dia da semana e a V27.0.1 compacta a grade em celulares sem esconder tarefas nem mudar a ordem de prioridades.
 
 - Retomada mostra separadamente o foco escolhido e o último acesso local; acesso não representa estudo ou progresso.
