@@ -1,6 +1,6 @@
 # Auditoria final — Central de Estudos v27.2.2
 
-**Status:** Quality gate local PASS; workflow/deploy remoto e inspeção visual móvel não confirmados nesta sessão.  
+**Status:** Quality gate local PASS; PR #1 integrado à `main`; Quality gate e Pages Deploy remotos PASS. QA visual móvel permanece pendente.  
 **Data:** 2026-09-28.
 
 ## Correção aplicada
@@ -14,6 +14,9 @@ A frase anterior era determinística por data e, por isso, permanecia igual dura
 - A aceitação estrutural preserva fallback sem JavaScript, PWA e ausência de chamadas externas.
 - `node tests/quality.mjs`: **PASS**, incluindo teto pós-v20 autorizado de 144 KiB bruto e 48 KiB gzip.
 
-## Pendências de publicação
+## Publicação remota confirmada
 
-O commit da alteração está pronto para publicação. O conector disponível não expõe uma execução de workflow push nem o artefato desse commit; por isso, não marco o deploy como confirmado. QA visual móvel permanece pendente enquanto não houver viewport móvel disponível.
+- PR #1 foi integrado por squash à `main`: [`376fdcdcbfded4618f39d54723b981bad5223357`](https://github.com/RodrigoRosaDantas/central-estudos/commit/376fdcdcbfded4618f39d54723b981bad5223357).
+- [Workflow #366](https://github.com/RodrigoRosaDantas/central-estudos/actions/runs/36406335263) terminou com conclusão `success`.
+- Os jobs **Quality gate** e **Deploy**, incluindo **Deploy to GitHub Pages**, terminaram com conclusão `success`.
+- QA visual móvel continua pendente; esta auditoria não marca inspeção visual como concluída.

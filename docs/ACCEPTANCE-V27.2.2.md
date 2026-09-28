@@ -6,5 +6,5 @@
 - [x] Fallback sem JavaScript continua coerente e sem requisições externas.
 - [x] Header, selo Hoje, registry, runtime e cache PWA usam v27.2.2.
 - [x] `node tests/quality.mjs` passa localmente, incluindo troca no limite de cinco minutos, seis fontes exatas e atualização acessível.
-- [ ] Quality gate remoto e Pages Deploy: confirmar após o commit.
+- [x] Quality gate e Pages Deploy remotos passaram no commit `376fdcdcbfded4618f39d54723b981bad5223357` (PR #1; workflow #366).
 - [ ] QA visual móvel: ainda pendente de viewport móvel nesta sessão.
