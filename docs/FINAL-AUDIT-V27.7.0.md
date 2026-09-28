@@ -8,7 +8,7 @@
 
 - PR #16: https://github.com/RodrigoRosaDantas/central-estudos/pull/16
 - Commit na `main`: `bd0ac36beb9f53e899035d0e12e5e9a042f325b7`
-- Workflow run #384 — `36500234949`: Quality gate **success**; Deploy **success**.
+- workflow run #384 — `36500234949`: Quality gate **success**; Deploy **success**.
 - Artefato `github-pages`: ID `11005355766`; 181.469 bytes; SHA-256 `5aa757c497df0cde5f4dc07c12af3709e62540e31adda0657662685306cffa94`.
 
 ## Escopo validado
