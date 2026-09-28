@@ -1,7 +1,7 @@
 # Roadmap v27.6.1 — alinhamento dos campos de duração
 
 **Release:** 27.6.1  
-**Stage:** LOCAL_VALIDATED  
+**Stage:** PUBLISHED  
 **Escopo:** corrigir a disposição dos campos de horas e minutos no formulário diário da v27.6.0.
 
 ## Correção
@@ -12,5 +12,6 @@
 
 ## Verificação
 
-- Quality gate e `git diff --check` passam localmente.
-- QA visual publicada, CI e auditoria final serão registrados após o deploy.
+- Quality gate e `git diff --check` passam localmente e no workflow #382.
+- Deploy do GitHub Pages e QA visual desktop concluídos; a tela publicada mostra rótulos acima dos campos.
+- Auditoria final em `docs/FINAL-AUDIT-V27.6.1.md`.
