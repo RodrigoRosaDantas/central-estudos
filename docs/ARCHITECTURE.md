@@ -10,11 +10,11 @@ Ela lista ambientes, destaca foco, recorda último acesso, oferece organização
 
 ## Registry
 
-A fonte dinâmica de verdade é `config/projects.json` (`schemaVersion: 3`). O lifecycle é explícito em `status`: `active`, `archived` ou `future`. Projetos de site ativo/arquivado possuem URL e repositório HTTPS; o PRF admite `destinationType: "notion"` e URL HTTPS sem repositório ou telemetria. Projetos futuros podem existir sem URL até o ambiente ser criado. `statusUrl` continua opcional e destinado ao contrato read-only.
+A fonte dinâmica de verdade é `config/projects.json` (`schemaVersion: 3`). O lifecycle é explícito em `status`: `active`, `archived` ou `future`. Projetos de site ativo/arquivado possuem URL e repositório HTTPS; destinos exclusivamente Notion podem existir sem repositório. PRF Administrativo agora aponta para o GitHub Pages e conserva `notionUrl` como acesso à fonte de verdade. Seu painel é um snapshot e não publica `statusUrl`; a Central só observa disponibilidade do site e metadados públicos do GitHub.
 
 ## Fallback e progressive enhancement
 
-`index.html` contém links mínimos para os quatro projetos e a Plataforma de Questões. Essa duplicação é intencional e restrita ao fallback. Se JavaScript ou registry falharem, TCE-GO, SEEDF, TJDFT, PRF no Notion e a plataforma continuam acessíveis. JavaScript melhora foco, retomada, catálogo, preferências, diagnóstico e observabilidade, mas nunca é requisito para abrir um projeto.
+`index.html` contém links mínimos para os quatro projetos e a Plataforma de Questões. Essa duplicação é intencional e restrita ao fallback. Se JavaScript ou registry falharem, TCE-GO, SEEDF, TJDFT, painel PRF, Notion e plataforma continuam acessíveis. JavaScript melhora foco, retomada, catálogo, preferências, diagnóstico e observabilidade, mas nunca é requisito para abrir um projeto.
 
 ## Estado local e separação semântica
 
@@ -32,7 +32,7 @@ Busca, favoritos, ordenação, atalhos e ordem manual são camadas locais sobre 
 
 ## PWA e resiliência
 
-O service worker é limitado à origem e ao pathname da Central. O cache atual é `central-shell-v27.3.0-quote-contrast-20260928` e contém somente o app shell da Central; os sites de projeto e a ferramenta não são incluídos.
+O service worker é limitado à origem e ao pathname da Central. O cache atual é `central-shell-v27.4.0-prf-pages-20260928` e contém somente o app shell da Central; os sites de projeto e a ferramenta não são incluídos.
 
 Estratégia:
 - navegações e assets conhecidos usam **network first**;
@@ -431,7 +431,7 @@ O shell `central-shell-v27.0.1` inclui `workspace-v27.css`; runtime e registro u
 
 O teto de **144 KiB bruto / 48 KiB gzip** para a linha pós-v20 foi autorizado explicitamente pelo usuário em 28/09/2026 após a reauditoria; o limite de 128 KiB continua registrado como histórico da geração v16→v20. `docs/APP-SHELL-BUDGET-CHANGE-2026-09-28.md` mantém a decisão e as margens da release atual. Novos aumentos continuam sujeitos a autorização explícita.
 
-## Contexto atual — v27.3.0
+## Contexto anterior — v27.3.0
 
 O cartão da frase do dia usa fundo mais definido, tipografia maior e cor de alto contraste; autoria e fonte continuam visíveis. A rotação permanece automática a cada cinco minutos.
 
@@ -440,7 +440,11 @@ O cronograma marca o cartão correspondente ao dia em `America/Sao_Paulo`, recal
 
 A Inbox mostra mudanças entre o último snapshot local salvo e um contrato válido recém-observado. Compara fase, ciclo, unidade, próxima ação e alertas; usa texto seguro no DOM; e exibe a publicação/frescor quando disponível. Somente um contrato recebido como `live` substitui o snapshot local. `cached` e `stale-cache` podem aparecer como último estado conhecido, mas não sobrescrevem a base nem são apresentados como atualização ao vivo. A primeira leitura do usuário é registrada como base, sem fabricar histórico.
 
-A chave `central-estudos:published-snapshot-v1` fica somente neste navegador e não entra no backup de preferências. A comparação é read-only, não é telemetria, não mede estudo/progresso e não escreve nos projetos-filhos. O PRF segue projeto independente, sem prioridade numérica; o cartão usa o Notion enquanto não houver destino de site próprio confirmado.
+A chave `central-estudos:published-snapshot-v1` fica somente neste navegador e não entra no backup de preferências. A comparação é read-only, não é telemetria, não mede estudo/progresso e não escreve nos projetos-filhos.
+
+## Contexto atual — v27.4.0
+
+O cartão PRF abre o painel em GitHub Pages e mantém Notion como acesso separado à fonte de verdade. A Central associa somente o repositório próprio do PRF para frescor e estado do workflow de publicação. Como o painel publica um snapshot e não tem `central-status.json`, não aparece no Radar operacional nem fornece progresso de estudo.
 
 
 ## Correção visual e cache PWA — v27.1.1

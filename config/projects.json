@@ -3,7 +3,7 @@
   "central": {
     "name": "Central de Estudos",
     "owner": "Rodrigo",
-    "version": "27.3.0",
+    "version": "27.4.0",
     "defaultProject": "tcego"
   },
   "projects": [
@@ -46,13 +46,15 @@
     {
       "id": "prf-adm",
       "name": "PRF Administrativo",
-      "description": "Radar de cobertura e roda contínua PRFADM01–33",
-      "phase": "Pré-edital · projeto no Notion",
+      "description": "Roda PRFADM01–33",
+      "phase": "Pré-edital",
       "status": "active",
       "priority": "normal",
       "icon": "🛰️",
-      "destinationType": "notion",
-      "url": "https://app.notion.com/p/3e8cf5a2673181679cd2f5532e0abf60"
+      "destinationType": "site",
+      "url": "https://rodrigorosadantas.github.io/prf-administrativo-dashboard/",
+      "repository": "https://github.com/RodrigoRosaDantas/prf-administrativo-dashboard",
+      "notionUrl": "https://app.notion.com/p/3e8cf5a2673181679cd2f5532e0abf60"
     },
     {
       "id": "sedes-tdas",
