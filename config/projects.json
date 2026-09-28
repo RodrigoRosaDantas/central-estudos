@@ -3,7 +3,7 @@
   "central": {
     "name": "Central de Estudos",
     "owner": "Rodrigo",
-    "version": "24.0.0",
+    "version": "25.0.0",
     "defaultProject": "tcego"
   },
   "projects": [
@@ -57,3 +57,4 @@
     }
   ]
 }
+

@@ -32,7 +32,7 @@ Busca, favoritos, ordenação, atalhos e ordem manual são camadas locais sobre 
 
 ## PWA e resiliência
 
-O service worker é limitado à origem e ao pathname da Central. O cache da release atual é `central-shell-v24.0.0` e contém somente o app shell da Central.
+O service worker é limitado à origem e ao pathname da Central. O cache da release atual é `central-shell-v25.0.0` e contém somente o app shell da Central.
 
 Estratégia:
 - navegações e assets conhecidos usam **network first**;
@@ -401,3 +401,11 @@ A navegação v24 expõe Hoje, Retomada, Projetos, Inbox, Histórico e Evoluçã
 - Cada seção `data-screen` precisa ser filha direta de `<main>` para o roteador alternar a tela; o diagnóstico fica dentro de Evolução. O quality gate verifica essa hierarquia.
 - `workspace-v24.js` não faz rede. A renderização do Inbox reutiliza eventos da camada read-only v12.
 - Scripts de runtime são distribuídos minificados em UTF-8 para manter o app shell dentro do limite de 128 KiB; verificações de sintaxe, contratos e execução seguem no quality gate.
+
+
+## Cronograma semanal — v25
+
+A tela Hoje contém uma grade editorial estática, mantida na Central e baseada na ordem de estudo informada: SEEDF (prioridade 1), TJDFT (prioridade 2) e TCE-GO (prioridade 3). Segunda, quarta e sexta organizam SEEDF antes de TJDFT; terça, quinta e sábado reservam a sessão regular do TCE-GO; domingo fica protegido, com revisões somente quando previstas.
+
+Essa ordem de estudo é independente do foco de navegação escolhido no topo. A Central não recalcula prioridades, não registra presença, não infere execução ou progresso e não altera as filas próprias dos projetos. O atalho usa uma âncora resolvida para a tela Hoje; a agenda não adiciona requests nem dependências, e as exceções do TCE-GO continuam no calendário Dxx do próprio projeto.
+

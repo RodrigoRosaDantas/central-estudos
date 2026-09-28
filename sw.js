@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'central-shell-v24.0.0';
+const CACHE_VERSION = 'central-shell-v25.0.0';
 const APP_SHELL = [
 './',
 './index.html',

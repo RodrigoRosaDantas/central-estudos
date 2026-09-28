@@ -1,5 +1,17 @@
 # CHANGELOG — Central de Estudos
 
+## [25.0.0] - 2026-09-27
+
+### Added
+- Cronograma semanal na tela Hoje, com prioridade manual SEEDF → TJDFT → TCE-GO.
+- Segunda, quarta e sexta: SEEDF antes de TJDFT; terça, quinta e sábado: sessão TCE-GO; domingo protegido para descanso e revisões previstas.
+- Atalho com âncora direta para abrir a grade a partir de qualquer tela.
+
+### Preserved
+- A agenda não muda o foco da Central, não registra estudo e não estima progresso.
+- Cada projeto mantém sua própria fila; exceções do TCE-GO continuam sob o calendário do Dxx ativo.
+- Projetos-filhos e contratos publicados permanecem somente leitura.
+
 ## [24.0.0] - 2026-09-27
 
 ### Changed
@@ -292,3 +304,4 @@
 - v1.2: separação foco/retomada e 404;
 - v1.1: fallback, health check, manifest e acessibilidade;
 - v1.0: fundação, registry, navegação e arquitetura desacoplada.
+

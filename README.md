@@ -6,15 +6,17 @@ Camada de entrada para os ambientes independentes TCE-GO, SEEDF e TJDFT.
 
 A Central não importa, altera ou replica o código dos projetos-filhos.
 
-## Estado atual — v24.0
+## Estado atual — v25.0
 
-A v24 organiza a Central em seis telas de trabalho com navegação direta e persistente: Hoje, Retomada, Projetos, Inbox, Histórico e Evolução.
+A v25 acrescenta à tela Hoje um cronograma semanal legível por prioridade, mantendo as seis telas de navegação da v24.
 
 - Retomada mostra separadamente o foco escolhido e o último acesso local; acesso não representa estudo ou progresso.
 - Projetos reúne acessos ativos e o Workspace de concursos.
 - Inbox tem filtros próprios por tipo e projeto; o Radar mantém a visão completa dos contratos disponíveis.
 - Evolução reúne Radar, Mentor, preferências e estado técnico.
 - Views locais salvam também a tela atual; views anteriores sem esse campo continuam abrindo em Hoje.
+- Cronograma manual: SEEDF (P1) e TJDFT (P2) às segundas, quartas e sextas; TCE-GO (P3) às terças, quintas e sábados; domingo protegido.
+- A grade não muda o foco, não registra execução e não calcula progresso; cada projeto mantém sua fila e suas exceções.
 - Cada tela possui âncora direta; sem JavaScript, os links diretos dos projetos continuam disponíveis.
 - contratos read-only, sem chamadas novas, sem ranking ou progresso inferido;
 - TCE-GO, SEEDF e TJDFT permanecem READ-ONLY.
@@ -212,3 +214,4 @@ A fonte dinâmica de verdade é `config/projects.json` (schema v3). Cada item de
 ## Governança e auditoria
 
 A esteira histórica v1→v10 permanece congelada em `docs/V10-CHECKPOINT.md` e `docs/FINAL-AUDIT-V10.md`. A geração v11→v15 permanece congelada em `docs/ROADMAP-V15.md` e `docs/V15-CHECKPOINT.md`. A geração v16→v20 é encerrada pela auditoria terminal em `docs/FINAL-AUDIT-V20.md`. A esteira terminal v21 Presença e Ritmo está registrada em `docs/ROADMAP-V21.md` e `docs/V21-CHECKPOINT.md`.
+

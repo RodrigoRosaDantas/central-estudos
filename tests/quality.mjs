@@ -794,7 +794,7 @@ function testV22CommandCenter() {
 
 function testV23TodayMentor() {
   const html=read("index.html"),pro=read("js/pro-v11.js"),operational=read("js/operational-v13.js"),sw=read("sw.js");
-  assert.ok(html.includes(">Hoje<")&&html.includes("PLANO DE HOJE")&&html.includes("HOJE · V24"),"v24 must preserve Hoje in the command center");
+  assert.ok(html.includes(">Hoje<")&&html.includes("PLANO DE HOJE")&&(html.includes("HOJE · V24")||html.includes("HOJE · V25")),"later releases must preserve Hoje in the command center");
   assert.ok(html.includes("RADAR OPERACIONAL")&&html.includes("Situação dos concursos"),"v23 radar must be visible");
   assert.ok(html.includes(">MENTOR<")&&html.includes("Mentor de execução"),"v23 mentor must be visible");
   assert.ok(html.includes('href="#routing-panel">Mentor</a>')&&html.includes('href="#activity-panel">Histórico</a>'),"v23 home shortcuts must expose mentor and history");
@@ -821,7 +821,7 @@ function testV24ScreensAndViews(registry) {
     sectionStack.push(id||"(anonymous)");
   }
   assert.equal(sectionStack.length,0,"section markup must be balanced");
-  for(const id of ["agora","retomada","projetos","workspace","inbox","activity-panel","evolucao"])assert.equal(sectionParents.get(id),"main",`v24 screen ${id} must be a direct main section`);
+  for(const id of ["agora","agenda-semanal","retomada","projetos","workspace","inbox","activity-panel","evolucao"])assert.equal(sectionParents.get(id),"main",`v24 screen ${id} must be a direct main section`);
   assert.equal(sectionParents.get("diagnostico"),"evolucao","v24 diagnostic must remain inside Evolution");
   assert.ok(html.includes('id="inbox-list"')&&html.includes('id="inbox-toolbar"')&&html.includes('id="operational-list"'),"v24 Inbox and Radar need separate containers");
   assert.ok(operational.includes('s("inbox-list")')&&operational.includes('s("operational-list")')&&operational.includes("inbox-list")&&operational.includes("operational-panel"),"Radar and Inbox must render independently from validated state");
@@ -830,9 +830,30 @@ function testV24ScreensAndViews(registry) {
   assert.ok(router.includes("central-estudos:screen-v24")&&router.includes("hashchange")&&router.includes("screen-mode"),"screen routing must persist locally and follow direct hashes");
   assert.ok(css.includes("repeat(6,minmax(0,1fr))")&&css.includes("@media(max-width:719px)"),"six-screen nav must remain mobile-aware");
   assert.ok(!router.includes("fetch(")&&!operational.includes("fetch("),"v24 presentation must not add requests");
-  assert.ok(sw.includes("central-shell-v24.0.0")&&sw.includes("./js/workspace-v24.js")&&sw.includes("./css/workspace-v24.css"),"v24 app shell must cache the new screen layer");
-  assert.ok(registry.central.version==="24.0.0","registry must identify v24");
+  assert.ok(sw.includes("./js/workspace-v24.js")&&sw.includes("./css/workspace-v24.css"),"v24 app shell assets must remain present");
+  assert.ok(Number(registry.central.version.split(".")[0])>=24,"registry must preserve the v24 release line");
   pass("v24 six screens, separate Inbox/Radar and backward-compatible views");
+}
+
+function testV25WeeklySchedule(registry) {
+  const html=read("index.html"),router=read("js/workspace-v24.js"),css=read("css/workspace-v24.css"),sw=read("sw.js");
+  const start=html.indexOf('<section id="agenda-semanal"'),end=html.indexOf("</section>",start);
+  assert.ok(start>=0&&end>start,"v25 weekly schedule must be a section on the page");
+  const schedule=html.slice(start,end);
+  assert.equal(registry.central.version,"25.0.0","registry must identify v25");
+  assert.equal(registry.central.defaultProject,"tcego","study priorities must not change the user's central focus");
+  assert.ok(html.includes('href="#agenda-semanal">Cronograma</a>')&&router.includes('"agenda-semanal":"today"'),"schedule must have an accessible shortcut and route back to Hoje");
+  assert.deepEqual([...schedule.matchAll(/data-priority="([^"]+)"/g)].map(match=>match[1]),["1","2","3"],"manual priorities must appear in SEEDF, TJDFT, TCE-GO order");
+  assert.deepEqual([...schedule.matchAll(/data-day="([^"]+)"/g)].map(match=>match[1]),["monday","tuesday","wednesday","thursday","friday","saturday","sunday"],"weekly schedule must include all days in order");
+  const part=(day,next)=>{const a=schedule.indexOf(`data-day="${day}"`),b=next?schedule.indexOf(`data-day="${next}"`,a+1):schedule.indexOf("</ol>",a);return schedule.slice(a,b)};
+  const monday=part("monday","tuesday"),wednesday=part("wednesday","thursday"),friday=part("friday","saturday");
+  for(const day of [monday,wednesday,friday])assert.ok(day.indexOf(">SEEDF</a>")>=0&&day.indexOf(">SEEDF</a>")<day.indexOf(">TJDFT</a>"),"SEEDF must precede TJDFT on shared days");
+  for(const day of [part("tuesday","wednesday"),part("thursday","friday"),part("saturday","sunday")])assert.ok(day.includes("TCE-GO"),"TCE-GO must retain Tuesday, Thursday and Saturday");
+  assert.ok(part("sunday",null).includes("Descanso")&&part("sunday",null).includes("D7/D20"),"Sunday must be protected with only scheduled reviews");
+  assert.ok(schedule.includes("não marca presença")&&schedule.includes("não estima avanço")&&schedule.includes("não muda o foco"),"weekly schedule must not claim study progress or change focus");
+  assert.ok(css.includes(".weekly-day-grid")&&css.includes("@media(max-width:719px)")&&css.includes("@media(max-width:420px)"),"weekly schedule must reflow for mobile widths");
+  assert.ok(sw.includes("central-shell-v25.0.0"),"PWA shell cache must be versioned for v25");
+  pass("v25 weekly schedule, manual priority order and no inferred progress");
 }
 
 function testReleaseDocumentationCoherence(registry) {
@@ -938,6 +959,12 @@ function testReleaseDocumentationCoherence(registry) {
     assert.ok(architecture.includes("## Seis telas de trabalho — v24")&&changelog.includes("## [24.0.0]"),"v24 architecture and changelog must match release");
   }
 
+  if (major >= 25) {
+    const roadmap25=read("docs/ROADMAP-V25.md"),checkpoint25=read("docs/V25-CHECKPOINT.md"),acceptance25=read("docs/ACCEPTANCE-V25.md"),risks25=read("docs/RISK-REGISTER-V25.md");
+    assert.ok(roadmap25.includes("25.0.0")&&checkpoint25.includes("25.0.0")&&acceptance25.includes("cronograma")&&risks25.includes("dias da semana"),"v25 governance must define scope, checkpoint, acceptance and risks");
+    assert.ok(readme.includes("v25.0")&&changelog.includes("## [25.0.0]")&&architecture.includes("## Cronograma semanal — v25"),"v25 README, changelog and architecture must agree");
+  }
+
   pass("release documentation coherence");
 }
 
@@ -1028,7 +1055,9 @@ testV21PresenceExperience();
 testV22CommandCenter();
 testV23TodayMentor();
 testV24ScreensAndViews(registry);
+testV25WeeklySchedule(registry);
 testReleaseDocumentationCoherence(registry);
 testSecurityAndContracts(registry);
 
 console.log("\nQuality gate PASS");
+
