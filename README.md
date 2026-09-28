@@ -6,9 +6,9 @@ Camada de entrada para os projetos de estudo TCE-GO, SEEDF, TJDFT e PRF Administ
 
 A Central não importa, altera ou replica o conteúdo dos projetos. Ela mantém os acessos independentes.
 
-## Estado atual — v27.4.1
+## Estado atual — v27.4.2
 
-A v27.4.1 mantém o dia atual destacado no horário de Brasília e a comparação local de mudanças materiais nos contratos públicos. PRF Administrativo continua como projeto independente e sem prioridade numérica; agora a Central abre seu site no GitHub Pages e oferece também o acesso direto ao Notion, que permanece como fonte de verdade. O painel público é um snapshot e não fornece contrato operacional de status. A Plataforma de Questões continua como ferramenta transversal separada. As frases do Major Cadar mantêm autoria, fonte e rotação de cinco minutos; no desktop, o cartão agora divide o cabeçalho com o título e ocupa a largura útil disponível, com hierarquia visual reforçada.
+A v27.4.2 mantém o dia atual destacado no horário de Brasília e a comparação local de mudanças materiais nos contratos públicos. A faixa semanal apresenta SEEDF (P1), TJDFT (P2), TCE-GO (P3) e PRF Administrativo (P4), com acesso direto ao site do PRF; suas sessões permanecem segunda, quarta e sexta, e o Notion continua como fonte de verdade. O painel público é um snapshot e não fornece contrato operacional de status. A Plataforma de Questões continua como ferramenta transversal separada. As frases do Major Cadar mantêm autoria, fonte e rotação de cinco minutos; no desktop, o cartão ocupa a largura útil ao lado do título, e em telas estreitas as quatro prioridades refluem para duas colunas.
 
 O teto do app shell para a linha pós-v20 é 144 KiB bruto e 48 KiB gzip, autorizado em 28/09/2026 e registrado em [`docs/APP-SHELL-BUDGET-CHANGE-2026-09-28.md`](docs/APP-SHELL-BUDGET-CHANGE-2026-09-28.md). O limite histórico v16→v20 permanece 128 KiB; novos aumentos exigem autorização explícita.
 
@@ -19,7 +19,7 @@ A V27 apresenta um cartão para cada dia da semana e a V27.0.1 compacta a grade 
 - Inbox tem filtros próprios por tipo e projeto; o Radar mantém a visão completa dos contratos disponíveis.
 - Evolução reúne Radar, Mentor, preferências e estado técnico.
 - Views locais salvam também a tela atual; views anteriores sem esse campo continuam abrindo em Hoje.
-- Prioridades: SEEDF (P1), TJDFT (P2) e TCE-GO (P3). SEEDF e TJDFT estudam de segunda a sexta e revisam no sábado; TCE-GO tem sessões terça, quinta e sábado.
+- Prioridades: SEEDF (P1), TJDFT (P2), TCE-GO (P3) e PRF Administrativo (P4). SEEDF e TJDFT estudam de segunda a sexta e revisam no sábado; TCE-GO tem sessões terça, quinta e sábado.
 - PRF-ADM segue segunda, quarta e sexta, na sequência PRFADM01→PRFADM30, sem pular códigos quando uma sessão é perdida.
 - As frases do Major Cadar alternam automaticamente a cada cinco minutos, com autoria e link da fonte, sem chamada externa automática.
 - Relógio de Brasília usa `America/Sao_Paulo` e atualiza a cada segundo.
@@ -193,7 +193,7 @@ Capacidades consolidadas:
 - observabilidade somente leitura, não bloqueante, com disponibilidade, publicação técnica e deploy separados;
 - falhas de rede/rate limit tratadas sem falso estado offline;
 - linha do tempo local de acessos separada de atividade técnica e sem inferência pedagógica;
-- PWA network-first, app shell offline e cache `central-shell-v27.4.1-quote-desktop-20260928` restrito à Central;
+- PWA network-first, app shell offline e cache `central-shell-v27.4.2-prf-p4-20260928` restrito à Central;
 - quality gate automatizado antes de todo deploy;
 - CSP, escape de conteúdo, HTTPS, contraste, teclado, forced colors e touch targets auditados;
 - orçamento de shell <= 128 KiB na geração v16+ (v15 fechou <= 120 KiB) e zero dependências externas de JS/CSS;
@@ -223,4 +223,4 @@ A fonte dinâmica de verdade é `config/projects.json` (schema v3). Cada item de
 
 ## Governança e auditoria
 
-A esteira histórica v1→v10 permanece congelada em `docs/V10-CHECKPOINT.md` e `docs/FINAL-AUDIT-V10.md`. A geração v11→v15 permanece congelada em `docs/ROADMAP-V15.md` e `docs/V15-CHECKPOINT.md`. A geração v16→v20 é encerrada pela auditoria terminal em `docs/FINAL-AUDIT-V20.md`. A esteira terminal v21 Presença e Ritmo está registrada em `docs/ROADMAP-V21.md` e `docs/V21-CHECKPOINT.md`. As releases recentes estão registradas em seus respectivos roadmaps, critérios de aceitação e auditorias: v27.1.1 (catálogo e ferramenta), v27.2.2 (rotação das frases do Major Cadar), v27.3.0 (destaque do dia e comparação local de contratos), v27.4.0 (site GitHub Pages do PRF com acesso ao Notion preservado) e v27.4.1 (redesenho desktop da frase do Major Cadar).
+A esteira histórica v1→v10 permanece congelada em `docs/V10-CHECKPOINT.md` e `docs/FINAL-AUDIT-V10.md`. A geração v11→v15 permanece congelada em `docs/ROADMAP-V15.md` e `docs/V15-CHECKPOINT.md`. A geração v16→v20 é encerrada pela auditoria terminal em `docs/FINAL-AUDIT-V20.md`. A esteira terminal v21 Presença e Ritmo está registrada em `docs/ROADMAP-V21.md` e `docs/V21-CHECKPOINT.md`. As releases recentes estão registradas em seus respectivos roadmaps, critérios de aceitação e auditorias: v27.1.1 (catálogo e ferramenta), v27.2.2 (rotação das frases do Major Cadar), v27.3.0 (destaque do dia e comparação local de contratos), v27.4.0 (site GitHub Pages do PRF com acesso ao Notion preservado) e v27.4.1 (redesenho desktop da frase do Major Cadar) e v27.4.2 (PRF P4).

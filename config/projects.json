@@ -3,7 +3,7 @@
   "central": {
     "name": "Central de Estudos",
     "owner": "Rodrigo",
-    "version": "27.4.1",
+    "version": "27.4.2",
     "defaultProject": "tcego"
   },
   "projects": [
@@ -54,7 +54,8 @@
       "destinationType": "site",
       "url": "https://rodrigorosadantas.github.io/prf-administrativo-dashboard/",
       "repository": "https://github.com/RodrigoRosaDantas/prf-administrativo-dashboard",
-      "notionUrl": "https://app.notion.com/p/3e8cf5a2673181679cd2f5532e0abf60"
+      "notionUrl": "https://app.notion.com/p/3e8cf5a2673181679cd2f5532e0abf60",
+      "studyPriority": 4
     },
     {
       "id": "sedes-tdas",
