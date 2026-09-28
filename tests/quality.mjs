@@ -792,27 +792,39 @@ function testV21PresenceRuntime() {
   assert.ok(nodes["daily-motivation-author"].textContent&&nodes["daily-motivation-source"].href.startsWith("https://"),"daily quote must include author and source");
   const first=nodes["daily-motivation"].textContent;
   vm.runInContext("renderPresence()",context);
-  assert.equal(nodes["daily-motivation"].textContent,first,"motivation must remain stable during the Brasília day");
-  instant+=86400000;vm.runInContext("renderPresence()",context);
-  assert.notEqual(nodes["daily-motivation"].textContent,first,"motivation must advance with the Brasília calendar day");
-  pass("Brasília seconds and attributed daily motivation runtime behavior");
+  assert.equal(nodes["daily-motivation"].textContent,first,"motivation must remain stable within one five-minute window");
+  instant=Math.ceil(instant/300000)*300000;vm.runInContext("renderPresence()",context);
+  assert.notEqual(nodes["daily-motivation"].textContent,first,"motivation must rotate automatically at the next five-minute boundary");
+  pass("Brasília clock and five-minute attributed motivation rotation");
 }
 
 function testV272MajorCadarQuotes() {
   const {context}=loadAppForTests(),nodes={greeting:{},"brasilia-time":{},"brasilia-date":{},"daily-motivation":{},"daily-motivation-author":{},"daily-motivation-source":{}};
   context.document.getElementById=id=>nodes[id]||null;
-  const start=Date.parse("2026-09-27T03:15:40Z"),texts=new Set();
-  for(let day=0;day<6;day++){
-    class FixedDate extends Date { constructor(...args){super(...(args.length?args:[start+day*86400000]))} }
-    context.Date=FixedDate;
+  const start=Date.parse("2026-09-27T03:15:00Z"),rotationMs=300000,texts=new Set();
+  const sourceByQuote=new Map([
+    ["Seja forte ou seja vencido.","https://www.instagram.com/caveiracadar09/"],
+    ["Tudo que eu ensino, eu vivi.","https://projetocaopastor.com.br/curso/programa-de-protecao"],
+    ["Planeja como General e executa como soldado.","https://www.youtube.com/watch?v=YIUoDC1PHbE"],
+    ["Tudo que eu cobro, eu pratiquei.","https://projetocaopastor.com.br/curso/programa-de-protecao"],
+    ["Não negocia com a tua mente.","https://www.youtube.com/watch?v=YIUoDC1PHbE"],
+    ["Comemore suas pequenas vitórias.","https://www.youtube.com/watch?v=YIUoDC1PHbE"]
+  ]);
+  let instant=start;
+  class FixedDate extends Date { constructor(...args){super(...(args.length?args:[instant]))} }
+  context.Date=FixedDate;
+  for(let window=0;window<6;window++){
+    instant=start+window*rotationMs;
     vm.runInContext("renderPresence()",context);
-    assert.ok(nodes["daily-motivation"].textContent,"each Brasília day must render a quote");
+    const text=nodes["daily-motivation"].textContent;
+    assert.ok(text,"each five-minute window must render a quote");
     assert.equal(nodes["daily-motivation-author"].textContent,"Major Cadar","every displayed phrase must keep Major Cadar attribution");
-    assert.ok(["https://www.instagram.com/caveiracadar09/","https://projetocaopastor.com.br/curso/programa-de-protecao","https://www.youtube.com/watch?v=YIUoDC1PHbE"].includes(nodes["daily-motivation-source"].href),"each quote must link to one of its verified sources");
-    texts.add(nodes["daily-motivation"].textContent);
+    assert.equal(nodes["daily-motivation-source"].href,sourceByQuote.get(text),"each phrase must keep its own verified source link");
+    texts.add(text);
   }
-  assert.equal(texts.size,6,"the six-day rotation must expose six distinct Cadar phrases");
-  pass("v27.2.1 Major Cadar quote rotation, attribution and source links");
+  assert.equal(texts.size,6,"the six consecutive five-minute windows must cycle through all six Cadar phrases");
+  assert.ok(read("js/app.js").includes("const quoteIntervalMs=300000"),"quote rotation must use five-minute windows");
+  pass("v27.2.2 Major Cadar five-minute rotation, attribution and exact source links");
 }
 
 function testV21PresenceExperience() {
@@ -885,7 +897,7 @@ function testV27DailySchedule(registry) {
   const start=html.indexOf('<section id="agenda-semanal"'),end=html.indexOf("</section>",start);
   assert.ok(start>=0&&end>start,"weekly schedule must remain a section on the page");
   const schedule=html.slice(start,end);
-  assert.equal(registry.central.version,"27.2.1","registry must identify v27.2.1");
+  assert.equal(registry.central.version,"27.2.2","registry must identify v27.2.2");
   assert.ok(html.includes(`HOJE · V${registry.central.version}`),"Today panel version badge must match the current release");
   assert.equal(registry.central.defaultProject,"tcego","study priorities must not change the user's central focus");
   assert.ok(html.includes('href="#agenda-semanal">Cronograma</a>')&&router.includes('"agenda-semanal":"today"'),"schedule must have an accessible shortcut and route back to Hoje");
@@ -906,11 +918,11 @@ function testV27DailySchedule(registry) {
   assert.ok(schedule.includes("não registra presença")&&schedule.includes("não estima avanço")&&schedule.includes("não muda o foco"),"weekly schedule must not claim study progress or change focus");
   const mobileCss=css.slice(css.indexOf("@media(max-width:719px)"));
   assert.ok(html.includes("./css/workspace-v27.css")&&html.includes("weekly-schedule-v27")&&mobileCss.includes(".schedule-day-grid{grid-template-columns:1fr")&&mobileCss.includes(".schedule-day-card{grid-template-columns:minmax(82px,.34fr) minmax(0,1fr)")&&mobileCss.includes(".schedule-day-heading>span{display:none}")&&mobileCss.includes(".schedule-day-rest-v27 .schedule-day-heading>span{display:inline-flex}")&&mobileCss.includes(".schedule-day-card .schedule-item-copy{display:block")&&mobileCss.includes("min-width:0"),"v27 mobile schedule must keep seven days while compacting each day row and avoiding redundant labels");
-  assert.ok(sw.includes("central-shell-v27.2.1")&&sw.includes("./css/workspace-v27.css"),"PWA shell cache must include the v27 stylesheet and current version");
-  assert.ok(html.includes('src="./js/app.js?v=27.2.1"')&&sw.includes("'./js/app.js?v=27.2.1'")&&sw.includes("'./config/projects.json?v=27.2.1'")&&app.includes("./config/projects.json?v=27.2.1"),"v27.2.1 must version app and registry cache URLs");
+  assert.ok(sw.includes("central-shell-v27.2.2")&&sw.includes("./css/workspace-v27.css"),"PWA shell cache must include the v27 stylesheet and current version");
+  assert.ok(html.includes('src="./js/app.js?v=27.2.2"')&&sw.includes("'./js/app.js?v=27.2.2'")&&sw.includes("'./config/projects.json?v=27.2.2'")&&app.includes("./config/projects.json?v=27.2.2"),"v27.2.2 must version app and registry cache URLs");
   for(const source of ["instagram.com/caveiracadar09","projetocaopastor.com.br/curso/programa-de-protecao","youtube.com/watch?v=YIUoDC1PHbE"])assert.ok(app.includes(source),`Major Cadar quote source missing: ${source}`);
-  assert.ok(html.includes('id="daily-motivation-author"')&&html.includes('id="daily-motivation-source"')&&html.includes("Mentalidade de estudo · Major Cadar")&&html.includes("Seja forte ou seja vencido.")&&app.includes('author:"Major Cadar"')&&app.includes('second:"2-digit"')&&app.includes("setInterval(e,1e3)"),"Major Cadar quote, attribution/source and Brasília clock seconds must remain visible");
-  pass("v27.2.1 daily schedule, visible PRF track, Major Cadar quotes and v26 experience");
+  assert.ok(html.includes('id="daily-motivation-author"')&&html.includes('id="daily-motivation-source"')&&html.includes("Frases do Major Cadar · muda a cada 5 min")&&html.includes('id="daily-motivation" class="daily-motivation" aria-live="polite" aria-atomic="true"')&&html.includes("Seja forte ou seja vencido.")&&app.includes('author:"Major Cadar"')&&app.includes('second:"2-digit"')&&app.includes("setInterval(e,1e3)"),"Major Cadar quote, accessible rotation label, attribution/source and Brasília clock seconds must remain visible");
+  pass("v27.2.2 daily schedule, visible PRF track, Major Cadar quotes and v26 experience");
 }
 
 function testV271ProjectAndToolDirectory(registry) {
@@ -923,7 +935,7 @@ function testV271ProjectAndToolDirectory(registry) {
   const toolsStart = html.indexOf('<div class="study-tools"');
   const toolsEnd = html.indexOf("</div></section><section id=\"workspace\"", toolsStart);
 
-  assert.equal(registry.central.version, "27.2.1", "catalog release must be v27.2.1");
+  assert.equal(registry.central.version, "27.2.2", "catalog release must be v27.2.2");
   assert.equal(registry.central.defaultProject, "tcego", "new access cards must not change the default Central focus");
   assert.ok(prf && prf.status === "active" && prf.priority === "normal", "PRF must be an active project without a numbered priority");
   assert.equal(prf.destinationType, "notion", "PRF must open as a Notion project");
@@ -945,7 +957,7 @@ function testV271ProjectAndToolDirectory(registry) {
   assert.ok(tools.includes("fora da contagem") && tools.includes("Ferramenta"), "tool card must explain its separate role");
   assert.ok(html.includes("4 de 4 projetos") && html.includes("4 projetos · 1 ferramenta de estudo"), "static project and tool counts must match the catalog");
 
-  pass("v27.2.1 preserves the PRF destination, no-telemetry rule and separate question-tool card");
+  pass("v27.2.2 preserves the PRF destination, no-telemetry rule and separate question-tool card");
 }
 
 function testReleaseDocumentationCoherence(registry) {
@@ -1072,7 +1084,9 @@ function testReleaseDocumentationCoherence(registry) {
     assert.ok(audit271.includes("864fb0410a845cacef53794a7061d2c6c7dd6182")&&audit271.includes("36368493310")&&audit271.includes("10948247167")&&audit271.includes("a35952ca77442ac02a9d5461a882164f872ad4ea41863cfcf2e7356e7d940eff")&&audit271.includes("144.642 bytes"),"v27.1.1 final audit must bind its commit, successful workflow, Pages artifact and shell measurements");
     const roadmap272=read("docs/ROADMAP-V27.2.md"),acceptance272=read("docs/ACCEPTANCE-V27.2.md"),audit272=read("docs/FINAL-AUDIT-V27.2.1.md");
     const budgetDecision=read("docs/APP-SHELL-BUDGET-CHANGE-2026-09-28.md");
-    assert.ok(roadmap272.includes("27.2.0")&&roadmap272.includes("Major Cadar")&&acceptance272.includes("Major Cadar")&&acceptance272.includes("Brasília"),"v27.2 quote release must document scope and daily-selection acceptance");
+    const roadmap2722=read("docs/ROADMAP-V27.2.2.md"),acceptance2722=read("docs/ACCEPTANCE-V27.2.2.md"),audit2722=read("docs/FINAL-AUDIT-V27.2.2.md");
+    assert.ok(roadmap272.includes("27.2.0")&&roadmap272.includes("Major Cadar")&&acceptance272.includes("Major Cadar")&&acceptance272.includes("Brasília"),"v27.2 quote release must document scope and original daily selection");
+    assert.ok(roadmap2722.includes("cinco minutos")&&acceptance2722.includes("cinco minutos")&&audit2722.includes("v27.2.2")&&audit2722.includes("Quality gate local"),"v27.2.2 must document five-minute quote rotation and local audit");
     assert.ok(audit272.includes("ce5288686fc8d8d60e504455721653ef5cb6a260")&&audit272.includes("36369866365")&&audit272.includes("10948796852")&&audit272.includes("c7acdea6599e50d905f3d735c3e9da7a9d3222a4f4d2589d6fbc16e2532debf3")&&audit272.includes("144.728 bytes"),"v27.2 final audit must bind the hotfix commit, successful workflow, Pages artifact and measured shell");
     assert.ok(budgetDecision.includes("147.456 bytes (144 KiB)")&&budgetDecision.includes("49.152 bytes (48 KiB)")&&budgetDecision.includes("autorizou")&&audit272.includes("APP-SHELL-BUDGET-CHANGE-2026-09-28.md"),"the post-v20 shell budget must have an explicit user authorization record");
     assert.ok(architecture.includes("Major Cadar")&&changelog.includes("## [27.2.0]"),"v27.2 quote experience must be described in architecture and changelog");
