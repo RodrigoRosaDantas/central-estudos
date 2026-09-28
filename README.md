@@ -8,7 +8,7 @@ A Central não altera nem replica o conteúdo dos projetos. O registro de estudo
 
 ## Estado atual — v27.6
 
-A v27.6.0 acrescenta o registro diário de estudo por bloco: data, projeto, trilha/matéria, tópico opcional, duração em horas e minutos e confirmação explícita. Hoje e semana mostram o tempo somado; cada projeto detalha as horas por trilha e tópico. A grade semanal permanece intacta. O registro é salvo localmente neste navegador, com exportação e restauração de backup JSON; não há sincronização automática com Notion nem com outros aparelhos. Horas registradas medem tempo informado, não domínio ou progresso.
+A v27.6.0 acrescenta o registro diário de estudo por bloco: data, projeto, trilha/matéria, tópico opcional, duração em horas e minutos e confirmação explícita. Hoje e semana mostram o tempo somado; cada projeto detalha as horas por trilha e tópico. A grade semanal permanece intacta. O registro é salvo localmente neste navegador, com exportação e restauração de backup JSON; não há sincronização automática com Notion nem com outros aparelhos. Horas registradas medem tempo informado, não domínio ou progresso. A v27.6.1 ajusta a disposição dos campos de horas e minutos.
 
 O fechamento do dia da v27.5.0 continua separando grade prevista, bloqueio editorial e retomada. Os contratos em Evolução mostram a origem e a atualização do estado publicado; esses sinais não confirmam uma sessão individual. O PRF continua sem contrato de status e mantém o Notion como fonte de verdade.
 
@@ -195,7 +195,7 @@ Capacidades consolidadas:
 - observabilidade somente leitura, não bloqueante, com disponibilidade, publicação técnica e deploy separados;
 - falhas de rede/rate limit tratadas sem falso estado offline;
 - linha do tempo local de acessos separada de atividade técnica e sem inferência pedagógica;
-- PWA network-first e shell offline com o registro local de estudo; a interface de status publicada e os controles avançados do catálogo continuam carregando pela rede; cache `central-shell-v27.6.0-study-log-20260928` restrito à Central;
+- PWA network-first e shell offline com o registro local de estudo; a interface de status publicada e os controles avançados do catálogo continuam carregando pela rede; cache `central-shell-v27.6.1-study-log-20260928` restrito à Central;
 - quality gate automatizado antes de todo deploy;
 - CSP, escape de conteúdo, HTTPS, contraste, teclado, forced colors e touch targets auditados;
 - orçamento de shell <= 128 KiB na geração v16+ (v15 fechou <= 120 KiB) e zero dependências externas de JS/CSS;
@@ -225,4 +225,4 @@ A fonte dinâmica de verdade é `config/projects.json` (schema v3). Cada item de
 
 ## Governança e auditoria
 
-A esteira histórica v1→v10 permanece congelada em `docs/V10-CHECKPOINT.md` e `docs/FINAL-AUDIT-V10.md`. A geração v11→v15 permanece congelada em `docs/ROADMAP-V15.md` e `docs/V15-CHECKPOINT.md`. A geração v16→v20 é encerrada pela auditoria terminal em `docs/FINAL-AUDIT-V20.md`. A esteira terminal v21 Presença e Ritmo está registrada em `docs/ROADMAP-V21.md` e `docs/V21-CHECKPOINT.md`. As releases recentes estão registradas em seus respectivos roadmaps, critérios de aceitação e auditorias: v27.1.1 (catálogo e ferramenta), v27.2.2 (rotação das frases do Major Cadar), v27.3.0 (destaque do dia e comparação local de contratos), v27.4.0 (site GitHub Pages do PRF com acesso ao Notion preservado) e v27.4.1 (redesenho desktop da frase do Major Cadar) e v27.4.2 (PRF P4) e v27.4.3 (correção do ciclo PRF e manifesto PWA), v27.5.0 (fechamento do dia) e v27.6.0 (registro local de tempo por projeto/trilha/tópico).
+A esteira histórica v1→v10 permanece congelada em `docs/V10-CHECKPOINT.md` e `docs/FINAL-AUDIT-V10.md`. A geração v11→v15 permanece congelada em `docs/ROADMAP-V15.md` e `docs/V15-CHECKPOINT.md`. A geração v16→v20 é encerrada pela auditoria terminal em `docs/FINAL-AUDIT-V20.md`. A esteira terminal v21 Presença e Ritmo está registrada em `docs/ROADMAP-V21.md` e `docs/V21-CHECKPOINT.md`. As releases recentes estão registradas em seus respectivos roadmaps, critérios de aceitação e auditorias: v27.1.1 (catálogo e ferramenta), v27.2.2 (rotação das frases do Major Cadar), v27.3.0 (destaque do dia e comparação local de contratos), v27.4.0 (site GitHub Pages do PRF com acesso ao Notion preservado) e v27.4.1 (redesenho desktop da frase do Major Cadar) e v27.4.2 (PRF P4) e v27.4.3 (correção do ciclo PRF e manifesto PWA), v27.5.0 (fechamento do dia) e v27.6.0 (registro local de tempo por projeto/trilha/tópico) e v27.6.1 (ajuste visual dos campos de duração).

@@ -8,4 +8,5 @@
 - [x] Nenhum lançamento é criado a partir da grade, visita, data de publicação ou status do projeto.
 - [x] Dias, projetos, foco, ordem P1–P4 e demais horários da grade v27.5 foram preservados.
 - [x] Registro e estilos estão no app shell offline; não houve aumento do teto aprovado.
-- [x] `node tests/quality.mjs` passa localmente; QA publicado e CI ficam pendentes do deploy.
+- [x] Quality gate e Deploy do workflow #381 passaram; artifact Pages `11002503380`.
+- [x] A página publicada mostrou versão v27.6.0, formulário e resumos; a conferência visual detectou o alinhamento horizontal dos campos de duração, corrigido na v27.6.1.

@@ -1,5 +1,14 @@
 # CHANGELOG — Central de Estudos
 
+## [27.6.1] - 2026-09-28
+
+### Fixed
+- Empilha os campos de horas e minutos sob seus rótulos em telas amplas e estreitas.
+- Mantém formulário, registro e resumo acessíveis dentro do app shell offline.
+
+### Preserved
+- Esquema do registro, dados locais, backups e grade semanal da v27.6.0.
+
 ## [27.6.0] - 2026-09-28
 
 ### Added
