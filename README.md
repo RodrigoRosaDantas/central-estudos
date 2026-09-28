@@ -1,17 +1,19 @@
 # Central de Estudos
 
-Camada de entrada para os ambientes independentes TCE-GO, SEEDF e TJDFT.
+Camada de entrada para os projetos de estudo TCE-GO, SEEDF, TJDFT e PRF Administrativo, com uma seção separada para a Plataforma de Questões.
 
 > **A Central observa e direciona. Os projetos executam e decidem.**
 
-A Central não importa, altera ou replica o código dos projetos-filhos.
+A Central não importa, altera ou replica o conteúdo dos projetos. Ela mantém os acessos independentes.
 
-## Estado atual — v27.0.1
+## Estado atual — v27.1.0
 
-A v27 mostra um cartão para cada dia da semana e destaca PRF Administrativo como trilha complementar. O patch 27.0.1 compacta a grade em celulares sem esconder tarefas nem mudar a ordem de prioridades.
+A v27.1.0 lista PRF Administrativo como projeto ativo com acesso ao plano no Notion e mostra a Plataforma de Questões como ferramenta transversal. PRF não recebe prioridade numérica; a faixa principal continua SEEDF (P1), TJDFT (P2) e TCE-GO (P3). A agenda semanal continua indicando a execução PRF como complementar.
+
+A V27 apresenta um cartão para cada dia da semana e a V27.0.1 compacta a grade em celulares sem esconder tarefas nem mudar a ordem de prioridades.
 
 - Retomada mostra separadamente o foco escolhido e o último acesso local; acesso não representa estudo ou progresso.
-- Projetos reúne acessos ativos e o Workspace de concursos.
+- Projetos reúne os quatro projetos ativos; a Plataforma de Questões tem cartão próprio, fora da contagem de concursos.
 - Inbox tem filtros próprios por tipo e projeto; o Radar mantém a visão completa dos contratos disponíveis.
 - Evolução reúne Radar, Mentor, preferências e estado técnico.
 - Views locais salvam também a tela atual; views anteriores sem esse campo continuam abrindo em Hoje.
@@ -21,9 +23,11 @@ A v27 mostra um cartão para cada dia da semana e destaca PRF Administrativo com
 - Relógio de Brasília usa `America/Sao_Paulo` e atualiza a cada segundo.
 - O cronograma apresenta os sete dias em cartões individuais e usa linhas compactas em telas estreitas.
 - A grade não muda o foco, não registra execução e não calcula progresso; cada projeto mantém sua fila e suas exceções.
-- Cada tela possui âncora direta; sem JavaScript, os links diretos dos projetos continuam disponíveis.
+- O PRF abre o projeto independente no Notion; a Central não lê essa página nem inventa estado ou progresso.
+- A Plataforma de Questões abre o site independente e não entra na prioridade nem nos indicadores dos concursos.
+- Cada tela possui âncora direta; sem JavaScript, os links diretos dos quatro projetos e da ferramenta continuam disponíveis.
 - contratos read-only, sem chamadas novas, sem ranking ou progresso inferido;
-- TCE-GO, SEEDF e TJDFT permanecem READ-ONLY.
+- TCE-GO, SEEDF, TJDFT, PRF no Notion e a Plataforma de Questões permanecem fora de qualquer escrita pela Central.
 
 ### Base v23 — Hoje, Radar e Mentor
 
@@ -217,4 +221,4 @@ A fonte dinâmica de verdade é `config/projects.json` (schema v3). Cada item de
 
 ## Governança e auditoria
 
-A esteira histórica v1→v10 permanece congelada em `docs/V10-CHECKPOINT.md` e `docs/FINAL-AUDIT-V10.md`. A geração v11→v15 permanece congelada em `docs/ROADMAP-V15.md` e `docs/V15-CHECKPOINT.md`. A geração v16→v20 é encerrada pela auditoria terminal em `docs/FINAL-AUDIT-V20.md`. A esteira terminal v21 Presença e Ritmo está registrada em `docs/ROADMAP-V21.md` e `docs/V21-CHECKPOINT.md`.
+A esteira histórica v1→v10 permanece congelada em `docs/V10-CHECKPOINT.md` e `docs/FINAL-AUDIT-V10.md`. A geração v11→v15 permanece congelada em `docs/ROADMAP-V15.md` e `docs/V15-CHECKPOINT.md`. A geração v16→v20 é encerrada pela auditoria terminal em `docs/FINAL-AUDIT-V20.md`. A esteira terminal v21 Presença e Ritmo está registrada em `docs/ROADMAP-V21.md` e `docs/V21-CHECKPOINT.md`. A release v27.1.0 sobre o catálogo de projetos e a Plataforma de Questões está em `docs/ROADMAP-V27.1.md`, com aceite em `docs/ACCEPTANCE-V27.1.md` e auditoria final em `docs/FINAL-AUDIT-V27.1.0.md`.

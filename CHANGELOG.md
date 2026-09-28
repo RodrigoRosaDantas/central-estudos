@@ -1,5 +1,22 @@
 # CHANGELOG — Central de Estudos
 
+## [27.1.0] - 2026-09-27
+
+### Added
+- PRF Administrativo entra no catálogo como projeto ativo, com link direto à página de execução no Notion.
+- Plataforma de Questões ganha card próprio na seção Ferramentas de estudo, separado dos concursos e das prioridades.
+- Fallback sem JavaScript conserva acesso direto aos quatro projetos e à plataforma.
+
+### Preserved
+- SEEDF (P1), TJDFT (P2) e TCE-GO (P3) mantêm a ordem principal; PRF fica sem prioridade numérica.
+- O cartão PRF declara origem Notion e ausência de telemetria; foco, último acesso e progresso seguem separados.
+- A plataforma e os projetos abrem em seus próprios sites; a Central não escreve nos destinos.
+- Gate de payload passa a medir todos os assets do app shell e também o tamanho comprimido.
+
+### Verified
+- `node tests/quality.mjs` local passou; GitHub Actions e a conferência do site publicado serão registradas após a publicação.
+- Auditoria completa em `docs/FINAL-AUDIT-V27.1.0.md`.
+
 ## [27.0.1] - 2026-09-27
 
 ### Fixed

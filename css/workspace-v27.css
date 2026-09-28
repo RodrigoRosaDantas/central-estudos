@@ -42,3 +42,5 @@
   .schedule-day-card .schedule-item{grid-template-columns:37px minmax(0,1fr);gap:4px}
   .schedule-day-heading h3{font-size:.72rem}
 }
+
+.project-prf-adm{--project-accent:#ffb86b}.project-question-tool{--project-accent:#5eead4}.study-tools{margin-top:24px;padding-top:18px;border-top:1px solid var(--border)}.study-tools-grid{display:grid;grid-template-columns:minmax(0,360px);gap:13px;margin-top:12px}

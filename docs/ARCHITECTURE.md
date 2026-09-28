@@ -10,11 +10,11 @@ Ela lista ambientes, destaca foco, recorda último acesso, oferece organização
 
 ## Registry
 
-A fonte dinâmica de verdade é `config/projects.json` (`schemaVersion: 3`). O lifecycle é explícito em `status`: `active`, `archived` ou `future`. Projetos ativos/arquivados possuem URL e repositório HTTPS; futuros podem existir sem URL até o ambiente ser criado. `statusUrl` continua opcional e destinado ao contrato read-only.
+A fonte dinâmica de verdade é `config/projects.json` (`schemaVersion: 3`). O lifecycle é explícito em `status`: `active`, `archived` ou `future`. Projetos de site ativo/arquivado possuem URL e repositório HTTPS; o PRF admite `destinationType: "notion"` e URL HTTPS sem repositório ou telemetria. Projetos futuros podem existir sem URL até o ambiente ser criado. `statusUrl` continua opcional e destinado ao contrato read-only.
 
 ## Fallback e progressive enhancement
 
-`index.html` contém uma cópia mínima dos três acessos diretos. Essa duplicação é intencional e restrita ao fallback. Se JavaScript ou registry falharem, TCE-GO, SEEDF e TJDFT continuam acessíveis. JavaScript melhora foco, retomada, catálogo, preferências, diagnóstico e observabilidade, mas nunca é requisito para abrir um projeto.
+`index.html` contém links mínimos para os quatro projetos e a Plataforma de Questões. Essa duplicação é intencional e restrita ao fallback. Se JavaScript ou registry falharem, TCE-GO, SEEDF, TJDFT, PRF no Notion e a plataforma continuam acessíveis. JavaScript melhora foco, retomada, catálogo, preferências, diagnóstico e observabilidade, mas nunca é requisito para abrir um projeto.
 
 ## Estado local e separação semântica
 
@@ -32,7 +32,7 @@ Busca, favoritos, ordenação, atalhos e ordem manual são camadas locais sobre 
 
 ## PWA e resiliência
 
-O service worker é limitado à origem e ao pathname da Central. O cache da release atual é `central-shell-v27.0.1` e contém somente o app shell da Central.
+O service worker é limitado à origem e ao pathname da Central. O cache da release atual é `central-shell-v27.1.0` e contém somente o app shell da Central; os sites de projeto e a ferramenta não são incluídos.
 
 Estratégia:
 - navegações e assets conhecidos usam **network first**;
@@ -47,7 +47,7 @@ Abrir a shell offline não afirma disponibilidade offline dos projetos.
 
 ## Qualidade e deploy
 
-`tests/quality.mjs` é uma suite local, determinística e sem dependências externas. O workflow Pages executa `quality` antes de `deploy`, com dependência explícita `deploy needs: quality`. O gate cobre registry, referências, fallback, manifest, service worker, segurança básica, funções críticas, contratos de diagnóstico, acessibilidade estrutural, mobile e orçamento de payload.
+`tests/quality.mjs` é uma suite local, determinística e sem dependências externas. O workflow Pages executa `quality` antes de `deploy`, com dependência explícita `deploy needs: quality`. O gate cobre registry, referências, fallback, manifest, service worker, segurança básica, funções críticas, contratos de diagnóstico, acessibilidade estrutural, mobile e orçamento do app shell. O orçamento lê os mesmos arquivos do `APP_SHELL` e limita tanto o tamanho bruto quanto a soma gzip por arquivo.
 
 ## Linha do tempo e diagnóstico
 
@@ -418,3 +418,11 @@ A v26 introduziu o cronograma semanal, a trilha PRF-ADM em dias fixos, citaçõe
 A v27 apresenta sete cartões separados, um por dia. Segunda, quarta e sexta mostram SEEDF, TJDFT e PRF Administrativo; terça e quinta mostram SEEDF, TJDFT e TCE-GO; sábado mostra as revisões P1/P2 e TCE-GO; domingo permanece protegido. PRF Administrativo é uma trilha complementar, não uma prioridade numerada.
 
 O shell `central-shell-v27.0.1` inclui `workspace-v27.css`; runtime e registro usam URLs `v27.0.1` para renovar clientes com cache anterior. Em celular, cada dia mantém a própria linha, com tarefas ao lado do dia e rótulos redundantes recolhidos. Foco, filas e dados dos projetos-filhos permanecem independentes; a agenda não mede execução ou progresso.
+
+## Catálogo de projetos e ferramenta transversal — v27.1.0
+
+- PRF Administrativo aparece em `config/projects.json` como projeto ativo, com `destinationType: "notion"`, URL direta para o plano e prioridade `normal`; portanto, não recebe número nem altera SEEDF P1, TJDFT P2 e TCE-GO P3.
+- A Central não envia `HEAD` para a página Notion e não consulta GitHub por ela. O card declara que o conteúdo fica no Notion e que a Central não mede sua execução.
+- Plataforma de Questões abre em uma área própria de Ferramentas de estudo, com a mesma linguagem visual dos cards de projeto; não participa do lifecycle, da busca de concursos, da prioridade ou do pulso técnico dos dashboards.
+- Links de projeto e da ferramenta também estão no HTML estático para fallback sem JavaScript. Os destinos mantêm seus próprios dados e rotinas.
+- Quality gate mede todos os 23 recursos únicos em `APP_SHELL`: 144.658 bytes brutos (limite 147.456) e soma gzip 46.807 bytes (limite 49.152), incluindo folhas v26/v27, registry, 404 e ícone. A auditoria detectou que o gate antigo omitia alguns recursos; agora a lista é derivada diretamente do app shell.

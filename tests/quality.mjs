@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
+import zlib from "node:zlib";
 import vm from "node:vm";
 import { fileURLToPath } from "node:url";
 
@@ -108,7 +109,11 @@ function testRegistry(registry, html) {
 
     if (project.status !== "future") {
       assert.equal(new URL(project.url).protocol, "https:", `${project.id}.url must use HTTPS`);
-      assert.equal(new URL(project.repository).protocol, "https:", `${project.id}.repository must use HTTPS`);
+      if (project.destinationType === "notion") {
+        assert.equal(project.repository, undefined, `${project.id} Notion project must not claim a GitHub repository`);
+      } else {
+        assert.equal(new URL(project.repository).protocol, "https:", `${project.id}.repository must use HTTPS`);
+      }
       assert.ok(html.includes(project.url), `static HTML fallback must include ${project.id} URL`);
     } else {
       if (project.url) assert.equal(new URL(project.url).protocol, "https:", `${project.id}.future URL must use HTTPS`);
@@ -201,6 +206,30 @@ function testCriticalAppLogic(registry) {
   invalidId.projects[0].id = 'bad id"><script>';
   assert.throws(() => context.validateConfig(invalidId), /ID de projeto inválido/i, "unsafe project ids must fail");
 
+  const prf = valid.projects.find(project => project.id === "prf-adm");
+  assert.ok(prf, "PRF Administrative must be registered as a project");
+  assert.equal(prf.destinationType, "notion", "PRF must be typed as an external Notion project");
+  assert.equal(prf.repository, undefined, "PRF must not inherit a fake GitHub repository");
+  const normalizedPrf = context.normalizeProject(prf);
+  assert.equal(normalizedPrf.destinationType, "notion", "normalization must retain the external destination type");
+  assert.equal(normalizedPrf.repository, null, "normalization must preserve the lack of a GitHub repository");
+
+  const invalidDestination = clone(registry);
+  invalidDestination.projects.find(project => project.id === "prf-adm").destinationType = "iframe";
+  assert.throws(() => context.validateConfig(invalidDestination), /Tipo de destino inválido/i, "unknown destination type must fail");
+
+  const invalidNotionHost = clone(registry);
+  invalidNotionHost.projects.find(project => project.id === "prf-adm").url = "https://notion.so/3e8cf5a2673181679cd2f5532e0abf60";
+  assert.throws(() => context.validateConfig(invalidNotionHost), /URL de Notion inválida/i, "Notion project must use the official app.notion.com host");
+
+  const notionWithRepo = clone(registry);
+  notionWithRepo.projects.find(project => project.id === "prf-adm").repository = "https://github.com/RodrigoRosaDantas/central-estudos";
+  assert.throws(() => context.validateConfig(notionWithRepo), /não deve declarar repositório/i, "Notion project must not claim another project's repository");
+
+  const siteWithoutRepo = clone(registry);
+  delete siteWithoutRepo.projects.find(project => project.id === "tcego").repository;
+  assert.throws(() => context.validateConfig(siteWithoutRepo), /precisa de URL e repositório/i, "GitHub site project still requires its own repository");
+
   const missingDefault = clone(registry);
   missingDefault.central.defaultProject = "missing-project";
   assert.throws(() => context.validateConfig(missingDefault), /Projeto padrão.*ativo|Projeto padrão.*registry/i, "missing or inactive defaultProject must fail");
@@ -215,6 +244,9 @@ function testCriticalAppLogic(registry) {
     const chosen = context.chooseFocus(valid.projects, valid.central.defaultProject);
     assert.equal(chosen.id, alternate.id, "valid local focus preference must be honored");
   }
+
+  localStorage.setItem("central-estudos:focus-project", "prf-adm");
+  assert.equal(context.chooseFocus(valid.projects, valid.central.defaultProject).id, "prf-adm", "external project must remain selectable as local focus");
 
   localStorage.setItem("central-estudos:last-project", "{corrompido");
   const lastVisit = context.readLastVisit();
@@ -277,6 +309,7 @@ function cssHexVariable(css, name) {
 
 function testV9Hardening(registry) {
   const html = read("index.html");
+  const sw = read("sw.js");
   const app = read("js/app.js");
   const catalog = read("js/catalog-v4.js");
   const personalization = read("js/personalization-v5.js");
@@ -335,29 +368,17 @@ function testV9Hardening(registry) {
   assert.ok(personalization.includes("&#039;")&&personalization.includes(".innerHTML="), "personalization must HTML-escape registry text before insertion");
   assert.ok(timeline.includes('e.healthMetaState==="cached"') && timeline.includes("não confirma o estado neste instante"), "cached health must not be described as current");
 
-  const payloadFiles = [
-    "index.html",
-    "sw.js",
-    "manifest.webmanifest",
-    "js/app.js",
-    "js/catalog-v4.js",
-    "js/personalization-v5.js",
-    "js/pwa-v6.js",
-    "js/timeline-v8.js",
-    "js/pro-v11.js",
-    "js/contracts-v12.js",
-    "js/operational-v13.js",
-    "js/workspace-v24.js",
-    "css/app.css",
-    "css/catalog-v4.css",
-    "css/personalization-v5.css",
-    "css/timeline-v8.css",
-    "css/pro-v11.css",
-    "css/operational-v13.css",
-    "css/workspace-v24.css",
-  ];
-  const payloadBytes = payloadFiles.reduce((total, file) => total + fs.statSync(path.join(ROOT, file)).size, 0);
-  assert.ok(payloadBytes <= 128 * 1024, `first-party shell source budget exceeded: ${payloadBytes} bytes`);
+  const shellMatch = sw.match(/const APP_SHELL = \[([\s\S]*?)\];/);
+  assert.ok(shellMatch, "service worker must declare APP_SHELL for payload measurement");
+  const payloadFiles = [...shellMatch[1].matchAll(/'([^']+)'/g)]
+    .map(match => match[1])
+    .map(entry => entry === "./" ? "index.html" : entry.replace(/^\.\//, "").split("?")[0]);
+  const uniquePayloadFiles = [...new Set(payloadFiles)];
+  for (const file of uniquePayloadFiles) assert.ok(exists(file), `payload budget asset missing: ${file}`);
+  const payloadBytes = uniquePayloadFiles.reduce((total, file) => total + fs.statSync(path.join(ROOT, file)).size, 0);
+  const gzipBytes = uniquePayloadFiles.reduce((total, file) => total + zlib.gzipSync(fs.readFileSync(path.join(ROOT, file)), { level: 9 }).length, 0);
+  assert.ok(payloadBytes <= 144 * 1024, `complete app shell raw budget exceeded: ${payloadBytes} bytes`);
+  assert.ok(gzipBytes <= 48 * 1024, `complete app shell gzip budget exceeded: ${gzipBytes} bytes`);
 
   for (const project of registry.projects) {
     assert.match(project.id, /^[a-z0-9_-]+$/i, `unsafe registry id: ${project.id}`);
@@ -423,6 +444,10 @@ function testV12Contracts(registry) {
   assert.ok(schema.required.includes("state"), "status contract schema must require state");
 
   for (const project of registry.projects.filter(project => project.status === "active")) {
+    if (project.destinationType === "notion") {
+      assert.equal(project.statusUrl, undefined, `${project.id} Notion project must remain outside status contracts`);
+      continue;
+    }
     assert.equal(typeof project.statusUrl, "string", `${project.id} active project must publish statusUrl`);
     assert.equal(new URL(project.statusUrl).protocol, "https:", `${project.id}.statusUrl must use HTTPS`);
   }
@@ -542,7 +567,8 @@ function testV15Workspace(registry) {
 
   const active = registry.projects.filter(project => project.status === "active");
   const archived = registry.projects.filter(project => project.status === "archived");
-  assert.equal(active.length, 3, "v15 must keep the three current active projects");
+  assert.equal(active.length, 4, "current workspace must list four active study projects");
+  assert.ok(!active.some(project => project.id === "plataforma-questoes"), "study tool must not be counted as a contest project");
   assert.ok(archived.some(project => project.id === "sedes-tdas"), "v15 must include SEDES as archived history");
   assert.ok(registry.projects.every(project => ["active", "archived", "future"].includes(project.status)), "v15 lifecycle must be explicit");
 
@@ -558,7 +584,7 @@ function testV15Workspace(registry) {
   assert.ok(app.includes("central:workspace-ready"), "v15 core must expose registry lifecycle to workspace");
   assert.ok(app.includes("chooseFocus(activeProjects()"), "archived/future projects must not become focus");
   assert.ok(app.includes("activeProjects().find(s=>s.id===e?.id)"), "archived/future projects must not become resume targets");
-  assert.ok(app.includes("activeProjects().map(async e=>"), "health/metadata must be restricted to active projects");
+  assert.ok(app.includes("function monitoredProjects()") && app.includes("monitoredProjects().map(async e=>"), "health/metadata must be restricted to dashboard projects with telemetry");
 
   assert.ok(pro.includes("central-estudos:workspace-tab-v15"), "workspace tab must be local preference");
   assert.ok(pro.includes('new Set(["active","archived","future"])'), "workspace lifecycle filters must be explicit");
@@ -729,7 +755,7 @@ function testV20UxPolish() {
 function testV20MobileHomeSimplification() {
   const html=read("index.html"),css=read("css/pro-v11.css");
   assert.ok(html.includes(">Acessos<")&&html.includes(">Histórico<"),"v20 mobile UX must use clearer navigation labels");
-  assert.ok((html.includes("COMO ENTRAR")||html.includes(">MENTOR<"))&&html.includes("Acessos rápidos"),"v20+ UX must preserve clear routing and project language");
+  assert.ok((html.includes("COMO ENTRAR")||html.includes(">MENTOR<"))&&(html.includes("Acessos rápidos")||html.includes("Seus projetos")),"v20+ UX must preserve clear routing and project language");
   assert.ok(html.includes('id="pro-now-focus-name"')&&html.includes('id="pro-now-resume-name"')&&html.includes('id="resume-button"'),"the Agora view must hold the single focus and last-project actions");
   const pro=read("js/pro-v11.js");
   assert.ok(pro.includes("Prioridade escolhida por você na Central")&&pro.includes("não representa estudo ou progresso")&&pro.includes("resume-button"),"Retomada must bind the chosen focus and local last access separately");
@@ -841,7 +867,7 @@ function testV27DailySchedule(registry) {
   const start=html.indexOf('<section id="agenda-semanal"'),end=html.indexOf("</section>",start);
   assert.ok(start>=0&&end>start,"weekly schedule must remain a section on the page");
   const schedule=html.slice(start,end);
-  assert.equal(registry.central.version,"27.0.1","registry must identify v27");
+  assert.equal(registry.central.version,"27.1.0","registry must identify v27.1.0");
   assert.equal(registry.central.defaultProject,"tcego","study priorities must not change the user's central focus");
   assert.ok(html.includes('href="#agenda-semanal">Cronograma</a>')&&router.includes('"agenda-semanal":"today"'),"schedule must have an accessible shortcut and route back to Hoje");
   const priorityStrip=schedule.slice(schedule.indexOf('<div class="weekly-priority-strip"'),schedule.indexOf("</div>",schedule.indexOf('<div class="weekly-priority-strip"')));
@@ -861,11 +887,45 @@ function testV27DailySchedule(registry) {
   assert.ok(schedule.includes("não registra presença")&&schedule.includes("não estima avanço")&&schedule.includes("não muda o foco"),"weekly schedule must not claim study progress or change focus");
   const mobileCss=css.slice(css.indexOf("@media(max-width:719px)"));
   assert.ok(html.includes("./css/workspace-v27.css")&&html.includes("weekly-schedule-v27")&&mobileCss.includes(".schedule-day-grid{grid-template-columns:1fr")&&mobileCss.includes(".schedule-day-card{grid-template-columns:minmax(82px,.34fr) minmax(0,1fr)")&&mobileCss.includes(".schedule-day-heading>span{display:none}")&&mobileCss.includes(".schedule-day-rest-v27 .schedule-day-heading>span{display:inline-flex}")&&mobileCss.includes(".schedule-day-card .schedule-item-copy{display:block")&&mobileCss.includes("min-width:0"),"v27 mobile schedule must keep seven days while compacting each day row and avoiding redundant labels");
-  assert.ok(sw.includes("central-shell-v27.0.1")&&sw.includes("./css/workspace-v27.css"),"PWA shell cache must include the v27 stylesheet");
-  assert.ok(html.includes('src="./js/app.js?v=27.0.1"')&&sw.includes("'./js/app.js?v=27.0.1'")&&sw.includes("'./config/projects.json?v=27.0.1'")&&app.includes("./config/projects.json?v=27.0.1"),"v27 must version app and registry cache URLs");
+  assert.ok(sw.includes("central-shell-v27.1.0")&&sw.includes("./css/workspace-v27.css"),"PWA shell cache must include the v27 stylesheet and current version");
+  assert.ok(html.includes('src="./js/app.js?v=27.1.0"')&&sw.includes("'./js/app.js?v=27.1.0'")&&sw.includes("'./config/projects.json?v=27.1.0'")&&app.includes("./config/projects.json?v=27.1.0"),"v27.1.0 must version app and registry cache URLs");
   for(const source of ["kinginstitute.stanford.edu","nelsonmandela.org","malala.org/news-and-voices","gutenberg.org/files/46389"])assert.ok(app.includes(source),`daily quote source missing: ${source}`);
   assert.ok(html.includes('id="daily-motivation-author"')&&html.includes('id="daily-motivation-source"')&&app.includes('second:"2-digit"')&&app.includes("setInterval(e,1e3)"),"daily quote must show authors/source and Brasília clock seconds");
-  pass("v27 day-by-day schedule, visible PRF track, mobile layout and v26 experience");
+  pass("v27.1.0 day-by-day schedule, visible PRF track, mobile layout and v26 experience");
+}
+
+function testV271ProjectAndToolDirectory(registry) {
+  const html = read("index.html");
+  const app = read("js/app.js");
+  const config = read("config/projects.json");
+  const prf = registry.projects.find(project => project.id === "prf-adm");
+  const gridStart = html.indexOf('<div id="projects-grid"');
+  const gridEnd = html.indexOf("</div><p id=\"catalog-empty\"", gridStart);
+  const toolsStart = html.indexOf('<div class="study-tools"');
+  const toolsEnd = html.indexOf("</div></section><section id=\"workspace\"", toolsStart);
+
+  assert.equal(registry.central.version, "27.1.0", "catalog release must be v27.1.0");
+  assert.equal(registry.central.defaultProject, "tcego", "new access cards must not change the default Central focus");
+  assert.ok(prf && prf.status === "active" && prf.priority === "normal", "PRF must be an active project without a numbered priority");
+  assert.equal(prf.destinationType, "notion", "PRF must open as a Notion project");
+  assert.equal(prf.url, "https://app.notion.com/p/3e8cf5a2673181679cd2f5532e0abf60", "PRF must use its canonical Notion page");
+  assert.ok(!prf.repository, "Notion PRF must not borrow a repository or its telemetry");
+  assert.ok(gridStart >= 0 && gridEnd > gridStart, "project fallback grid must be present");
+  const grid = html.slice(gridStart, gridEnd);
+  assert.ok(grid.includes('data-project-id="prf-adm"') && grid.includes(prf.url), "PRF project must appear in the no-JavaScript project catalogue");
+  assert.ok(app.includes('function monitoredProjects(){return activeProjects().filter(e=>e.destinationType!=="notion")}'), "only dashboard projects may be technically monitored");
+  assert.ok(app.includes("A Central não lê o conteúdo nem mede execução."), "PRF card must state the Central does not read or measure the Notion page");
+  assert.ok(app.includes('t.destinationType==="notion"?"Abrir projeto no Notion →":"Abrir projeto →"'), "project cards must identify project destinations");
+
+  assert.ok(toolsStart >= 0 && toolsEnd > toolsStart, "separate study-tools area must exist");
+  const tools = html.slice(toolsStart, toolsEnd);
+  const questionUrl = "https://rodrigorosadantas.github.io/plataforma-questoes/";
+  assert.ok(tools.includes("Plataforma de Questões") && tools.includes(questionUrl), "question platform must have its own direct access card");
+  assert.ok(!grid.includes(questionUrl) && !config.includes("plataforma-questoes"), "question platform must remain outside the contest project registry");
+  assert.ok(tools.includes("fora da contagem") && tools.includes("Ferramenta"), "tool card must explain its separate role");
+  assert.ok(html.includes("4 de 4 projetos") && html.includes("4 projetos · 1 ferramenta de estudo"), "static project and tool counts must match the catalog");
+
+  pass("v27.1.0 PRF project destination, no-telemetry rule and separate question-tool card");
 }
 
 function testReleaseDocumentationCoherence(registry) {
@@ -974,13 +1034,13 @@ function testReleaseDocumentationCoherence(registry) {
   if (major >= 25) {
     const roadmap25=read("docs/ROADMAP-V25.md"),checkpoint25=read("docs/V25-CHECKPOINT.md"),acceptance25=read("docs/ACCEPTANCE-V25.md"),risks25=read("docs/RISK-REGISTER-V25.md");
     assert.ok(roadmap25.includes("25.0.0")&&checkpoint25.includes("25.0.0")&&acceptance25.includes("cronograma")&&risks25.includes("dias da semana"),"v25 governance must define scope, checkpoint, acceptance and risks");
-    assert.ok((readme.includes("v25.0")||readme.includes("v26.0")||readme.includes("v27.0"))&&changelog.includes("## [25.0.0]")&&architecture.includes("## Cronograma semanal — v25"),"v25 history and current README, changelog and architecture must agree");
+    assert.ok((readme.includes("v25.0")||readme.includes("v26.0")||readme.includes("v27.0")||readme.includes("v27.1.0"))&&changelog.includes("## [25.0.0]")&&architecture.includes("## Cronograma semanal — v25"),"v25 history and current README, changelog and architecture must agree");
   }
 
   if (major >= 26) {
     const roadmap26=read("docs/ROADMAP-V26.md"),checkpoint26=read("docs/V26-CHECKPOINT.md"),acceptance26=read("docs/ACCEPTANCE-V26.md"),risks26=read("docs/RISK-REGISTER-V26.md");
     assert.ok(roadmap26.includes("26.0.0")&&checkpoint26.includes("26.0.0")&&acceptance26.includes("PRF-ADM")&&risks26.includes("celular"),"v26 governance must define scope, checkpoint, acceptance and risks");
-    assert.ok((readme.includes("v26.0")||readme.includes("v27.0"))&&changelog.includes("## [26.0.0]")&&architecture.includes("## Ritmo de estudo e presença — v26"),"v26 README, changelog and architecture must agree");
+    assert.ok((readme.includes("v26.0")||readme.includes("v27.0")||readme.includes("v27.1.0"))&&changelog.includes("## [26.0.0]")&&architecture.includes("## Ritmo de estudo e presença — v26"),"v26 README, changelog and architecture must agree");
   }
 
   if (major >= 27) {
@@ -1082,6 +1142,7 @@ testV22CommandCenter();
 testV23TodayMentor();
 testV24ScreensAndViews(registry);
 testV27DailySchedule(registry);
+testV271ProjectAndToolDirectory(registry);
 testReleaseDocumentationCoherence(registry);
 testSecurityAndContracts(registry);
 

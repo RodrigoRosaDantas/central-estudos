@@ -3,7 +3,7 @@
   "central": {
     "name": "Central de Estudos",
     "owner": "Rodrigo",
-    "version": "27.0.1",
+    "version": "27.1.0",
     "defaultProject": "tcego"
   },
   "projects": [
@@ -44,6 +44,17 @@
       "statusUrl": "https://rodrigorosadantas.github.io/tjdft-dashboard/central-status.json"
     },
     {
+      "id": "prf-adm",
+      "name": "PRF Administrativo",
+      "description": "Radar de cobertura e roda contínua PRFADM01–33",
+      "phase": "Pré-edital · projeto no Notion",
+      "status": "active",
+      "priority": "normal",
+      "icon": "🛰️",
+      "destinationType": "notion",
+      "url": "https://app.notion.com/p/3e8cf5a2673181679cd2f5532e0abf60"
+    },
+    {
       "id": "sedes-tdas",
       "name": "SEDES/DF — TDAS",
       "description": "Técnico Administrativo — histórico",
@@ -57,4 +68,3 @@
     }
   ]
 }
-
