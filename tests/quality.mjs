@@ -1048,6 +1048,9 @@ function testReleaseDocumentationCoherence(registry) {
     const roadmap27=read("docs/ROADMAP-V27.md"),checkpoint27=read("docs/V27-CHECKPOINT.md"),acceptance27=read("docs/ACCEPTANCE-V27.md"),risks27=read("docs/RISK-REGISTER-V27.md");
     assert.ok(roadmap27.includes("27.0.0")&&checkpoint27.includes("27.0.0")&&acceptance27.includes("segunda")&&risks27.includes("PRF Administrativo"),"v27 governance must define scope, checkpoint, acceptance and risks");
     assert.ok((readme.includes("v27.0")||readme.includes("v27"))&&changelog.includes("## [27.0.0]")&&architecture.includes("## Cronograma dia a dia — v27"),"v27 README, changelog and architecture must agree");
+    const roadmap271=read("docs/ROADMAP-V27.1.md"),acceptance271=read("docs/ACCEPTANCE-V27.1.md"),audit271=read("docs/FINAL-AUDIT-V27.1.1.md");
+    assert.ok(roadmap271.includes("Stage:** PUBLISHED")&&acceptance271.includes("v27.1.1")&&acceptance271.includes("[x] GitHub Actions Quality gate")&&acceptance271.includes("[ ] Inspeção visual móvel"),"v27.1 release governance must close publication while preserving the mobile QA limit");
+    assert.ok(audit271.includes("864fb0410a845cacef53794a7061d2c6c7dd6182")&&audit271.includes("36368493310")&&audit271.includes("10948247167")&&audit271.includes("a35952ca77442ac02a9d5461a882164f872ad4ea41863cfcf2e7356e7d940eff")&&audit271.includes("144.642 bytes"),"v27.1.1 final audit must bind its commit, successful workflow, Pages artifact and shell measurements");
   }
 
   pass("release documentation coherence");

@@ -8,7 +8,9 @@
 
 ### Verified
 - `node tests/quality.mjs` local passou.
-- O deploy e a inspeção publicados desta revisão serão registrados após o workflow desta versão.
+- Quality gate e Pages Deploy passaram no [workflow 36368493310](https://github.com/RodrigoRosaDantas/central-estudos/actions/runs/36368493310); o QA visual publicado confirmou o CTA em uma linha e os dois destinos no lugar correto.
+- Artefato Pages `10948247167`, digest `sha256:a35952ca77442ac02a9d5461a882164f872ad4ea41863cfcf2e7356e7d940eff`.
+- Inspeção desktop em 1363×936 sem overflow horizontal; viewport móvel continua sem QA visual nesta sessão.
 
 ## [27.1.0] - 2026-09-28
 
