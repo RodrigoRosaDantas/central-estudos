@@ -1,6 +1,6 @@
 # Roadmap v27.7.0 — registro guiado por dia e matéria
 
-**Stage:** READY FOR VALIDATION  
+**Stage:** PUBLISHED — QA PASS  
 **Escopo:** orientar o lançamento de horas pela grade semanal publicada, sem alterar a distribuição nem o conteúdo dos projetos.
 
 ## Entrega
@@ -30,4 +30,15 @@ O registro manual segue no app shell autorizado. A camada guiada e o catálogo u
 
 ## Critério de saída
 
-Quality gate local, conferência do app shell, publicação pelo workflow Pages e QA visual mobile concluídos sem alterar a grade nem criar dados de estudo.
+Quality gate local e remoto aprovados; Pages publicado pelo workflow #384. Navegador confirmou seleção de dia/matérias e domingo protegido sem salvar registros. Regras responsivas estreitas passaram na suíte; a conferência visual foi feita em viewport amplo.
+
+
+## Publicação
+
+- PR #16 integrado por squash em 28/09/2026.
+- Commit de release: `bd0ac36beb9f53e899035d0e12e5e9a042f325b7`.
+- GitHub Actions: workflow run #384 (ID `36500234949`), Quality gate e Deploy **success**.
+- Artefato Pages: `github-pages`, ID `11005355766`, 181.469 bytes.
+- App shell: 147.407/147.456 bytes bruto; 46.881/49.152 bytes gzip.
+- QA ao vivo: segunda SEEDF/TJDFT/PRF; terça TCE-GO; domingo protegido. A seleção de matéria deixou a confirmação desligada e nenhum tempo foi salvo.
+- Limite do QA visual: navegador em viewport amplo; regras narrow-screen (≤360px e controles com alvo de 42px) foram verificadas pela suíte automatizada, sem emulação de aparelho físico.
