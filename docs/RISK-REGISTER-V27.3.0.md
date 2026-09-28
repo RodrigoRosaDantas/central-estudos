@@ -9,4 +9,4 @@
 | Destaque do dia pode usar fuso incorreto | Fixar `America/Sao_Paulo` e testar a virada de meia-noite local | Coberto por teste |
 | viewport móvel não está acessível nesta sessão | Manter inspeção visual manual como pendente; validar breakpoints estruturalmente | Pendente |
 | Site próprio do PRF ainda não está disponível | Manter o Notion como destino; não criar URL/repositório fictício | Aguardando site confirmado |
-| App shell está perto do limite aprovado | Medir recursos reais no quality gate; não elevar orçamento nesta release | Aguardando medição final |
+| App shell está perto do limite aprovado | Medição: 147.251 / 147.456 bytes bruto; não elevar orçamento e otimizar antes de novo payload | Coberto; margem 205 bytes |

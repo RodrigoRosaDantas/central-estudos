@@ -9,8 +9,8 @@
 - [x] O PRF aparece como projeto independente e sem prioridade numérica; o destino atual do Notion é preservado.
 - [x] Nenhuma escrita é feita nos projetos-filhos; a Plataforma de Questões continua ferramenta separada.
 - [x] Versionamento de cabeçalho, selo Hoje, registry, runtime e service worker alinhado em v27.3.0.
-- [ ] `node tests/quality.mjs` passou após a implementação.
-- [ ] App shell dentro do teto de 147.456 bytes bruto / 49.152 bytes gzip.
-- [ ] GitHub Actions Quality gate e Pages Deploy concluídos com sucesso.
-- [ ] Versão v27.3.0 confirmada no GitHub Pages.
+- [x] `node tests/quality.mjs` passou localmente e no workflow #368.
+- [x] App shell com 147.251 bytes brutos e 47.802 bytes gzip, abaixo dos tetos autorizados.
+- [x] Quality gate e Deploy to GitHub Pages remotos concluídos com sucesso no workflow #368.
+- [x] O artefato Pages `10970644399` corresponde ao commit da release `2de1734db18e21cfe94a91227af76d5185fe1031`.
 - [ ] QA visual manual móvel — pendente até viewport móvel real/emulado estar disponível.
