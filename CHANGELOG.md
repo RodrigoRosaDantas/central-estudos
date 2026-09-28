@@ -1,5 +1,17 @@
 # CHANGELOG — Central de Estudos
 
+## [27.7.0] - 2026-09-28
+
+### Added
+- Seletor de semana e dia que reaproveita os cartões da grade semanal vigente.
+- Seleção guiada das unidades e matérias catalogadas de SEEDF, TJDFT, TCE-GO e PRF.
+- Totais do dia e da semana acompanham a seleção; registro continua local e exige confirmação do estudo real.
+
+### Preserved
+- Grade, prioridades, blocos previstos, histórico e esquema de backup. Nenhum projeto avança automaticamente.
+- Domingo protegido e fontes de projeto no Notion; a camada central não escreve nem sincroniza progresso.
+
+
 ## [27.6.1] - 2026-09-28
 
 ### Fixed
