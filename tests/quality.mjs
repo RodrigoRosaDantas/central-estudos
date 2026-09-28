@@ -208,22 +208,25 @@ function testCriticalAppLogic(registry) {
 
   const prf = valid.projects.find(project => project.id === "prf-adm");
   assert.ok(prf, "PRF Administrative must be registered as a project");
-  assert.equal(prf.destinationType, "notion", "PRF must be typed as an external Notion project");
-  assert.equal(prf.repository, undefined, "PRF must not inherit a fake GitHub repository");
+  assert.equal(prf.destinationType, "site", "PRF must be typed as a GitHub Pages site");
+  assert.equal(prf.repository, "https://github.com/RodrigoRosaDantas/prf-administrativo-dashboard", "PRF must use its own repository");
+  assert.equal(prf.notionUrl, "https://app.notion.com/p/3e8cf5a2673181679cd2f5532e0abf60", "PRF must preserve its Notion source link");
   const normalizedPrf = context.normalizeProject(prf);
-  assert.equal(normalizedPrf.destinationType, "notion", "normalization must retain the external destination type");
-  assert.equal(normalizedPrf.repository, null, "normalization must preserve the lack of a GitHub repository");
+  assert.equal(normalizedPrf.destinationType, "site", "normalization must retain the site destination type");
+  assert.equal(normalizedPrf.repository, prf.repository, "normalization must retain the matching repository");
 
   const invalidDestination = clone(registry);
   invalidDestination.projects.find(project => project.id === "prf-adm").destinationType = "iframe";
   assert.throws(() => context.validateConfig(invalidDestination), /Tipo de destino inválido/i, "unknown destination type must fail");
 
   const invalidNotionHost = clone(registry);
-  invalidNotionHost.projects.find(project => project.id === "prf-adm").url = "https://notion.so/3e8cf5a2673181679cd2f5532e0abf60";
+  invalidNotionHost.projects.find(project => project.id === "prf-adm").notionUrl = "https://notion.so/3e8cf5a2673181679cd2f5532e0abf60";
   assert.throws(() => context.validateConfig(invalidNotionHost), /URL de Notion inválida/i, "Notion project must use the official app.notion.com host");
 
   const notionWithRepo = clone(registry);
-  notionWithRepo.projects.find(project => project.id === "prf-adm").repository = "https://github.com/RodrigoRosaDantas/central-estudos";
+  const notionProject = notionWithRepo.projects.find(project => project.id === "prf-adm");
+  notionProject.destinationType = "notion";
+  notionProject.url = notionProject.notionUrl;
   assert.throws(() => context.validateConfig(notionWithRepo), /não deve declarar repositório/i, "Notion project must not claim another project's repository");
 
   const siteWithoutRepo = clone(registry);
@@ -449,9 +452,11 @@ function testV12Contracts(registry) {
       assert.equal(project.statusUrl, undefined, `${project.id} Notion project must remain outside status contracts`);
       continue;
     }
-    assert.equal(typeof project.statusUrl, "string", `${project.id} active project must publish statusUrl`);
-    assert.equal(new URL(project.statusUrl).protocol, "https:", `${project.id}.statusUrl must use HTTPS`);
+    if (project.statusUrl) assert.equal(new URL(project.statusUrl).protocol, "https:", `${project.id}.statusUrl must use HTTPS`);
   }
+
+  const prf = registry.projects.find(project => project.id === "prf-adm");
+  assert.equal(prf.statusUrl, undefined, "PRF Pages must not be treated as a project status contract");
 
   assert.ok(contracts.includes("3e5"), "v12 contracts must use short cache");
   assert.ok(contracts.includes("3500"), "v12 contracts must use timeout");
@@ -897,7 +902,7 @@ function testV27DailySchedule(registry) {
   const start=html.indexOf('<section id="agenda-semanal"'),end=html.indexOf("</section>",start);
   assert.ok(start>=0&&end>start,"weekly schedule must remain a section on the page");
   const schedule=html.slice(start,end);
-  assert.equal(registry.central.version,"27.3.0","registry must identify v27.3.0");
+  assert.equal(registry.central.version,"27.4.0","registry must identify v27.4.0");
   assert.ok(html.includes(`HOJE · V${registry.central.version}`),"Today panel version badge must match the current release");
   assert.equal(registry.central.defaultProject,"tcego","study priorities must not change the user's central focus");
   assert.ok(html.includes('href="#agenda-semanal">Cronograma</a>')&&router.includes('"agenda-semanal":"today"'),"schedule must have an accessible shortcut and route back to Hoje");
@@ -918,17 +923,17 @@ function testV27DailySchedule(registry) {
   assert.ok(schedule.includes("não registra presença")&&schedule.includes("não estima avanço")&&schedule.includes("não muda o foco"),"weekly schedule must not claim study progress or change focus");
   const mobileCss=css.slice(css.indexOf("@media(max-width:719px)"));
   assert.ok(html.includes("./css/workspace-v27.css")&&html.includes("weekly-schedule-v27")&&mobileCss.includes(".schedule-day-grid{grid-template-columns:1fr")&&mobileCss.includes(".schedule-day-card{grid-template-columns:minmax(82px,.34fr) minmax(0,1fr)")&&mobileCss.includes(".schedule-day-heading>span{display:none}")&&mobileCss.includes(".schedule-day-rest-v27 .schedule-day-heading>span{display:inline-flex}")&&mobileCss.includes(".schedule-day-card .schedule-item-copy{display:block")&&mobileCss.includes("min-width:0"),"v27 mobile schedule must keep seven days while compacting each day row and avoiding redundant labels");
-  assert.ok(html.includes('src="./js/command-context-v1.js?v=27.3.0"')&&sw.includes("'./js/command-context-v1.js?v=27.3.0'"),"today marker and published-change summary must load as part of the app shell");
-  assert.ok(sw.includes("central-shell-v27.3.0")&&sw.includes("./css/workspace-v27.css"),"PWA shell cache must include the v27 stylesheet and current version");
-  assert.ok(html.includes('src="./js/app.js?v=27.3.0"')&&sw.includes("'./js/app.js?v=27.3.0'")&&sw.includes("'./config/projects.json?v=27.3.0'")&&app.includes("./config/projects.json?v=27.3.0"),"v27.3.0 must version app and registry cache URLs");
+  assert.ok(html.includes('src="./js/command-context-v1.js?v=27.4.0"')&&sw.includes("'./js/command-context-v1.js?v=27.4.0'"),"today marker and published-change summary must load as part of the app shell");
+  assert.ok(sw.includes("central-shell-v27.4.0")&&sw.includes("./css/workspace-v27.css"),"PWA shell cache must include the v27 stylesheet and current version");
+  assert.ok(html.includes('src="./js/app.js?v=27.4.0"')&&sw.includes("'./js/app.js?v=27.4.0'")&&sw.includes("'./config/projects.json?v=27.4.0'")&&app.includes("./config/projects.json?v=27.4.0"),"v27.4.0 must version app and registry cache URLs");
   assert.ok(html.includes("Mudanças desde a última conferência")&&html.includes("contratos validados neste aparelho")&&html.includes('id="published-changes-list"'),"published changes must be shown with their local/read-only provenance");
   assert.ok(css.includes(".schedule-day-card.is-today")&&css.includes('content:"HOJE"'),"the current weekday must have a visible marker");
   assert.ok(html.includes("Projeto PRF Administrativo")&&html.includes(">PROJETO</span>")&&html.includes(">PRF</span>"),"the weekly routine must label PRF as a project");
   for(const source of ["instagram.com/caveiracadar09","projetocaopastor.com.br/curso/programa-de-protecao","youtube.com/watch?v=YIUoDC1PHbE"])assert.ok(app.includes(source),`Major Cadar quote source missing: ${source}`);
   assert.ok(html.includes('id="daily-motivation-author"')&&html.includes('id="daily-motivation-source"')&&html.includes("Frases do Major Cadar · muda a cada 5 min")&&html.includes('id="daily-motivation" class="daily-motivation" aria-live="polite" aria-atomic="true"')&&html.includes("Seja forte ou seja vencido.")&&app.includes('author:"Major Cadar"')&&app.includes('second:"2-digit"')&&app.includes("setInterval(e,1e3)"),"Major Cadar quote, accessible rotation label, attribution/source and Brasília clock seconds must remain visible");
   assert.ok(quoteCss.includes("border-left:4px solid #b69cff")&&quoteCss.includes("font-size:clamp(1rem,2.2vw,1.25rem)")&&quoteCss.includes("font-weight:750")&&quoteCss.includes("rgba(167,139,250,.19)"),"daily quote card must use stronger contrast and a larger, bolder phrase");
-  assert.ok(html.includes('href="./css/workspace-v26.css?v=quote-contrast-20260928"')&&sw.includes("'./css/workspace-v26.css?v=quote-contrast-20260928'")&&sw.includes("central-shell-v27.3.0-quote-contrast-20260928"),"quote styling update must refresh installed PWA clients");
-  pass("v27.3.0 current-day marker, published changes, project labels, Major Cadar quotes, weekly schedule and quote contrast");
+  assert.ok(html.includes('href="./css/workspace-v26.css?v=quote-contrast-20260928"')&&sw.includes("'./css/workspace-v26.css?v=quote-contrast-20260928'")&&sw.includes("central-shell-v27.4.0-prf-pages-20260928"),"current PRF destination must refresh installed PWA clients");
+  pass("v27.4.0 current-day marker, published changes, project labels, Major Cadar quotes, weekly schedule and quote contrast");
 }
 
 function testCommandContext() {
@@ -956,7 +961,7 @@ function testCommandContext() {
   pass("v27.3.0 Brasília weekday and validated local change comparison");
 }
 
-function testV271ProjectAndToolDirectory(registry) {
+function testV274PrfSiteAndToolDirectory(registry) {
   const html = read("index.html");
   const app = read("js/app.js");
   const config = read("config/projects.json");
@@ -966,19 +971,22 @@ function testV271ProjectAndToolDirectory(registry) {
   const toolsStart = html.indexOf('<div class="study-tools"');
   const toolsEnd = html.indexOf("</div></section><section id=\"workspace\"", toolsStart);
 
-  assert.equal(registry.central.version, "27.3.0", "catalog must identify current release v27.3.0");
+  assert.equal(registry.central.version, "27.4.0", "catalog must identify current release v27.4.0");
   assert.equal(registry.central.defaultProject, "tcego", "new access cards must not change the default Central focus");
   assert.ok(prf && prf.status === "active" && prf.priority === "normal", "PRF must be an active project without a numbered priority");
-  assert.equal(prf.destinationType, "notion", "PRF must open as a Notion project");
-  assert.equal(prf.url, "https://app.notion.com/p/3e8cf5a2673181679cd2f5532e0abf60", "PRF must use its canonical Notion page");
-  assert.ok(!prf.repository, "Notion PRF must not borrow a repository or its telemetry");
+  assert.equal(prf.destinationType, "site", "PRF must open as a site");
+  assert.equal(prf.url, "https://rodrigorosadantas.github.io/prf-administrativo-dashboard/", "PRF must use its published Pages URL");
+  assert.equal(prf.repository, "https://github.com/RodrigoRosaDantas/prf-administrativo-dashboard", "PRF must use its own GitHub repository");
+  assert.equal(prf.notionUrl, "https://app.notion.com/p/3e8cf5a2673181679cd2f5532e0abf60", "PRF must keep the Notion source of truth available");
+  assert.equal(prf.statusUrl, undefined, "PRF site must not claim an operational status contract");
   assert.ok(gridStart >= 0 && gridEnd > gridStart, "project fallback grid must be present");
   const grid = html.slice(gridStart, gridEnd);
   assert.ok(grid.includes('data-project-id="prf-adm"') && grid.includes(prf.url), "PRF project must appear in the no-JavaScript project catalogue");
   assert.ok(app.includes('function monitoredProjects(){return activeProjects().filter(e=>e.destinationType!=="notion")}'), "only dashboard projects may be technically monitored");
-  assert.ok(app.includes("A Central não lê o conteúdo nem mede execução."), "PRF card must state the Central does not read or measure the Notion page");
+  assert.ok(grid.includes(prf.notionUrl), "static PRF card must preserve direct Notion access");
+  assert.ok(app.includes("e.notionUrl")&&app.includes("<a class=observability-meta"), "dynamic PRF card must preserve its Notion source link");
   assert.ok(app.includes('t.destinationType==="notion"?"Abrir no Notion →":"Abrir projeto →"'), "project cards must identify project destinations");
-  assert.ok(html.includes("Abrir no Notion →"), "Notion CTA must stay compact enough to avoid a stranded arrow beside the focus button");
+  assert.ok(html.includes("Abrir painel →")&&html.includes("Notion ↗"), "static PRF card must expose both project destinations");
 
   assert.ok(toolsStart >= 0 && toolsEnd > toolsStart, "separate study-tools area must exist");
   const tools = html.slice(toolsStart, toolsEnd);
@@ -988,7 +996,7 @@ function testV271ProjectAndToolDirectory(registry) {
   assert.ok(tools.includes("fora da contagem") && tools.includes("Ferramenta"), "tool card must explain its separate role");
   assert.ok(html.includes("4 de 4 projetos") && html.includes("4 projetos · 1 ferramenta de estudo"), "static project and tool counts must match the catalog");
 
-  pass("v27.3.0 preserves the PRF destination, no-telemetry rule and separate question-tool card");
+  pass("v27.4.0 preserves the PRF GitHub Pages site, Notion source and separate question-tool card");
 }
 
 function testReleaseDocumentationCoherence(registry) {
@@ -1125,6 +1133,9 @@ function testReleaseDocumentationCoherence(registry) {
     assert.ok(roadmap273.includes("27.3.0")&&roadmap273.includes("America/Sao_Paulo")&&acceptance273.includes("aria-current")&&risk273.includes("viewport móvel")&&checkpoint273.includes("PUBLISHED")&&acceptance273.includes("[x] Quality gate e Deploy to GitHub Pages")&&acceptance273.includes("[ ] QA visual manual móvel")&&audit273.includes("36426260988")&&audit273.includes("10970644399")&&audit273.includes("147.251 bytes"),"v27.3 governance must close the published release while keeping mobile QA pending");
     assert.ok(readme.includes("v27.3.0")&&changelog.includes("## [27.3.0]")&&architecture.includes("v27.3.0")&&audit273.includes("v27.3.0"),"v27.3 current release must be described consistently");
     assert.ok(!readme.includes("agenda semanal continua indicando a execução PRF como complementar")&&architecture.includes("Projeto PRF"),"current docs must classify PRF as a project, not only as a complementary track");
+    const roadmap274=read("docs/ROADMAP-V27.4.0.md"),acceptance274=read("docs/ACCEPTANCE-V27.4.0.md"),risk274=read("docs/RISK-REGISTER-V27.4.0.md"),checkpoint274=read("docs/V27.4-CHECKPOINT.md"),audit274=read("docs/FINAL-AUDIT-V27.4.0.md");
+    assert.ok(roadmap274.includes("27.4.0")&&roadmap274.includes("GitHub Pages")&&acceptance274.includes("Notion")&&risk274.includes("snapshot")&&checkpoint274.includes("v27.4.0")&&audit274.includes("Quality gate"),"v27.4 governance must document the PRF site, preserved source and release audit");
+    assert.ok(readme.includes("v27.4.0")&&changelog.includes("## [27.4.0]")&&architecture.includes("v27.4.0"),"v27.4 current release must be described consistently");
   }
 
   pass("release documentation coherence");
@@ -1224,7 +1235,7 @@ testV23TodayMentor();
 testV24ScreensAndViews(registry);
 testV27DailySchedule(registry);
 testCommandContext();
-testV271ProjectAndToolDirectory(registry);
+testV274PrfSiteAndToolDirectory(registry);
 testReleaseDocumentationCoherence(registry);
 testSecurityAndContracts(registry);
 

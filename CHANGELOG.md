@@ -1,5 +1,17 @@
 # CHANGELOG — Central de Estudos
 
+## [27.4.0] - 2026-09-28
+
+### Changed
+- PRF Administrativo abre seu painel publicado no GitHub Pages a partir do catálogo da Central.
+- O repositório correto do PRF passa a alimentar somente metadados públicos de atualização e deploy.
+- O cartão mantém um segundo link direto ao Notion, que continua sendo a fonte de verdade para progresso e materiais.
+- O app shell e as URLs de runtime foram versionados para renovar instalações da PWA.
+
+### Preserved
+- PRF permanece ativo, sem prioridade numérica e sem contrato de status operacional na Central.
+- A Central não altera o repositório, os dados ou os materiais do PRF.
+
 ## [27.3.0] - 2026-09-28
 
 ### Changed
