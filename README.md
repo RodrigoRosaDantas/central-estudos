@@ -6,9 +6,9 @@ Camada de entrada para os projetos de estudo TCE-GO, SEEDF, TJDFT e PRF Administ
 
 A Central não importa, altera ou replica o conteúdo dos projetos. Ela mantém os acessos independentes.
 
-## Estado atual — v27.2.2
+## Estado atual — v27.3.0
 
-A v27.2.2 mantém PRF Administrativo como projeto no Notion e a Plataforma de Questões como ferramenta transversal. A seção de frases do Major Cadar alterna automaticamente a cada cinco minutos, atualizando junto a autoria e o link da origem. PRF não recebe prioridade numérica; a faixa principal continua SEEDF (P1), TJDFT (P2) e TCE-GO (P3). A agenda semanal continua indicando a execução PRF como complementar.
+A v27.3.0 destaca automaticamente o dia atual no horário de Brasília e compara mudanças materiais nos contratos públicos desde a última conferência salva neste aparelho. A comparação mostra fase, ciclo, unidade, próxima ação e alertas; identifica cache e não mede estudo. PRF Administrativo aparece como projeto independente, sem prioridade numérica; enquanto o site próprio não estiver disponível, o cartão abre o projeto no Notion. A Plataforma de Questões continua como ferramenta transversal separada. As frases do Major Cadar mantêm a rotação de cinco minutos com autoria e fonte.
 
 O teto do app shell para a linha pós-v20 é 144 KiB bruto e 48 KiB gzip, autorizado em 28/09/2026 e registrado em [`docs/APP-SHELL-BUDGET-CHANGE-2026-09-28.md`](docs/APP-SHELL-BUDGET-CHANGE-2026-09-28.md). O limite histórico v16→v20 permanece 128 KiB; novos aumentos exigem autorização explícita.
 
@@ -193,7 +193,7 @@ Capacidades consolidadas:
 - observabilidade somente leitura, não bloqueante, com disponibilidade, publicação técnica e deploy separados;
 - falhas de rede/rate limit tratadas sem falso estado offline;
 - linha do tempo local de acessos separada de atividade técnica e sem inferência pedagógica;
-- PWA network-first, app shell offline e cache `central-shell-v27.2.2` restrito à Central;
+- PWA network-first, app shell offline e cache `central-shell-v27.3.0` restrito à Central;
 - quality gate automatizado antes de todo deploy;
 - CSP, escape de conteúdo, HTTPS, contraste, teclado, forced colors e touch targets auditados;
 - orçamento de shell <= 128 KiB na geração v16+ (v15 fechou <= 120 KiB) e zero dependências externas de JS/CSS;
@@ -223,4 +223,4 @@ A fonte dinâmica de verdade é `config/projects.json` (schema v3). Cada item de
 
 ## Governança e auditoria
 
-A esteira histórica v1→v10 permanece congelada em `docs/V10-CHECKPOINT.md` e `docs/FINAL-AUDIT-V10.md`. A geração v11→v15 permanece congelada em `docs/ROADMAP-V15.md` e `docs/V15-CHECKPOINT.md`. A geração v16→v20 é encerrada pela auditoria terminal em `docs/FINAL-AUDIT-V20.md`. A esteira terminal v21 Presença e Ritmo está registrada em `docs/ROADMAP-V21.md` e `docs/V21-CHECKPOINT.md`. A release v27.1.1 sobre o catálogo de projetos e a Plataforma de Questões está em `docs/ROADMAP-V27.1.md`, com aceite em `docs/ACCEPTANCE-V27.1.md` e auditoria final em `docs/FINAL-AUDIT-V27.1.1.md`. A release v27.2.0 e o patch v27.2.1 das frases do Major Cadar estão em `docs/ROADMAP-V27.2.md`; a rotação automática a cada cinco minutos da v27.2.2 está em `docs/ROADMAP-V27.2.2.md`, `docs/ACCEPTANCE-V27.2.2.md` e `docs/FINAL-AUDIT-V27.2.2.md`.
+A esteira histórica v1→v10 permanece congelada em `docs/V10-CHECKPOINT.md` e `docs/FINAL-AUDIT-V10.md`. A geração v11→v15 permanece congelada em `docs/ROADMAP-V15.md` e `docs/V15-CHECKPOINT.md`. A geração v16→v20 é encerrada pela auditoria terminal em `docs/FINAL-AUDIT-V20.md`. A esteira terminal v21 Presença e Ritmo está registrada em `docs/ROADMAP-V21.md` e `docs/V21-CHECKPOINT.md`. As releases recentes estão registradas em seus respectivos roadmaps, critérios de aceitação e auditorias: v27.1.1 (catálogo e ferramenta), v27.2.2 (rotação das frases do Major Cadar) e v27.3.0 (destaque do dia, comparação local de contratos e classificação do PRF como projeto).
