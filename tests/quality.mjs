@@ -867,7 +867,7 @@ function testV27DailySchedule(registry) {
   const start=html.indexOf('<section id="agenda-semanal"'),end=html.indexOf("</section>",start);
   assert.ok(start>=0&&end>start,"weekly schedule must remain a section on the page");
   const schedule=html.slice(start,end);
-  assert.equal(registry.central.version,"27.1.0","registry must identify v27.1.0");
+  assert.equal(registry.central.version,"27.1.1","registry must identify v27.1.1");
   assert.equal(registry.central.defaultProject,"tcego","study priorities must not change the user's central focus");
   assert.ok(html.includes('href="#agenda-semanal">Cronograma</a>')&&router.includes('"agenda-semanal":"today"'),"schedule must have an accessible shortcut and route back to Hoje");
   const priorityStrip=schedule.slice(schedule.indexOf('<div class="weekly-priority-strip"'),schedule.indexOf("</div>",schedule.indexOf('<div class="weekly-priority-strip"')));
@@ -887,11 +887,11 @@ function testV27DailySchedule(registry) {
   assert.ok(schedule.includes("não registra presença")&&schedule.includes("não estima avanço")&&schedule.includes("não muda o foco"),"weekly schedule must not claim study progress or change focus");
   const mobileCss=css.slice(css.indexOf("@media(max-width:719px)"));
   assert.ok(html.includes("./css/workspace-v27.css")&&html.includes("weekly-schedule-v27")&&mobileCss.includes(".schedule-day-grid{grid-template-columns:1fr")&&mobileCss.includes(".schedule-day-card{grid-template-columns:minmax(82px,.34fr) minmax(0,1fr)")&&mobileCss.includes(".schedule-day-heading>span{display:none}")&&mobileCss.includes(".schedule-day-rest-v27 .schedule-day-heading>span{display:inline-flex}")&&mobileCss.includes(".schedule-day-card .schedule-item-copy{display:block")&&mobileCss.includes("min-width:0"),"v27 mobile schedule must keep seven days while compacting each day row and avoiding redundant labels");
-  assert.ok(sw.includes("central-shell-v27.1.0")&&sw.includes("./css/workspace-v27.css"),"PWA shell cache must include the v27 stylesheet and current version");
-  assert.ok(html.includes('src="./js/app.js?v=27.1.0"')&&sw.includes("'./js/app.js?v=27.1.0'")&&sw.includes("'./config/projects.json?v=27.1.0'")&&app.includes("./config/projects.json?v=27.1.0"),"v27.1.0 must version app and registry cache URLs");
+  assert.ok(sw.includes("central-shell-v27.1.1")&&sw.includes("./css/workspace-v27.css"),"PWA shell cache must include the v27 stylesheet and current version");
+  assert.ok(html.includes('src="./js/app.js?v=27.1.1"')&&sw.includes("'./js/app.js?v=27.1.1'")&&sw.includes("'./config/projects.json?v=27.1.1'")&&app.includes("./config/projects.json?v=27.1.1"),"v27.1.1 must version app and registry cache URLs");
   for(const source of ["kinginstitute.stanford.edu","nelsonmandela.org","malala.org/news-and-voices","gutenberg.org/files/46389"])assert.ok(app.includes(source),`daily quote source missing: ${source}`);
   assert.ok(html.includes('id="daily-motivation-author"')&&html.includes('id="daily-motivation-source"')&&app.includes('second:"2-digit"')&&app.includes("setInterval(e,1e3)"),"daily quote must show authors/source and Brasília clock seconds");
-  pass("v27.1.0 day-by-day schedule, visible PRF track, mobile layout and v26 experience");
+  pass("v27.1.1 day-by-day schedule, visible PRF track, mobile layout and v26 experience");
 }
 
 function testV271ProjectAndToolDirectory(registry) {
@@ -904,7 +904,7 @@ function testV271ProjectAndToolDirectory(registry) {
   const toolsStart = html.indexOf('<div class="study-tools"');
   const toolsEnd = html.indexOf("</div></section><section id=\"workspace\"", toolsStart);
 
-  assert.equal(registry.central.version, "27.1.0", "catalog release must be v27.1.0");
+  assert.equal(registry.central.version, "27.1.1", "catalog release must be v27.1.1");
   assert.equal(registry.central.defaultProject, "tcego", "new access cards must not change the default Central focus");
   assert.ok(prf && prf.status === "active" && prf.priority === "normal", "PRF must be an active project without a numbered priority");
   assert.equal(prf.destinationType, "notion", "PRF must open as a Notion project");
@@ -926,7 +926,7 @@ function testV271ProjectAndToolDirectory(registry) {
   assert.ok(tools.includes("fora da contagem") && tools.includes("Ferramenta"), "tool card must explain its separate role");
   assert.ok(html.includes("4 de 4 projetos") && html.includes("4 projetos · 1 ferramenta de estudo"), "static project and tool counts must match the catalog");
 
-  pass("v27.1.0 PRF project destination, no-telemetry rule and separate question-tool card");
+  pass("v27.1.1 PRF project destination, no-telemetry rule and separate question-tool card");
 }
 
 function testReleaseDocumentationCoherence(registry) {
@@ -1035,13 +1035,13 @@ function testReleaseDocumentationCoherence(registry) {
   if (major >= 25) {
     const roadmap25=read("docs/ROADMAP-V25.md"),checkpoint25=read("docs/V25-CHECKPOINT.md"),acceptance25=read("docs/ACCEPTANCE-V25.md"),risks25=read("docs/RISK-REGISTER-V25.md");
     assert.ok(roadmap25.includes("25.0.0")&&checkpoint25.includes("25.0.0")&&acceptance25.includes("cronograma")&&risks25.includes("dias da semana"),"v25 governance must define scope, checkpoint, acceptance and risks");
-    assert.ok((readme.includes("v25.0")||readme.includes("v26.0")||readme.includes("v27.0")||readme.includes("v27.1.0"))&&changelog.includes("## [25.0.0]")&&architecture.includes("## Cronograma semanal — v25"),"v25 history and current README, changelog and architecture must agree");
+    assert.ok((readme.includes("v25.0")||readme.includes("v26.0")||readme.includes("v27.0")||readme.includes("v27.1.1"))&&changelog.includes("## [25.0.0]")&&architecture.includes("## Cronograma semanal — v25"),"v25 history and current README, changelog and architecture must agree");
   }
 
   if (major >= 26) {
     const roadmap26=read("docs/ROADMAP-V26.md"),checkpoint26=read("docs/V26-CHECKPOINT.md"),acceptance26=read("docs/ACCEPTANCE-V26.md"),risks26=read("docs/RISK-REGISTER-V26.md");
     assert.ok(roadmap26.includes("26.0.0")&&checkpoint26.includes("26.0.0")&&acceptance26.includes("PRF-ADM")&&risks26.includes("celular"),"v26 governance must define scope, checkpoint, acceptance and risks");
-    assert.ok((readme.includes("v26.0")||readme.includes("v27.0")||readme.includes("v27.1.0"))&&changelog.includes("## [26.0.0]")&&architecture.includes("## Ritmo de estudo e presença — v26"),"v26 README, changelog and architecture must agree");
+    assert.ok((readme.includes("v26.0")||readme.includes("v27.0")||readme.includes("v27.1.1"))&&changelog.includes("## [26.0.0]")&&architecture.includes("## Ritmo de estudo e presença — v26"),"v26 README, changelog and architecture must agree");
   }
 
   if (major >= 27) {

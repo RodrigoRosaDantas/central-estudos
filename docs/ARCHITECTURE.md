@@ -32,7 +32,7 @@ Busca, favoritos, ordenação, atalhos e ordem manual são camadas locais sobre 
 
 ## PWA e resiliência
 
-O service worker é limitado à origem e ao pathname da Central. O cache da release atual é `central-shell-v27.1.0` e contém somente o app shell da Central; os sites de projeto e a ferramenta não são incluídos.
+O service worker é limitado à origem e ao pathname da Central. O cache da release atual é `central-shell-v27.1.1` e contém somente o app shell da Central; os sites de projeto e a ferramenta não são incluídos.
 
 Estratégia:
 - navegações e assets conhecidos usam **network first**;
@@ -425,4 +425,9 @@ O shell `central-shell-v27.0.1` inclui `workspace-v27.css`; runtime e registro u
 - A Central não envia `HEAD` para a página Notion e não consulta GitHub por ela. O card declara que o conteúdo fica no Notion e que a Central não mede sua execução.
 - Plataforma de Questões abre em uma área própria de Ferramentas de estudo, com a mesma linguagem visual dos cards de projeto; não participa do lifecycle, da busca de concursos, da prioridade ou do pulso técnico dos dashboards.
 - Links de projeto e da ferramenta também estão no HTML estático para fallback sem JavaScript. Os destinos mantêm seus próprios dados e rotinas.
-- Quality gate mede todos os 23 recursos únicos em `APP_SHELL`: 144.658 bytes brutos (limite 147.456) e soma gzip 46.807 bytes (limite 49.152), incluindo folhas v26/v27, registry, 404 e ícone. A auditoria detectou que o gate antigo omitia alguns recursos; agora a lista é derivada diretamente do app shell.
+- Quality gate mede todos os 23 recursos únicos em `APP_SHELL`: 144.642 bytes brutos (limite 147.456) e soma gzip 46.807 bytes (limite 49.152), incluindo folhas v26/v27, registry, 404 e ícone. A auditoria detectou que o gate antigo omitia alguns recursos; agora a lista é derivada diretamente do app shell.
+
+
+## Correção visual e cache PWA — v27.1.1
+
+QA visual encurtou o CTA do cartão PRF para evitar que a seta quebre sozinha junto do botão de foco. O cache do service worker e as URLs do runtime/registry também foram versionados como `27.1.1`, renovando o app shell instalado. O contrato do registry e a separação entre projetos e ferramentas não mudam.

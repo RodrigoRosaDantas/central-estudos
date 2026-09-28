@@ -1,6 +1,16 @@
 # CHANGELOG — Central de Estudos
 
-## [27.1.0] - 2026-09-27
+## [27.1.1] - 2026-09-28
+
+### Fixed
+- Rótulo do acesso ao Notion compactado após QA visual encontrar a seta quebrando sozinha ao lado do botão de foco.
+- Service worker, runtime e registry passam para 27.1.1 para que instalações anteriores recebam o app shell corrigido.
+
+### Verified
+- `node tests/quality.mjs` local passou.
+- O deploy e a inspeção publicados desta revisão serão registrados após o workflow desta versão.
+
+## [27.1.0] - 2026-09-28
 
 ### Added
 - PRF Administrativo entra no catálogo como projeto ativo, com link direto à página de execução no Notion.
@@ -11,14 +21,10 @@
 - SEEDF (P1), TJDFT (P2) e TCE-GO (P3) mantêm a ordem principal; PRF fica sem prioridade numérica.
 - O cartão PRF declara origem Notion e ausência de telemetria; foco, último acesso e progresso seguem separados.
 - A plataforma e os projetos abrem em seus próprios sites; a Central não escreve nos destinos.
-- Gate de payload passa a medir todos os assets do app shell e também o tamanho comprimido.
-
-### Fixed
-- Rótulo do acesso ao Notion compactado após QA visual encontrar a seta quebrando sozinha ao lado do botão de foco.
+- Gate de payload mede todos os assets do app shell e também o tamanho comprimido.
 
 ### Verified
-- `node tests/quality.mjs` local passou; GitHub Actions e a conferência do site publicado serão registradas após a publicação.
-- Auditoria completa em `docs/FINAL-AUDIT-V27.1.0.md`.
+- Quality gate e Pages Deploy passaram no workflow 36368041253; o QA visual apontou um ajuste pequeno de quebra de linha, corrigido em v27.1.1.
 
 ## [27.0.1] - 2026-09-27
 

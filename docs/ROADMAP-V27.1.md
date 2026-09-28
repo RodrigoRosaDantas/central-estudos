@@ -1,6 +1,6 @@
 # Roadmap v27.1 — PRF no catálogo e ferramenta de questões
 
-**Release:** 27.1.0  
+**Release:** 27.1.1  
 **Stage:** Implementado localmente; deploy e QA publicados pendentes.  
 **Baseline:** `main` em `8aa749cb8ae40b23908ad392ac63b9c4e480bfe1`.
 
@@ -28,4 +28,4 @@ Tratar PRF Administrativo como projeto próprio na Central e dar acesso à Plata
 
 - `node tests/quality.mjs` cobre registry, destinos HTTPS, domínio Notion permitido, foco, ausência de telemetria, separação projeto/ferramenta, fallback, PWA e regressões históricas.
 - Limites do shell: 144 KiB bruto e 48 KiB como soma dos assets individualmente gzipados.
-- Deploy e inspeção publicados serão registrados em `docs/FINAL-AUDIT-V27.1.0.md`.
+- Deploy e inspeção publicados serão registrados em `docs/FINAL-AUDIT-V27.1.1.md`.

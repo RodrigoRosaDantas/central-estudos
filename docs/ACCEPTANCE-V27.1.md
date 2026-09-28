@@ -1,4 +1,4 @@
-# Aceitação v27.1 — projetos e ferramenta de estudo
+# Aceitação v27.1.1 — projetos e ferramenta de estudo
 
 - [x] PRF Administrativo consta como projeto ativo com destino Notion oficial.
 - [x] PRF não recebe prioridade numérica; foco padrão, prioridades SEEDF/TJDFT/TCE-GO e agenda continuam corretos.
