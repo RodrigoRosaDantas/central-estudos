@@ -409,3 +409,10 @@ A tela Hoje contém uma grade editorial estática, mantida na Central e baseada 
 
 Essa ordem de estudo é independente do foco de navegação escolhido no topo. A Central não recalcula prioridades, não registra presença, não infere execução ou progresso e não altera as filas próprias dos projetos. O atalho usa uma âncora resolvida para a tela Hoje; a agenda não adiciona requests nem dependências, e as exceções do TCE-GO continuam no calendário Dxx do próprio projeto.
 
+## Ritmo de estudo e presença — v26
+
+A v26 preserva a grade como conteúdo editorial manual e agrupa dias com a mesma composição em quatro cartões compactos: segunda/quarta/sexta, terça/quinta, sábado e domingo. SEEDF e TJDFT aparecem para estudo de segunda a sexta e revisão no sábado; TCE-GO permanece na terça, quinta e sábado; PRF-ADM entra na segunda, quarta e sexta como trilha adicional, com continuidade PRFADM01→PRFADM30.
+
+O cartão de frase alterna quatro citações de educação/aprendizagem com autor, obra ou discurso de referência e link para a fonte. As versões em português são identificadas como traduções livres quando aplicável. As fontes não são requisitadas automaticamente. O relógio usa `America/Sao_Paulo`, renderiza `HH:MM:SS` e atualiza a cada segundo sem depender do fuso do aparelho.
+
+A atualização não transforma a agenda em controle de frequência ou progresso e não escreve nos projetos-filhos. `workspace-v26.css` dá nome novo aos estilos da grade para invalidar o cache visual antigo do PWA; o teste cobre os breakpoints estreitos e a presença dos arquivos no app shell.

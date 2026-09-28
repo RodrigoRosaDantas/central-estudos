@@ -1,5 +1,18 @@
 # CHANGELOG — Central de Estudos
 
+## [26.0.0] - 2026-09-27
+
+### Changed
+- Grade semanal reorganizada em padrões compactos para celular: SEEDF e TJDFT estudam de segunda a sexta e revisam no sábado; TCE-GO tem sessões terça, quinta e sábado.
+- PRF-ADM incluído na grade às segundas, quartas e sextas, seguindo a próxima unidade PRFADMxx da trilha 01–30.
+- Relógio de Brasília passa a exibir horas, minutos e segundos, atualizados a cada segundo.
+- Frase diária passa a alternar citações sobre educação e estudo com autor e link para a fonte.
+
+### Preserved
+- SEEDF → TJDFT → TCE-GO continua como ordem manual de prioridade; PRF-ADM aparece como trilha adicional sem nova classificação.
+- A Central não registra estudo, presença, sequência concluída nem progresso; projetos e seus dados continuam independentes.
+- A fonte de cada citação é aberta somente por ação explícita do usuário; não há nova chamada automática de rede.
+
 ## [25.0.0] - 2026-09-27
 
 ### Added
@@ -304,4 +317,3 @@
 - v1.2: separação foco/retomada e 404;
 - v1.1: fallback, health check, manifest e acessibilidade;
 - v1.0: fundação, registry, navegação e arquitetura desacoplada.
-
