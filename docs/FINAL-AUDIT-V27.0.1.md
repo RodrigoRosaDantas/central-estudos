@@ -27,4 +27,4 @@
 
 ## Limitação de validação
 
-O deploy foi confirmado no GitHub Pages e o navegador conferiu a versão V27.0.1 em largura 1348×936, sem rolagem horizontal. Não houve inspeção visual em viewport de celular porque essa largura não está disponível no navegador de QA desta sessão.
+O deploy foi confirmado no GitHub Pages e o navegador conferiu a versão V27.0.1 no viewport de 1363×936 (área útil do documento: 1348×936), sem rolagem horizontal. Não houve inspeção visual em viewport de celular porque essa largura não está disponível no navegador de QA desta sessão.
