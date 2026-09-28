@@ -1,8 +1,10 @@
 # Roadmap v27.2 — frases do Major Cadar
 
 **Release:** 27.2.0  
-**Stage:** READY FOR QUALITY GATE — publicação aguardando validação automatizada e QA pós-deploy.  
-**Baseline:** `main` em `1e1a04b64d0c47d1c3e8f546f54aa99a97b4df32`.
+**Stage:** PUBLISHED — v27.2.1; QA desktop concluído e a inspeção visual corrigiu o selo antigo do painel Hoje. QA móvel continua indisponível nesta sessão.  
+**Baseline:** `main` em `1e1a04b64d0c47d1c3e8f546f54aa99a97b4df32`.  
+**Feature commit:** `36642236d7f1f74135d2df2680de2e9011b58756` — Quality gate + Pages Deploy workflow `36369665244`.  
+**Patch:** v27.2.1 corrige o selo Hoje. Commit e workflow de patch a registrar após validação.
 
 ## Objetivo
 

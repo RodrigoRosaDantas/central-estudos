@@ -811,7 +811,7 @@ function testV272MajorCadarQuotes() {
     texts.add(nodes["daily-motivation"].textContent);
   }
   assert.equal(texts.size,6,"the six-day rotation must expose six distinct Cadar phrases");
-  pass("v27.2.0 Major Cadar quote rotation, attribution and source links");
+  pass("v27.2.1 Major Cadar quote rotation, attribution and source links");
 }
 
 function testV21PresenceExperience() {
@@ -884,7 +884,8 @@ function testV27DailySchedule(registry) {
   const start=html.indexOf('<section id="agenda-semanal"'),end=html.indexOf("</section>",start);
   assert.ok(start>=0&&end>start,"weekly schedule must remain a section on the page");
   const schedule=html.slice(start,end);
-  assert.equal(registry.central.version,"27.2.0","registry must identify v27.2.0");
+  assert.equal(registry.central.version,"27.2.1","registry must identify v27.2.1");
+  assert.ok(html.includes(`HOJE · V${registry.central.version}`),"Today panel version badge must match the current release");
   assert.equal(registry.central.defaultProject,"tcego","study priorities must not change the user's central focus");
   assert.ok(html.includes('href="#agenda-semanal">Cronograma</a>')&&router.includes('"agenda-semanal":"today"'),"schedule must have an accessible shortcut and route back to Hoje");
   const priorityStrip=schedule.slice(schedule.indexOf('<div class="weekly-priority-strip"'),schedule.indexOf("</div>",schedule.indexOf('<div class="weekly-priority-strip"')));
@@ -904,11 +905,11 @@ function testV27DailySchedule(registry) {
   assert.ok(schedule.includes("não registra presença")&&schedule.includes("não estima avanço")&&schedule.includes("não muda o foco"),"weekly schedule must not claim study progress or change focus");
   const mobileCss=css.slice(css.indexOf("@media(max-width:719px)"));
   assert.ok(html.includes("./css/workspace-v27.css")&&html.includes("weekly-schedule-v27")&&mobileCss.includes(".schedule-day-grid{grid-template-columns:1fr")&&mobileCss.includes(".schedule-day-card{grid-template-columns:minmax(82px,.34fr) minmax(0,1fr)")&&mobileCss.includes(".schedule-day-heading>span{display:none}")&&mobileCss.includes(".schedule-day-rest-v27 .schedule-day-heading>span{display:inline-flex}")&&mobileCss.includes(".schedule-day-card .schedule-item-copy{display:block")&&mobileCss.includes("min-width:0"),"v27 mobile schedule must keep seven days while compacting each day row and avoiding redundant labels");
-  assert.ok(sw.includes("central-shell-v27.2.0")&&sw.includes("./css/workspace-v27.css"),"PWA shell cache must include the v27 stylesheet and current version");
-  assert.ok(html.includes('src="./js/app.js?v=27.2.0"')&&sw.includes("'./js/app.js?v=27.2.0'")&&sw.includes("'./config/projects.json?v=27.2.0'")&&app.includes("./config/projects.json?v=27.2.0"),"v27.2.0 must version app and registry cache URLs");
+  assert.ok(sw.includes("central-shell-v27.2.1")&&sw.includes("./css/workspace-v27.css"),"PWA shell cache must include the v27 stylesheet and current version");
+  assert.ok(html.includes('src="./js/app.js?v=27.2.1"')&&sw.includes("'./js/app.js?v=27.2.1'")&&sw.includes("'./config/projects.json?v=27.2.1'")&&app.includes("./config/projects.json?v=27.2.1"),"v27.2.1 must version app and registry cache URLs");
   for(const source of ["instagram.com/caveiracadar09","projetocaopastor.com.br/curso/programa-de-protecao","youtube.com/watch?v=YIUoDC1PHbE"])assert.ok(app.includes(source),`Major Cadar quote source missing: ${source}`);
   assert.ok(html.includes('id="daily-motivation-author"')&&html.includes('id="daily-motivation-source"')&&html.includes("Mentalidade de estudo · Major Cadar")&&html.includes("Seja forte ou seja vencido.")&&app.includes('author:"Major Cadar"')&&app.includes('second:"2-digit"')&&app.includes("setInterval(e,1e3)"),"Major Cadar quote, attribution/source and Brasília clock seconds must remain visible");
-  pass("v27.2.0 daily schedule, visible PRF track, Major Cadar quotes and v26 experience");
+  pass("v27.2.1 daily schedule, visible PRF track, Major Cadar quotes and v26 experience");
 }
 
 function testV271ProjectAndToolDirectory(registry) {
@@ -921,7 +922,7 @@ function testV271ProjectAndToolDirectory(registry) {
   const toolsStart = html.indexOf('<div class="study-tools"');
   const toolsEnd = html.indexOf("</div></section><section id=\"workspace\"", toolsStart);
 
-  assert.equal(registry.central.version, "27.2.0", "catalog release must be v27.2.0");
+  assert.equal(registry.central.version, "27.2.1", "catalog release must be v27.2.1");
   assert.equal(registry.central.defaultProject, "tcego", "new access cards must not change the default Central focus");
   assert.ok(prf && prf.status === "active" && prf.priority === "normal", "PRF must be an active project without a numbered priority");
   assert.equal(prf.destinationType, "notion", "PRF must open as a Notion project");
@@ -943,7 +944,7 @@ function testV271ProjectAndToolDirectory(registry) {
   assert.ok(tools.includes("fora da contagem") && tools.includes("Ferramenta"), "tool card must explain its separate role");
   assert.ok(html.includes("4 de 4 projetos") && html.includes("4 projetos · 1 ferramenta de estudo"), "static project and tool counts must match the catalog");
 
-  pass("v27.2.0 preserves the PRF destination, no-telemetry rule and separate question-tool card");
+  pass("v27.2.1 preserves the PRF destination, no-telemetry rule and separate question-tool card");
 }
 
 function testReleaseDocumentationCoherence(registry) {

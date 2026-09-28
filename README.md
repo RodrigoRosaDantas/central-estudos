@@ -6,9 +6,9 @@ Camada de entrada para os projetos de estudo TCE-GO, SEEDF, TJDFT e PRF Administ
 
 A Central não importa, altera ou replica o conteúdo dos projetos. Ela mantém os acessos independentes.
 
-## Estado atual — v27.2.0
+## Estado atual — v27.2.1
 
-A v27.2.0 mantém PRF Administrativo como projeto no Notion e a Plataforma de Questões como ferramenta transversal. A seção de frase diária agora usa seis frases curtas do Major Cadar, com autoria e link da origem em cada exibição. PRF não recebe prioridade numérica; a faixa principal continua SEEDF (P1), TJDFT (P2) e TCE-GO (P3). A agenda semanal continua indicando a execução PRF como complementar.
+A v27.2.1 mantém PRF Administrativo como projeto no Notion e a Plataforma de Questões como ferramenta transversal. A seção de frase diária agora usa seis frases curtas do Major Cadar, com autoria e link da origem em cada exibição. PRF não recebe prioridade numérica; a faixa principal continua SEEDF (P1), TJDFT (P2) e TCE-GO (P3). A agenda semanal continua indicando a execução PRF como complementar.
 
 A V27 apresenta um cartão para cada dia da semana e a V27.0.1 compacta a grade em celulares sem esconder tarefas nem mudar a ordem de prioridades.
 
@@ -191,7 +191,7 @@ Capacidades consolidadas:
 - observabilidade somente leitura, não bloqueante, com disponibilidade, publicação técnica e deploy separados;
 - falhas de rede/rate limit tratadas sem falso estado offline;
 - linha do tempo local de acessos separada de atividade técnica e sem inferência pedagógica;
-- PWA network-first, app shell offline e cache `central-shell-v27.2.0` restrito à Central;
+- PWA network-first, app shell offline e cache `central-shell-v27.2.1` restrito à Central;
 - quality gate automatizado antes de todo deploy;
 - CSP, escape de conteúdo, HTTPS, contraste, teclado, forced colors e touch targets auditados;
 - orçamento de shell <= 128 KiB na geração v16+ (v15 fechou <= 120 KiB) e zero dependências externas de JS/CSS;
@@ -221,4 +221,4 @@ A fonte dinâmica de verdade é `config/projects.json` (schema v3). Cada item de
 
 ## Governança e auditoria
 
-A esteira histórica v1→v10 permanece congelada em `docs/V10-CHECKPOINT.md` e `docs/FINAL-AUDIT-V10.md`. A geração v11→v15 permanece congelada em `docs/ROADMAP-V15.md` e `docs/V15-CHECKPOINT.md`. A geração v16→v20 é encerrada pela auditoria terminal em `docs/FINAL-AUDIT-V20.md`. A esteira terminal v21 Presença e Ritmo está registrada em `docs/ROADMAP-V21.md` e `docs/V21-CHECKPOINT.md`. A release v27.1.1 sobre o catálogo de projetos e a Plataforma de Questões está em `docs/ROADMAP-V27.1.md`, com aceite em `docs/ACCEPTANCE-V27.1.md` e auditoria final em `docs/FINAL-AUDIT-V27.1.1.md`. A release v27.2.0 sobre frases do Major Cadar está em `docs/ROADMAP-V27.2.md`, com aceite e auditoria próprios.
+A esteira histórica v1→v10 permanece congelada em `docs/V10-CHECKPOINT.md` e `docs/FINAL-AUDIT-V10.md`. A geração v11→v15 permanece congelada em `docs/ROADMAP-V15.md` e `docs/V15-CHECKPOINT.md`. A geração v16→v20 é encerrada pela auditoria terminal em `docs/FINAL-AUDIT-V20.md`. A esteira terminal v21 Presença e Ritmo está registrada em `docs/ROADMAP-V21.md` e `docs/V21-CHECKPOINT.md`. A release v27.1.1 sobre o catálogo de projetos e a Plataforma de Questões está em `docs/ROADMAP-V27.1.md`, com aceite em `docs/ACCEPTANCE-V27.1.md` e auditoria final em `docs/FINAL-AUDIT-V27.1.1.md`. A release v27.2.1 sobre frases do Major Cadar está em `docs/ROADMAP-V27.2.md`, com aceite e auditoria próprios.

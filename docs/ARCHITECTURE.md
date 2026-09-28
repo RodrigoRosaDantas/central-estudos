@@ -32,7 +32,7 @@ Busca, favoritos, ordenação, atalhos e ordem manual são camadas locais sobre 
 
 ## PWA e resiliência
 
-O service worker é limitado à origem e ao pathname da Central. O cache da release atual é `central-shell-v27.2.0` e contém somente o app shell da Central; os sites de projeto e a ferramenta não são incluídos.
+O service worker é limitado à origem e ao pathname da Central. O cache da release atual é `central-shell-v27.2.1` e contém somente o app shell da Central; os sites de projeto e a ferramenta não são incluídos.
 
 Estratégia:
 - navegações e assets conhecidos usam **network first**;

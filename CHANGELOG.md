@@ -1,5 +1,13 @@
 # CHANGELOG — Central de Estudos
 
+## [27.2.1] - 2026-09-28
+
+### Fixed
+- Selo de versão do painel Hoje alinhado a v27.2.1; runtime, registry e cache PWA renovados para corrigir também clientes instalados.
+
+### Verified
+- Patch e QA visual pós-deploy pendentes nesta etapa.
+
 ## [27.2.0] - 2026-09-28
 
 ### Changed
@@ -8,7 +16,7 @@
 - HTML estático mantém uma frase, autor e fonte coerentes sem JavaScript; sem requisição externa nova.
 
 ### Verified
-- Quality gate local e publicação pendentes nesta etapa.
+- Quality gate e primeira publicação da funcionalidade passaram no workflow 36369665244; a inspeção visual revelou um selo de versão antigo no painel Hoje, corrigido e republicado como v27.2.1.
 
 ## [27.1.1] - 2026-09-28
 
