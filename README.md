@@ -8,7 +8,7 @@ A Central não importa, altera ou replica o conteúdo dos projetos. Ela mantém 
 
 ## Estado atual — v27.3.0
 
-A v27.3.0 destaca automaticamente o dia atual no horário de Brasília e compara mudanças materiais nos contratos públicos desde a última conferência salva neste aparelho. A comparação mostra fase, ciclo, unidade, próxima ação e alertas; identifica cache e não mede estudo. PRF Administrativo aparece como projeto independente, sem prioridade numérica; enquanto o site próprio não estiver disponível, o cartão abre o projeto no Notion. A Plataforma de Questões continua como ferramenta transversal separada. As frases do Major Cadar mantêm a rotação de cinco minutos com autoria e fonte.
+A v27.3.0 destaca automaticamente o dia atual no horário de Brasília e compara mudanças materiais nos contratos públicos desde a última conferência salva neste aparelho. A comparação mostra fase, ciclo, unidade, próxima ação e alertas; identifica cache e não mede estudo. PRF Administrativo aparece como projeto independente, sem prioridade numérica; enquanto o site próprio não estiver disponível, o cartão abre o projeto no Notion. A Plataforma de Questões continua como ferramenta transversal separada. As frases do Major Cadar mantêm a rotação de cinco minutos com autoria e fonte; o cartão da frase ganhou contraste e destaque tipográfico.
 
 O teto do app shell para a linha pós-v20 é 144 KiB bruto e 48 KiB gzip, autorizado em 28/09/2026 e registrado em [`docs/APP-SHELL-BUDGET-CHANGE-2026-09-28.md`](docs/APP-SHELL-BUDGET-CHANGE-2026-09-28.md). O limite histórico v16→v20 permanece 128 KiB; novos aumentos exigem autorização explícita.
 
@@ -193,7 +193,7 @@ Capacidades consolidadas:
 - observabilidade somente leitura, não bloqueante, com disponibilidade, publicação técnica e deploy separados;
 - falhas de rede/rate limit tratadas sem falso estado offline;
 - linha do tempo local de acessos separada de atividade técnica e sem inferência pedagógica;
-- PWA network-first, app shell offline e cache `central-shell-v27.3.0` restrito à Central;
+- PWA network-first, app shell offline e cache `central-shell-v27.3.0-quote-contrast-20260928` restrito à Central;
 - quality gate automatizado antes de todo deploy;
 - CSP, escape de conteúdo, HTTPS, contraste, teclado, forced colors e touch targets auditados;
 - orçamento de shell <= 128 KiB na geração v16+ (v15 fechou <= 120 KiB) e zero dependências externas de JS/CSS;

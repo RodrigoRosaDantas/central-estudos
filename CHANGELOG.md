@@ -9,6 +9,10 @@
 - PRF Administrativo é rotulado na agenda como projeto independente, sem prioridade numérica; o destino continua sendo o Notion até o site próprio estar disponível.
 - Service worker, URLs de runtime e registry foram versionados para v27.3.0.
 
+### Visual polish
+- O cartão da frase do dia ganhou fundo mais visível, citação maior e mais forte, além de autoria e link da fonte com contraste reforçado.
+- Cache PWA renovado para `central-shell-v27.3.0-quote-contrast-20260928`; conteúdo, atribuição e rotação das frases permanecem iguais.
+
 ### Preserved
 - SEEDF (P1), TJDFT (P2) e TCE-GO (P3) mantêm suas prioridades e a rotina semanal.
 - A Plataforma de Questões continua ferramenta transversal e separada do catálogo de concursos.

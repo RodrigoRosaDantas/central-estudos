@@ -1,9 +1,9 @@
-.daily-quote-v26{max-width:58ch;margin:12px 0 0;padding:9px 13px;border-left:3px solid #a78bfa;background:linear-gradient(90deg,rgba(167,139,250,.09),transparent)}
-.daily-quote-v26 blockquote{margin:0;color:var(--text);font-size:clamp(.9rem,2vw,1.08rem);font-weight:650;line-height:1.45}
-.daily-quote-heading{margin:0 0 6px;color:#a697ea;font-size:.58rem;font-weight:900;letter-spacing:.12em;line-height:1.35;text-transform:uppercase;overflow-wrap:anywhere}
+.daily-quote-v26{max-width:58ch;margin:12px 0 0;padding:12px 14px;border:1px solid rgba(167,139,250,.28);border-left:4px solid #b69cff;border-radius:14px;background:linear-gradient(100deg,rgba(167,139,250,.19),rgba(94,234,212,.05) 78%);box-shadow:0 6px 22px rgba(167,139,250,.07)}
+.daily-quote-v26 blockquote{margin:0;color:#fff;font-size:clamp(1rem,2.2vw,1.25rem);font-weight:750;line-height:1.45;text-wrap:pretty}
+.daily-quote-heading{margin:0 0 6px;color:#d1c4ff;font-size:.62rem;font-weight:900;letter-spacing:.12em;line-height:1.35;text-transform:uppercase;overflow-wrap:anywhere}
 .daily-quote-v26 figcaption{display:flex;flex-wrap:wrap;gap:4px;align-items:baseline;margin-top:6px;color:var(--muted);font-size:.7rem;line-height:1.4}
-.daily-quote-v26 cite{font-style:normal;font-weight:700;color:#c8bcff}
-.daily-quote-v26 a{color:var(--muted);text-decoration:underline;text-decoration-color:rgba(152,163,184,.4);text-underline-offset:2px}
+.daily-quote-v26 cite{font-style:normal;font-weight:700;color:#e2d9ff}
+.daily-quote-v26 a{color:#d1d9ea;text-decoration:underline;text-decoration-color:rgba(209,217,234,.55);text-underline-offset:2px}
 .daily-quote-v26 a:focus-visible,.schedule-priority-chip:focus-visible,.schedule-item a:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px}
 .command-clock #brasilia-time{display:block;width:max-content;max-width:100%;font-size:clamp(2.2rem,8vw,3.35rem);font-variant-numeric:tabular-nums;letter-spacing:-.045em;line-height:1.05;white-space:nowrap}
 .weekly-schedule-v26{margin-top:16px;padding:clamp(13px,2.5vw,22px);border:1px solid var(--border);border-radius:20px;background:linear-gradient(145deg,rgba(94,234,212,.055),rgba(167,139,250,.04)),var(--surface)}
