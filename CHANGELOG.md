@@ -6,6 +6,7 @@
 - Grade semanal reorganizada em padrões compactos para celular: SEEDF e TJDFT estudam de segunda a sexta e revisam no sábado; TCE-GO tem sessões terça, quinta e sábado.
 - PRF-ADM incluído na grade às segundas, quartas e sextas, seguindo a próxima unidade PRFADMxx da trilha 01–30.
 - Relógio de Brasília passa a exibir horas, minutos e segundos, atualizados a cada segundo.
+- Script da Central e registro de projetos usam URLs versionadas para atualizar clientes com cache PWA antigo.
 - Frase diária passa a alternar citações sobre educação e estudo com autor e link para a fonte.
 
 ### Preserved

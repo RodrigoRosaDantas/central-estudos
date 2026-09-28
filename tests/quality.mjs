@@ -161,7 +161,7 @@ function testServiceWorker(registry) {
   assert.ok(shell.length > 0, "APP_SHELL must not be empty");
 
   for (const entry of shell) {
-    const relative = entry === "./" ? "index.html" : entry.replace(/^\.\//, "");
+    const relative = entry === "./" ? "index.html" : entry.replace(/^\.\//, "").split("?")[0];
     assert.ok(exists(relative), `APP_SHELL entry missing: ${entry}`);
   }
 
@@ -856,6 +856,7 @@ function testV25WeeklySchedule(registry) {
   assert.ok(schedule.includes("não registra presença")&&schedule.includes("não estima avanço")&&schedule.includes("não muda o foco"),"weekly schedule must not claim study progress or change focus");
   assert.ok(html.includes("./css/workspace-v26.css")&&css.includes(".schedule-pattern-grid")&&css.includes("@media(max-width:719px)")&&css.includes("grid-template-columns:1fr"),"v26 schedule must use its versioned, compact mobile layout");
   assert.ok(sw.includes("central-shell-v26.0.0")&&sw.includes("./css/workspace-v26.css"),"PWA shell cache must include the v26 stylesheet");
+  assert.ok(html.includes('src="./js/app.js?v=26.0.0"')&&sw.includes("'./js/app.js?v=26.0.0'")&&sw.includes("'./config/projects.json?v=26.0.0'")&&read("js/app.js").includes("./config/projects.json?v=26.0.0"),"v26 must bypass stale app and registry cache entries");
   const app=read("js/app.js");
   for(const source of ["kinginstitute.stanford.edu","nelsonmandela.org","malala.org/news-and-voices","gutenberg.org/files/46389"])assert.ok(app.includes(source),`daily quote source missing: ${source}`);
   assert.ok(html.includes('id="daily-motivation-author"')&&html.includes('id="daily-motivation-source"')&&app.includes('second:"2-digit"')&&app.includes("setInterval(e,1e3)"),"daily quote must show authors/source and Brasília clock seconds");

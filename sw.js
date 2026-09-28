@@ -13,7 +13,7 @@ const APP_SHELL = [
 './css/operational-v13.css',
 './css/workspace-v24.css',
 './css/workspace-v26.css',
-'./js/app.js',
+'./js/app.js?v=26.0.0',
 './js/catalog-v4.js',
 './js/personalization-v5.js',
 './js/pwa-v6.js',
@@ -22,7 +22,7 @@ const APP_SHELL = [
 './js/contracts-v12.js',
 './js/operational-v13.js',
 './js/workspace-v24.js',
-'./config/projects.json'
+'./config/projects.json?v=26.0.0'
 ];
 self.addEventListener('install', (event) => {
 event.waitUntil(caches.open(CACHE_VERSION).then((cache) => cache.addAll(APP_SHELL)));
