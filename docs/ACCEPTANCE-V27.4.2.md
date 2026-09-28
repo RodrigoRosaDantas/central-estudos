@@ -8,4 +8,6 @@
 - [x] Quatro colunas em telas amplas e duas em telas menores; Quality gate valida o reflow.
 - [x] URLs do app, registry, runtime e cache PWA identificam v27.4.2.
 - [x] Quality gate local passou; app shell com 147.257/147.456 bytes bruto e 47.839/49.152 bytes gzip.
-- [ ] Workflow, publicação e QA do site publicado registrados.
+- [x] Workflow #375: Quality gate e Pages Deploy concluídos; artifact `10980661883`, digest `sha256:cb295e1b343b837c964594be3c54e2d38eeeaa223049bb9929f4a26ccff116ad`.
+- [x] Fonte publicada no branch `main` confere v27.4.2, P4, URL própria do PRF e foco padrão TCE-GO.
+- [ ] Conferência visual manual da faixa P4 na página publicada.

@@ -1,7 +1,7 @@
 # Roadmap v27.4.2 — prioridade P4 do PRF
 
 **Release:** 27.4.2  
-**Stage:** RELEASE CANDIDATE  
+**Stage:** PUBLISHED  
 **Escopo:** registrar o PRF Administrativo como P4 na agenda semanal da Central e direcionar o acesso ao site publicado no GitHub Pages.
 
 ## Objetivos
@@ -16,4 +16,6 @@
 ## Verificação
 
 - O Quality gate confere ordem, destino do P4, agenda semanal, foco padrão e versionamento do cache.
-- A auditoria final registrará Quality gate, workflow de Pages, orçamento e QA publicado.
+- Quality gate local e workflow #375 concluíram; o Pages Deploy publicou o commit `41ba121b0d83d09104cbacb1d2f7fef36289a6ca`.
+- O código publicado confirma v27.4.2, PRF P4, link Pages e TCE-GO como foco padrão.
+- O shell permaneceu sob os limites autorizados de 147.456 bytes bruto e 49.152 bytes gzip.

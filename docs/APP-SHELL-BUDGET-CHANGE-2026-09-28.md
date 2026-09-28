@@ -22,6 +22,7 @@ O teto anterior de **131.072 bytes (128 KiB)** continua correto para o fechament
 - Workflow de referência: #374, Quality gate e Pages Deploy aprovados; o limite original foi mantido.
 - v27.4.2: **147.257 / 147.456 bytes brutos**, margem de 199 bytes; gzip **47.839 / 49.152 bytes**, margem de 1.313 bytes.
 - A faixa P4 coube no mesmo teto; foi removida uma regra estreita duplicada, sem alterar o limite aprovado.
+- Publicação: workflow #375 e artifact Pages `10980661883`, digest `sha256:cb295e1b343b837c964594be3c54e2d38eeeaa223049bb9929f4a26ccff116ad`.
 
 ## Controle futuro
 

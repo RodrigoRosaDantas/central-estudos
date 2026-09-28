@@ -1142,7 +1142,7 @@ function testReleaseDocumentationCoherence(registry) {
     const roadmap2741=read("docs/ROADMAP-V27.4.1.md"),acceptance2741=read("docs/ACCEPTANCE-V27.4.1.md"),risk2741=read("docs/RISK-REGISTER-V27.4.1.md"),checkpoint2741=read("docs/V27.4.1-CHECKPOINT.md"),audit2741=read("docs/FINAL-AUDIT-V27.4.1.md");
     assert.ok(roadmap2741.includes("27.4.1")&&roadmap2741.includes("desktop")&&acceptance2741.includes("Autoria")&&risk2741.includes("App shell")&&checkpoint2741.includes("v27.4.1")&&audit2741.includes("Quality gate"),"v27.4.1 governance must document the desktop quote redesign and release audit");
     const roadmap2742=read("docs/ROADMAP-V27.4.2.md"),acceptance2742=read("docs/ACCEPTANCE-V27.4.2.md"),risk2742=read("docs/RISK-REGISTER-V27.4.2.md"),checkpoint2742=read("docs/V27.4.2-CHECKPOINT.md"),audit2742=read("docs/FINAL-AUDIT-V27.4.2.md");
-    assert.ok(roadmap2742.includes("P4")&&acceptance2742.includes("P1")&&acceptance2742.includes("P4")&&risk2742.includes("duas colunas")&&checkpoint2742.includes("v27.4.2")&&audit2742.includes("P1–P4"),"v27.4.2 governance must define the priority change, responsive behavior and audit");
+    assert.ok(roadmap2742.includes("P4")&&acceptance2742.includes("P1")&&acceptance2742.includes("P4")&&risk2742.includes("duas colunas")&&checkpoint2742.includes("PUBLISHED")&&audit2742.includes("P1–P4")&&audit2742.includes("36445529505")&&audit2742.includes("10980661883"),"v27.4.2 governance must record the priority change, responsive behavior and published audit");
   }
 
   pass("release documentation coherence");
