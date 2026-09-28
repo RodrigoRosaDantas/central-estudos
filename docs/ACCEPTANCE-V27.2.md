@@ -13,3 +13,4 @@
 - [x] QA móvel segue com a limitação de viewport já documentada se o navegador continuar sem emulação móvel.
 
 - [x] O selo do painel Hoje exibe a mesma versão do header, registry, runtime e cache PWA (incluído no patch v27.2.1).
+- [ ] App shell bruto dentro do teto de 131.072 bytes da fonte-mestra: reauditoria mediu 144.728 bytes; desvio de 13.656 bytes registrado em `docs/FINAL-AUDIT-V27.2.1.md`.

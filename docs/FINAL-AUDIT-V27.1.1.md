@@ -1,6 +1,6 @@
 # Auditoria final — Central de Estudos v27.1.1
 
-**Status:** PASS; limite de inspeção visual móvel registrado abaixo.  
+**Status:** PARCIAL — release funcional PASS; reauditoria encontrou desvio do teto bruto da fonte-mestra. QA móvel também permanece pendente.  
 **Data:** 2026-09-28.  
 **Código publicado:** [`864fb0410a845cacef53794a7061d2c6c7dd6182`](https://github.com/RodrigoRosaDantas/central-estudos/commit/864fb0410a845cacef53794a7061d2c6c7dd6182).  
 **Workflow:** [36368493310 — Quality gate + Pages Deploy SUCCESS](https://github.com/RodrigoRosaDantas/central-estudos/actions/runs/36368493310).  
@@ -28,6 +28,12 @@
 - Site publicado em [central-estudos](https://rodrigorosadantas.github.io/central-estudos/): DOM confirma V27.1.1, quatro projetos, ação Notion correta, card da Plataforma de Questões e seus dois links.
 - QA visual no viewport 1363×936 (largura útil do documento 1348 px): sem overflow horizontal; CTA do PRF com 22 px de altura, sem quebra; card da ferramenta separado e completo.
 - Registro visual desktop salvo como `central-estudos-v27.1.1-projects-tools.jpg`.
+
+## Reauditoria contra a fonte-mestra — 2026-09-28
+
+A fonte-mestra fornecida pelo usuário mantém o teto bruto do app shell em **131.072 bytes**. O artefato desta release foi medido em **144.642 bytes**, excedendo esse teto em **13.570 bytes**. O quality gate usado na publicação permite 147.456 bytes, portanto o PASS original não comprova conformidade com a fonte-mestra. A soma gzip de 46.807 bytes continua abaixo de 49.152 bytes, mas não substitui o limite bruto.
+
+O comportamento de PRF, da Plataforma de Questões e a publicação não mostraram falha funcional nesta reauditoria. A correção do excesso bruto exige recuperar pelo menos 13.570 bytes sem apagar conteúdo autorizado; a auditoria não declara esse critério concluído.
 
 ## Limite
 
