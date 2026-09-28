@@ -12,6 +12,12 @@
 - PRF permanece ativo, sem prioridade numérica e sem contrato de status operacional na Central.
 - A Central não altera o repositório, os dados ou os materiais do PRF.
 
+### Verified
+- PR #6 integrado no commit `4a378f726d5ead66305cba2b63ec054f583d1bb3`; Quality gate e Deploy passaram no [workflow 36437885787](https://github.com/RodrigoRosaDantas/central-estudos/actions/runs/36437885787).
+- Artefato Pages `10976357365`, 145.103 bytes, digest `sha256:aa8e237d8364405e14b0eb1730d9228d913b05b328992f6c34af2cefe6d351e9`.
+- Payload do app shell: 147.300/147.456 bytes brutos e 47.887/49.152 bytes gzip.
+- QA publicado em 1363×936 confirmou v27.4.0, cartão acessível, links do painel e do Notion, deploy publicado e ausência de overflow horizontal. Os testes responsivos passaram; não foi feita inspeção manual num viewport móvel nesta sessão.
+
 ## [27.3.0] - 2026-09-28
 
 ### Changed
