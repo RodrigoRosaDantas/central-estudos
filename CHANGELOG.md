@@ -1,5 +1,15 @@
 # CHANGELOG — Central de Estudos
 
+## [27.0.1] - 2026-09-27
+
+### Fixed
+- Agenda móvel compactada: cada dia mantém um cartão, com o nome do dia ao lado das tarefas; rótulos-resumo duplicados ficam recolhidos em celulares.
+- Cache do app shell, runtime e registry identificados como v27.0.1; instalações anteriores recebem a ação de atualização do PWA.
+
+### Verified
+- Prioridades, sete dias, PRF Administrativo, relógio de Brasília e citações com autor/fonte mantidos.
+- Projetos-filhos continuam somente leitura.
+
 ## [27.0.0] - 2026-09-27
 
 ### Changed

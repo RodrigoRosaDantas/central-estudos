@@ -32,7 +32,7 @@ Busca, favoritos, ordenação, atalhos e ordem manual são camadas locais sobre 
 
 ## PWA e resiliência
 
-O service worker é limitado à origem e ao pathname da Central. O cache da release atual é `central-shell-v27.0.0` e contém somente o app shell da Central.
+O service worker é limitado à origem e ao pathname da Central. O cache da release atual é `central-shell-v27.0.1` e contém somente o app shell da Central.
 
 Estratégia:
 - navegações e assets conhecidos usam **network first**;
@@ -417,4 +417,4 @@ A v26 introduziu o cronograma semanal, a trilha PRF-ADM em dias fixos, citaçõe
 
 A v27 apresenta sete cartões separados, um por dia. Segunda, quarta e sexta mostram SEEDF, TJDFT e PRF Administrativo; terça e quinta mostram SEEDF, TJDFT e TCE-GO; sábado mostra as revisões P1/P2 e TCE-GO; domingo permanece protegido. PRF Administrativo é uma trilha complementar, não uma prioridade numerada.
 
-O shell `central-shell-v27.0.0` inclui `workspace-v27.css`; o runtime e o registro usam URLs versionadas para atualizar clientes com cache PWA anterior. O breakpoint móvel transforma a grade diária em uma coluna. Foco, filas e dados dos projetos-filhos permanecem independentes; a agenda não mede execução ou progresso.
+O shell `central-shell-v27.0.1` inclui `workspace-v27.css`; runtime e registro usam URLs `v27.0.1` para renovar clientes com cache anterior. Em celular, cada dia mantém a própria linha, com tarefas ao lado do dia e rótulos redundantes recolhidos. Foco, filas e dados dos projetos-filhos permanecem independentes; a agenda não mede execução ou progresso.

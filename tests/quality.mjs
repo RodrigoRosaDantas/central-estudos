@@ -841,7 +841,7 @@ function testV27DailySchedule(registry) {
   const start=html.indexOf('<section id="agenda-semanal"'),end=html.indexOf("</section>",start);
   assert.ok(start>=0&&end>start,"weekly schedule must remain a section on the page");
   const schedule=html.slice(start,end);
-  assert.equal(registry.central.version,"27.0.0","registry must identify v27");
+  assert.equal(registry.central.version,"27.0.1","registry must identify v27");
   assert.equal(registry.central.defaultProject,"tcego","study priorities must not change the user's central focus");
   assert.ok(html.includes('href="#agenda-semanal">Cronograma</a>')&&router.includes('"agenda-semanal":"today"'),"schedule must have an accessible shortcut and route back to Hoje");
   const priorityStrip=schedule.slice(schedule.indexOf('<div class="weekly-priority-strip"'),schedule.indexOf("</div>",schedule.indexOf('<div class="weekly-priority-strip"')));
@@ -859,9 +859,10 @@ function testV27DailySchedule(registry) {
   assert.ok(schedule.includes('aria-label="Trilha complementar PRF Administrativo"')&&schedule.includes("segunda, quarta e sexta")&&!schedule.includes("Prioridade 4"),"PRF Administrative must be visible as a complementary track, not P4");
   assert.ok(!schedule.includes("data-days="),"day-by-day plan must not group weekdays together");
   assert.ok(schedule.includes("não registra presença")&&schedule.includes("não estima avanço")&&schedule.includes("não muda o foco"),"weekly schedule must not claim study progress or change focus");
-  assert.ok(html.includes("./css/workspace-v27.css")&&html.includes("weekly-schedule-v27")&&css.includes(".schedule-day-grid")&&css.includes("@media(max-width:719px)")&&css.includes("grid-template-columns:1fr")&&css.includes("min-width:0"),"v27 schedule must use a compact single-column mobile layout");
-  assert.ok(sw.includes("central-shell-v27.0.0")&&sw.includes("./css/workspace-v27.css"),"PWA shell cache must include the v27 stylesheet");
-  assert.ok(html.includes('src="./js/app.js?v=27.0.0"')&&sw.includes("'./js/app.js?v=27.0.0'")&&sw.includes("'./config/projects.json?v=27.0.0'")&&app.includes("./config/projects.json?v=27.0.0"),"v27 must version app and registry cache URLs");
+  const mobileCss=css.slice(css.indexOf("@media(max-width:719px)"));
+  assert.ok(html.includes("./css/workspace-v27.css")&&html.includes("weekly-schedule-v27")&&mobileCss.includes(".schedule-day-grid{grid-template-columns:1fr")&&mobileCss.includes(".schedule-day-card{grid-template-columns:minmax(82px,.34fr) minmax(0,1fr)")&&mobileCss.includes(".schedule-day-heading>span{display:none}")&&mobileCss.includes(".schedule-day-rest-v27 .schedule-day-heading>span{display:inline-flex}")&&mobileCss.includes(".schedule-day-card .schedule-item-copy{display:block")&&mobileCss.includes("min-width:0"),"v27 mobile schedule must keep seven days while compacting each day row and avoiding redundant labels");
+  assert.ok(sw.includes("central-shell-v27.0.1")&&sw.includes("./css/workspace-v27.css"),"PWA shell cache must include the v27 stylesheet");
+  assert.ok(html.includes('src="./js/app.js?v=27.0.1"')&&sw.includes("'./js/app.js?v=27.0.1'")&&sw.includes("'./config/projects.json?v=27.0.1'")&&app.includes("./config/projects.json?v=27.0.1"),"v27 must version app and registry cache URLs");
   for(const source of ["kinginstitute.stanford.edu","nelsonmandela.org","malala.org/news-and-voices","gutenberg.org/files/46389"])assert.ok(app.includes(source),`daily quote source missing: ${source}`);
   assert.ok(html.includes('id="daily-motivation-author"')&&html.includes('id="daily-motivation-source"')&&app.includes('second:"2-digit"')&&app.includes("setInterval(e,1e3)"),"daily quote must show authors/source and Brasília clock seconds");
   pass("v27 day-by-day schedule, visible PRF track, mobile layout and v26 experience");
@@ -1085,4 +1086,3 @@ testReleaseDocumentationCoherence(registry);
 testSecurityAndContracts(registry);
 
 console.log("\nQuality gate PASS");
-

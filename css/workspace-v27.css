@@ -19,4 +19,26 @@
 .schedule-day-rest-v27 p{margin:0;color:var(--muted);font-size:.74rem;line-height:1.45}
 .weekly-schedule-v27 .weekly-schedule-note{margin-top:11px}
 @media(max-width:979px){.schedule-day-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:719px){.weekly-schedule-v27{padding:13px}.weekly-schedule-v27 .section-heading{display:grid;gap:4px}.weekly-schedule-v27 .section-heading>p{margin:0;max-width:44ch}.schedule-track-banner-v27{align-items:flex-start;margin-bottom:10px;padding:9px 10px}.schedule-day-grid{grid-template-columns:1fr;gap:7px}.schedule-day-card{gap:7px;padding:10px 11px}.schedule-day-card .schedule-items{gap:4px}.weekly-schedule-v27 .weekly-schedule-note{margin-top:9px}}
+@media(max-width:719px){
+  .weekly-schedule-v27{padding:13px}
+  .weekly-schedule-v27 .section-heading{display:grid;gap:4px}
+  .weekly-schedule-v27 .section-heading>p{margin:0;max-width:44ch}
+  .schedule-track-banner-v27{align-items:flex-start;margin-bottom:10px;padding:9px 10px}
+  .schedule-day-grid{grid-template-columns:1fr;gap:6px}
+  .schedule-day-card{grid-template-columns:minmax(82px,.34fr) minmax(0,1fr);align-items:start;gap:6px 9px;min-width:0;padding:8px 9px}
+  .schedule-day-heading{display:grid;align-content:start;justify-content:start;gap:4px}
+  .schedule-day-heading h3{font-size:.76rem}
+  .schedule-day-heading>span{display:none}
+  .schedule-day-rest-v27 .schedule-day-heading>span{display:inline-flex}
+  .schedule-day-card .schedule-items{gap:3px}
+  .schedule-day-card .schedule-item{grid-template-columns:40px minmax(0,1fr);gap:5px}
+  .schedule-day-card .schedule-item-copy{display:block;font-size:.69rem;line-height:1.3}
+  .schedule-day-card .schedule-item-copy small{display:inline;margin-left:4px;font-size:.61rem;line-height:1.2}
+  .schedule-day-rest-v27 p{grid-column:2;font-size:.68rem}
+  .weekly-schedule-v27 .weekly-schedule-note{margin-top:8px}
+}
+@media(max-width:359px){
+  .schedule-day-card{grid-template-columns:minmax(74px,.34fr) minmax(0,1fr);gap:6px 7px;padding:8px}
+  .schedule-day-card .schedule-item{grid-template-columns:37px minmax(0,1fr);gap:4px}
+  .schedule-day-heading h3{font-size:.72rem}
+}

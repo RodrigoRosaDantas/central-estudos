@@ -6,9 +6,9 @@ Camada de entrada para os ambientes independentes TCE-GO, SEEDF e TJDFT.
 
 A Central não importa, altera ou replica o código dos projetos-filhos.
 
-## Estado atual — v27.0
+## Estado atual — v27.0.1
 
-A v27 mostra um cartão para cada dia da semana e destaca PRF Administrativo como trilha complementar. Mantém as prioridades e deixa cada rotina visível de segunda-feira a domingo.
+A v27 mostra um cartão para cada dia da semana e destaca PRF Administrativo como trilha complementar. O patch 27.0.1 compacta a grade em celulares sem esconder tarefas nem mudar a ordem de prioridades.
 
 - Retomada mostra separadamente o foco escolhido e o último acesso local; acesso não representa estudo ou progresso.
 - Projetos reúne acessos ativos e o Workspace de concursos.
@@ -19,7 +19,7 @@ A v27 mostra um cartão para cada dia da semana e destaca PRF Administrativo com
 - PRF-ADM segue segunda, quarta e sexta, na sequência PRFADM01→PRFADM30, sem pular códigos quando uma sessão é perdida.
 - Frases diárias motivacionais sobre educação e estudo exibem autor e fonte; traduções são identificadas como traduções livres.
 - Relógio de Brasília usa `America/Sao_Paulo` e atualiza a cada segundo.
-- O cronograma apresenta os sete dias em cartões individuais e usa uma coluna em telas estreitas.
+- O cronograma apresenta os sete dias em cartões individuais e usa linhas compactas em telas estreitas.
 - A grade não muda o foco, não registra execução e não calcula progresso; cada projeto mantém sua fila e suas exceções.
 - Cada tela possui âncora direta; sem JavaScript, os links diretos dos projetos continuam disponíveis.
 - contratos read-only, sem chamadas novas, sem ranking ou progresso inferido;
