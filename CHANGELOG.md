@@ -1,5 +1,16 @@
 # CHANGELOG — Central de Estudos
 
+## [27.2.2] - 2026-09-28
+
+### Changed
+- As seis frases do Major Cadar agora alternam automaticamente a cada cinco minutos, sem recarregar a página.
+- Frase, autoria e fonte correta acompanham cada troca; o HTML mantém fallback sem JavaScript.
+- Versão de runtime, registry e cache PWA atualizada para que clientes instalados recebam a correção.
+
+### Verified
+- Quality gate local confirma troca por janela de cinco minutos, seis textos e seis fontes coerentes.
+- Status do workflow remoto e QA visual móvel precisam de confirmação após o push.
+
 ## [27.2.1] - 2026-09-28
 
 ### Fixed
