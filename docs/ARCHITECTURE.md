@@ -36,7 +36,7 @@ Busca, favoritos, ordenação, atalhos e ordem manual são camadas locais sobre 
 
 ## PWA e resiliência
 
-O service worker é limitado à origem e ao pathname da Central. O cache atual é `central-shell-v27.6.0-study-log-20260928` e contém o registro local e a navegação da Central; sites de projeto, ferramentas e serviços externos não são incluídos. A grade e o formulário de estudo continuam disponíveis offline. A interface do Radar/Mentor publicada e controles avançados do catálogo não são pré-cacheados; eles carregam quando há rede, para manter o shell abaixo dos limites autorizados.
+O service worker é limitado à origem e ao pathname da Central. O cache atual é `central-shell-v27.6.1-study-log-20260928` e contém o registro local e a navegação da Central; sites de projeto, ferramentas e serviços externos não são incluídos. A grade e o formulário de estudo continuam disponíveis offline. A interface do Radar/Mentor publicada e controles avançados do catálogo não são pré-cacheados; eles carregam quando há rede, para manter o shell abaixo dos limites autorizados.
 
 Estratégia:
 - navegações e assets conhecidos usam **network first**;
@@ -477,6 +477,6 @@ O fechamento não registra presença nem cria um segundo histórico. Os contrato
 A mudança é somente de apresentação e documentação na Central: sem novo fetch, backend, armazenamento de execução ou escrita nos projetos-filhos. A grade P1–P4 e o foco de navegação permanecem independentes.
 
 
-## Registro local de estudo — v27.6
+## Registro local de estudo — v27.6.1
 
 O registro é uma exceção estreita à regra de observabilidade somente leitura: ele grava apenas o que a pessoa lançar e confirmar no próprio navegador. Não há chamada de rede, backend, login ou escrita em fonte acadêmica. Dados podem ser exportados/restaurados em JSON; tópicos desconhecidos, duração inválida e lançamentos sem confirmação são rejeitados.
