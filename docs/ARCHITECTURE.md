@@ -32,7 +32,7 @@ Busca, favoritos, ordenação, atalhos e ordem manual são camadas locais sobre 
 
 ## PWA e resiliência
 
-O service worker é limitado à origem e ao pathname da Central. O cache da release atual é `central-shell-v27.3.0` e contém somente o app shell da Central; os sites de projeto e a ferramenta não são incluídos.
+O service worker é limitado à origem e ao pathname da Central. O cache atual é `central-shell-v27.3.0-quote-contrast-20260928` e contém somente o app shell da Central; os sites de projeto e a ferramenta não são incluídos.
 
 Estratégia:
 - navegações e assets conhecidos usam **network first**;
@@ -432,6 +432,9 @@ O shell `central-shell-v27.0.1` inclui `workspace-v27.css`; runtime e registro u
 O teto de **144 KiB bruto / 48 KiB gzip** para a linha pós-v20 foi autorizado explicitamente pelo usuário em 28/09/2026 após a reauditoria; o limite de 128 KiB continua registrado como histórico da geração v16→v20. `docs/APP-SHELL-BUDGET-CHANGE-2026-09-28.md` mantém a decisão e as margens da release atual. Novos aumentos continuam sujeitos a autorização explícita.
 
 ## Contexto atual — v27.3.0
+
+O cartão da frase do dia usa fundo mais definido, tipografia maior e cor de alto contraste; autoria e fonte continuam visíveis. A rotação permanece automática a cada cinco minutos.
+
 
 O cronograma marca o cartão correspondente ao dia em `America/Sao_Paulo`, recalcula ao mudar de minuto e ao retornar à aba, e o identifica visualmente e com `aria-current="date"`. Essa seleção não altera o conteúdo nem a ordem semanal.
 

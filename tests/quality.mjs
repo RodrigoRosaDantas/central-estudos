@@ -893,7 +893,7 @@ function testV24ScreensAndViews(registry) {
 }
 
 function testV27DailySchedule(registry) {
-  const html=read("index.html"),router=read("js/workspace-v24.js"),css=read("css/workspace-v27.css"),sw=read("sw.js"),app=read("js/app.js");
+  const html=read("index.html"),router=read("js/workspace-v24.js"),css=read("css/workspace-v27.css"),quoteCss=read("css/workspace-v26.css"),sw=read("sw.js"),app=read("js/app.js");
   const start=html.indexOf('<section id="agenda-semanal"'),end=html.indexOf("</section>",start);
   assert.ok(start>=0&&end>start,"weekly schedule must remain a section on the page");
   const schedule=html.slice(start,end);
@@ -926,7 +926,9 @@ function testV27DailySchedule(registry) {
   assert.ok(html.includes("Projeto PRF Administrativo")&&html.includes(">PROJETO</span>")&&html.includes(">PRF</span>"),"the weekly routine must label PRF as a project");
   for(const source of ["instagram.com/caveiracadar09","projetocaopastor.com.br/curso/programa-de-protecao","youtube.com/watch?v=YIUoDC1PHbE"])assert.ok(app.includes(source),`Major Cadar quote source missing: ${source}`);
   assert.ok(html.includes('id="daily-motivation-author"')&&html.includes('id="daily-motivation-source"')&&html.includes("Frases do Major Cadar · muda a cada 5 min")&&html.includes('id="daily-motivation" class="daily-motivation" aria-live="polite" aria-atomic="true"')&&html.includes("Seja forte ou seja vencido.")&&app.includes('author:"Major Cadar"')&&app.includes('second:"2-digit"')&&app.includes("setInterval(e,1e3)"),"Major Cadar quote, accessible rotation label, attribution/source and Brasília clock seconds must remain visible");
-  pass("v27.3.0 current-day marker, published changes, project labels, Major Cadar quotes and weekly schedule");
+  assert.ok(quoteCss.includes("border-left:4px solid #b69cff")&&quoteCss.includes("font-size:clamp(1rem,2.2vw,1.25rem)")&&quoteCss.includes("font-weight:750")&&quoteCss.includes("rgba(167,139,250,.19)"),"daily quote card must use stronger contrast and a larger, bolder phrase");
+  assert.ok(html.includes('href="./css/workspace-v26.css?v=quote-contrast-20260928"')&&sw.includes("'./css/workspace-v26.css?v=quote-contrast-20260928'")&&sw.includes("central-shell-v27.3.0-quote-contrast-20260928"),"quote styling update must refresh installed PWA clients");
+  pass("v27.3.0 current-day marker, published changes, project labels, Major Cadar quotes, weekly schedule and quote contrast");
 }
 
 function testCommandContext() {

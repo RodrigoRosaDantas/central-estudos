@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'central-shell-v27.3.0';
+const CACHE_VERSION = 'central-shell-v27.3.0-quote-contrast-20260928';
 const APP_SHELL = [
 './',
 './index.html',
@@ -12,7 +12,7 @@ const APP_SHELL = [
 './css/pro-v11.css',
 './css/operational-v13.css',
 './css/workspace-v24.css',
-'./css/workspace-v26.css',
+'./css/workspace-v26.css?v=quote-contrast-20260928',
 './css/workspace-v27.css',
 './js/app.js?v=27.3.0',
 './js/catalog-v4.js',
