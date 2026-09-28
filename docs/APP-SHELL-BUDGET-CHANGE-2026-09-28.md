@@ -30,3 +30,10 @@ Novas funcionalidades devem caber nos limites vigentes. Se o shell exceder qualq
 
 
 - v27.4.3: **147.304 / 147.456 bytes bruto**, margem de 152 bytes; gzip **47.924 / 49.152 bytes**, margem de 1.228 bytes. A descrição do manifesto passou a incluir o PRF e a Plataforma de Questões sem elevar os limites.
+
+## v27.6.0 — registro local de estudo
+
+- Payload medido no Quality gate: **146.207 / 147.456 bytes bruto**; **46.623 / 49.152 bytes gzip** (margens de 1.249 e 2.529 bytes).
+- O formulário, a lista e os resumos do registro ficam no app shell, para permitir lançamentos offline.
+- Os módulos de hidratação de Radar/Mentor e os controles avançados do catálogo permanecem referenciados no HTML e disponíveis pela rede, mas não são pré-cacheados nesta versão. Sites de projetos e serviços externos continuam fora do cache.
+- Nenhum teto foi elevado. A alteração mantém os limites autorizados e passa pelo Quality gate local.

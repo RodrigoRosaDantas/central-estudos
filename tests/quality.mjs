@@ -513,8 +513,8 @@ function testV13OperationalState(registry) {
 
   const cacheMajor = Number(sw.match(/central-shell-v(\d+)\./)?.[1] || 0);
   assert.ok(cacheMajor >= 13, "service worker cache must preserve v13 or newer");
-  assert.ok(sw.includes("./js/operational-v13.js"), "v13 JS must be in app shell");
-  assert.ok(sw.includes("./css/operational-v13.css"), "v13 CSS must be in app shell");
+  assert.ok(!sw.includes("./js/operational-v13.js"), "live operational hydration must remain online-only to keep the authorized offline shell budget");
+  assert.ok(!sw.includes("./css/operational-v13.css"), "the hidden live status panel must not consume offline shell budget");
 
   for (const project of registry.projects) {
     if (project.url) assert.ok(html.includes(project.url), `v13 must preserve direct link for ${project.id}`);
@@ -555,8 +555,7 @@ function testV14ExplainableRouting(registry) {
 
   const cacheMajor = Number(sw.match(/central-shell-v(\d+)\./)?.[1] || 0);
   assert.ok(cacheMajor >= 14, "service worker cache must preserve v14 or newer");
-  assert.ok(sw.includes("./js/operational-v13.js"), "v14 routing must remain in operational app-shell JS");
-  assert.ok(sw.includes("./css/operational-v13.css"), "v14 routing styles must remain in operational app-shell CSS");
+  assert.ok(!sw.includes("./js/operational-v13.js") && !sw.includes("./css/operational-v13.css"), "published-data routing is loaded only when online, while core local study flows stay in the offline shell");
 
   for (const project of registry.projects) {
     if (project.url) assert.ok(html.includes(project.url), `v14 must preserve direct link for ${project.id}`);
@@ -903,7 +902,7 @@ function testV27DailySchedule(registry) {
   const start=html.indexOf('<section id="agenda-semanal"'),end=html.indexOf("</section>",start);
   assert.ok(start>=0&&end>start,"weekly schedule must remain a section on the page");
   const schedule=html.slice(start,end);
-  assert.equal(registry.central.version,"27.5.0","registry must identify v27.5.0");
+  assert.equal(registry.central.version,"27.6.0","registry must identify v27.6.0");
   assert.ok(html.includes(`HOJE · V${registry.central.version}`),"Today panel version badge must match the current release");
   assert.equal(registry.central.defaultProject,"tcego","study priorities must not change the user's central focus");
   assert.ok(html.includes('href="#agenda-semanal">Cronograma</a>')&&router.includes('"agenda-semanal":"today"'),"schedule must have an accessible shortcut and route back to Hoje");
@@ -931,9 +930,9 @@ function testV27DailySchedule(registry) {
   assert.ok(closeout.includes("atualização do estado publicado, não estudo individual")&&closeout.includes("Feito fica registrado na fonte"),"closeout must distinguish project freshness from individual study execution");
   const mobileCss=css.slice(css.indexOf("@media(max-width:719px)"));
   assert.ok(html.includes("./css/workspace-v27.css")&&html.includes("weekly-schedule-v27")&&mobileCss.includes(".schedule-day-grid{grid-template-columns:1fr")&&mobileCss.includes(".schedule-day-card{grid-template-columns:minmax(82px,.34fr) minmax(0,1fr)")&&mobileCss.includes(".schedule-day-heading>span{display:none}")&&mobileCss.includes(".schedule-day-rest-v27 .schedule-day-heading>span{display:inline-flex}")&&mobileCss.includes(".schedule-day-card .schedule-item-copy{display:block")&&mobileCss.includes("min-width:0"),"v27 mobile schedule must keep seven days while compacting each day row and avoiding redundant labels");
-  assert.ok(html.includes('src="./js/command-context-v1.js?v=27.5.0"')&&sw.includes("'./js/command-context-v1.js?v=27.5.0'"),"today marker and published-change summary must load as part of the app shell");
-  assert.ok(sw.includes("central-shell-v27.5.0")&&sw.includes("./css/workspace-v27.css"),"PWA shell cache must include the v27 stylesheet and current version");
-  assert.ok(html.includes('src="./js/app.js?v=27.5.0"')&&sw.includes("'./js/app.js?v=27.5.0'")&&sw.includes("'./config/projects.json?v=27.5.0'")&&app.includes("./config/projects.json?v=27.5.0"),"v27.5.0 must version app and registry cache URLs");
+  assert.ok(html.includes('src="./js/command-context-v1.js?v=27.6.0"')&&sw.includes("'./js/command-context-v1.js?v=27.6.0'"),"today marker and published-change summary must load as part of the app shell");
+  assert.ok(sw.includes("central-shell-v27.6.0")&&sw.includes("./css/workspace-v27.css"),"PWA shell cache must include the v27 stylesheet and current version");
+  assert.ok(html.includes('src="./js/app.js?v=27.6.0"')&&sw.includes("'./js/app.js?v=27.6.0'")&&sw.includes("'./config/projects.json?v=27.6.0'")&&app.includes("./config/projects.json?v=27.6.0"),"v27.6.0 must version app and registry cache URLs");
   assert.ok(html.includes("Mudanças desde a última conferência")&&html.includes("contratos validados neste aparelho")&&html.includes('id="published-changes-list"'),"published changes must be shown with their local/read-only provenance");
   assert.ok(css.includes(".schedule-day-card.is-today")&&css.includes('content:"HOJE"'),"the current weekday must have a visible marker");
   assert.ok(html.includes("PRF Administrativo")&&html.includes(">P4</span>")&&html.includes(">PRF</span>"),"the weekly routine must label PRF as P4 and retain its project identity");
@@ -941,8 +940,52 @@ function testV27DailySchedule(registry) {
   assert.ok(html.includes('id="daily-motivation-author"')&&html.includes('id="daily-motivation-source"')&&html.includes("Frases do Major Cadar · muda a cada 5 min")&&html.includes('id="daily-motivation" class="daily-motivation" aria-live="polite" aria-atomic="true"')&&html.includes("Seja forte ou seja vencido.")&&app.includes('author:"Major Cadar"')&&app.includes('second:"2-digit"')&&app.includes("setInterval(e,1e3)"),"Major Cadar quote, accessible rotation label, attribution/source and Brasília clock seconds must remain visible");
   assert.ok(quoteCss.includes("border-left:4px solid #b69cff")&&quoteCss.includes("font-size:clamp(1rem,2.2vw,1.5rem)")&&quoteCss.includes("font-weight:800")&&quoteCss.includes("#a78bfa30"),"daily quote card must keep a readable, high-contrast visual treatment");
   assert.ok(quoteCss.includes("@media(min-width:900px)")&&quoteCss.includes("grid-template-columns:.8fr 1.2fr")&&quoteCss.includes("grid-area:1/2/4/3")&&quoteCss.includes("min-height:154px"),"desktop quote must use the open header space as a balanced featured panel");
-  assert.ok(html.includes('href="./css/workspace-v26.css?v=quote-desktop-20260928"')&&sw.includes("'./css/workspace-v26.css?v=quote-desktop-20260928'")&&sw.includes("central-shell-v27.5.0-daily-closeout-20260928"),"current PRF destination must refresh installed PWA clients");
-  pass("v27.5.0 closeout, current-day marker, published changes and fixed P4 weekly schedule");
+  assert.ok(html.includes('href="./css/workspace-v26.css?v=quote-desktop-20260928"')&&sw.includes("'./css/workspace-v26.css?v=quote-desktop-20260928'")&&sw.includes("central-shell-v27.6.0-study-log-20260928"),"current PRF destination must refresh installed PWA clients");
+  pass("v27.6.0 closeout, current-day marker, published changes and fixed P4 weekly schedule");
+}
+
+function testStudyLog(registry) {
+  const html = read("index.html"), sw = read("sw.js"), source = read("js/study-log-v1.js");
+  assert.ok(html.includes('id="study-log-form"') && html.includes('id="study-log-confirmed"') && html.includes('id="study-log-hours"') && html.includes('id="study-log-minutes"'), "daily study log must collect an explicit confirmation and hours/minutes");
+  assert.ok(html.includes('id="study-log-projects"') && html.includes('id="study-log-today-total"') && html.includes('id="study-log-week-total"') && html.includes('id="study-log-days"'), "study log must show daily totals, weekday totals and per-project summaries");
+  assert.ok(html.includes("não sincronizam com o Notion") && html.includes("Exportar backup JSON") && html.includes("Restaurar backup"), "local storage scope and backup/restore must be explicit");
+  assert.ok(html.includes('./js/study-log-v1.js') && html.includes('./css/study-log-v1.css') && sw.includes("'./js/study-log-v1.js'") && sw.includes("'./css/study-log-v1.css'"), "tracker assets must be referenced and available in the offline shell");
+  assert.ok(!source.includes("fetch(") && !source.includes("XMLHttpRequest"), "study tracking must not add network requests");
+  assert.ok(source.includes('central-estudos:study-log-v1') && source.includes('central:workspace-ready'), "tracker must use an isolated local key and current project registry");
+  assert.ok(html.includes("./js/operational-v13.js") && !sw.includes("./js/operational-v13.js"), "online operational UI must remain available without displacing the local study log from the offline shell");
+
+  const store = createLocalStorage();
+  const context = vm.createContext({
+    window: { localStorage: store }, document: { addEventListener() {} }, localStorage: store,
+    Intl, Date, Map, Set, JSON, RegExp, Number, String, Array, Object, Math, URL
+  });
+  vm.runInContext(source, context, { filename: "js/study-log-v1.js" });
+  const api = context.window.CentralStudyLogV1;
+  assert.equal(api.key, "central-estudos:study-log-v1", "study log must keep a namespaced local key");
+  const ids = new Set(registry.projects.map(project => project.id));
+  const testDate = api.today();
+  const valid = api.normalize({ id: "one", date: testDate, projectId: "seedf", trail: "Trilha de leis", topic: "LDB", minutes: 75, confirmed: true }, ids);
+  assert.equal(valid.minutes, 75, "valid confirmed study time must normalize to minutes");
+  assert.equal(api.normalize({ id: "no-confirmation", date: testDate, projectId: "seedf", trail: "Leis", topic: "", minutes: 30, confirmed: false }, ids), null, "unconfirmed work must not become a study record");
+  assert.equal(api.normalize({ id: "bad-date", date: "2026-02-30", projectId: "seedf", trail: "Leis", topic: "", minutes: 30, confirmed: true }, ids), null, "impossible dates must be rejected");
+  assert.equal(api.normalize({ id: "bad-time", date: testDate, projectId: "seedf", trail: "Leis", topic: "", minutes: 1441, confirmed: true }, ids), null, "durations beyond 24 hours must be rejected");
+  assert.equal(api.normalize({ id: "bad-project", date: testDate, projectId: "missing", trail: "Leis", topic: "", minutes: 30, confirmed: true }, ids), null, "unknown projects must be rejected");
+  const range = JSON.parse(JSON.stringify(api.weekRange(testDate)));
+  assert.equal(new Date(`${range.from}T00:00:00Z`).getUTCDay(), 1, "week summaries must start on Monday");
+  assert.equal(new Date(`${range.to}T00:00:00Z`).getUTCDay(), 0, "week summaries must end on Sunday");
+  const futureDate = new Date(`${testDate}T00:00:00Z`); futureDate.setUTCDate(futureDate.getUTCDate()+1);
+  assert.equal(api.normalize({ id: "future", date: futureDate.toISOString().slice(0,10), projectId: "seedf", trail: "Leis", topic: "", minutes: 30, confirmed: true }, ids), null, "future study time must not be logged");
+  const second = { ...valid, id: "two", trail: "Português", topic: "Interpretação", minutes: 45 };
+  assert.equal(api.total([valid, second]), 120, "daily and weekly duration totals must sum in minutes");
+  assert.equal(api.duration(75), "1h 15min", "duration display must preserve hours and remaining minutes");
+  assert.deepEqual(JSON.parse(JSON.stringify(api.group([valid, second]))), [["Trilha de leis · LDB", 75], ["Português · Interpretação", 45]], "project breakdowns must separate trail and topic");
+  api.save([valid]);
+  assert.equal(api.read(ids)[0].id, "one", "valid study entries must persist and reload locally");
+  store.setItem(api.key, "{corrompido");
+  assert.deepEqual(JSON.parse(JSON.stringify(api.read(ids))), [], "corrupt local data must degrade to an empty history");
+  const merged = api.merge([valid], [valid, second]);
+  assert.equal(merged.length, 2, "backup restoration must ignore duplicate entry ids");
+  pass("v27.6 local study log, date/project validation, weekly totals and backups");
 }
 
 function testCommandContext() {
@@ -980,7 +1023,7 @@ function testV274PrfSiteAndToolDirectory(registry) {
   const toolsStart = html.indexOf('<div class="study-tools"');
   const toolsEnd = html.indexOf("</div></section><section id=\"workspace\"", toolsStart);
 
-  assert.equal(registry.central.version, "27.5.0", "catalog must identify current release v27.5.0");
+  assert.equal(registry.central.version, "27.6.0", "catalog must identify current release v27.6.0");
   assert.equal(registry.central.defaultProject, "tcego", "new access cards must not change the default Central focus");
   assert.ok(prf && prf.status === "active" && prf.priority === "normal" && prf.studyPriority === 4, "PRF must be active, ranked P4 in the study schedule, and keep normal focus semantics");
   assert.equal(prf.description, "Roda PRFADM01–33", "Central catalog must show the current 33-session PRF cycle");
@@ -1006,7 +1049,7 @@ function testV274PrfSiteAndToolDirectory(registry) {
   assert.ok(tools.includes("fora da contagem") && tools.includes("Ferramenta"), "tool card must explain its separate role");
   assert.ok(html.includes("4 de 4 projetos") && html.includes("4 projetos · 1 ferramenta de estudo"), "static project and tool counts must match the catalog");
 
-  pass("v27.5.0 preserves the PRF GitHub Pages site, Notion source, P4 rank and separate question-tool card");
+  pass("v27.6.0 preserves the PRF GitHub Pages site, Notion source, P4 rank and separate question-tool card");
 }
 
 function testReleaseDocumentationCoherence(registry) {
@@ -1145,7 +1188,7 @@ function testReleaseDocumentationCoherence(registry) {
     assert.ok(!readme.includes("agenda semanal continua indicando a execução PRF como complementar")&&architecture.includes("Projeto PRF"),"current docs must classify PRF as a project, not only as a complementary track");
     const roadmap274=read("docs/ROADMAP-V27.4.0.md"),acceptance274=read("docs/ACCEPTANCE-V27.4.0.md"),risk274=read("docs/RISK-REGISTER-V27.4.0.md"),checkpoint274=read("docs/V27.4-CHECKPOINT.md"),audit274=read("docs/FINAL-AUDIT-V27.4.0.md");
     assert.ok(roadmap274.includes("27.4.0")&&roadmap274.includes("GitHub Pages")&&acceptance274.includes("Notion")&&risk274.includes("snapshot")&&checkpoint274.includes("v27.4.0")&&audit274.includes("Quality gate"),"v27.4 governance must document the PRF site, preserved source and release audit");
-    assert.ok(readme.includes("v27.5.0")&&changelog.includes("## [27.5.0]")&&architecture.includes("v27.4.2"),"v27.5.0 current release must preserve the v27.4 architecture history");
+    assert.ok(readme.includes("v27.6.0")&&changelog.includes("## [27.6.0]")&&architecture.includes("v27.4.2"),"v27.6.0 current release must preserve the v27.4 architecture history");
     const roadmap2741=read("docs/ROADMAP-V27.4.1.md"),acceptance2741=read("docs/ACCEPTANCE-V27.4.1.md"),risk2741=read("docs/RISK-REGISTER-V27.4.1.md"),checkpoint2741=read("docs/V27.4.1-CHECKPOINT.md"),audit2741=read("docs/FINAL-AUDIT-V27.4.1.md");
     assert.ok(roadmap2741.includes("27.4.1")&&roadmap2741.includes("desktop")&&acceptance2741.includes("Autoria")&&risk2741.includes("App shell")&&checkpoint2741.includes("v27.4.1")&&audit2741.includes("Quality gate"),"v27.4.1 governance must document the desktop quote redesign and release audit");
     const roadmap2742=read("docs/ROADMAP-V27.4.2.md"),acceptance2742=read("docs/ACCEPTANCE-V27.4.2.md"),risk2742=read("docs/RISK-REGISTER-V27.4.2.md"),checkpoint2742=read("docs/V27.4.2-CHECKPOINT.md"),audit2742=read("docs/FINAL-AUDIT-V27.4.2.md");
@@ -1154,6 +1197,8 @@ function testReleaseDocumentationCoherence(registry) {
     assert.ok(roadmap2743.includes("27.4.3")&&roadmap2743.includes("33 sessões")&&acceptance2743.includes("PRFADM33")&&acceptance2743.includes("Plataforma de Questões")&&risk2743.includes("Notion")&&checkpoint2743.includes("PUBLISHED")&&acceptance2743.includes("Pages Deploy aprovados")&&audit2743.includes("PRFADM01–33")&&audit2743.includes("36460170138"),"v27.4.3 must record the 33-session PRF correction and successful publication");
     const roadmap275=read("docs/ROADMAP-V27.5.0.md"),acceptance275=read("docs/ACCEPTANCE-V27.5.0.md"),risk275=read("docs/RISK-REGISTER-V27.5.0.md"),checkpoint275=read("docs/V27.5-CHECKPOINT.md"),audit275=read("docs/FINAL-AUDIT-V27.5.0.md");
     assert.ok(roadmap275.includes("27.5.0")&&roadmap275.includes("PUBLISHED")&&acceptance275.includes("bloqueio editorial")&&acceptance275.includes("36486528901")&&risk275.includes("teto aprovado")&&checkpoint275.includes("PUBLISHED")&&checkpoint275.includes("147.360/147.456")&&audit275.includes("36486528901")&&audit275.includes("10999012799")&&audit275.includes("Quality gate"),"v27.5 governance must record scope, acceptance, risks and the successful deployment audit");
+    const roadmap276=read("docs/ROADMAP-V27.6.0.md"),acceptance276=read("docs/ACCEPTANCE-V27.6.0.md"),risk276=read("docs/RISK-REGISTER-V27.6.0.md"),checkpoint276=read("docs/V27.6-CHECKPOINT.md");
+    assert.ok(roadmap276.includes("27.6.0")&&roadmap276.includes("horas estudadas")&&acceptance276.includes("não sincroniza com o Notion")&&risk276.includes("backup")&&checkpoint276.includes("LOCAL_VALIDATED"),"v27.6 governance must define the local study tracker, privacy, risks and validation checkpoint");
   }
 
   pass("release documentation coherence");
@@ -1180,6 +1225,8 @@ function testSecurityAndContracts(registry) {
     "css/pro-v11.css",
     "js/operational-v13.js",
     "js/workspace-v24.js",
+    "js/study-log-v1.js",
+    "css/study-log-v1.css",
     "css/operational-v13.css",
     "css/workspace-v24.css",
     "css/workspace-v26.css",
@@ -1214,6 +1261,7 @@ const syntaxFiles = [
   "js/command-context-v1.js",
   "js/operational-v13.js",
   "js/workspace-v24.js",
+  "js/study-log-v1.js",
   "sw.js"
 ];
 
@@ -1252,6 +1300,7 @@ testV22CommandCenter();
 testV23TodayMentor();
 testV24ScreensAndViews(registry);
 testV27DailySchedule(registry);
+testStudyLog(registry);
 testCommandContext();
 testV274PrfSiteAndToolDirectory(registry);
 testReleaseDocumentationCoherence(registry);

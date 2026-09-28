@@ -1,5 +1,17 @@
 # CHANGELOG — Central de Estudos
 
+## [27.6.0] - 2026-09-28
+
+### Added
+- Registro diário por bloco com data, projeto, trilha/matéria, tópico opcional, horas/minutos e confirmação explícita do estudo.
+- Totais de hoje e da semana; resumos semanais por projeto e por trilha/tópico; lista de blocos recentes com exclusão individual.
+- Backup JSON manual para exportar e restaurar os registros locais.
+
+### Preserved
+- Grade semanal, dias, projetos, prioridades P1–P4 e foco padrão.
+- Dados do registro ficam apenas neste navegador; não sincronizam com Notion nem escrevem em projetos-filhos. Tempo informado não é tratado como domínio ou progresso.
+- Limites autorizados do shell offline: 144 KiB bruto e 48 KiB gzip. O registro local permanece disponível offline; os módulos que mostram estado técnico publicado são carregados pela rede.
+
 ## [27.5.0] - 2026-09-28
 
 ### Added

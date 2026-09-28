@@ -2,7 +2,7 @@
 
 ## Responsabilidade
 
-A Central é uma camada de **navegação e observabilidade leve**.
+A Central é uma camada de **navegação, observabilidade leve e registro local de tempo estudado**.
 
 > A Central observa e direciona. Os projetos executam e decidem.
 
@@ -18,7 +18,11 @@ A fonte dinâmica de verdade é `config/projects.json` (`schemaVersion: 3`). O l
 
 ## Estado local e separação semântica
 
-A Central usa `localStorage` somente para preferências e continuidade da própria Central. **Foco**, **retomada/último acesso**, **favorito**, **acesso local** e **recência técnica** são conceitos independentes. Nenhum altera automaticamente outro. Nenhum dado acadêmico, duração, desempenho ou progresso é gravado ou inferido.
+A Central usa `localStorage` para preferências/continuidade e para um registro de estudo explicitamente preenchido pelo usuário. **Foco**, **retomada/último acesso**, **favorito**, **acesso local**, **recência técnica** e **tempo estudado** são conceitos independentes.
+
+O registro usa a chave `central-estudos:study-log-v1` e guarda data, ID do projeto, trilha/matéria, tópico opcional, minutos líquidos e confirmação explícita. Cada bloco representa um tópico; os resumos somam minutos por dia, semana, projeto, trilha e tópico. O tempo não é inferido do cronograma, de visitas, da publicação de materiais ou de contratos. Ele não mede domínio, desempenho ou progresso.
+
+Os dados permanecem no `localStorage` deste navegador, sem backend ou sincronização com Notion, projetos-filhos ou outros aparelhos. Exportar/restaurar backup JSON permite transferência manual. Limpar os dados do navegador pode apagar o registro; exporte backups para preservá-lo.
 
 Todo acesso a armazenamento local degrada com segurança; conteúdo inválido é ignorado/limpo e defaults previsíveis são usados.
 
@@ -32,7 +36,7 @@ Busca, favoritos, ordenação, atalhos e ordem manual são camadas locais sobre 
 
 ## PWA e resiliência
 
-O service worker é limitado à origem e ao pathname da Central. O cache atual é `central-shell-v27.4.2-prf-p4-20260928` e contém somente o app shell da Central; os sites de projeto e a ferramenta não são incluídos.
+O service worker é limitado à origem e ao pathname da Central. O cache atual é `central-shell-v27.6.0-study-log-20260928` e contém o registro local e a navegação da Central; sites de projeto, ferramentas e serviços externos não são incluídos. A grade e o formulário de estudo continuam disponíveis offline. A interface do Radar/Mentor publicada e controles avançados do catálogo não são pré-cacheados; eles carregam quando há rede, para manter o shell abaixo dos limites autorizados.
 
 Estratégia:
 - navegações e assets conhecidos usam **network first**;
@@ -47,7 +51,7 @@ Abrir a shell offline não afirma disponibilidade offline dos projetos.
 
 ## Qualidade e deploy
 
-`tests/quality.mjs` é uma suite local, determinística e sem dependências externas. O workflow Pages executa `quality` antes de `deploy`, com dependência explícita `deploy needs: quality`. O gate cobre registry, referências, fallback, manifest, service worker, segurança básica, funções críticas, contratos de diagnóstico, acessibilidade estrutural, mobile e orçamento do app shell. O orçamento lê os mesmos arquivos do `APP_SHELL` e limita tanto o tamanho bruto quanto a soma gzip por arquivo.
+`tests/quality.mjs` é uma suite local, determinística e sem dependências externas. A v27.6 preserva os limites existentes de 147.456 bytes bruto e 49.152 bytes gzip, sem novo aumento. O workflow Pages executa `quality` antes de `deploy`, com dependência explícita `deploy needs: quality`. O gate cobre registry, referências, fallback, manifest, service worker, segurança básica, funções críticas, contratos de diagnóstico, acessibilidade estrutural, mobile e orçamento do app shell. O orçamento lê os mesmos arquivos do `APP_SHELL` e limita tanto o tamanho bruto quanto a soma gzip por arquivo.
 
 ## Linha do tempo e diagnóstico
 
@@ -471,3 +475,8 @@ A tela Hoje oferece um fechamento curto com quatro leituras: **previsto** (o car
 O fechamento não registra presença nem cria um segundo histórico. Os contratos read-only em Evolução mostram o estado publicado, a origem e as datas publishedAt/source.updatedAt; esses timestamps descrevem a publicação do projeto e não comprovam execução individual. O PRF não publica contrato de status; o link do Notion permanece como fonte de verdade. Se um material PRF impedir a sessão, o mesmo PRFADMxx volta no próximo dia previsto, sem pular códigos ou compensar em outro projeto.
 
 A mudança é somente de apresentação e documentação na Central: sem novo fetch, backend, armazenamento de execução ou escrita nos projetos-filhos. A grade P1–P4 e o foco de navegação permanecem independentes.
+
+
+## Registro local de estudo — v27.6
+
+O registro é uma exceção estreita à regra de observabilidade somente leitura: ele grava apenas o que a pessoa lançar e confirmar no próprio navegador. Não há chamada de rede, backend, login ou escrita em fonte acadêmica. Dados podem ser exportados/restaurados em JSON; tópicos desconhecidos, duração inválida e lançamentos sem confirmação são rejeitados.
