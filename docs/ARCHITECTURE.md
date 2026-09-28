@@ -32,7 +32,7 @@ Busca, favoritos, ordenação, atalhos e ordem manual são camadas locais sobre 
 
 ## PWA e resiliência
 
-O service worker é limitado à origem e ao pathname da Central. O cache da release atual é `central-shell-v27.2.1` e contém somente o app shell da Central; os sites de projeto e a ferramenta não são incluídos.
+O service worker é limitado à origem e ao pathname da Central. O cache da release atual é `central-shell-v27.2.2` e contém somente o app shell da Central; os sites de projeto e a ferramenta não são incluídos.
 
 Estratégia:
 - navegações e assets conhecidos usam **network first**;
@@ -437,4 +437,4 @@ QA visual encurtou o CTA do cartão PRF para evitar que a seta quebre sozinha ju
 
 ## Frases do Major Cadar — v27.2
 
-A frase diária usa seis trechos curtos atribuídos ao Major Cadar, selecionados uma vez por data de `America/Sao_Paulo`. Cada frase tem link direto para a página, perfil ou vídeo de origem. A seção identifica a autoria, apresenta o link na primeira dobra e mantém um fallback estático coerente quando JavaScript não está disponível. A renderização não adiciona chamadas externas; o usuário abre a fonte somente ao ativar o link. O relógio de Brasília e a saudação continuam independentes da rotação das frases.
+As seis frases curtas atribuídas ao Major Cadar alternam automaticamente a cada cinco minutos enquanto a página está aberta. Texto, autoria e link individual da origem são atualizados juntos; ao voltar para a aba, o relógio e a frase recalculam o estado atual. O fallback sem JavaScript preserva uma frase, autoria e fonte coerentes. A rotação não adiciona chamadas externas; o usuário abre a fonte somente ao ativar o link. O relógio de Brasília e a saudação continuam independentes da escolha da frase.
