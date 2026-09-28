@@ -897,7 +897,7 @@ function testV27DailySchedule(registry) {
   const start=html.indexOf('<section id="agenda-semanal"'),end=html.indexOf("</section>",start);
   assert.ok(start>=0&&end>start,"weekly schedule must remain a section on the page");
   const schedule=html.slice(start,end);
-  assert.equal(registry.central.version,"27.2.2","registry must identify v27.2.2");
+  assert.equal(registry.central.version,"27.3.0","registry must identify v27.3.0");
   assert.ok(html.includes(`HOJE · V${registry.central.version}`),"Today panel version badge must match the current release");
   assert.equal(registry.central.defaultProject,"tcego","study priorities must not change the user's central focus");
   assert.ok(html.includes('href="#agenda-semanal">Cronograma</a>')&&router.includes('"agenda-semanal":"today"'),"schedule must have an accessible shortcut and route back to Hoje");
@@ -913,16 +913,45 @@ function testV27DailySchedule(registry) {
   for(const key of ["tuesday","thursday"])assert.ok(cards[key].includes("TCE-GO")&&!cards[key].includes("PRF Administrativo"),`${key} must show TCE-GO without adding PRF`);
   assert.ok(cards.saturday.includes("SEEDF")&&cards.saturday.includes("TJDFT")&&cards.saturday.includes("Revisão")&&cards.saturday.includes("TCE-GO"),"Saturday must review SEEDF/TJDFT and retain TCE-GO");
   assert.ok(cards.sunday.includes("Descanso")&&cards.sunday.includes("D7/D20"),"Sunday must remain protected with only scheduled reviews");
-  assert.ok(schedule.includes('aria-label="Trilha complementar PRF Administrativo"')&&schedule.includes("segunda, quarta e sexta")&&!schedule.includes("Prioridade 4"),"PRF Administrative must be visible as a complementary track, not P4");
+  assert.ok(schedule.includes('aria-label="Projeto PRF Administrativo na agenda semanal"')&&schedule.includes("Projeto ativo sem prioridade numérica")&&schedule.includes("segunda, quarta e sexta")&&!schedule.includes("Trilha complementar")&&!schedule.includes("Prioridade 4"),"PRF must be identified as an independent project without a numbered priority");
   assert.ok(!schedule.includes("data-days="),"day-by-day plan must not group weekdays together");
   assert.ok(schedule.includes("não registra presença")&&schedule.includes("não estima avanço")&&schedule.includes("não muda o foco"),"weekly schedule must not claim study progress or change focus");
   const mobileCss=css.slice(css.indexOf("@media(max-width:719px)"));
   assert.ok(html.includes("./css/workspace-v27.css")&&html.includes("weekly-schedule-v27")&&mobileCss.includes(".schedule-day-grid{grid-template-columns:1fr")&&mobileCss.includes(".schedule-day-card{grid-template-columns:minmax(82px,.34fr) minmax(0,1fr)")&&mobileCss.includes(".schedule-day-heading>span{display:none}")&&mobileCss.includes(".schedule-day-rest-v27 .schedule-day-heading>span{display:inline-flex}")&&mobileCss.includes(".schedule-day-card .schedule-item-copy{display:block")&&mobileCss.includes("min-width:0"),"v27 mobile schedule must keep seven days while compacting each day row and avoiding redundant labels");
-  assert.ok(sw.includes("central-shell-v27.2.2")&&sw.includes("./css/workspace-v27.css"),"PWA shell cache must include the v27 stylesheet and current version");
-  assert.ok(html.includes('src="./js/app.js?v=27.2.2"')&&sw.includes("'./js/app.js?v=27.2.2'")&&sw.includes("'./config/projects.json?v=27.2.2'")&&app.includes("./config/projects.json?v=27.2.2"),"v27.2.2 must version app and registry cache URLs");
+  assert.ok(html.includes('src="./js/command-context-v1.js?v=27.3.0"')&&sw.includes("'./js/command-context-v1.js?v=27.3.0'"),"today marker and published-change summary must load as part of the app shell");
+  assert.ok(sw.includes("central-shell-v27.3.0")&&sw.includes("./css/workspace-v27.css"),"PWA shell cache must include the v27 stylesheet and current version");
+  assert.ok(html.includes('src="./js/app.js?v=27.3.0"')&&sw.includes("'./js/app.js?v=27.3.0'")&&sw.includes("'./config/projects.json?v=27.3.0'")&&app.includes("./config/projects.json?v=27.3.0"),"v27.3.0 must version app and registry cache URLs");
+  assert.ok(html.includes("Mudanças desde a última conferência")&&html.includes("contratos validados neste aparelho")&&html.includes('id="published-changes-list"'),"published changes must be shown with their local/read-only provenance");
+  assert.ok(css.includes(".schedule-day-card.is-today")&&css.includes('content:"HOJE"'),"the current weekday must have a visible marker");
+  assert.ok(html.includes("Projeto PRF Administrativo")&&html.includes(">PROJETO</span>")&&html.includes(">PRF</span>"),"the weekly routine must label PRF as a project");
   for(const source of ["instagram.com/caveiracadar09","projetocaopastor.com.br/curso/programa-de-protecao","youtube.com/watch?v=YIUoDC1PHbE"])assert.ok(app.includes(source),`Major Cadar quote source missing: ${source}`);
   assert.ok(html.includes('id="daily-motivation-author"')&&html.includes('id="daily-motivation-source"')&&html.includes("Frases do Major Cadar · muda a cada 5 min")&&html.includes('id="daily-motivation" class="daily-motivation" aria-live="polite" aria-atomic="true"')&&html.includes("Seja forte ou seja vencido.")&&app.includes('author:"Major Cadar"')&&app.includes('second:"2-digit"')&&app.includes("setInterval(e,1e3)"),"Major Cadar quote, accessible rotation label, attribution/source and Brasília clock seconds must remain visible");
-  pass("v27.2.2 daily schedule, visible PRF track, Major Cadar quotes and v26 experience");
+  pass("v27.3.0 current-day marker, published changes, project labels, Major Cadar quotes and weekly schedule");
+}
+
+function testCommandContext() {
+  const source=read("js/command-context-v1.js"),keys=["monday","tuesday","wednesday","thursday","friday","saturday","sunday"],listeners={},store=new Map();
+  let now=Date.UTC(2026,8,28,2,59),tick=null,intervalMs=null;
+  const createNode=tag=>{const classes=new Set();return{tag,className:"",textContent:"",children:[],dataset:{},attributes:{},classList:{toggle:(name,on)=>on?classes.add(name):classes.delete(name),contains:name=>classes.has(name)},append(...items){this.children.push(...items)},replaceChildren(...items){this.children=[...items]},setAttribute(name,value){this.attributes[name]=value},removeAttribute(name){delete this.attributes[name]}}};
+  const cards=keys.map(key=>{const card=createNode("article");card.dataset.weekday=key;return card}),output=createNode("div"),document={hidden:false,getElementById:id=>id==="published-changes-list"?output:null,querySelectorAll:()=>cards,createElement:createNode,addEventListener:(name,fn)=>{listeners[name]=fn}};
+  const localStorage={getItem:key=>store.get(key)||null,setItem:(key,value)=>store.set(key,value)};
+  store.set("central-estudos:published-snapshot-v1",JSON.stringify({tcego:{state:{phase:"Edital publicado",cycle:"D2",currentUnit:"D007",nextAction:"Estudar D007",alerts:[]}}}));
+  class TestDate extends Date{constructor(...args){super(...(args.length?args:[now]))}}
+  vm.runInNewContext(source,{document,localStorage,Intl,Date:TestDate,setInterval:(fn,ms)=>{tick=fn;intervalMs=ms}});
+  assert.equal(intervalMs,60000,"weekday marker must refresh at least once per minute");
+  assert.deepEqual(cards.filter(card=>card.classList.contains("is-today")).map(card=>card.dataset.weekday),["sunday"],"Brasília Sunday 23:59 must highlight Sunday even when UTC is already Monday");
+  assert.equal(cards.find(card=>card.dataset.weekday==="sunday").attributes["aria-current"],"date","current day must be exposed to assistive technology");
+  now=Date.UTC(2026,8,28,3,1);tick();
+  assert.deepEqual(cards.filter(card=>card.classList.contains("is-today")).map(card=>card.dataset.weekday),["monday"],"the highlighted day must cross midnight in Brasília time");
+  const emit=(status,currentUnit)=>listeners["central:contract-state"]({detail:{id:"tcego",name:"TCE-GO",status,contract:{publishedAt:"2026-09-28T03:00:00Z",source:{updatedAt:"2026-09-28T03:00:00Z"},state:{phase:"Edital publicado",cycle:"D2",currentUnit,nextAction:`Estudar ${currentUnit}`,alerts:[]}}}});
+  emit("live","D008");
+  const textOf=node=>node.textContent+node.children.map(textOf).join("");
+  assert.ok(textOf(output).includes("Unidade: D007 → D008"),"the summary must show the exact change from the last saved state");
+  assert.equal(JSON.parse(store.get("central-estudos:published-snapshot-v1")).tcego.state.currentUnit,"D008","a live validated snapshot must become the next comparison baseline");
+  emit("stale-cache","D009");
+  assert.ok(textOf(output).includes("Último estado em cache"),"cached changes must be identified as unconfirmed");
+  assert.equal(JSON.parse(store.get("central-estudos:published-snapshot-v1")).tcego.state.currentUnit,"D008","stale cache must not overwrite the last live baseline");
+  pass("v27.3.0 Brasília weekday and validated local change comparison");
 }
 
 function testV271ProjectAndToolDirectory(registry) {
@@ -935,7 +964,7 @@ function testV271ProjectAndToolDirectory(registry) {
   const toolsStart = html.indexOf('<div class="study-tools"');
   const toolsEnd = html.indexOf("</div></section><section id=\"workspace\"", toolsStart);
 
-  assert.equal(registry.central.version, "27.2.2", "catalog release must be v27.2.2");
+  assert.equal(registry.central.version, "27.3.0", "catalog must identify current release v27.3.0");
   assert.equal(registry.central.defaultProject, "tcego", "new access cards must not change the default Central focus");
   assert.ok(prf && prf.status === "active" && prf.priority === "normal", "PRF must be an active project without a numbered priority");
   assert.equal(prf.destinationType, "notion", "PRF must open as a Notion project");
@@ -957,7 +986,7 @@ function testV271ProjectAndToolDirectory(registry) {
   assert.ok(tools.includes("fora da contagem") && tools.includes("Ferramenta"), "tool card must explain its separate role");
   assert.ok(html.includes("4 de 4 projetos") && html.includes("4 projetos · 1 ferramenta de estudo"), "static project and tool counts must match the catalog");
 
-  pass("v27.2.2 preserves the PRF destination, no-telemetry rule and separate question-tool card");
+  pass("v27.3.0 preserves the PRF destination, no-telemetry rule and separate question-tool card");
 }
 
 function testReleaseDocumentationCoherence(registry) {
@@ -1090,6 +1119,10 @@ function testReleaseDocumentationCoherence(registry) {
     assert.ok(audit272.includes("ce5288686fc8d8d60e504455721653ef5cb6a260")&&audit272.includes("36369866365")&&audit272.includes("10948796852")&&audit272.includes("c7acdea6599e50d905f3d735c3e9da7a9d3222a4f4d2589d6fbc16e2532debf3")&&audit272.includes("144.728 bytes"),"v27.2 final audit must bind the hotfix commit, successful workflow, Pages artifact and measured shell");
     assert.ok(budgetDecision.includes("147.456 bytes (144 KiB)")&&budgetDecision.includes("49.152 bytes (48 KiB)")&&budgetDecision.includes("autorizou")&&audit272.includes("APP-SHELL-BUDGET-CHANGE-2026-09-28.md"),"the post-v20 shell budget must have an explicit user authorization record");
     assert.ok(architecture.includes("Major Cadar")&&changelog.includes("## [27.2.0]"),"v27.2 quote experience must be described in architecture and changelog");
+    const roadmap273=read("docs/ROADMAP-V27.3.0.md"),acceptance273=read("docs/ACCEPTANCE-V27.3.0.md"),risk273=read("docs/RISK-REGISTER-V27.3.0.md"),checkpoint273=read("docs/V27.3-CHECKPOINT.md"),audit273=read("docs/FINAL-AUDIT-V27.3.0.md");
+    assert.ok(roadmap273.includes("27.3.0")&&roadmap273.includes("America/Sao_Paulo")&&acceptance273.includes("aria-current")&&risk273.includes("viewport móvel")&&checkpoint273.includes("IN_PROGRESS"),"v27.3 governance must define scope, acceptance, risks and checkpoint");
+    assert.ok(readme.includes("v27.3.0")&&changelog.includes("## [27.3.0]")&&architecture.includes("v27.3.0")&&audit273.includes("v27.3.0"),"v27.3 current release must be described consistently");
+    assert.ok(!readme.includes("agenda semanal continua indicando a execução PRF como complementar")&&architecture.includes("Projeto PRF"),"current docs must classify PRF as a project, not only as a complementary track");
   }
 
   pass("release documentation coherence");
@@ -1108,6 +1141,7 @@ function testSecurityAndContracts(registry) {
     "js/timeline-v8.js",
     "js/pro-v11.js",
     "js/contracts-v12.js",
+    "js/command-context-v1.js",
     "css/app.css",
     "css/catalog-v4.css",
     "css/personalization-v5.css",
@@ -1146,6 +1180,7 @@ const syntaxFiles = [
   "js/timeline-v8.js",
   "js/pro-v11.js",
   "js/contracts-v12.js",
+  "js/command-context-v1.js",
   "js/operational-v13.js",
   "js/workspace-v24.js",
   "sw.js"
@@ -1186,6 +1221,7 @@ testV22CommandCenter();
 testV23TodayMentor();
 testV24ScreensAndViews(registry);
 testV27DailySchedule(registry);
+testCommandContext();
 testV271ProjectAndToolDirectory(registry);
 testReleaseDocumentationCoherence(registry);
 testSecurityAndContracts(registry);

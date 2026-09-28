@@ -32,7 +32,7 @@ Busca, favoritos, ordenação, atalhos e ordem manual são camadas locais sobre 
 
 ## PWA e resiliência
 
-O service worker é limitado à origem e ao pathname da Central. O cache da release atual é `central-shell-v27.2.2` e contém somente o app shell da Central; os sites de projeto e a ferramenta não são incluídos.
+O service worker é limitado à origem e ao pathname da Central. O cache da release atual é `central-shell-v27.3.0` e contém somente o app shell da Central; os sites de projeto e a ferramenta não são incluídos.
 
 Estratégia:
 - navegações e assets conhecidos usam **network first**;
@@ -417,6 +417,8 @@ A v26 introduziu o cronograma semanal, a trilha PRF-ADM em dias fixos, citaçõe
 
 A v27 apresenta sete cartões separados, um por dia. Segunda, quarta e sexta mostram SEEDF, TJDFT e PRF Administrativo; terça e quinta mostram SEEDF, TJDFT e TCE-GO; sábado mostra as revisões P1/P2 e TCE-GO; domingo permanece protegido. PRF Administrativo é uma trilha complementar, não uma prioridade numerada.
 
+Na nomenclatura da v27.0, “trilha complementar” descrevia somente os dias de estudo do PRF na grade. Desde v27.1, o PRF está registrado no catálogo como projeto ativo independente, sem prioridade numérica. A rotina v27.3 usa o rótulo **Projeto PRF** para eliminar a ambiguidade.
+
 O shell `central-shell-v27.0.1` inclui `workspace-v27.css`; runtime e registro usam URLs `v27.0.1` para renovar clientes com cache anterior. Em celular, cada dia mantém a própria linha, com tarefas ao lado do dia e rótulos redundantes recolhidos. Foco, filas e dados dos projetos-filhos permanecem independentes; a agenda não mede execução ou progresso.
 
 ## Catálogo de projetos e ferramenta transversal — v27.1.0
@@ -428,6 +430,14 @@ O shell `central-shell-v27.0.1` inclui `workspace-v27.css`; runtime e registro u
 - Quality gate mede todos os 23 recursos únicos em `APP_SHELL`: 144.642 bytes brutos (limite 147.456) e soma gzip 46.807 bytes (limite 49.152), incluindo folhas v26/v27, registry, 404 e ícone. A auditoria detectou que o gate antigo omitia alguns recursos; agora a lista é derivada diretamente do app shell.
 
 O teto de **144 KiB bruto / 48 KiB gzip** para a linha pós-v20 foi autorizado explicitamente pelo usuário em 28/09/2026 após a reauditoria; o limite de 128 KiB continua registrado como histórico da geração v16→v20. `docs/APP-SHELL-BUDGET-CHANGE-2026-09-28.md` mantém a decisão e as margens da release atual. Novos aumentos continuam sujeitos a autorização explícita.
+
+## Contexto atual — v27.3.0
+
+O cronograma marca o cartão correspondente ao dia em `America/Sao_Paulo`, recalcula ao mudar de minuto e ao retornar à aba, e o identifica visualmente e com `aria-current="date"`. Essa seleção não altera o conteúdo nem a ordem semanal.
+
+A Inbox mostra mudanças entre o último snapshot local salvo e um contrato válido recém-observado. Compara fase, ciclo, unidade, próxima ação e alertas; usa texto seguro no DOM; e exibe a publicação/frescor quando disponível. Somente um contrato recebido como `live` substitui o snapshot local. `cached` e `stale-cache` podem aparecer como último estado conhecido, mas não sobrescrevem a base nem são apresentados como atualização ao vivo. A primeira leitura do usuário é registrada como base, sem fabricar histórico.
+
+A chave `central-estudos:published-snapshot-v1` fica somente neste navegador e não entra no backup de preferências. A comparação é read-only, não é telemetria, não mede estudo/progresso e não escreve nos projetos-filhos. O PRF segue projeto independente, sem prioridade numérica; o cartão usa o Notion enquanto não houver destino de site próprio confirmado.
 
 
 ## Correção visual e cache PWA — v27.1.1

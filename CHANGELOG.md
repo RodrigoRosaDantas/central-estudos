@@ -1,5 +1,19 @@
 # CHANGELOG — Central de Estudos
 
+## [27.3.0] - 2026-09-28
+
+### Changed
+- O cronograma destaca o dia atual pelo fuso `America/Sao_Paulo`, atualiza ao cruzar a meia-noite local e anuncia a data com `aria-current="date"`.
+- A Inbox compara fase, ciclo, unidade, próxima ação e alertas dos contratos validados com o último estado confirmado ao vivo, guardado somente neste navegador.
+- Contratos em cache ficam identificados e nunca sobrescrevem a última base confirmada ao vivo; uma primeira conferência não inventa mudanças anteriores.
+- PRF Administrativo é rotulado na agenda como projeto independente, sem prioridade numérica; o destino continua sendo o Notion até o site próprio estar disponível.
+- Service worker, URLs de runtime e registry foram versionados para v27.3.0.
+
+### Preserved
+- SEEDF (P1), TJDFT (P2) e TCE-GO (P3) mantêm suas prioridades e a rotina semanal.
+- A Plataforma de Questões continua ferramenta transversal e separada do catálogo de concursos.
+- Comparação local é somente leitura, não mede estudo/progresso e não escreve nos projetos-filhos.
+
 ## [27.2.2] - 2026-09-28
 
 ### Changed
