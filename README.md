@@ -1,14 +1,16 @@
 # Central de Estudos
 
-Camada de entrada para os projetos de estudo TCE-GO, SEEDF, TJDFT e PRF Administrativo, com uma seção separada para a Plataforma de Questões.
+Camada de entrada para os projetos de estudo TCE-GO, SEEDF, TJDFT e PRF Administrativo, com uma seção separada para a Plataforma de Questões e um registro local de tempo estudado.
 
 > **A Central observa e direciona. Os projetos executam e decidem.**
 
-A Central não importa, altera ou replica o conteúdo dos projetos. Ela mantém os acessos independentes.
+A Central não altera nem replica o conteúdo dos projetos. O registro de estudo é preenchido pelo usuário e fica neste navegador; não sincroniza com os projetos nem com o Notion.
 
-## Estado atual — v27.5
+## Estado atual — v27.6
 
-A v27.5.0 acrescenta um fechamento do dia que separa a grade prevista do registro real, do bloqueio editorial e da retomada. A grade semanal permanece intacta. Os contratos em Evolução mostram a origem e a atualização do estado publicado; esses sinais não confirmam uma sessão individual. O PRF continua sem contrato de status e mantém o Notion como fonte de verdade.
+A v27.6.0 acrescenta o registro diário de estudo por bloco: data, projeto, trilha/matéria, tópico opcional, duração em horas e minutos e confirmação explícita. Hoje e semana mostram o tempo somado; cada projeto detalha as horas por trilha e tópico. A grade semanal permanece intacta. O registro é salvo localmente neste navegador, com exportação e restauração de backup JSON; não há sincronização automática com Notion nem com outros aparelhos. Horas registradas medem tempo informado, não domínio ou progresso.
+
+O fechamento do dia da v27.5.0 continua separando grade prevista, bloqueio editorial e retomada. Os contratos em Evolução mostram a origem e a atualização do estado publicado; esses sinais não confirmam uma sessão individual. O PRF continua sem contrato de status e mantém o Notion como fonte de verdade.
 
 O teto do app shell para a linha pós-v20 é 144 KiB bruto e 48 KiB gzip, autorizado em 28/09/2026 e registrado em [`docs/APP-SHELL-BUDGET-CHANGE-2026-09-28.md`](docs/APP-SHELL-BUDGET-CHANGE-2026-09-28.md). O limite histórico v16→v20 permanece 128 KiB; novos aumentos exigem autorização explícita.
 
@@ -24,7 +26,7 @@ A V27 apresenta um cartão para cada dia da semana e a V27.0.1 compacta a grade 
 - As frases do Major Cadar alternam automaticamente a cada cinco minutos, com autoria e link da fonte, sem chamada externa automática.
 - Relógio de Brasília usa `America/Sao_Paulo` e atualiza a cada segundo.
 - O cronograma apresenta os sete dias em cartões individuais e usa linhas compactas em telas estreitas.
-- A grade não muda o foco, não registra execução e não calcula progresso; cada projeto mantém sua fila e suas exceções.
+- A grade não muda o foco. O tempo estudado só aparece após lançamento e confirmação explícitos; a Central não infere sessão, duração, domínio ou progresso a partir do cronograma ou de sinais técnicos.
 - O cartão do PRF abre o site GitHub Pages e mantém um link separado para a fonte de verdade no Notion; a Central só verifica disponibilidade do site e metadados públicos do repositório.
 - A Plataforma de Questões abre o site independente e não entra na prioridade nem nos indicadores dos concursos.
 - Cada tela possui âncora direta; sem JavaScript, os links diretos dos quatro projetos e da ferramenta continuam disponíveis.
@@ -193,7 +195,7 @@ Capacidades consolidadas:
 - observabilidade somente leitura, não bloqueante, com disponibilidade, publicação técnica e deploy separados;
 - falhas de rede/rate limit tratadas sem falso estado offline;
 - linha do tempo local de acessos separada de atividade técnica e sem inferência pedagógica;
-- PWA network-first, app shell offline e cache `central-shell-v27.5.0-daily-closeout-20260928` restrito à Central;
+- PWA network-first e shell offline com o registro local de estudo; a interface de status publicada e os controles avançados do catálogo continuam carregando pela rede; cache `central-shell-v27.6.0-study-log-20260928` restrito à Central;
 - quality gate automatizado antes de todo deploy;
 - CSP, escape de conteúdo, HTTPS, contraste, teclado, forced colors e touch targets auditados;
 - orçamento de shell <= 128 KiB na geração v16+ (v15 fechou <= 120 KiB) e zero dependências externas de JS/CSS;
@@ -223,4 +225,4 @@ A fonte dinâmica de verdade é `config/projects.json` (schema v3). Cada item de
 
 ## Governança e auditoria
 
-A esteira histórica v1→v10 permanece congelada em `docs/V10-CHECKPOINT.md` e `docs/FINAL-AUDIT-V10.md`. A geração v11→v15 permanece congelada em `docs/ROADMAP-V15.md` e `docs/V15-CHECKPOINT.md`. A geração v16→v20 é encerrada pela auditoria terminal em `docs/FINAL-AUDIT-V20.md`. A esteira terminal v21 Presença e Ritmo está registrada em `docs/ROADMAP-V21.md` e `docs/V21-CHECKPOINT.md`. As releases recentes estão registradas em seus respectivos roadmaps, critérios de aceitação e auditorias: v27.1.1 (catálogo e ferramenta), v27.2.2 (rotação das frases do Major Cadar), v27.3.0 (destaque do dia e comparação local de contratos), v27.4.0 (site GitHub Pages do PRF com acesso ao Notion preservado) e v27.4.1 (redesenho desktop da frase do Major Cadar) e v27.4.2 (PRF P4) e v27.4.3 (correção do ciclo PRF e manifesto PWA), v27.5.0 (fechamento do dia sem registro paralelo).
+A esteira histórica v1→v10 permanece congelada em `docs/V10-CHECKPOINT.md` e `docs/FINAL-AUDIT-V10.md`. A geração v11→v15 permanece congelada em `docs/ROADMAP-V15.md` e `docs/V15-CHECKPOINT.md`. A geração v16→v20 é encerrada pela auditoria terminal em `docs/FINAL-AUDIT-V20.md`. A esteira terminal v21 Presença e Ritmo está registrada em `docs/ROADMAP-V21.md` e `docs/V21-CHECKPOINT.md`. As releases recentes estão registradas em seus respectivos roadmaps, critérios de aceitação e auditorias: v27.1.1 (catálogo e ferramenta), v27.2.2 (rotação das frases do Major Cadar), v27.3.0 (destaque do dia e comparação local de contratos), v27.4.0 (site GitHub Pages do PRF com acesso ao Notion preservado) e v27.4.1 (redesenho desktop da frase do Major Cadar) e v27.4.2 (PRF P4) e v27.4.3 (correção do ciclo PRF e manifesto PWA), v27.5.0 (fechamento do dia) e v27.6.0 (registro local de tempo por projeto/trilha/tópico).

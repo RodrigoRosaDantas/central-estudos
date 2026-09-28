@@ -1,8 +1,7 @@
-const CACHE_VERSION = 'central-shell-v27.5.0-daily-closeout-20260928';
+const CACHE_VERSION = 'central-shell-v27.6.0-study-log-20260928';
 const APP_SHELL = [
 './',
 './index.html',
-'./404.html',
 './manifest.webmanifest',
 './assets/icon.svg',
 './css/app.css',
@@ -10,21 +9,20 @@ const APP_SHELL = [
 './css/personalization-v5.css',
 './css/timeline-v8.css',
 './css/pro-v11.css',
-'./css/operational-v13.css',
 './css/workspace-v24.css',
 './css/workspace-v26.css?v=quote-desktop-20260928',
 './css/workspace-v27.css',
-'./js/app.js?v=27.5.0',
-'./js/catalog-v4.js',
+'./css/study-log-v1.css',
+'./js/app.js?v=27.6.0',
 './js/personalization-v5.js',
 './js/pwa-v6.js',
 './js/timeline-v8.js',
 './js/pro-v11.js',
 './js/contracts-v12.js',
-'./js/command-context-v1.js?v=27.5.0',
-'./js/operational-v13.js',
+'./js/command-context-v1.js?v=27.6.0',
 './js/workspace-v24.js',
-'./config/projects.json?v=27.5.0'
+'./js/study-log-v1.js',
+'./config/projects.json?v=27.6.0'
 ];
 self.addEventListener('install', (event) => {
 event.waitUntil(caches.open(CACHE_VERSION).then((cache) => cache.addAll(APP_SHELL)));
