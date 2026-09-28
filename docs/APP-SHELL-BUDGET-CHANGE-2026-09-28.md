@@ -18,6 +18,10 @@ O teto anterior de **131.072 bytes (128 KiB)** continua correto para o fechament
 - v27.2.1: **144.728 / 147.456 bytes brutos**, margem de 2.728 bytes.
 - Soma gzip: **46.607 / 49.152 bytes**, margem de 2.545 bytes.
 - O gate mede todos os recursos versionados do PWA, incluindo HTML, ícone, manifesto, registry, scripts e folhas CSS.
+- v27.4.1: **147.255 / 147.456 bytes brutos**, margem de 201 bytes; gzip **47.857 / 49.152 bytes**, margem de 1.295 bytes.
+- Workflow de referência: #374, Quality gate e Pages Deploy aprovados; o limite original foi mantido.
+- v27.4.2: **147.257 / 147.456 bytes brutos**, margem de 199 bytes; gzip **47.839 / 49.152 bytes**, margem de 1.313 bytes.
+- A faixa P4 coube no mesmo teto; foi removida uma regra estreita duplicada, sem alterar o limite aprovado.
 
 ## Controle futuro
 

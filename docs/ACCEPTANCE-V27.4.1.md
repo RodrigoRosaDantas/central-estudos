@@ -7,5 +7,8 @@
 - [x] Nenhuma dependência ou requisição externa foi adicionada.
 - [x] Cache PWA e URLs da release atualizados.
 - [x] Quality gate local passou.
-- [ ] Workflow, deploy e orçamento finais registrados.
-- [ ] QA visual da versão publicada registrado.
+- [x] Workflow #374: Quality gate e GitHub Pages Deploy concluídos.
+- [x] Orçamento final: 147.255/147.456 bytes bruto; 47.857/49.152 bytes gzip.
+- [x] QA visual desktop publicado em 1363×936: cartão 588×154 px e sem rolagem horizontal.
+- [x] Atualização da PWA aplicada; conteúdo servido na versão v27.4.1.
+- [ ] QA visual manual em viewport móvel registrado.

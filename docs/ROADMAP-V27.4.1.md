@@ -1,7 +1,7 @@
 # Roadmap v27.4.1 — frase do Major Cadar no desktop
 
 **Release:** 27.4.1  
-**Stage:** RELEASE CANDIDATE  
+**Stage:** RELEASED  
 **Escopo:** reorganizar o cabeçalho da Central em telas desktop para usar o espaço vazio ao lado do título e dar mais presença ao cartão da frase.
 
 ## Objetivos
@@ -15,4 +15,6 @@
 ## Verificação
 
 - O Quality gate local cobre o novo layout desktop, as URLs versionadas, a atribuição e a rotação existente.
-- A confirmação visual desktop e o resultado do workflow da Central serão registrados na auditoria final.
+- Workflow #374, Quality gate e Pages Deploy concluídos com sucesso no commit `e4c82409a75b56a0c30b93ac57441acd0f042e8a`.
+- QA visual publicado em 1363×936 confirmou o painel de 588×154 px, sem rolagem horizontal; atualizar a PWA concluiu e a versão permaneceu em v27.4.1.
+- Shell medido em 147.255/147.456 bytes bruto e 47.857/49.152 bytes gzip.

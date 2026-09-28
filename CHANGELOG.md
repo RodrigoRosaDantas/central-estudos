@@ -1,5 +1,18 @@
 # CHANGELOG — Central de Estudos
 
+## [27.4.2] - 2026-09-28
+
+### Changed
+- PRF Administrativo passa a ocupar P4 na faixa de prioridades da semana, com acesso direto ao site publicado no GitHub Pages.
+- O cartão de agenda do PRF identifica P4 e mantém os estudos de segunda, quarta e sexta e a sequência PRFADM01→PRFADM30.
+- A faixa mostra quatro prioridades em telas amplas e refluí para duas colunas em telas estreitas.
+- Registry, runtime, URLs do app shell e cache PWA foram renovados para clientes instalados.
+
+### Preserved
+- SEEDF (P1), TJDFT (P2) e TCE-GO (P3), o foco padrão TCE-GO e a fonte de verdade Notion do PRF.
+- O painel PRF continua fora do Radar operacional enquanto não publicar contrato de status.
+- Citações, autoria, fonte e rotação de cinco minutos; o redesenho desktop publicado em v27.4.1 permanece.
+
 ## [27.4.1] - 2026-09-28
 
 ### Changed
