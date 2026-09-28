@@ -32,7 +32,7 @@ Busca, favoritos, ordenação, atalhos e ordem manual são camadas locais sobre 
 
 ## PWA e resiliência
 
-O service worker é limitado à origem e ao pathname da Central. O cache atual é `central-shell-v27.4.0-prf-pages-20260928` e contém somente o app shell da Central; os sites de projeto e a ferramenta não são incluídos.
+O service worker é limitado à origem e ao pathname da Central. O cache atual é `central-shell-v27.4.1-quote-desktop-20260928` e contém somente o app shell da Central; os sites de projeto e a ferramenta não são incluídos.
 
 Estratégia:
 - navegações e assets conhecidos usam **network first**;
@@ -442,9 +442,13 @@ A Inbox mostra mudanças entre o último snapshot local salvo e um contrato vál
 
 A chave `central-estudos:published-snapshot-v1` fica somente neste navegador e não entra no backup de preferências. A comparação é read-only, não é telemetria, não mede estudo/progresso e não escreve nos projetos-filhos.
 
-## Contexto atual — v27.4.0
+## Contexto anterior — v27.4.0
 
 O cartão PRF abre o painel em GitHub Pages e mantém Notion como acesso separado à fonte de verdade. A Central associa somente o repositório próprio do PRF para frescor e estado do workflow de publicação. Como o painel publica um snapshot e não tem `central-status.json`, não aparece no Radar operacional nem fornece progresso de estudo.
+
+## Contexto atual — v27.4.1
+
+A frase do Major Cadar continua alternando a cada cinco minutos com autoria e fonte. No desktop, ela ocupa um painel horizontal ao lado do título e da saudação, eliminando o vazio no cabeçalho; em telas menores, permanece em fluxo vertical, sem alterar as citações nem o calendário de rotação.
 
 
 ## Correção visual e cache PWA — v27.1.1

@@ -1,5 +1,16 @@
 # CHANGELOG — Central de Estudos
 
+## [27.4.1] - 2026-09-28
+
+### Changed
+- O cabeçalho desktop distribui o espaço entre a identificação da Central e um painel horizontal de destaque para a frase.
+- A frase ganhou maior escala e presença; o cartão usa a largura disponível e fica centralizado ao lado do título e da saudação.
+
+### Preserved
+- As seis citações, autoria, fonte oficial e rotação de cinco minutos permanecem iguais.
+- Em telas menores, a frase continua abaixo da identificação; nenhuma chamada externa ou registro de progresso foi adicionado.
+- O limite aprovado do app shell foi mantido.
+
 ## [27.4.0] - 2026-09-28
 
 ### Changed
