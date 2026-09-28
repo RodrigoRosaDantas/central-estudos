@@ -8,6 +8,5 @@
 - [x] O foco escolhido e as filas dos projetos-filhos permanecem independentes.
 - [x] Layout refluído para larguras móveis.
 - [x] `node tests/quality.mjs` passa; shell permanece abaixo de 131.072 bytes.
-- [ ] Quality gate GitHub Actions e deploy do GitHub Pages.
+- [x] Quality gate GitHub Actions e deploy do GitHub Pages (`36360961076`, SUCCESS).
 - [ ] Inspeção visual manual em viewport móvel real na auditoria geral.
-

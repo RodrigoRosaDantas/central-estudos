@@ -1,7 +1,9 @@
 # Roadmap v25 — cronograma semanal
 
 **Release:** 25.0.0  
-**Stage:** IMPLEMENTATION READY — GitHub Actions pending
+**Stage:** COMPLETE — v25.0.0 publicada no GitHub Pages
+**Release commit:** `84c2d0ef3c130d9edc4bffcc7d1ff708ff8bab0f`
+**Workflow:** [36360961076 — Quality gate + Deploy SUCCESS](https://github.com/RodrigoRosaDantas/central-estudos/actions/runs/36360961076)
 
 ## Objetivo
 
@@ -27,4 +29,3 @@ Exibir na Central uma grade semanal de estudo que aplique a ordem de prioridades
 - A grade não apresenta estado de conclusão, falta ou progresso.
 - CSS reorganiza os cartões em larguras móveis.
 - Quality gate e publicação do GitHub Pages passam.
-
