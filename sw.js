@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'central-shell-v27.4.2-prf-p4-20260928';
+const CACHE_VERSION = 'central-shell-v27.4.3-prf-p4-cycle33-20260928';
 const APP_SHELL = [
 './',
 './index.html',
@@ -14,17 +14,17 @@ const APP_SHELL = [
 './css/workspace-v24.css',
 './css/workspace-v26.css?v=quote-desktop-20260928',
 './css/workspace-v27.css',
-'./js/app.js?v=27.4.2',
+'./js/app.js?v=27.4.3',
 './js/catalog-v4.js',
 './js/personalization-v5.js',
 './js/pwa-v6.js',
 './js/timeline-v8.js',
 './js/pro-v11.js',
 './js/contracts-v12.js',
-'./js/command-context-v1.js?v=27.4.2',
+'./js/command-context-v1.js?v=27.4.3',
 './js/operational-v13.js',
 './js/workspace-v24.js',
-'./config/projects.json?v=27.4.2'
+'./config/projects.json?v=27.4.3'
 ];
 self.addEventListener('install', (event) => {
 event.waitUntil(caches.open(CACHE_VERSION).then((cache) => cache.addAll(APP_SHELL)));

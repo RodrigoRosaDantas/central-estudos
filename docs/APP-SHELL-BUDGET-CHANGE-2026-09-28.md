@@ -27,3 +27,6 @@ O teto anterior de **131.072 bytes (128 KiB)** continua correto para o fechament
 ## Controle futuro
 
 Novas funcionalidades devem caber nos limites vigentes. Se o shell exceder qualquer deles, primeiro refatorar ou reduzir redundância. Uma nova elevação exige autorização explícita. Nenhum projeto-filho, página do Notion ou site de questões recebe escrita por causa desta decisão.
+
+
+- v27.4.3: **147.304 / 147.456 bytes bruto**, margem de 152 bytes; gzip **47.924 / 49.152 bytes**, margem de 1.228 bytes. A descrição do manifesto passou a incluir o PRF e a Plataforma de Questões sem elevar os limites.

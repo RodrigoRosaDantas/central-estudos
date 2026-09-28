@@ -1,5 +1,16 @@
 # CHANGELOG — Central de Estudos
 
+## [27.4.3] - 2026-09-28
+
+### Fixed
+- Agenda e texto do projeto PRF alinhados à roda canônica PRFADM01–33 confirmada na página-raiz do Notion.
+- Manifesto PWA atualizado para identificar PRF Administrativo e Plataforma de Questões.
+- Versão do registry, runtime e cache PWA atualizada para renovar as instalações existentes.
+
+### Preserved
+- PRF às segundas, quartas e sextas; Notion como fonte de verdade; P1–P4 e foco padrão TCE-GO.
+- Todos os projetos-filhos permanecem somente leitura.
+
 ## [27.4.2] - 2026-09-28
 
 ### Changed
