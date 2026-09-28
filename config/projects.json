@@ -3,7 +3,7 @@
   "central": {
     "name": "Central de Estudos",
     "owner": "Rodrigo",
-    "version": "27.2.1",
+    "version": "27.2.2",
     "defaultProject": "tcego"
   },
   "projects": [
