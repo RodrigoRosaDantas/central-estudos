@@ -22,6 +22,8 @@
 
 - [x] `node tests/quality.mjs` no checkout local.
 - [x] `git diff --check` sem problemas.
-- [ ] Quality gate no GitHub Actions.
-- [ ] Publicação Pages concluída.
-- [ ] Inspeção visual no celular: dias, matérias, campos de tempo, checkbox e totais.
+- [x] Quality gate GitHub Actions aprovado no workflow #384.
+- [x] Publicação Pages concluída pelo job Deploy do workflow #384.
+- [x] Inspecionados no browser: seleção de dias e matérias, formulário, checkbox desligado e totais; nenhuma gravação de estudo.
+
+A suíte também valida regras responsive até 360px e alvos de toque com pelo menos 42px. A conferência visual desta release foi em viewport amplo, sem aparelho físico/emulação móvel.
