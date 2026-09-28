@@ -1,5 +1,17 @@
 # CHANGELOG — Central de Estudos
 
+## [27.0.0] - 2026-09-27
+
+### Changed
+- Cronograma passa a apresentar um cartão individual para cada dia, de segunda-feira a domingo.
+- PRF Administrativo ganha destaque próprio como trilha complementar e aparece segunda, quarta e sexta, mantendo a sequência PRFADM01→PRFADM30.
+- SEEDF/TJDFT mantêm estudo de segunda a sexta e revisão no sábado; TCE-GO permanece terça, quinta e sábado.
+- Layout diário refluído para uma coluna em telas estreitas.
+
+### Preserved
+- SEEDF → TJDFT → TCE-GO permanece a ordem de prioridades; PRF Administrativo não vira prioridade 4.
+- Domingo permanece protegido e a agenda não registra estudo nem progresso.
+
 ## [26.0.0] - 2026-09-27
 
 ### Changed

@@ -32,7 +32,7 @@ Busca, favoritos, ordenação, atalhos e ordem manual são camadas locais sobre 
 
 ## PWA e resiliência
 
-O service worker é limitado à origem e ao pathname da Central. O cache da release atual é `central-shell-v25.0.0` e contém somente o app shell da Central.
+O service worker é limitado à origem e ao pathname da Central. O cache da release atual é `central-shell-v27.0.0` e contém somente o app shell da Central.
 
 Estratégia:
 - navegações e assets conhecidos usam **network first**;
@@ -411,8 +411,10 @@ Essa ordem de estudo é independente do foco de navegação escolhido no topo. A
 
 ## Ritmo de estudo e presença — v26
 
-A v26 preserva a grade como conteúdo editorial manual e agrupa dias com a mesma composição em quatro cartões compactos: segunda/quarta/sexta, terça/quinta, sábado e domingo. SEEDF e TJDFT aparecem para estudo de segunda a sexta e revisão no sábado; TCE-GO permanece na terça, quinta e sábado; PRF-ADM entra na segunda, quarta e sexta como trilha adicional, com continuidade PRFADM01→PRFADM30.
+A v26 introduziu o cronograma semanal, a trilha PRF-ADM em dias fixos, citações atribuídas e o relógio de Brasília com segundos. A grade era agrupada por padrão de dias.
 
-O cartão de frase alterna quatro citações de educação/aprendizagem com autor, obra ou discurso de referência e link para a fonte. As versões em português são identificadas como traduções livres quando aplicável. As fontes não são requisitadas automaticamente. O relógio usa `America/Sao_Paulo`, renderiza `HH:MM:SS` e atualiza a cada segundo sem depender do fuso do aparelho.
+## Cronograma dia a dia — v27
 
-A atualização não transforma a agenda em controle de frequência ou progresso e não escreve nos projetos-filhos. `workspace-v26.css` dá nome novo aos estilos da grade para invalidar o cache visual antigo do PWA; o teste cobre os breakpoints estreitos e a presença dos arquivos no app shell.
+A v27 apresenta sete cartões separados, um por dia. Segunda, quarta e sexta mostram SEEDF, TJDFT e PRF Administrativo; terça e quinta mostram SEEDF, TJDFT e TCE-GO; sábado mostra as revisões P1/P2 e TCE-GO; domingo permanece protegido. PRF Administrativo é uma trilha complementar, não uma prioridade numerada.
+
+O shell `central-shell-v27.0.0` inclui `workspace-v27.css`; o runtime e o registro usam URLs versionadas para atualizar clientes com cache PWA anterior. O breakpoint móvel transforma a grade diária em uma coluna. Foco, filas e dados dos projetos-filhos permanecem independentes; a agenda não mede execução ou progresso.

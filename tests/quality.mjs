@@ -795,7 +795,7 @@ function testV22CommandCenter() {
 
 function testV23TodayMentor() {
   const html=read("index.html"),pro=read("js/pro-v11.js"),operational=read("js/operational-v13.js"),sw=read("sw.js");
-  assert.ok(html.includes(">Hoje<")&&html.includes("PLANO DE HOJE")&&(html.includes("HOJE · V24")||html.includes("HOJE · V25")||html.includes("HOJE · V26")),"later releases must preserve Hoje in the command center");
+  assert.ok(html.includes(">Hoje<")&&html.includes("PLANO DE HOJE")&&(html.includes("HOJE · V24")||html.includes("HOJE · V25")||html.includes("HOJE · V26")||html.includes("HOJE · V27")),"later releases must preserve Hoje in the command center");
   assert.ok(html.includes("RADAR OPERACIONAL")&&html.includes("Situação dos concursos"),"v23 radar must be visible");
   assert.ok(html.includes(">MENTOR<")&&html.includes("Mentor de execução"),"v23 mentor must be visible");
   assert.ok(html.includes('href="#routing-panel">Mentor</a>')&&html.includes('href="#activity-panel">Histórico</a>'),"v23 home shortcuts must expose mentor and history");
@@ -836,31 +836,35 @@ function testV24ScreensAndViews(registry) {
   pass("v24 six screens, separate Inbox/Radar and backward-compatible views");
 }
 
-function testV25WeeklySchedule(registry) {
-  const html=read("index.html"),router=read("js/workspace-v24.js"),css=read("css/workspace-v26.css"),sw=read("sw.js");
+function testV27DailySchedule(registry) {
+  const html=read("index.html"),router=read("js/workspace-v24.js"),css=read("css/workspace-v27.css"),sw=read("sw.js"),app=read("js/app.js");
   const start=html.indexOf('<section id="agenda-semanal"'),end=html.indexOf("</section>",start);
   assert.ok(start>=0&&end>start,"weekly schedule must remain a section on the page");
   const schedule=html.slice(start,end);
-  assert.equal(registry.central.version,"26.0.0","registry must identify v26");
+  assert.equal(registry.central.version,"27.0.0","registry must identify v27");
   assert.equal(registry.central.defaultProject,"tcego","study priorities must not change the user's central focus");
   assert.ok(html.includes('href="#agenda-semanal">Cronograma</a>')&&router.includes('"agenda-semanal":"today"'),"schedule must have an accessible shortcut and route back to Hoje");
-  assert.deepEqual([...schedule.matchAll(/data-priority="([^"]+)"/g)].map(match=>match[1]),["1","2","3"],"manual priorities must appear in SEEDF, TJDFT, TCE-GO order");
-  assert.deepEqual([...schedule.matchAll(/data-days="([^"]+)"/g)].map(match=>match[1]),["monday wednesday friday","tuesday thursday","saturday","sunday"],"compact schedule patterns must cover the full week without losing day assignments");
-  const part=days=>{const at=schedule.indexOf(`data-days="${days}"`);return schedule.slice(at,schedule.indexOf("</article>",at))};
-  const mwf=part("monday wednesday friday"),tuth=part("tuesday thursday"),saturday=part("saturday"),sunday=part("sunday");
-  assert.ok(schedule.includes("estudo de segunda a sexta")&&schedule.includes("revisão no sábado"),"SEEDF and TJDFT must study weekdays and review Saturday");
-  assert.ok(mwf.indexOf(">SEEDF</a>")>=0&&mwf.indexOf(">SEEDF</a>")<mwf.indexOf(">TJDFT</a>")&&mwf.includes("PRF-ADM")&&mwf.includes("PRFADMxx"),"Monday/Wednesday/Friday must preserve priority order and PRF-ADM sequence");
-  assert.ok(tuth.includes(">SEEDF</a>")&&tuth.includes(">TJDFT</a>")&&tuth.includes("TCE-GO"),"Tuesday/Thursday must include SEEDF, TJDFT and TCE-GO");
-  assert.ok(saturday.includes("SEEDF")&&saturday.includes("TJDFT")&&saturday.includes("Revisão")&&saturday.includes("TCE-GO"),"Saturday must review SEEDF/TJDFT and retain TCE-GO");
-  assert.ok(sunday.includes("Descanso")&&sunday.includes("D7/D20"),"Sunday must remain protected with only scheduled reviews");
+  const priorityStrip=schedule.slice(schedule.indexOf('<div class="weekly-priority-strip"'),schedule.indexOf("</div>",schedule.indexOf('<div class="weekly-priority-strip"')));
+  assert.deepEqual([...priorityStrip.matchAll(/data-priority="([^"]+)"/g)].map(match=>match[1]),["1","2","3"],"manual priorities must remain SEEDF, TJDFT, TCE-GO without a P4");
+  const days=["monday","tuesday","wednesday","thursday","friday","saturday","sunday"];
+  assert.deepEqual([...schedule.matchAll(/data-weekday="([^"]+)"/g)].map(match=>match[1]),days,"schedule must expose exactly one individual card per weekday, Monday through Sunday");
+  const day=key=>{const at=schedule.indexOf(`data-weekday="${key}"`);return schedule.slice(at,schedule.indexOf("</article>",at)+10)};
+  const cards=Object.fromEntries(days.map(key=>[key,day(key)]));
+  const weekdays=days.slice(0,5);
+  for(const key of weekdays)assert.ok(cards[key].includes(">SEEDF</a>")&&cards[key].includes(">TJDFT</a>")&&cards[key].includes("Estudo"),`${key} must show SEEDF P1 and TJDFT P2 study`);
+  for(const key of ["monday","wednesday","friday"])assert.ok(cards[key].includes("PRF Administrativo")&&cards[key].includes("PRFADMxx"),`${key} must show the PRF Administrative track`);
+  for(const key of ["tuesday","thursday"])assert.ok(cards[key].includes("TCE-GO")&&!cards[key].includes("PRF Administrativo"),`${key} must show TCE-GO without adding PRF`);
+  assert.ok(cards.saturday.includes("SEEDF")&&cards.saturday.includes("TJDFT")&&cards.saturday.includes("Revisão")&&cards.saturday.includes("TCE-GO"),"Saturday must review SEEDF/TJDFT and retain TCE-GO");
+  assert.ok(cards.sunday.includes("Descanso")&&cards.sunday.includes("D7/D20"),"Sunday must remain protected with only scheduled reviews");
+  assert.ok(schedule.includes('aria-label="Trilha complementar PRF Administrativo"')&&schedule.includes("segunda, quarta e sexta")&&!schedule.includes("Prioridade 4"),"PRF Administrative must be visible as a complementary track, not P4");
+  assert.ok(!schedule.includes("data-days="),"day-by-day plan must not group weekdays together");
   assert.ok(schedule.includes("não registra presença")&&schedule.includes("não estima avanço")&&schedule.includes("não muda o foco"),"weekly schedule must not claim study progress or change focus");
-  assert.ok(html.includes("./css/workspace-v26.css")&&css.includes(".schedule-pattern-grid")&&css.includes("@media(max-width:719px)")&&css.includes("grid-template-columns:1fr"),"v26 schedule must use its versioned, compact mobile layout");
-  assert.ok(sw.includes("central-shell-v26.0.0")&&sw.includes("./css/workspace-v26.css"),"PWA shell cache must include the v26 stylesheet");
-  assert.ok(html.includes('src="./js/app.js?v=26.0.0"')&&sw.includes("'./js/app.js?v=26.0.0'")&&sw.includes("'./config/projects.json?v=26.0.0'")&&read("js/app.js").includes("./config/projects.json?v=26.0.0"),"v26 must bypass stale app and registry cache entries");
-  const app=read("js/app.js");
+  assert.ok(html.includes("./css/workspace-v27.css")&&html.includes("weekly-schedule-v27")&&css.includes(".schedule-day-grid")&&css.includes("@media(max-width:719px)")&&css.includes("grid-template-columns:1fr")&&css.includes("min-width:0"),"v27 schedule must use a compact single-column mobile layout");
+  assert.ok(sw.includes("central-shell-v27.0.0")&&sw.includes("./css/workspace-v27.css"),"PWA shell cache must include the v27 stylesheet");
+  assert.ok(html.includes('src="./js/app.js?v=27.0.0"')&&sw.includes("'./js/app.js?v=27.0.0'")&&sw.includes("'./config/projects.json?v=27.0.0'")&&app.includes("./config/projects.json?v=27.0.0"),"v27 must version app and registry cache URLs");
   for(const source of ["kinginstitute.stanford.edu","nelsonmandela.org","malala.org/news-and-voices","gutenberg.org/files/46389"])assert.ok(app.includes(source),`daily quote source missing: ${source}`);
   assert.ok(html.includes('id="daily-motivation-author"')&&html.includes('id="daily-motivation-source"')&&app.includes('second:"2-digit"')&&app.includes("setInterval(e,1e3)"),"daily quote must show authors/source and Brasília clock seconds");
-  pass("v26 weekly cadence, mobile layout, attributed quotes and live Brasília seconds");
+  pass("v27 day-by-day schedule, visible PRF track, mobile layout and v26 experience");
 }
 
 function testReleaseDocumentationCoherence(registry) {
@@ -969,13 +973,19 @@ function testReleaseDocumentationCoherence(registry) {
   if (major >= 25) {
     const roadmap25=read("docs/ROADMAP-V25.md"),checkpoint25=read("docs/V25-CHECKPOINT.md"),acceptance25=read("docs/ACCEPTANCE-V25.md"),risks25=read("docs/RISK-REGISTER-V25.md");
     assert.ok(roadmap25.includes("25.0.0")&&checkpoint25.includes("25.0.0")&&acceptance25.includes("cronograma")&&risks25.includes("dias da semana"),"v25 governance must define scope, checkpoint, acceptance and risks");
-    assert.ok((readme.includes("v25.0")||readme.includes("v26.0"))&&changelog.includes("## [25.0.0]")&&architecture.includes("## Cronograma semanal — v25"),"v25 history and current README, changelog and architecture must agree");
+    assert.ok((readme.includes("v25.0")||readme.includes("v26.0")||readme.includes("v27.0"))&&changelog.includes("## [25.0.0]")&&architecture.includes("## Cronograma semanal — v25"),"v25 history and current README, changelog and architecture must agree");
   }
 
   if (major >= 26) {
     const roadmap26=read("docs/ROADMAP-V26.md"),checkpoint26=read("docs/V26-CHECKPOINT.md"),acceptance26=read("docs/ACCEPTANCE-V26.md"),risks26=read("docs/RISK-REGISTER-V26.md");
     assert.ok(roadmap26.includes("26.0.0")&&checkpoint26.includes("26.0.0")&&acceptance26.includes("PRF-ADM")&&risks26.includes("celular"),"v26 governance must define scope, checkpoint, acceptance and risks");
-    assert.ok(readme.includes("v26.0")&&changelog.includes("## [26.0.0]")&&architecture.includes("## Ritmo de estudo e presença — v26"),"v26 README, changelog and architecture must agree");
+    assert.ok((readme.includes("v26.0")||readme.includes("v27.0"))&&changelog.includes("## [26.0.0]")&&architecture.includes("## Ritmo de estudo e presença — v26"),"v26 README, changelog and architecture must agree");
+  }
+
+  if (major >= 27) {
+    const roadmap27=read("docs/ROADMAP-V27.md"),checkpoint27=read("docs/V27-CHECKPOINT.md"),acceptance27=read("docs/ACCEPTANCE-V27.md"),risks27=read("docs/RISK-REGISTER-V27.md");
+    assert.ok(roadmap27.includes("27.0.0")&&checkpoint27.includes("27.0.0")&&acceptance27.includes("segunda")&&risks27.includes("PRF Administrativo"),"v27 governance must define scope, checkpoint, acceptance and risks");
+    assert.ok((readme.includes("v27.0")||readme.includes("v27"))&&changelog.includes("## [27.0.0]")&&architecture.includes("## Cronograma dia a dia — v27"),"v27 README, changelog and architecture must agree");
   }
 
   pass("release documentation coherence");
@@ -1003,7 +1013,8 @@ function testSecurityAndContracts(registry) {
     "js/workspace-v24.js",
     "css/operational-v13.css",
     "css/workspace-v24.css",
-    "css/workspace-v26.css"
+    "css/workspace-v26.css",
+    "css/workspace-v27.css"
   ];
 
   const combined = frontendFiles.map(read).join("\n");
@@ -1069,7 +1080,7 @@ testV21PresenceExperience();
 testV22CommandCenter();
 testV23TodayMentor();
 testV24ScreensAndViews(registry);
-testV25WeeklySchedule(registry);
+testV27DailySchedule(registry);
 testReleaseDocumentationCoherence(registry);
 testSecurityAndContracts(registry);
 
