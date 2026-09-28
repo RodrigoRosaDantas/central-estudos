@@ -9,7 +9,8 @@
 - [x] Fallback sem JavaScript mostra os dois acessos.
 - [x] Versão do registry, runtime e cache PWA é 27.4.0.
 - [x] Quality gate local passou.
-- [ ] Workflow da Central e deploy público concluídos.
-- [ ] DOM publicado confirma os dois links, versão e estado do card.
-- [ ] Orçamento final do app shell registrado após o deploy.
-
+- [x] Workflow da Central e deploy público concluídos no run `36437885787`.
+- [x] QA publicado em 1363×936 confirmou versão, os dois links, estado acessível do card e ausência de overflow horizontal.
+- [x] App shell: 147.300/147.456 bytes brutos e 47.887/49.152 bytes gzip.
+- [x] Artefato Pages `10976357365` (145.103 bytes; `sha256:aa8e237d8364405e14b0eb1730d9228d913b05b328992f6c34af2cefe6d351e9`).
+- [x] Testes responsivos automatizados passaram; inspeção manual em viewport móvel não executada nesta sessão.

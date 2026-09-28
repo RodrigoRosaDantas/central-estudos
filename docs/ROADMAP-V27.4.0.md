@@ -1,7 +1,7 @@
 # Roadmap v27.4.0 — acesso ao site PRF no GitHub
 
 **Release:** 27.4.0  
-**Stage:** RELEASE CANDIDATE  
+**Stage:** PUBLISHED  
 **Escopo:** atualizar o cartão do PRF para o GitHub Pages, preservar acesso direto ao Notion e associar o repositório correto à observabilidade técnica da Central.
 
 ## Objetivos
@@ -16,5 +16,6 @@
 
 - README do repositório confirma o endereço do painel e a função do Notion como fonte de verdade.
 - O primeiro workflow Deploy PRF ADM to GitHub Pages terminou com sucesso.
-- Quality gate local, workflow da Central, deploy da Central e inspeção pública serão registrados na aceitação e auditoria final.
-
+- Baseline: `a1e55795bff55814d2760af82dfe7e59d0387c71`.
+- PR #6 integrado no commit `4a378f726d5ead66305cba2b63ec054f583d1bb3`.
+- Quality gate e deploy da Central passaram no workflow `36437885787`; QA público e payload estão registrados na auditoria final.
