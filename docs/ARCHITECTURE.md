@@ -463,3 +463,11 @@ QA visual encurtou o CTA do cartão PRF para evitar que a seta quebre sozinha ju
 ## Frases do Major Cadar — v27.2
 
 As seis frases curtas atribuídas ao Major Cadar alternam automaticamente a cada cinco minutos enquanto a página está aberta. Texto, autoria e link individual da origem são atualizados juntos; ao voltar para a aba, o relógio e a frase recalculam o estado atual. O fallback sem JavaScript preserva uma frase, autoria e fonte coerentes. A rotação não adiciona chamadas externas; o usuário abre a fonte somente ao ativar o link. O relógio de Brasília e a saudação continuam independentes da escolha da frase.
+
+## Fechamento do dia — v27.5.0
+
+A tela Hoje oferece um fechamento curto com quatro leituras: **previsto** (o cartão marcado HOJE na grade existente), **feito** (confirmado no projeto de origem), **bloqueado** (pendência editorial, como material PRF ainda incompleto) e **retomada** (continuação no próximo slot, sem deslocar a grade).
+
+O fechamento não registra presença nem cria um segundo histórico. Os contratos read-only em Evolução mostram o estado publicado, a origem e as datas publishedAt/source.updatedAt; esses timestamps descrevem a publicação do projeto e não comprovam execução individual. O PRF não publica contrato de status; o link do Notion permanece como fonte de verdade. Se um material PRF impedir a sessão, o mesmo PRFADMxx volta no próximo dia previsto, sem pular códigos ou compensar em outro projeto.
+
+A mudança é somente de apresentação e documentação na Central: sem novo fetch, backend, armazenamento de execução ou escrita nos projetos-filhos. A grade P1–P4 e o foco de navegação permanecem independentes.

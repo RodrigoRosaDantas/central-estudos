@@ -903,7 +903,7 @@ function testV27DailySchedule(registry) {
   const start=html.indexOf('<section id="agenda-semanal"'),end=html.indexOf("</section>",start);
   assert.ok(start>=0&&end>start,"weekly schedule must remain a section on the page");
   const schedule=html.slice(start,end);
-  assert.equal(registry.central.version,"27.4.3","registry must identify v27.4.3");
+  assert.equal(registry.central.version,"27.5.0","registry must identify v27.5.0");
   assert.ok(html.includes(`HOJE · V${registry.central.version}`),"Today panel version badge must match the current release");
   assert.equal(registry.central.defaultProject,"tcego","study priorities must not change the user's central focus");
   assert.ok(html.includes('href="#agenda-semanal">Cronograma</a>')&&router.includes('"agenda-semanal":"today"'),"schedule must have an accessible shortcut and route back to Hoje");
@@ -925,11 +925,15 @@ function testV27DailySchedule(registry) {
   assert.ok(!schedule.includes("data-days="),"day-by-day plan must not group weekdays together");
   assert.ok(schedule.includes("PRFADM01–PRFADM33")&&schedule.includes("sequência 01–33")&&!schedule.includes("01–30"),"weekly schedule must match the current 33-session PRF cycle from Notion");
   assert.ok(schedule.includes("não registra presença")&&schedule.includes("não estima avanço")&&schedule.includes("não muda o foco"),"weekly schedule must not claim study progress or change focus");
+  const closeout=schedule.slice(schedule.indexOf('<details id="daily-closeout"'),schedule.indexOf("</details>",schedule.indexOf('<details id="daily-closeout"')));
+  assert.ok(closeout.includes("open")&&["PREVISTO","FEITO","BLOQUEIO EDITORIAL","RETOMADA"].every(label=>closeout.includes(`<strong>${label}</strong>`)),"daily closeout must separate plan, execution, blocker and resumption");
+  assert.ok(closeout.includes("não vira dívida")&&closeout.includes("PRFADMxx")&&closeout.includes("sem pular ou compensar")&&closeout.includes('href="#evolucao"')&&closeout.includes("app.notion.com/p/3e8cf5a2673181679cd2f5532e0abf60"),"closeout must explain the editorial blocker, next PRF session and source links");
+  assert.ok(closeout.includes("atualização do estado publicado, não estudo individual")&&closeout.includes("Feito fica registrado na fonte"),"closeout must distinguish project freshness from individual study execution");
   const mobileCss=css.slice(css.indexOf("@media(max-width:719px)"));
   assert.ok(html.includes("./css/workspace-v27.css")&&html.includes("weekly-schedule-v27")&&mobileCss.includes(".schedule-day-grid{grid-template-columns:1fr")&&mobileCss.includes(".schedule-day-card{grid-template-columns:minmax(82px,.34fr) minmax(0,1fr)")&&mobileCss.includes(".schedule-day-heading>span{display:none}")&&mobileCss.includes(".schedule-day-rest-v27 .schedule-day-heading>span{display:inline-flex}")&&mobileCss.includes(".schedule-day-card .schedule-item-copy{display:block")&&mobileCss.includes("min-width:0"),"v27 mobile schedule must keep seven days while compacting each day row and avoiding redundant labels");
-  assert.ok(html.includes('src="./js/command-context-v1.js?v=27.4.3"')&&sw.includes("'./js/command-context-v1.js?v=27.4.3'"),"today marker and published-change summary must load as part of the app shell");
-  assert.ok(sw.includes("central-shell-v27.4.3")&&sw.includes("./css/workspace-v27.css"),"PWA shell cache must include the v27 stylesheet and current version");
-  assert.ok(html.includes('src="./js/app.js?v=27.4.3"')&&sw.includes("'./js/app.js?v=27.4.3'")&&sw.includes("'./config/projects.json?v=27.4.3'")&&app.includes("./config/projects.json?v=27.4.3"),"v27.4.3 must version app and registry cache URLs");
+  assert.ok(html.includes('src="./js/command-context-v1.js?v=27.5.0"')&&sw.includes("'./js/command-context-v1.js?v=27.5.0'"),"today marker and published-change summary must load as part of the app shell");
+  assert.ok(sw.includes("central-shell-v27.5.0")&&sw.includes("./css/workspace-v27.css"),"PWA shell cache must include the v27 stylesheet and current version");
+  assert.ok(html.includes('src="./js/app.js?v=27.5.0"')&&sw.includes("'./js/app.js?v=27.5.0'")&&sw.includes("'./config/projects.json?v=27.5.0'")&&app.includes("./config/projects.json?v=27.5.0"),"v27.5.0 must version app and registry cache URLs");
   assert.ok(html.includes("Mudanças desde a última conferência")&&html.includes("contratos validados neste aparelho")&&html.includes('id="published-changes-list"'),"published changes must be shown with their local/read-only provenance");
   assert.ok(css.includes(".schedule-day-card.is-today")&&css.includes('content:"HOJE"'),"the current weekday must have a visible marker");
   assert.ok(html.includes("PRF Administrativo")&&html.includes(">P4</span>")&&html.includes(">PRF</span>"),"the weekly routine must label PRF as P4 and retain its project identity");
@@ -937,8 +941,8 @@ function testV27DailySchedule(registry) {
   assert.ok(html.includes('id="daily-motivation-author"')&&html.includes('id="daily-motivation-source"')&&html.includes("Frases do Major Cadar · muda a cada 5 min")&&html.includes('id="daily-motivation" class="daily-motivation" aria-live="polite" aria-atomic="true"')&&html.includes("Seja forte ou seja vencido.")&&app.includes('author:"Major Cadar"')&&app.includes('second:"2-digit"')&&app.includes("setInterval(e,1e3)"),"Major Cadar quote, accessible rotation label, attribution/source and Brasília clock seconds must remain visible");
   assert.ok(quoteCss.includes("border-left:4px solid #b69cff")&&quoteCss.includes("font-size:clamp(1rem,2.2vw,1.5rem)")&&quoteCss.includes("font-weight:800")&&quoteCss.includes("#a78bfa30"),"daily quote card must keep a readable, high-contrast visual treatment");
   assert.ok(quoteCss.includes("@media(min-width:900px)")&&quoteCss.includes("grid-template-columns:.8fr 1.2fr")&&quoteCss.includes("grid-area:1/2/4/3")&&quoteCss.includes("min-height:154px"),"desktop quote must use the open header space as a balanced featured panel");
-  assert.ok(html.includes('href="./css/workspace-v26.css?v=quote-desktop-20260928"')&&sw.includes("'./css/workspace-v26.css?v=quote-desktop-20260928'")&&sw.includes("central-shell-v27.4.3-prf-p4-cycle33-20260928"),"current PRF destination must refresh installed PWA clients");
-  pass("v27.4.3 current-day marker, published changes, project labels, Major Cadar quotes and P4 weekly schedule");
+  assert.ok(html.includes('href="./css/workspace-v26.css?v=quote-desktop-20260928"')&&sw.includes("'./css/workspace-v26.css?v=quote-desktop-20260928'")&&sw.includes("central-shell-v27.5.0-daily-closeout-20260928"),"current PRF destination must refresh installed PWA clients");
+  pass("v27.5.0 closeout, current-day marker, published changes and fixed P4 weekly schedule");
 }
 
 function testCommandContext() {
@@ -976,7 +980,7 @@ function testV274PrfSiteAndToolDirectory(registry) {
   const toolsStart = html.indexOf('<div class="study-tools"');
   const toolsEnd = html.indexOf("</div></section><section id=\"workspace\"", toolsStart);
 
-  assert.equal(registry.central.version, "27.4.3", "catalog must identify current release v27.4.3");
+  assert.equal(registry.central.version, "27.5.0", "catalog must identify current release v27.5.0");
   assert.equal(registry.central.defaultProject, "tcego", "new access cards must not change the default Central focus");
   assert.ok(prf && prf.status === "active" && prf.priority === "normal" && prf.studyPriority === 4, "PRF must be active, ranked P4 in the study schedule, and keep normal focus semantics");
   assert.equal(prf.description, "Roda PRFADM01–33", "Central catalog must show the current 33-session PRF cycle");
@@ -1002,7 +1006,7 @@ function testV274PrfSiteAndToolDirectory(registry) {
   assert.ok(tools.includes("fora da contagem") && tools.includes("Ferramenta"), "tool card must explain its separate role");
   assert.ok(html.includes("4 de 4 projetos") && html.includes("4 projetos · 1 ferramenta de estudo"), "static project and tool counts must match the catalog");
 
-  pass("v27.4.3 preserves the PRF GitHub Pages site, Notion source, P4 rank and separate question-tool card");
+  pass("v27.5.0 preserves the PRF GitHub Pages site, Notion source, P4 rank and separate question-tool card");
 }
 
 function testReleaseDocumentationCoherence(registry) {
@@ -1141,13 +1145,15 @@ function testReleaseDocumentationCoherence(registry) {
     assert.ok(!readme.includes("agenda semanal continua indicando a execução PRF como complementar")&&architecture.includes("Projeto PRF"),"current docs must classify PRF as a project, not only as a complementary track");
     const roadmap274=read("docs/ROADMAP-V27.4.0.md"),acceptance274=read("docs/ACCEPTANCE-V27.4.0.md"),risk274=read("docs/RISK-REGISTER-V27.4.0.md"),checkpoint274=read("docs/V27.4-CHECKPOINT.md"),audit274=read("docs/FINAL-AUDIT-V27.4.0.md");
     assert.ok(roadmap274.includes("27.4.0")&&roadmap274.includes("GitHub Pages")&&acceptance274.includes("Notion")&&risk274.includes("snapshot")&&checkpoint274.includes("v27.4.0")&&audit274.includes("Quality gate"),"v27.4 governance must document the PRF site, preserved source and release audit");
-    assert.ok(readme.includes("v27.4.3")&&changelog.includes("## [27.4.3]")&&architecture.includes("v27.4.2"),"v27.4.3 current release must preserve and extend the v27.4 architecture history");
+    assert.ok(readme.includes("v27.5.0")&&changelog.includes("## [27.5.0]")&&architecture.includes("v27.4.2"),"v27.5.0 current release must preserve the v27.4 architecture history");
     const roadmap2741=read("docs/ROADMAP-V27.4.1.md"),acceptance2741=read("docs/ACCEPTANCE-V27.4.1.md"),risk2741=read("docs/RISK-REGISTER-V27.4.1.md"),checkpoint2741=read("docs/V27.4.1-CHECKPOINT.md"),audit2741=read("docs/FINAL-AUDIT-V27.4.1.md");
     assert.ok(roadmap2741.includes("27.4.1")&&roadmap2741.includes("desktop")&&acceptance2741.includes("Autoria")&&risk2741.includes("App shell")&&checkpoint2741.includes("v27.4.1")&&audit2741.includes("Quality gate"),"v27.4.1 governance must document the desktop quote redesign and release audit");
     const roadmap2742=read("docs/ROADMAP-V27.4.2.md"),acceptance2742=read("docs/ACCEPTANCE-V27.4.2.md"),risk2742=read("docs/RISK-REGISTER-V27.4.2.md"),checkpoint2742=read("docs/V27.4.2-CHECKPOINT.md"),audit2742=read("docs/FINAL-AUDIT-V27.4.2.md");
     assert.ok(roadmap2742.includes("P4")&&acceptance2742.includes("P1")&&acceptance2742.includes("P4")&&risk2742.includes("duas colunas")&&checkpoint2742.includes("PUBLISHED")&&audit2742.includes("P1–P4")&&audit2742.includes("36445529505")&&audit2742.includes("10980661883"),"v27.4.2 governance must record the priority change, responsive behavior and published audit");
     const roadmap2743=read("docs/ROADMAP-V27.4.3.md"),acceptance2743=read("docs/ACCEPTANCE-V27.4.3.md"),risk2743=read("docs/RISK-REGISTER-V27.4.3.md"),checkpoint2743=read("docs/V27.4.3-CHECKPOINT.md"),audit2743=read("docs/FINAL-AUDIT-V27.4.3.md");
     assert.ok(roadmap2743.includes("27.4.3")&&roadmap2743.includes("33 sessões")&&acceptance2743.includes("PRFADM33")&&acceptance2743.includes("Plataforma de Questões")&&risk2743.includes("Notion")&&checkpoint2743.includes("PUBLISHED")&&acceptance2743.includes("Pages Deploy aprovados")&&audit2743.includes("PRFADM01–33")&&audit2743.includes("36460170138"),"v27.4.3 must record the 33-session PRF correction and successful publication");
+    const roadmap275=read("docs/ROADMAP-V27.5.0.md"),acceptance275=read("docs/ACCEPTANCE-V27.5.0.md"),risk275=read("docs/RISK-REGISTER-V27.5.0.md"),checkpoint275=read("docs/V27.5-CHECKPOINT.md");
+    assert.ok(roadmap275.includes("27.5.0")&&roadmap275.includes("IMPLEMENTATION")&&acceptance275.includes("bloqueio editorial")&&risk275.includes("teto aprovado")&&risk275.includes("Aguarda deploy")&&checkpoint275.includes("LOCAL_VALIDATED")&&checkpoint275.includes("147.360/147.456"),"v27.5 governance must define scope, acceptance, risks and local validation before publishing");
   }
 
   pass("release documentation coherence");

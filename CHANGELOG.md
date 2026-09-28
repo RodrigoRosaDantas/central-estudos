@@ -1,5 +1,16 @@
 # CHANGELOG — Central de Estudos
 
+## [27.5.0] - 2026-09-28
+
+### Added
+- Fechamento do dia na grade semanal para separar previsto, execução registrada na origem, bloqueio editorial e retomada.
+- Atalho para a origem/frescor do estado publicado em Evolução e para o Notion do PRF.
+
+### Preserved
+- Dias, projetos e ordem da grade; retomada do mesmo PRFADMxx no próximo slot previsto.
+- Execução individual segue registrada na fonte do projeto; horários de publicação não são tratados como estudo.
+- Nenhum backend, armazenamento paralelo de execução ou write em projeto-filho.
+
 ## [27.4.3] - 2026-09-28
 
 ### Fixed
