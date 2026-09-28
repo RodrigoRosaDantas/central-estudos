@@ -32,7 +32,7 @@ ${i?'<span class="last-chip">Último acesso</span>':""}<span class="project-stat
 <p class="project-phase">${escapeHtml(t.phase)}</p>
 <div class="project-observability">${projectObservabilityMarkup(t)}</div>
 <div class="project-actions">
-<a class="project-link" href="${escapeHtml(t.url)}">${t.destinationType==="notion"?"Abrir projeto no Notion →":"Abrir projeto →"}</a>
+<a class="project-link" href="${escapeHtml(t.url)}">${t.destinationType==="notion"?"Abrir no Notion →":"Abrir projeto →"}</a>
 <button class="focus-toggle" type="button" ${n?"disabled":""} aria-label="${escapeHtml(n?`${t.name} é o foco atual`:`Definir ${t.name} como foco`)}">
 ${n?"★ Foco atual":"☆ Definir foco"}</button>
 </div>

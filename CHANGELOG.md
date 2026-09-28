@@ -13,6 +13,9 @@
 - A plataforma e os projetos abrem em seus próprios sites; a Central não escreve nos destinos.
 - Gate de payload passa a medir todos os assets do app shell e também o tamanho comprimido.
 
+### Fixed
+- Rótulo do acesso ao Notion compactado após QA visual encontrar a seta quebrando sozinha ao lado do botão de foco.
+
 ### Verified
 - `node tests/quality.mjs` local passou; GitHub Actions e a conferência do site publicado serão registradas após a publicação.
 - Auditoria completa em `docs/FINAL-AUDIT-V27.1.0.md`.

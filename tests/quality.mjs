@@ -915,7 +915,8 @@ function testV271ProjectAndToolDirectory(registry) {
   assert.ok(grid.includes('data-project-id="prf-adm"') && grid.includes(prf.url), "PRF project must appear in the no-JavaScript project catalogue");
   assert.ok(app.includes('function monitoredProjects(){return activeProjects().filter(e=>e.destinationType!=="notion")}'), "only dashboard projects may be technically monitored");
   assert.ok(app.includes("A Central não lê o conteúdo nem mede execução."), "PRF card must state the Central does not read or measure the Notion page");
-  assert.ok(app.includes('t.destinationType==="notion"?"Abrir projeto no Notion →":"Abrir projeto →"'), "project cards must identify project destinations");
+  assert.ok(app.includes('t.destinationType==="notion"?"Abrir no Notion →":"Abrir projeto →"'), "project cards must identify project destinations");
+  assert.ok(html.includes("Abrir no Notion →"), "Notion CTA must stay compact enough to avoid a stranded arrow beside the focus button");
 
   assert.ok(toolsStart >= 0 && toolsEnd > toolsStart, "separate study-tools area must exist");
   const tools = html.slice(toolsStart, toolsEnd);
