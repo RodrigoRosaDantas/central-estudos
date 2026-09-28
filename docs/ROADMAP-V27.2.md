@@ -4,7 +4,7 @@
 **Stage:** PUBLISHED — v27.2.1; QA desktop concluído e a inspeção visual corrigiu o selo antigo do painel Hoje. QA móvel continua indisponível nesta sessão.  
 **Baseline:** `main` em `1e1a04b64d0c47d1c3e8f546f54aa99a97b4df32`.  
 **Feature commit:** `36642236d7f1f74135d2df2680de2e9011b58756` — Quality gate + Pages Deploy workflow `36369665244`.  
-**Patch:** v27.2.1 corrige o selo Hoje. Commit e workflow de patch a registrar após validação.
+**Patch:** v27.2.1 — commit `ce5288686fc8d8d60e504455721653ef5cb6a260`; Quality gate + Pages Deploy workflow `36369866365` — SUCCESS; artifact `10948796852` (`sha256:c7acdea6599e50d905f3d735c3e9da7a9d3222a4f4d2589d6fbc16e2532debf3`).
 
 ## Objetivo
 
@@ -17,7 +17,7 @@ Dar à frase diária uma voz consistente com o foco do usuário em estudo e disc
 3. Mostrar na interface um rótulo temático, a autoria e um link individual para cada origem.
 4. Preservar texto, autoria e fonte estáticos no fallback sem JavaScript.
 5. Manter o relógio, a saudação, a segurança de links e o modo PWA; não adicionar requisições de rede.
-6. Atualizar versões do runtime, registry e cache do app shell para 27.2.0.
+6. Atualizar versões do runtime, registry e cache do app shell para 27.2.0; o patch publicado fica em 27.2.1.
 
 ## Proveniência
 

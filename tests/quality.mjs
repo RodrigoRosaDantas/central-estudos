@@ -1069,8 +1069,9 @@ function testReleaseDocumentationCoherence(registry) {
     const roadmap271=read("docs/ROADMAP-V27.1.md"),acceptance271=read("docs/ACCEPTANCE-V27.1.md"),audit271=read("docs/FINAL-AUDIT-V27.1.1.md");
     assert.ok(roadmap271.includes("Stage:** PUBLISHED")&&acceptance271.includes("v27.1.1")&&acceptance271.includes("[x] GitHub Actions Quality gate")&&acceptance271.includes("[ ] Inspeção visual móvel"),"v27.1 release governance must close publication while preserving the mobile QA limit");
     assert.ok(audit271.includes("864fb0410a845cacef53794a7061d2c6c7dd6182")&&audit271.includes("36368493310")&&audit271.includes("10948247167")&&audit271.includes("a35952ca77442ac02a9d5461a882164f872ad4ea41863cfcf2e7356e7d940eff")&&audit271.includes("144.642 bytes"),"v27.1.1 final audit must bind its commit, successful workflow, Pages artifact and shell measurements");
-    const roadmap272=read("docs/ROADMAP-V27.2.md"),acceptance272=read("docs/ACCEPTANCE-V27.2.md");
+    const roadmap272=read("docs/ROADMAP-V27.2.md"),acceptance272=read("docs/ACCEPTANCE-V27.2.md"),audit272=read("docs/FINAL-AUDIT-V27.2.1.md");
     assert.ok(roadmap272.includes("27.2.0")&&roadmap272.includes("Major Cadar")&&acceptance272.includes("Major Cadar")&&acceptance272.includes("Brasília"),"v27.2 quote release must document scope and daily-selection acceptance");
+    assert.ok(audit272.includes("ce5288686fc8d8d60e504455721653ef5cb6a260")&&audit272.includes("36369866365")&&audit272.includes("10948796852")&&audit272.includes("c7acdea6599e50d905f3d735c3e9da7a9d3222a4f4d2589d6fbc16e2532debf3")&&audit272.includes("144.728 bytes"),"v27.2 final audit must bind the hotfix commit, successful workflow, Pages artifact and measured shell");
     assert.ok(architecture.includes("Major Cadar")&&changelog.includes("## [27.2.0]"),"v27.2 quote experience must be described in architecture and changelog");
   }
 

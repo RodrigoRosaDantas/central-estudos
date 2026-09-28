@@ -6,7 +6,9 @@
 - Selo de versão do painel Hoje alinhado a v27.2.1; runtime, registry e cache PWA renovados para corrigir também clientes instalados.
 
 ### Verified
-- Patch e QA visual pós-deploy pendentes nesta etapa.
+- `node tests/quality.mjs` passou localmente após o hotfix.
+- Quality gate e Pages Deploy passaram no [workflow 36369866365](https://github.com/RodrigoRosaDantas/central-estudos/actions/runs/36369866365).
+- QA publicado em 1363×936 confirmou o selo Hoje alinhado a V27.2.1, frase/autoria/fonte visíveis e ausência de overflow; atualização PWA concluiu após ação do usuário.
 
 ## [27.2.0] - 2026-09-28
 

@@ -1,5 +1,7 @@
 # Aceitação v27.2.0 — frases do Major Cadar
 
+**Publicação final:** v27.2.1 · commit `ce5288686fc8d8d60e504455721653ef5cb6a260` · workflow `36369866365` — SUCCESS.
+
 - [x] Seis dias consecutivos exibem seis frases diferentes, em ordem estável pelo calendário de Brasília.
 - [x] Toda frase mostra “Major Cadar” e um link HTTPS para a origem associada àquela frase.
 - [x] O rótulo da área deixa explícito que é uma frase do Major Cadar relacionada à mentalidade de estudo.
