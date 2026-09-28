@@ -32,7 +32,7 @@ Busca, favoritos, ordenação, atalhos e ordem manual são camadas locais sobre 
 
 ## PWA e resiliência
 
-O service worker é limitado à origem e ao pathname da Central. O cache da release atual é `central-shell-v27.1.1` e contém somente o app shell da Central; os sites de projeto e a ferramenta não são incluídos.
+O service worker é limitado à origem e ao pathname da Central. O cache da release atual é `central-shell-v27.2.0` e contém somente o app shell da Central; os sites de projeto e a ferramenta não são incluídos.
 
 Estratégia:
 - navegações e assets conhecidos usam **network first**;
@@ -431,3 +431,8 @@ O shell `central-shell-v27.0.1` inclui `workspace-v27.css`; runtime e registro u
 ## Correção visual e cache PWA — v27.1.1
 
 QA visual encurtou o CTA do cartão PRF para evitar que a seta quebre sozinha junto do botão de foco. O cache do service worker e as URLs do runtime/registry também foram versionados como `27.1.1`, renovando o app shell instalado. O contrato do registry e a separação entre projetos e ferramentas não mudam.
+
+
+## Frases do Major Cadar — v27.2
+
+A frase diária usa seis trechos curtos atribuídos ao Major Cadar, selecionados uma vez por data de `America/Sao_Paulo`. Cada frase tem link direto para a página, perfil ou vídeo de origem. A seção identifica a autoria, apresenta o link na primeira dobra e mantém um fallback estático coerente quando JavaScript não está disponível. A renderização não adiciona chamadas externas; o usuário abre a fonte somente ao ativar o link. O relógio de Brasília e a saudação continuam independentes da rotação das frases.

@@ -797,6 +797,23 @@ function testV21PresenceRuntime() {
   pass("Brasília seconds and attributed daily motivation runtime behavior");
 }
 
+function testV272MajorCadarQuotes() {
+  const {context}=loadAppForTests(),nodes={greeting:{},"brasilia-time":{},"brasilia-date":{},"daily-motivation":{},"daily-motivation-author":{},"daily-motivation-source":{}};
+  context.document.getElementById=id=>nodes[id]||null;
+  const start=Date.parse("2026-09-27T03:15:40Z"),texts=new Set();
+  for(let day=0;day<6;day++){
+    class FixedDate extends Date { constructor(...args){super(...(args.length?args:[start+day*86400000]))} }
+    context.Date=FixedDate;
+    vm.runInContext("renderPresence()",context);
+    assert.ok(nodes["daily-motivation"].textContent,"each Brasília day must render a quote");
+    assert.equal(nodes["daily-motivation-author"].textContent,"Major Cadar","every displayed phrase must keep Major Cadar attribution");
+    assert.ok(["https://www.instagram.com/caveiracadar09/","https://projetocaopastor.com.br/curso/programa-de-protecao","https://www.youtube.com/watch?v=YIUoDC1PHbE"].includes(nodes["daily-motivation-source"].href),"each quote must link to one of its verified sources");
+    texts.add(nodes["daily-motivation"].textContent);
+  }
+  assert.equal(texts.size,6,"the six-day rotation must expose six distinct Cadar phrases");
+  pass("v27.2.0 Major Cadar quote rotation, attribution and source links");
+}
+
 function testV21PresenceExperience() {
   const html=read("index.html"),app=read("js/app.js"),css=read("css/pro-v11.css"),roadmap=read("docs/ROADMAP-V21.md"),acceptance=read("docs/ACCEPTANCE-V21.md");
   assert.ok(html.indexOf('id="daily-motivation"')<html.indexOf('<nav class="pro-nav"'),"motivation must appear at the start of the page");
@@ -867,7 +884,7 @@ function testV27DailySchedule(registry) {
   const start=html.indexOf('<section id="agenda-semanal"'),end=html.indexOf("</section>",start);
   assert.ok(start>=0&&end>start,"weekly schedule must remain a section on the page");
   const schedule=html.slice(start,end);
-  assert.equal(registry.central.version,"27.1.1","registry must identify v27.1.1");
+  assert.equal(registry.central.version,"27.2.0","registry must identify v27.2.0");
   assert.equal(registry.central.defaultProject,"tcego","study priorities must not change the user's central focus");
   assert.ok(html.includes('href="#agenda-semanal">Cronograma</a>')&&router.includes('"agenda-semanal":"today"'),"schedule must have an accessible shortcut and route back to Hoje");
   const priorityStrip=schedule.slice(schedule.indexOf('<div class="weekly-priority-strip"'),schedule.indexOf("</div>",schedule.indexOf('<div class="weekly-priority-strip"')));
@@ -887,11 +904,11 @@ function testV27DailySchedule(registry) {
   assert.ok(schedule.includes("não registra presença")&&schedule.includes("não estima avanço")&&schedule.includes("não muda o foco"),"weekly schedule must not claim study progress or change focus");
   const mobileCss=css.slice(css.indexOf("@media(max-width:719px)"));
   assert.ok(html.includes("./css/workspace-v27.css")&&html.includes("weekly-schedule-v27")&&mobileCss.includes(".schedule-day-grid{grid-template-columns:1fr")&&mobileCss.includes(".schedule-day-card{grid-template-columns:minmax(82px,.34fr) minmax(0,1fr)")&&mobileCss.includes(".schedule-day-heading>span{display:none}")&&mobileCss.includes(".schedule-day-rest-v27 .schedule-day-heading>span{display:inline-flex}")&&mobileCss.includes(".schedule-day-card .schedule-item-copy{display:block")&&mobileCss.includes("min-width:0"),"v27 mobile schedule must keep seven days while compacting each day row and avoiding redundant labels");
-  assert.ok(sw.includes("central-shell-v27.1.1")&&sw.includes("./css/workspace-v27.css"),"PWA shell cache must include the v27 stylesheet and current version");
-  assert.ok(html.includes('src="./js/app.js?v=27.1.1"')&&sw.includes("'./js/app.js?v=27.1.1'")&&sw.includes("'./config/projects.json?v=27.1.1'")&&app.includes("./config/projects.json?v=27.1.1"),"v27.1.1 must version app and registry cache URLs");
-  for(const source of ["kinginstitute.stanford.edu","nelsonmandela.org","malala.org/news-and-voices","gutenberg.org/files/46389"])assert.ok(app.includes(source),`daily quote source missing: ${source}`);
-  assert.ok(html.includes('id="daily-motivation-author"')&&html.includes('id="daily-motivation-source"')&&app.includes('second:"2-digit"')&&app.includes("setInterval(e,1e3)"),"daily quote must show authors/source and Brasília clock seconds");
-  pass("v27.1.1 day-by-day schedule, visible PRF track, mobile layout and v26 experience");
+  assert.ok(sw.includes("central-shell-v27.2.0")&&sw.includes("./css/workspace-v27.css"),"PWA shell cache must include the v27 stylesheet and current version");
+  assert.ok(html.includes('src="./js/app.js?v=27.2.0"')&&sw.includes("'./js/app.js?v=27.2.0'")&&sw.includes("'./config/projects.json?v=27.2.0'")&&app.includes("./config/projects.json?v=27.2.0"),"v27.2.0 must version app and registry cache URLs");
+  for(const source of ["instagram.com/caveiracadar09","projetocaopastor.com.br/curso/programa-de-protecao","youtube.com/watch?v=YIUoDC1PHbE"])assert.ok(app.includes(source),`Major Cadar quote source missing: ${source}`);
+  assert.ok(html.includes('id="daily-motivation-author"')&&html.includes('id="daily-motivation-source"')&&html.includes("Mentalidade de estudo · Major Cadar")&&html.includes("Seja forte ou seja vencido.")&&app.includes('author:"Major Cadar"')&&app.includes('second:"2-digit"')&&app.includes("setInterval(e,1e3)"),"Major Cadar quote, attribution/source and Brasília clock seconds must remain visible");
+  pass("v27.2.0 daily schedule, visible PRF track, Major Cadar quotes and v26 experience");
 }
 
 function testV271ProjectAndToolDirectory(registry) {
@@ -904,7 +921,7 @@ function testV271ProjectAndToolDirectory(registry) {
   const toolsStart = html.indexOf('<div class="study-tools"');
   const toolsEnd = html.indexOf("</div></section><section id=\"workspace\"", toolsStart);
 
-  assert.equal(registry.central.version, "27.1.1", "catalog release must be v27.1.1");
+  assert.equal(registry.central.version, "27.2.0", "catalog release must be v27.2.0");
   assert.equal(registry.central.defaultProject, "tcego", "new access cards must not change the default Central focus");
   assert.ok(prf && prf.status === "active" && prf.priority === "normal", "PRF must be an active project without a numbered priority");
   assert.equal(prf.destinationType, "notion", "PRF must open as a Notion project");
@@ -926,7 +943,7 @@ function testV271ProjectAndToolDirectory(registry) {
   assert.ok(tools.includes("fora da contagem") && tools.includes("Ferramenta"), "tool card must explain its separate role");
   assert.ok(html.includes("4 de 4 projetos") && html.includes("4 projetos · 1 ferramenta de estudo"), "static project and tool counts must match the catalog");
 
-  pass("v27.1.1 PRF project destination, no-telemetry rule and separate question-tool card");
+  pass("v27.2.0 preserves the PRF destination, no-telemetry rule and separate question-tool card");
 }
 
 function testReleaseDocumentationCoherence(registry) {
@@ -1051,6 +1068,9 @@ function testReleaseDocumentationCoherence(registry) {
     const roadmap271=read("docs/ROADMAP-V27.1.md"),acceptance271=read("docs/ACCEPTANCE-V27.1.md"),audit271=read("docs/FINAL-AUDIT-V27.1.1.md");
     assert.ok(roadmap271.includes("Stage:** PUBLISHED")&&acceptance271.includes("v27.1.1")&&acceptance271.includes("[x] GitHub Actions Quality gate")&&acceptance271.includes("[ ] Inspeção visual móvel"),"v27.1 release governance must close publication while preserving the mobile QA limit");
     assert.ok(audit271.includes("864fb0410a845cacef53794a7061d2c6c7dd6182")&&audit271.includes("36368493310")&&audit271.includes("10948247167")&&audit271.includes("a35952ca77442ac02a9d5461a882164f872ad4ea41863cfcf2e7356e7d940eff")&&audit271.includes("144.642 bytes"),"v27.1.1 final audit must bind its commit, successful workflow, Pages artifact and shell measurements");
+    const roadmap272=read("docs/ROADMAP-V27.2.md"),acceptance272=read("docs/ACCEPTANCE-V27.2.md");
+    assert.ok(roadmap272.includes("27.2.0")&&roadmap272.includes("Major Cadar")&&acceptance272.includes("Major Cadar")&&acceptance272.includes("Brasília"),"v27.2 quote release must document scope and daily-selection acceptance");
+    assert.ok(architecture.includes("Major Cadar")&&changelog.includes("## [27.2.0]"),"v27.2 quote experience must be described in architecture and changelog");
   }
 
   pass("release documentation coherence");
@@ -1141,6 +1161,7 @@ testV20UxPolish();
 testV20MobileHomeSimplification();
 testV20EvolutionRefreshAll();
 testV21PresenceRuntime();
+testV272MajorCadarQuotes();
 testV21PresenceExperience();
 testV22CommandCenter();
 testV23TodayMentor();

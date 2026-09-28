@@ -1,5 +1,6 @@
 .daily-quote-v26{max-width:58ch;margin:12px 0 0;padding:9px 13px;border-left:3px solid #a78bfa;background:linear-gradient(90deg,rgba(167,139,250,.09),transparent)}
-.daily-quote-v26 blockquote{margin:0;color:var(--text);font-size:clamp(.9rem,2vw,1.08rem);font-weight:600;line-height:1.45}
+.daily-quote-v26 blockquote{margin:0;color:var(--text);font-size:clamp(.9rem,2vw,1.08rem);font-weight:650;line-height:1.45}
+.daily-quote-heading{margin:0 0 6px;color:#a697ea;font-size:.58rem;font-weight:900;letter-spacing:.12em;line-height:1.35;text-transform:uppercase;overflow-wrap:anywhere}
 .daily-quote-v26 figcaption{display:flex;flex-wrap:wrap;gap:4px;align-items:baseline;margin-top:6px;color:var(--muted);font-size:.7rem;line-height:1.4}
 .daily-quote-v26 cite{font-style:normal;font-weight:700;color:#c8bcff}
 .daily-quote-v26 a{color:var(--muted);text-decoration:underline;text-decoration-color:rgba(152,163,184,.4);text-underline-offset:2px}

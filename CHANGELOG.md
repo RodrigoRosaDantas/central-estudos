@@ -1,5 +1,15 @@
 # CHANGELOG — Central de Estudos
 
+## [27.2.0] - 2026-09-28
+
+### Changed
+- Frase diária troca citações genéricas por seis frases curtas do Major Cadar, cada uma ligada à sua origem.
+- Rótulo da seção destaca a mentalidade de estudo; a escolha diária continua estável pelo calendário de Brasília.
+- HTML estático mantém uma frase, autor e fonte coerentes sem JavaScript; sem requisição externa nova.
+
+### Verified
+- Quality gate local e publicação pendentes nesta etapa.
+
 ## [27.1.1] - 2026-09-28
 
 ### Fixed
