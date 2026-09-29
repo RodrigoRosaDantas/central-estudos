@@ -6,7 +6,13 @@ Camada de entrada para os projetos de estudo TCE-GO, SEEDF, TJDFT e PRF Administ
 
 A Central não altera nem replica o conteúdo dos projetos. O registro é preenchido pelo usuário, fica neste navegador e pode sincronizar entre aparelhos na mesma conta Supabase. Não escreve nem sincroniza horas com o Notion ou com os projetos.
 
-## Estado atual — v28.0.3
+## Estado atual — v28.1.0
+
+A v28.1.0 liga a Central Operacional à **Jornada / Painel Estratégico** sem fundir os produtos. O registry público passa a declarar P1 SEEDF, P2 TJDFT, P3 TCE-GO e P4 PRF Administrativo com códigos, ordem e links próprios; a Central continua com TCE-GO como foco padrão e a grade semanal permanece intacta. A Jornada lê esse mesmo registry e os contratos `central-status.json` publicados por cada projeto. Ela mostra apenas fase, unidade/ação publicada, procedência e data do estado; não lê o Notion, não replica números de desempenho e continua funcional se o catálogo ou algum contrato estiver indisponível. Acesso direto à Jornada fica no cabeçalho.
+
+A publicação do GitHub Pages continua restrita a `main`; o gate de qualidade agora também roda em pull requests sem publicar a branch de trabalho.
+
+A v28.0.3 aprimora a página `/mentor/` com um panorama visual dos quatro projetos: SEEDF (P1), TJDFT (P2), TCE-GO (P3) e PRF Administrativo (P4). O painel reúne a próxima etapa e a situação da fonte, exibe questões/precisão somente quando publicadas e mantém o tempo de 7 dias identificado como registro local da Central. As abas agora seguem o padrão acessível de teclado. TCE-GO continua como foco padrão; o Mentor segue somente leitura e sem OpenAI API paga.
 
 A v28.0.3 aprimora a página `/mentor/` com um panorama visual dos quatro projetos: SEEDF (P1), TJDFT (P2), TCE-GO (P3) e PRF Administrativo (P4). O painel reúne a próxima etapa e a situação da fonte, exibe questões/precisão somente quando publicadas e mantém o tempo de 7 dias identificado como registro local da Central. As abas agora seguem o padrão acessível de teclado. TCE-GO continua como foco padrão; o Mentor segue somente leitura e sem OpenAI API paga.
 

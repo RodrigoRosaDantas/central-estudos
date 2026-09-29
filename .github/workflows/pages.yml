@@ -4,12 +4,13 @@ on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
   workflow_dispatch:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 concurrency:
   group: "pages"
@@ -32,9 +33,14 @@ jobs:
         run: node tests/quality.mjs
 
   deploy:
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
     name: Deploy
     needs:
       - quality
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}

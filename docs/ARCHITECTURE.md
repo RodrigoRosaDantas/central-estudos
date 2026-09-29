@@ -535,3 +535,11 @@ A Home preserva Radar/estado técnico e apenas direciona ao Mentor. O comando r�
 Na aba “Agora”, um painel resume SEEDF (P1), TJDFT (P2), TCE-GO (P3) e PRF Administrativo (P4) na ordem de prioridade. Cada cartão expõe a situação da fonte, execução prevista/confirmada, próxima etapa publicada e questões/precisão quando existem. Um indicador distingue o tempo dos últimos sete dias registrado localmente na Central dos dados publicados pelos projetos. Ausência de contrato, amostra ou progresso permanece explicitamente desconhecida.
 
 As quatro abas usam `tablist`/`tab`/`tabpanel`, seleção única e navegação por setas, Home e End. O status de sincronização explica que “Atualizar dados” relê contratos; sincronizações de origem continuam nos projetos. O layout reflowa para duas colunas em telas menores e uma coluna em telas muito estreitas. O Mentor continua read-only e não altera o foco padrão TCE-GO nem os projetos-filhos.
+
+## Jornada e registry compartilhado — v28.1.0
+
+`config/projects.json` é o catálogo de navegação das duas centrais. Para P1–P4, ele declara código, nome curto, ordem, site e endpoint de estado; a ordem desse catálogo não substitui a prioridade operacional. TCE-GO continua como foco padrão da Central e a grade semanal é outra configuração, preservada em `config/study-schedule-v1.json`.
+
+O Painel Estratégico, servido pelo repositório independente `plano-de-transicao`, consulta o catálogo público da Central e, em seguida, faz somente `GET` nos `statusUrl` declarados para P1–P4. Ele valida `schemaVersion: 1` e o `projectId`, mostra fase/ação/proveniência e identifica publicação antiga ou indisponível. O widget não lê o objeto opcional `study`; assim ele não transforma o progresso privado do TCE-GO em dado público nem duplica indicadores detalhados já expostos pelos outros projetos.
+
+A Central aponta para a Jornada por link. Não há chamada da Central ao Painel Estratégico, do Painel ao Notion dos projetos, nem dependência operacional entre as duas páginas. Se o catálogo ou um endpoint falhar, os módulos existentes e os links diretos continuam disponíveis.
