@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - feature/mentor-adaptativo-v27-8
   workflow_dispatch:
 
 permissions:
@@ -32,6 +33,7 @@ jobs:
         run: node tests/quality.mjs
 
   deploy:
+    if: github.ref == 'refs/heads/main'
     name: Deploy
     needs:
       - quality
