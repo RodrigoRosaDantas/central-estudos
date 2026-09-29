@@ -1428,8 +1428,9 @@ function testReleaseDocumentationCoherence(registry) {
     assert.ok(readme.includes("aprimora a página `/mentor/`")&&changelog.includes("## [28.0.3]")&&architecture.includes("Panorama visual P1–P4 — v28.0.3"),"current Mentor redesign must be reflected in README, changelog and architecture");
   }
   if (version === "28.1.0") {
-    const roadmap281=read("docs/ROADMAP-V28.1.0.md"),checkpoint281=read("docs/V28.1.0-CHECKPOINT.md"),acceptance281=read("docs/ACCEPTANCE-V28.1.0.md"),risks281=read("docs/RISK-REGISTER-V28.1.0.md");
-    assert.ok(roadmap281.includes("P1–P4")&&roadmap281.includes("READY_FOR_RELEASE")&&checkpoint281.includes("ecosystem-integration-v1")&&acceptance281.includes("O Painel lê um único catálogo público")&&risks281.includes("dois dias de calendário atrás em Brasília"),"v28.1.0 governance must cover P1–P4, the shared registry, public contracts, freshness and release risks");
+    const roadmap281=read("docs/ROADMAP-V28.1.0.md"),checkpoint281=read("docs/V28.1.0-CHECKPOINT.md"),acceptance281=read("docs/ACCEPTANCE-V28.1.0.md"),risks281=read("docs/RISK-REGISTER-V28.1.0.md"),audit281=read("docs/FINAL-AUDIT-V28.1.0.md");
+    assert.ok(roadmap281.includes("P1–P4")&&roadmap281.includes("PUBLISHED")&&checkpoint281.includes("ecosystem-integration-v1")&&checkpoint281.includes("PUBLISHED")&&acceptance281.includes("[x] CI do PR")&&acceptance281.includes("O Painel lê um único catálogo público")&&risks281.includes("dois dias de calendário atrás em Brasília"),"v28.1.0 governance must cover P1–P4, the shared registry, public contracts, freshness and published release gates");
+    assert.ok(audit281.includes("P1 — SEEDF")&&audit281.includes("P2 — TJDFT")&&audit281.includes("P3 — TCE-GO")&&audit281.includes("P4 — PRF Administrativo")&&audit281.includes("36620886883")&&audit281.includes("5f3a55a2644d0a381f1fe67c2c63bf26a26aff43"),"v28.1.0 final audit must record all live projects, their deploy and the title-only follow-up state");
     assert.ok(readme.includes("v28.1.0")&&changelog.includes("## [28.1.0]")&&architecture.includes("Jornada e registry compartilhado — v28.1.0"),"current integration must be reflected in README, changelog and architecture");
   }
 
