@@ -1,5 +1,19 @@
 # CHANGELOG — Central de Estudos
 
+## [27.8.0] - 2026-09-29
+
+### Adicionado
+- Mentor adaptativo local e explicável, sem OpenAI API e sem custo por tokens.
+- Recomendação do próximo projeto a partir da grade vigente, tempo realmente registrado, recência e lacunas de registro.
+- Indicador de confiança da recomendação e quadro de equilíbrio dos últimos 7 dias.
+- Fechamento do dia dinâmico com previsto, registrado, pendente no registro e sugestão do Mentor.
+
+### Segurança semântica
+- O Mentor nunca altera o foco escolhido pelo usuário.
+- Ausência de registro é descrita como ausência de registro, não como falta ou estudo não realizado.
+- Acertos, erros, domínio e matéria fraca não são inferidos quando a Central não possui esses dados.
+- A camada adaptativa permanece fora do app shell offline para preservar o orçamento aprovado.
+
 ## [27.7.3] - 2026-09-29
 
 ### Corrigido
