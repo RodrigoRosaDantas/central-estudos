@@ -10,7 +10,7 @@ Ela lista ambientes, destaca foco, recorda último acesso, oferece organização
 
 ## Registry
 
-A fonte dinâmica de verdade é `config/projects.json` (`schemaVersion: 3`). O lifecycle é explícito em `status`: `active`, `archived` ou `future`. Projetos de site ativo/arquivado possuem URL e repositório HTTPS; destinos exclusivamente Notion podem existir sem repositório. PRF Administrativo agora aponta para o GitHub Pages e conserva `notionUrl` como acesso à fonte de verdade. Seu painel é um snapshot e não publica `statusUrl`; a Central só observa disponibilidade do site e metadados públicos do GitHub.
+A fonte dinâmica de verdade é `config/projects.json` (`schemaVersion: 3`). O lifecycle é explícito em `status`: `active`, `archived` ou `future`. Projetos de site ativo/arquivado possuem URL e repositório HTTPS; destinos exclusivamente Notion podem existir sem repositório. PRF Administrativo aponta para o GitHub Pages, conserva `notionUrl` como acesso à fonte de verdade e publica `statusUrl` sanitizado pelo próprio workflow de sincronização. A Central consome esse contrato read-only sem receber token do Notion.
 
 ## Fallback e progressive enhancement
 
@@ -36,7 +36,7 @@ Busca, favoritos, ordenação, atalhos e ordem manual são camadas locais sobre 
 
 ## PWA e resiliência
 
-O service worker é limitado à origem e ao pathname da Central. O cache `central-shell-v27.7.0-guided-log-20260928` mantém a grade, o formulário e os registros existentes; o catálogo e os arquivos do seletor usam o cache de runtime `central-study-runtime-v27.7.0`. Os assets guiados carregam em rede na primeira visita e passam a ter fallback offline após uma resposta bem-sucedida. Sites de projeto, ferramentas e serviços externos não são incluídos. A interface do Radar/Mentor e controles avançados do catálogo não são pré-cacheados, para respeitar o teto autorizado do app shell.
+O service worker é limitado à origem e ao pathname da Central. Na v28, o cache `central-shell-v28.0.0-mentor-page-20260929` inclui a Home e a página filha `/mentor/`, junto com seu CSS, motor e cronograma canônico. O catálogo guiado continua em cache de runtime. Sites de projeto, ferramentas e serviços externos não são incluídos. A navegação offline para `/mentor/` usa `mentor/index.html` como fallback próprio, em vez de cair na Home.
 
 Estratégia:
 - navegações e assets conhecidos usam **network first**;
@@ -51,7 +51,7 @@ Abrir a shell offline não afirma disponibilidade offline dos projetos.
 
 ## Qualidade e deploy
 
-`tests/quality.mjs` é uma suite local, determinística e sem dependências externas. A v27.6 preserva os limites existentes de 147.456 bytes bruto e 49.152 bytes gzip, sem novo aumento. O workflow Pages executa `quality` antes de `deploy`, com dependência explícita `deploy needs: quality`. O gate cobre registry, referências, fallback, manifest, service worker, segurança básica, funções críticas, contratos de diagnóstico, acessibilidade estrutural, mobile e orçamento do app shell. O orçamento lê os mesmos arquivos do `APP_SHELL` e limita tanto o tamanho bruto quanto a soma gzip por arquivo.
+`tests/quality.mjs` é uma suite local, determinística e sem dependências externas. A v28 usa o teto explicitamente autorizado de **262.144 bytes bruto (256 KiB) e 81.920 bytes gzip (80 KiB)** para comportar o Mentor dedicado no PWA. O workflow Pages executa `quality` antes de `deploy`, com dependência explícita `deploy needs: quality`. O gate cobre registry, referências, fallback, manifest, service worker, segurança básica, funções críticas, contratos de diagnóstico, acessibilidade estrutural, mobile e orçamento do app shell.
 
 ## Linha do tempo e diagnóstico
 
@@ -514,3 +514,18 @@ Fluxos:
 - **TCE-GO:** contrato público continua sem progresso privado. Quando a Central está autenticada no Supabase, ela lê `tce_progress_state` sob RLS `owner_id = auth.uid()` e transforma o resultado em sinal somente em memória no navegador.
 
 A recomendação do Mentor pode considerar revisão vencida, precisão publicada, erros ativos, próxima unidade, recência e grade do dia. Ela não altera o foco e não cria escrita nos projetos-filhos. O TCE não perde a separação entre calendário público e execução privada.
+
+
+## Mentor dedicado — v28
+
+A v28 separa a orientação adaptativa da Home. A página `mentor/index.html` é uma filha da Central, na mesma origem, e por isso compartilha apenas o estado local que já pertence à Central.
+
+Fontes autorizadas:
+- `config/projects.json` e `config/study-schedule-v1.json`;
+- blocos confirmados em `central-estudos:study-log-v1`;
+- contratos read-only `central-status.json` de SEEDF, TJDFT e PRF Administrativo;
+- progresso privado do TCE-GO via Supabase somente quando existe sessão válida, com RLS por `owner_id`.
+
+A página não escreve em nenhum projeto-filho. Seu motor é determinístico e explica os sinais usados. Revisões vencidas, precisão e erros só entram quando publicados por uma fonte validada. Campo ausente permanece desconhecido. O foco humano continua separado da recomendação. Não há chamada à OpenAI API.
+
+A Home preserva Radar/estado técnico e apenas direciona ao Mentor. O comando rápido `Ir para Mentor` e o sexto item da navegação principal abrem a página filha, evitando duplicação do painel completo dentro da Home.
