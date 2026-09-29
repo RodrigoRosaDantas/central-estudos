@@ -1,5 +1,25 @@
 # CHANGELOG — Central de Estudos
 
+## [28.0.0] - 2026-09-29
+
+### Mentor dedicado
+- Mentor sai do miolo da Home e passa a viver em `/mentor/` como página filha da Central.
+- Quatro áreas próprias: Agora, Projetos, Revisões & riscos e Como decide.
+- Recomendação explicada por sinais reais: grade, execução confirmada, revisões, precisão, erros ativos, recência e tempo registrado.
+- Leitura individual dos quatro projetos com proveniência e saúde dos dados.
+- TCE-GO privado continua condicionado à sessão Supabase e RLS do próprio usuário.
+- Ctrl/⌘+K e navegação principal passam a abrir o Mentor dedicado.
+
+### PWA e orçamento
+- Mentor, CSS, motor e cronograma canônico entram no app shell para uso como página própria também no PWA.
+- Navegação offline para `/mentor/` cai no cache do Mentor, não na Home.
+- App shell autorizado para até 256 KiB bruto / 80 KiB gzip.
+
+### Preservado
+- OpenAI API não é usada; custo por tokens permanece R$ 0.
+- Projetos continuam fontes de verdade; ausência de campo continua desconhecida, nunca zero.
+- Home mantém Radar e estado técnico sem duplicar o Mentor completo.
+
 ## [27.9.0] - 2026-09-29
 
 ### Adicionado
