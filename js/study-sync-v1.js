@@ -27,22 +27,18 @@ function renderStatus(message,type){
  status.dataset.type="info";
 }
 function mount(){
- const panel=document.createElement("section");panel.className="study-log-sync";panel.setAttribute("aria-label","Sincronização segura dos registros");
- const head=add(panel,"div","study-sync-heading");
- const copy=add(head,"div","");
- add(copy,"span","eyebrow","SINCRONIZAÇÃO");
- add(copy,"strong","study-sync-title","Seus registros");
- add(panel,"p","study-sync-status","");panel.lastChild.id="study-sync-status";panel.lastChild.setAttribute("role","status");panel.lastChild.setAttribute("aria-live","polite");
- const details=document.createElement("details");details.className="study-sync-details";
- const summary=add(details,"summary","","Conectar e sincronizar entre aparelhos");
- const form=document.createElement("form");form.id="study-sync-form";form.className="study-sync-form";
- const label=add(form,"label","study-sync-email-label","E-mail já cadastrado no Supabase");
+ const panel=document.createElement("section");panel.className="study-log-backup";panel.setAttribute("aria-label","Sincronização segura dos registros");
+ const status=add(panel,"p","study-log-privacy","");status.id="study-sync-status";status.setAttribute("role","status");status.setAttribute("aria-live","polite");
+ const details=document.createElement("details");details.className="study-log-manual";
+ add(details,"summary","study-log-subtitle","Sincronizar entre aparelhos");
+ const form=document.createElement("form");form.id="study-sync-form";form.className="study-log-form";
+ const label=add(form,"label","catalog-field study-log-field study-log-project-field","E-mail já cadastrado no Supabase");
  const input=document.createElement("input");input.id="study-sync-email";input.type="email";input.name="email";input.autocomplete="email";input.required=true;input.placeholder="voce@exemplo.com";label.append(input);
- const button=add(form,"button","command-primary study-sync-send","Enviar link de acesso");button.type="submit";
- const foot=add(form,"p","study-sync-footnote","O formulário não cria usuários. O link só é enviado para uma conta já cadastrada neste projeto Supabase.");
+ const button=add(form,"button","study-log-save command-primary","Enviar link de acesso");button.type="submit";
+ const foot=add(form,"p","study-log-privacy","Este formulário não cria usuários. O link vai para uma conta já cadastrada no Supabase.");
  form.append(button,foot);
  details.append(form);
- const signout=add(details,"button","study-sync-signout button button-quiet","Desconectar deste aparelho");signout.type="button";signout.id="study-sync-signout";signout.hidden=true;
+ const signout=add(details,"button","button button-ghost","Desconectar deste aparelho");signout.type="button";signout.id="study-sync-signout";signout.hidden=true;
  panel.append(details);
  planner.insertAdjacentElement("beforebegin",panel);
  form.addEventListener("submit",sendMagicLink);
@@ -169,9 +165,9 @@ async function syncNow(){
  try{
   const user=await ensureSession();if(!user)return;
   await deletePending(user);
-  const local=api.read(knownIds),remote=await fetchRemote(user),merged=api.merge(local,remote).slice(-MAX);
-  api.save(merged,true);
-  document.dispatchEvent(new Event("central:study-log-remote-updated"));
+  const local=api.read(knownIds),remote=await fetchRemote(user),localIds=new Set(local.map(entry=>entry.id)),hasNewRemote=remote.some(entry=>!localIds.has(entry.id)),merged=api.merge(local,remote).slice(-MAX);
+  api.save(merged);
+  if(hasNewRemote){window.location.reload();return}
   await pushLocal(user,merged);
   state.lastSyncedAt=new Date().toISOString();saveState();
   renderStatus("Sincronizado agora. Seus registros estão disponíveis neste aparelho e nos próximos em que entrar.");
@@ -192,10 +188,11 @@ function trackDeletes(event){
 function init(){
  mount();
  const arrived=handleAuthCallback();
- document.addEventListener("central:study-log-local-updated",scheduleSync);
+ const entryForm=$("study-log-form");if(entryForm)entryForm.addEventListener("submit",scheduleSync);
+ const importInput=$("study-log-import");if(importInput)importInput.addEventListener("change",scheduleSync);
  const recent=$("study-log-recent");if(recent)recent.addEventListener("click",trackDeletes,true);
  window.addEventListener("online",scheduleSync);
- window.addEventListener("storage",event=>{if(event.key===api.key){document.dispatchEvent(new Event("central:study-log-remote-updated"));scheduleSync()}});
+ window.addEventListener("storage",event=>{if(event.key===api.key)scheduleSync()});
  if(state.session||arrived){$("study-sync-signout").hidden=false;renderStatus(arrived?"Link confirmado. Sincronizando seus blocos…":undefined);syncNow()}
 }
 document.addEventListener("DOMContentLoaded",init);
