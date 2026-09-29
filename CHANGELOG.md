@@ -3,6 +3,7 @@
 ## [27.7.0] - 2026-09-28
 
 ### Interface refinada — 2026-09-29
+- Correção para celular e tablet: painel do foco e relógio voltam a empilhar depois da regra desktop; CSS recebe nova versão de cache.
 - Segunda revisão visual: painel Hoje mais compacto e cronograma em quadro equilibrado, com o dia atual destacado e o domingo preservado.
 - Página inicial reorganizada para destacar o foco do dia, o horário de Brasília e os três atalhos mais úteis.
 - Cartões do cronograma ficaram mais claros no celular e no desktop; dias, prioridades e blocos permaneceram intactos.

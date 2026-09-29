@@ -944,6 +944,14 @@ function testV27DailySchedule(registry) {
   pass("v27.7.0 preserves current-day marker, published changes and fixed P4 weekly schedule");
 }
 
+function testHomeResponsiveLayout() {
+  const home=read("css/home-v1.css");
+  const desktop=home.lastIndexOf(".presence-v21{grid-template-columns:minmax(0,1.4fr) minmax(285px,.6fr)");
+  const responsive=home.lastIndexOf("@media(max-width:979px){.presence-v21{grid-template-columns:1fr");
+  assert.ok(responsive>desktop&&home.slice(responsive).includes(".presence-clock{align-self:stretch;min-height:86px}"),"tablet and phone must stack the focus and clock after desktop layout rules");
+  pass("home focus and clock stack on narrow screens after desktop overrides");
+}
+
 function testStudyLog(registry) {
   const html = read("index.html"), sw = read("sw.js"), source = read("js/study-log-v1.js");
   assert.ok(html.includes('id="study-log-form"') && html.includes('id="study-log-confirmed"') && html.includes('id="study-log-hours"') && html.includes('id="study-log-minutes"'), "daily study log must collect an explicit confirmation and hours/minutes");
@@ -1349,6 +1357,7 @@ testV22CommandCenter();
 testV23TodayMentor();
 testV24ScreensAndViews(registry);
 testV27DailySchedule(registry);
+testHomeResponsiveLayout();
 testStudyLog(registry);
 testStudySync();
 testStudyPlanner(registry);

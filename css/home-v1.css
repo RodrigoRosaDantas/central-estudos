@@ -168,6 +168,7 @@
 #daily-closeout>summary{padding:0 12px}
 @media(min-width:980px){.schedule-day-grid{grid-template-columns:repeat(4,minmax(0,1fr));align-items:stretch}}
 @media(min-width:720px) and (max-width:979px){.schedule-day-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:979px){.presence-v21{grid-template-columns:1fr;align-items:start}.presence-clock{align-self:stretch;min-height:86px}}
 @media(max-width:719px){
   .shell{width:calc(100% - 22px)}
   .topbar{margin-bottom:12px}
