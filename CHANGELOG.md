@@ -1,5 +1,12 @@
 # CHANGELOG — Central de Estudos
 
+## [27.7.3] - 2026-09-29
+
+### Corrigido
+- As sessões P4 de segunda, quarta e sexta agora abrem diretamente o site próprio do PRF Administrativo.
+- O registro guiado continua usando o link de origem do projeto para os blocos P4.
+- Cache da Central atualizado para distribuir a mudança também às instalações PWA.
+
 ## [27.7.2] - 2026-09-29
 
 ### Corrigido

@@ -902,9 +902,9 @@ function testV27DailySchedule(registry) {
   const start=html.indexOf('<section id="agenda-semanal"'),end=html.indexOf("</section>",start);
   assert.ok(start>=0&&end>start,"weekly schedule must remain a section on the page");
   const schedule=html.slice(start,end);
-  assert.equal(registry.central.version,"27.7.2","registry must identify v27.7.2");
+  assert.equal(registry.central.version,"27.7.3","registry must identify v27.7.3");
   assert.ok(html.includes(`HOJE · V${registry.central.version}`),"Today panel version badge must match the current release");
-  assert.ok(html.includes('id="pro-now-focus-name">P4 PRF ADM</strong>')&&html.includes('id="pro-now-focus-link" class="command-primary" href="https://rodrigorosadantas.github.io/prf-administrativo-dashboard/"')&&html.includes('src="./js/operational-v13.js?v=27.7.2"')&&operational.includes('if(u==="tcego")')&&!operational.includes("r.currentUnit||r.nextAction"),"Today must use P4 PRF and omit TCE unit detail from the home overview");
+  assert.ok(html.includes('id="pro-now-focus-name">P4 PRF ADM</strong>')&&html.includes('id="pro-now-focus-link" class="command-primary" href="https://rodrigorosadantas.github.io/prf-administrativo-dashboard/"')&&html.includes('src="./js/operational-v13.js?v=27.7.3"')&&operational.includes('if(u==="tcego")')&&!operational.includes("r.currentUnit||r.nextAction"),"Today must use P4 PRF and omit TCE unit detail from the home overview");
   assert.equal(registry.central.defaultProject,"prf-adm","Today must default to the P4 PRF site");
   assert.ok(html.includes('href="#agenda-semanal">Cronograma</a>')&&router.includes('"agenda-semanal":"today"'),"schedule must have an accessible shortcut and route back to Hoje");
   const priorityStrip=schedule.slice(schedule.indexOf('<div class="weekly-priority-strip"'),schedule.indexOf("</div>",schedule.indexOf('<div class="weekly-priority-strip"')));
@@ -917,7 +917,7 @@ function testV27DailySchedule(registry) {
   const cards=Object.fromEntries(days.map(key=>[key,day(key)]));
   const weekdays=days.slice(0,5);
   for(const key of weekdays)assert.ok(cards[key].includes(">SEEDF</a>")&&cards[key].includes(">TJDFT</a>")&&cards[key].includes("Estudo"),`${key} must show SEEDF P1 and TJDFT P2 study`);
-  for(const key of ["monday","wednesday","friday"])assert.ok(cards[key].includes("PRF Administrativo")&&cards[key].includes("PRFADMxx")&&cards[key].includes('class="schedule-mark schedule-mark-track">P4</span>'),`${key} must show the PRF Administrative track as P4`);
+  for(const key of ["monday","wednesday","friday"])assert.ok(cards[key].includes("PRF Administrativo")&&cards[key].includes("PRFADMxx")&&cards[key].includes('href="https://rodrigorosadantas.github.io/prf-administrativo-dashboard/"')&&cards[key].includes('class="schedule-mark schedule-mark-track">P4</span>'),`${key} must show the PRF Administrative track as P4 with its own site link`);
   for(const key of ["tuesday","thursday"])assert.ok(cards[key].includes("TCE-GO")&&!cards[key].includes("PRF Administrativo"),`${key} must show TCE-GO without adding PRF`);
   assert.ok(cards.saturday.includes("SEEDF")&&cards.saturday.includes("TJDFT")&&cards.saturday.includes("Revisão")&&cards.saturday.includes("TCE-GO"),"Saturday must review SEEDF/TJDFT and retain TCE-GO");
   assert.ok(cards.sunday.includes("Descanso")&&cards.sunday.includes("D7/D20"),"Sunday must remain protected with only scheduled reviews");
@@ -931,9 +931,9 @@ function testV27DailySchedule(registry) {
   assert.ok(closeout.includes("Grade = previsão")&&closeout.includes("Notion, fonte da verdade")&&!closeout.includes("D008"),"closeout must distinguish planning from the current Notion study state and omit the unconfirmed TCE unit");
   const mobileCss=css.slice(css.indexOf("@media(max-width:719px)"));
   assert.ok(html.includes("./css/workspace-v27.css")&&html.includes("weekly-schedule-v27")&&mobileCss.includes(".schedule-day-grid{grid-template-columns:1fr")&&mobileCss.includes(".schedule-day-card{grid-template-columns:minmax(82px,.34fr) minmax(0,1fr)")&&mobileCss.includes(".schedule-day-heading>span{display:none}")&&mobileCss.includes(".schedule-day-rest-v27 .schedule-day-heading>span{display:inline-flex}")&&mobileCss.includes(".schedule-day-card .schedule-item-copy{display:block")&&mobileCss.includes("min-width:0"),"v27 mobile schedule must keep seven days while compacting each day row and avoiding redundant labels");
-  assert.ok(html.includes('src="./js/command-context-v1.js?v=27.7.2"')&&sw.includes("'./js/command-context-v1.js?v=27.7.2'"),"today marker and published-change summary must load as part of the app shell");
-  assert.ok(sw.includes("central-shell-v27.7.2")&&sw.includes("./css/workspace-v27.css"),"PWA shell cache must include the v27 stylesheet and current version");
-  assert.ok(html.includes('src="./js/app.js?v=27.7.2"')&&sw.includes("'./js/app.js?v=27.7.2'")&&sw.includes("'./config/projects.json?v=27.7.2'")&&app.includes("./config/projects.json?v=27.7.2"),"v27.7.2 must version app and registry cache URLs");
+  assert.ok(html.includes('src="./js/command-context-v1.js?v=27.7.3"')&&sw.includes("'./js/command-context-v1.js?v=27.7.3'"),"today marker and published-change summary must load as part of the app shell");
+  assert.ok(sw.includes("central-shell-v27.7.3")&&sw.includes("./css/workspace-v27.css"),"PWA shell cache must include the v27 stylesheet and current version");
+  assert.ok(html.includes('src="./js/app.js?v=27.7.3"')&&sw.includes("'./js/app.js?v=27.7.3'")&&sw.includes("'./config/projects.json?v=27.7.3'")&&app.includes("./config/projects.json?v=27.7.3"),"v27.7.3 must version app and registry cache URLs");
   assert.ok(html.includes("Mudanças desde a última conferência")&&html.includes("contratos validados neste aparelho")&&html.includes('id="published-changes-list"'),"published changes must be shown with their local/read-only provenance");
   assert.ok(css.includes(".schedule-day-card.is-today")&&css.includes('content:"HOJE"'),"the current weekday must have a visible marker");
   assert.ok(html.includes("PRF Administrativo")&&html.includes(">P4</span>")&&!schedule.includes('class="schedule-mark schedule-mark-track">PRF</span>'),"the weekly routine must label PRF as P4 and retain its project identity");
@@ -941,8 +941,8 @@ function testV27DailySchedule(registry) {
   assert.ok(html.includes('id="daily-motivation-author"')&&html.includes('id="daily-motivation-source"')&&html.includes("Frases do Major Cadar · muda a cada 5 min")&&html.includes('id="daily-motivation" class="daily-motivation" aria-live="polite" aria-atomic="true"')&&html.includes("Seja forte ou seja vencido.")&&app.includes('author:"Major Cadar"')&&app.includes('second:"2-digit"')&&app.includes("setInterval(e,1e3)"),"Major Cadar quote, accessible rotation label, attribution/source and Brasília clock seconds must remain visible");
   assert.ok(quoteCss.includes("border-left:4px solid #b69cff")&&quoteCss.includes("font-size:clamp(1rem,2.2vw,1.5rem)")&&quoteCss.includes("font-weight:800")&&quoteCss.includes("#a78bfa30"),"daily quote card must keep a readable, high-contrast visual treatment");
   assert.ok(quoteCss.includes("@media(min-width:900px)")&&quoteCss.includes("grid-template-columns:.8fr 1.2fr")&&quoteCss.includes("grid-area:1/2/4/3")&&quoteCss.includes("min-height:154px"),"desktop quote must use the open header space as a balanced featured panel");
-  assert.ok(html.includes('href="./css/workspace-v26.css?v=quote-desktop-20260928"')&&sw.includes("'./css/workspace-v26.css?v=quote-desktop-20260928'")&&sw.includes("central-shell-v27.7.2-guided-log-20260928"),"current PRF destination must refresh installed PWA clients");
-  pass("v27.7.2 keeps the fixed weekly schedule and removes unverified TCE details from Hoje");
+  assert.ok(html.includes('href="./css/workspace-v26.css?v=quote-desktop-20260928"')&&sw.includes("'./css/workspace-v26.css?v=quote-desktop-20260928'")&&sw.includes("central-shell-v27.7.3-guided-log-20260928"),"current PRF destination must refresh installed PWA clients");
+  pass("v27.7.3 keeps the fixed weekly schedule and removes unverified TCE details from Hoje");
 }
 
 function testHomeResponsiveLayout() {
@@ -1011,7 +1011,7 @@ function testStudySync() {
 function testStudyPlanner(registry) {
   const html = read("index.html"), sw = read("sw.js"), planner = read("js/study-planner-v1.js"), css = read("css/study-planner-v1.css");
   const catalog = JSON.parse(read("config/study-catalog-v1.json"));
-  assert.equal(catalog.version, "27.7.2", "matter catalog must match the guided planner release");
+  assert.equal(catalog.version, "27.7.3", "matter catalog must match the guided planner release");
   assert.deepEqual(Object.keys(catalog.projects).sort(), registry.projects.filter(project => project.status === "active").map(project => project.id).sort(), "guided catalogs must cover exactly the four active study projects");
   assert.equal(catalog.projects.seedf.groups[0].items.length, 12, "SEEDF must offer Leis Primeiro and its mapped norms");
   assert.equal(catalog.projects.tjdft.groups[0].items.length, 18, "TJDFT must map all P01–P18 Portuguese units");
@@ -1023,15 +1023,15 @@ function testStudyPlanner(registry) {
   assert.ok(html.includes('id="study-log-confirmed"')&&html.includes("Marque só depois de estudar."), "the planner must only record real study after explicit confirmation");
   assert.ok(planner.includes(".schedule-day-card[data-weekday=")&&planner.includes("const projectIds = { P1: \"seedf\", P2: \"tjdft\", P3: \"tcego\", P4: \"prf-adm\" }"), "planner must reuse the current weekly schedule and preserve its project mapping");
   assert.ok(planner.includes("central:study-date-selected")&&planner.includes("MutationObserver")&&planner.includes("TEMPO NA SEMANA SELECIONADA"), "day and week selectors must update the matching totals when local records change");
-  assert.ok(html.includes("./js/study-planner-v1.js?v=27.7.2")&&html.includes("./css/study-planner-v1.css?v=27.7.2"), "guided planner assets must be referenced with the release version");
+  assert.ok(html.includes("./js/study-planner-v1.js?v=27.7.3")&&html.includes("./css/study-planner-v1.css?v=27.7.3"), "guided planner assets must be referenced with the release version");
   const appShell = sw.match(/const APP_SHELL = \[([\s\S]*?)\];/)?.[1] || "";
   const runtimeStart = sw.indexOf("const RUNTIME_ASSETS");
   const runtimeEnd = sw.indexOf("self.addEventListener('install'", runtimeStart);
   const runtime = sw.slice(runtimeStart, runtimeEnd);
-  for (const asset of ["./js/study-planner-v1.js?v=27.7.2", "./css/study-planner-v1.css?v=27.7.2", "./config/study-catalog-v1.json?v=27.7.2"]) {
+  for (const asset of ["./js/study-planner-v1.js?v=27.7.3", "./css/study-planner-v1.css?v=27.7.3", "./config/study-catalog-v1.json?v=27.7.3"]) {
     assert.ok(runtime.includes(asset) && !appShell.includes(asset), `${asset} must use the scoped runtime cache and preserve the approved app-shell ceiling`);
   }
-  assert.ok(sw.includes("central-study-runtime-v27.7.2")&&sw.includes("return saved || new Response('', { status: 503 });"), "guided catalog resources must be cached same-origin with an offline fallback");
+  assert.ok(sw.includes("central-study-runtime-v27.7.3")&&sw.includes("return saved || new Response('', { status: 503 });"), "guided catalog resources must be cached same-origin with an offline fallback");
   assert.ok(css.includes('.study-log-day-choice[aria-pressed=true]')&&css.includes("@media(max-width:360px)")&&css.includes("min-height:42px"), "weekday and plan controls must remain touch-friendly on narrow phones");
   pass("v27.7 guided weekday, mapped subject catalogs, real-study confirmation and offline runtime fallback");
 }
@@ -1071,7 +1071,7 @@ function testV274PrfSiteAndToolDirectory(registry) {
   const toolsStart = html.indexOf('<div class="study-tools"');
   const toolsEnd = html.indexOf("</div></section><section id=\"workspace\"", toolsStart);
 
-    assert.equal(registry.central.version, "27.7.2", "catalog must identify current release v27.7.2");
+    assert.equal(registry.central.version, "27.7.3", "catalog must identify current release v27.7.3");
     assert.equal(registry.central.defaultProject, "prf-adm", "the default Today focus must use the P4 PRF site");
   assert.ok(prf && prf.status === "active" && prf.priority === "normal" && prf.studyPriority === 4, "PRF must be active, ranked P4 in the study schedule, and keep normal focus semantics");
   assert.equal(prf.description, "Roda PRFADM01–33", "Central catalog must show the current 33-session PRF cycle");
