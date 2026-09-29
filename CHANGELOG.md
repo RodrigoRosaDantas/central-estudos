@@ -2,6 +2,11 @@
 
 ## [27.7.0] - 2026-09-28
 
+### Interface refinada — 2026-09-29
+- Página inicial reorganizada para destacar o foco do dia, o horário de Brasília e os três atalhos mais úteis.
+- Cartões do cronograma ficaram mais claros no celular e no desktop; dias, prioridades e blocos permaneceram intactos.
+- O CSS visual da abertura usa cache runtime e fica fora do app shell offline.
+
 ### Added
 - Seletor de semana e dia que reaproveita os cartões da grade semanal vigente.
 - Seleção guiada das unidades e matérias catalogadas de SEEDF, TJDFT, TCE-GO e PRF.
