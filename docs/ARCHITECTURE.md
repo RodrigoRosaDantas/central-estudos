@@ -6,7 +6,7 @@ A Central é uma camada de **navegação, observabilidade leve e registro local 
 
 > A Central observa e direciona. Os projetos executam e decidem.
 
-Ela lista ambientes, destaca foco, recorda último acesso, oferece organização local, testa disponibilidade sem bloquear navegação e direciona ao site real. Não edita dados internos, não altera Supabase, não importa dashboards, não assume regras pedagógicas e não cria dependência obrigatória entre ambientes.
+Ela lista ambientes, destaca foco, recorda último acesso, oferece organização local, testa disponibilidade sem bloquear navegação e direciona ao site real. Não edita dados internos dos projetos-filhos nem importa seus dashboards. O registro de tempo pertence à própria Central e pode sincronizar opcionalmente na tabela isolada `central_study_logs`; isso não transforma dados dos projetos em uma base mestre.
 
 ## Registry
 
@@ -22,7 +22,7 @@ A Central usa `localStorage` para preferências/continuidade e para um registro 
 
 O registro usa a chave `central-estudos:study-log-v1` e guarda data, ID do projeto, trilha/matéria, tópico opcional, minutos líquidos e confirmação explícita. Cada bloco representa um tópico; os resumos somam minutos por dia, semana, projeto, trilha e tópico. O tempo não é inferido do cronograma, de visitas, da publicação de materiais ou de contratos. Ele não mede domínio, desempenho ou progresso.
 
-Os dados permanecem no `localStorage` deste navegador, sem backend ou sincronização com Notion, projetos-filhos ou outros aparelhos. Exportar/restaurar backup JSON permite transferência manual. Limpar os dados do navegador pode apagar o registro; exporte backups para preservá-lo.
+Os dados continuam local-first no `localStorage`. Quando o usuário entra em uma conta Supabase já cadastrada, a Central pode sincronizar apenas os registros de tempo na tabela isolada `central_study_logs`, com RLS por usuário. Não há sincronização com Notion nem escrita nos projetos-filhos. Exportar/restaurar backup JSON continua disponível como portabilidade manual.
 
 Todo acesso a armazenamento local degrada com segurança; conteúdo inválido é ignorado/limpo e defaults previsíveis são usados.
 
@@ -480,3 +480,24 @@ A mudança é somente de apresentação e documentação na Central: sem novo fe
 ## Registro local de estudo — v27.7.0
 
 O registro é uma exceção estreita à regra de observabilidade somente leitura: ele grava apenas o que a pessoa lançar e confirmar no próprio navegador. Não há chamada de rede, backend, login ou escrita em fonte acadêmica. Dados podem ser exportados/restaurados em JSON; tópicos desconhecidos, duração inválida e lançamentos sem confirmação são rejeitados. A camada guiada lê a grade estática ``#agenda-semanal`` e um catálogo versionado da Central; esses metadados não replicam o avanço dos projetos. Resumos acompanham o dia e a semana selecionados. Nenhum bloco é salvo sem duração positiva e confirmação explícita. O esquema do histórico local permanece inalterado.
+
+
+## Mentor adaptativo local — v27.8
+
+A v27.8 introduz uma camada de recomendação determinística e explicável no Mentor. Ela **não é um LLM**, não chama OpenAI API e não gera custo por tokens.
+
+Entradas autorizadas:
+- grade semanal já publicada na Central;
+- blocos reais do `central-estudos:study-log-v1` (incluindo os sincronizados pela tabela isolada da Central);
+- recência e distribuição desses próprios registros;
+- foco escolhido pelo usuário somente como sinal auxiliar de desempate.
+
+Regras de integridade:
+- a recomendação é separada do foco e nunca grava um novo foco automaticamente;
+- ausência de registro é tratada como **sem registro na Central**, nunca como ausência de estudo comprovada;
+- tempo registrado não confirma conclusão, domínio, nota, erro ou progresso no projeto de origem;
+- o Mentor expõe nível de confiança e os motivos da sugestão;
+- acertos, erros, desempenho e matéria fraca só poderão participar quando houver um contrato de dados explícito e confiável para isso;
+- a camada fica em `operational-v13.js`/CSS, carregada online e fora do `APP_SHELL`, preservando o orçamento offline.
+
+O fechamento diário usa a mesma semântica: previsto, registrado e pendente **no registro**, sem fabricar execução. Os projetos-filhos continuam soberanos sobre seu próprio progresso.
