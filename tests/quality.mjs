@@ -526,6 +526,7 @@ function testV13OperationalState(registry) {
 function testV14ExplainableRouting(registry) {
   const html = read("index.html");
   const routing = read("js/operational-v13.js");
+  const routingV14 = routing.split('const LOG_KEY="central-estudos:study-log-v1"')[0];
   const css = read("css/operational-v13.css");
   const sw = read("sw.js");
 
@@ -534,21 +535,21 @@ function testV14ExplainableRouting(registry) {
     assert.ok(html.includes(`data-route-lens="${lens}"`), `v14 routing lens missing: ${lens}`);
   }
 
-  assert.ok(routing.includes("central-estudos:route-lens-v14"), "v14 selected lens must be local");
-  assert.ok(routing.includes('B.has(e)?e:"focus"'), "v14 default lens must be focus");
-  assert.ok(routing.includes("Por que aparece aqui?"), "v14 must explain why an item appears");
-  assert.ok(routing.includes("A ordem é a do catálogo, sem ranking.")||routing.includes("A Central preserva a ordem do catálogo."), "v14+ published lens must explain catalog order");
-  assert.ok(routing.includes("A ordem é a do catálogo, sem pontuação.")||routing.includes("sem pontuação ou ordem automática"), "v14+ alerts lens must explain non-ranked order");
-  assert.ok(routing.includes(".sort((t,o)=>t.order-o.order)"), "v14 multi-item routing must preserve catalog order");
+  assert.ok(routingV14.includes("central-estudos:route-lens-v14"), "v14 selected lens must be local");
+  assert.ok(routingV14.includes('B.has(e)?e:"focus"'), "v14 default lens must be focus");
+  assert.ok(routingV14.includes("Por que aparece aqui?"), "v14 must explain why an item appears");
+  assert.ok(routingV14.includes("A ordem é a do catálogo, sem ranking.")||routingV14.includes("A Central preserva a ordem do catálogo."), "v14+ published lens must explain catalog order");
+  assert.ok(routingV14.includes("A ordem é a do catálogo, sem pontuação.")||routingV14.includes("sem pontuação ou ordem automática"), "v14+ alerts lens must explain non-ranked order");
+  assert.ok(routingV14.includes(".sort((t,o)=>t.order-o.order)"), "v14 multi-item routing must preserve catalog order");
 
-  assert.ok(routing.includes("central:focus-changed"), "v14 focus lens must follow human-selected focus");
-  assert.ok(routing.includes("central:project-opened"), "v14 resume lens must follow local access");
-  assert.ok(routing.includes("central:contract-state"), "v14 published/alerts lenses must use validated contracts");
-  assert.ok(!routing.includes("fetch("), "v14 routing layer must not create network calls");
+  assert.ok(routingV14.includes("central:focus-changed"), "v14 focus lens must follow human-selected focus");
+  assert.ok(routingV14.includes("central:project-opened"), "v14 resume lens must follow local access");
+  assert.ok(routingV14.includes("central:contract-state"), "v14 published/alerts lenses must use validated contracts");
+  assert.ok(!routingV14.includes("fetch("), "v14 routing layer must not create network calls");
 
-  assert.ok(!/score|ranking calculado|recomenda[cç][aã]o autom[aá]tica|melhor projeto|prioridade calculada/i.test(routing), "v14 must not rank, score or auto-recommend projects");
-  assert.ok(routing.includes("stale-cache"), "v14 must distinguish stale operational data");
-  assert.ok(routing.includes("Último estado conhecido"), "v14 stale route must be labeled as last known state");
+  assert.ok(!/score|ranking calculado|recomenda[cç][aã]o autom[aá]tica|melhor projeto|prioridade calculada/i.test(routingV14), "v14 must not rank, score or auto-recommend projects");
+  assert.ok(routingV14.includes("stale-cache"), "v14 must distinguish stale operational data");
+  assert.ok(routingV14.includes("Último estado conhecido"), "v14 stale route must be labeled as last known state");
 
   assert.ok(css.includes(".routing-lenses"), "v14 lenses must be styled");
   assert.ok(css.includes("@media(pointer:coarse)"), "v14 touch targets must be hardened");
