@@ -903,9 +903,9 @@ function testV27DailySchedule(registry) {
   const start=html.indexOf('<section id="agenda-semanal"'),end=html.indexOf("</section>",start);
   assert.ok(start>=0&&end>start,"weekly schedule must remain a section on the page");
   const schedule=html.slice(start,end);
-  assert.equal(registry.central.version,"27.8.0","registry must identify v27.8.0");
+  assert.equal(registry.central.version,"27.9.0","registry must identify v27.9.0");
   assert.ok(html.includes(`HOJE · V${registry.central.version}`),"Today panel version badge must match the current release");
-  assert.ok(html.includes('id="pro-now-focus-name">P4 PRF ADM</strong>')&&html.includes('id="pro-now-focus-link" class="command-primary" href="https://rodrigorosadantas.github.io/prf-administrativo-dashboard/"')&&html.includes('src="./js/operational-v13.js?v=27.8.0"')&&operational.includes('if(u==="tcego")')&&!operational.includes("r.currentUnit||r.nextAction"),"Today must use P4 PRF and omit TCE unit detail from the home overview");
+  assert.ok(html.includes('id="pro-now-focus-name">P4 PRF ADM</strong>')&&html.includes('id="pro-now-focus-link" class="command-primary" href="https://rodrigorosadantas.github.io/prf-administrativo-dashboard/"')&&html.includes('src="./js/operational-v13.js?v=27.9.0"')&&operational.includes('if(u==="tcego")')&&!operational.includes("r.currentUnit||r.nextAction"),"Today must use P4 PRF and omit TCE unit detail from the home overview");
   assert.equal(registry.central.defaultProject,"prf-adm","Today must default to the P4 PRF site");
   assert.ok(html.includes('href="#agenda-semanal">Cronograma</a>')&&router.includes('"agenda-semanal":"today"'),"schedule must have an accessible shortcut and route back to Hoje");
   const priorityStrip=schedule.slice(schedule.indexOf('<div class="weekly-priority-strip"'),schedule.indexOf("</div>",schedule.indexOf('<div class="weekly-priority-strip"')));
@@ -932,9 +932,9 @@ function testV27DailySchedule(registry) {
   assert.ok(closeout.includes("Grade é previsão")&&closeout.includes("tempo registrado não confirma progresso")&&!closeout.includes("FEITO · informado em 28/09"),"closeout must distinguish planning and time logging from confirmed progress");
   const mobileCss=css.slice(css.indexOf("@media(max-width:719px)"));
   assert.ok(html.includes("./css/workspace-v27.css")&&html.includes("weekly-schedule-v27")&&mobileCss.includes(".schedule-day-grid{grid-template-columns:1fr")&&mobileCss.includes(".schedule-day-card{grid-template-columns:minmax(82px,.34fr) minmax(0,1fr)")&&mobileCss.includes(".schedule-day-heading>span{display:none}")&&mobileCss.includes(".schedule-day-rest-v27 .schedule-day-heading>span{display:inline-flex}")&&mobileCss.includes(".schedule-day-card .schedule-item-copy{display:block")&&mobileCss.includes("min-width:0"),"v27 mobile schedule must keep seven days while compacting each day row and avoiding redundant labels");
-  assert.ok(html.includes('src="./js/command-context-v1.js?v=27.8.0"')&&sw.includes("'./js/command-context-v1.js?v=27.8.0'"),"today marker and published-change summary must load as part of the app shell");
-  assert.ok(sw.includes("central-shell-v27.8.0")&&sw.includes("./css/workspace-v27.css"),"PWA shell cache must include the v27 stylesheet and current version");
-  assert.ok(html.includes('src="./js/app.js?v=27.8.0"')&&sw.includes("'./js/app.js?v=27.8.0'")&&sw.includes("'./config/projects.json?v=27.8.0'")&&app.includes("./config/projects.json?v=27.8.0"),"v27.8.0 must version app and registry cache URLs");
+  assert.ok(html.includes('src="./js/command-context-v1.js?v=27.9.0"')&&sw.includes("'./js/command-context-v1.js?v=27.9.0'"),"today marker and published-change summary must load as part of the app shell");
+  assert.ok(sw.includes("central-shell-v27.9.0")&&sw.includes("./css/workspace-v27.css"),"PWA shell cache must include the v27 stylesheet and current version");
+  assert.ok(html.includes('src="./js/app.js?v=27.9.0"')&&sw.includes("'./js/app.js?v=27.9.0'")&&sw.includes("'./config/projects.json?v=27.9.0'")&&app.includes("./config/projects.json?v=27.9.0"),"v27.9.0 must version app and registry cache URLs");
   assert.ok(html.includes("Mudanças desde a última conferência")&&html.includes("contratos validados neste aparelho")&&html.includes('id="published-changes-list"'),"published changes must be shown with their local/read-only provenance");
   assert.ok(css.includes(".schedule-day-card.is-today")&&css.includes('content:"HOJE"'),"the current weekday must have a visible marker");
   assert.ok(html.includes("PRF Administrativo")&&html.includes(">P4</span>")&&!schedule.includes('class="schedule-mark schedule-mark-track">PRF</span>'),"the weekly routine must label PRF as P4 and retain its project identity");
@@ -942,26 +942,26 @@ function testV27DailySchedule(registry) {
   assert.ok(html.includes('id="daily-motivation-author"')&&html.includes('id="daily-motivation-source"')&&html.includes("Frases do Major Cadar · muda a cada 5 min")&&html.includes('id="daily-motivation" class="daily-motivation" aria-live="polite" aria-atomic="true"')&&html.includes("Seja forte ou seja vencido.")&&app.includes('author:"Major Cadar"')&&app.includes('second:"2-digit"')&&app.includes("setInterval(e,1e3)"),"Major Cadar quote, accessible rotation label, attribution/source and Brasília clock seconds must remain visible");
   assert.ok(quoteCss.includes("border-left:4px solid #b69cff")&&quoteCss.includes("font-size:clamp(1rem,2.2vw,1.5rem)")&&quoteCss.includes("font-weight:800")&&quoteCss.includes("#a78bfa30"),"daily quote card must keep a readable, high-contrast visual treatment");
   assert.ok(quoteCss.includes("@media(min-width:900px)")&&quoteCss.includes("grid-template-columns:.8fr 1.2fr")&&quoteCss.includes("grid-area:1/2/4/3")&&quoteCss.includes("min-height:154px"),"desktop quote must use the open header space as a balanced featured panel");
-  assert.ok(html.includes('href="./css/workspace-v26.css?v=quote-desktop-20260928"')&&sw.includes("'./css/workspace-v26.css?v=quote-desktop-20260928'")&&sw.includes("central-shell-v27.8.0-adaptive-mentor-20260929"),"current release must refresh installed PWA clients");
-  pass("v27.8.0 keeps the fixed weekly schedule and factual closeout fallback");
+  assert.ok(html.includes('href="./css/workspace-v26.css?v=quote-desktop-20260928"')&&sw.includes("'./css/workspace-v26.css?v=quote-desktop-20260928'")&&sw.includes("central-shell-v27.9.0-project-signals-20260929"),"current release must refresh installed PWA clients");
+  pass("v27.9.0 keeps the fixed weekly schedule and factual closeout fallback");
 }
 
 
 function testV278AdaptiveMentor(registry) {
   const html=read("index.html"),op=read("js/operational-v13.js"),css=read("css/operational-v13.css"),sw=read("sw.js");
-  assert.equal(registry.central.version,"27.8.0","adaptive mentor release must be v27.8.0");
+  assert.equal(registry.central.version,"27.9.0","adaptive mentor release must be v27.9.0");
   assert.ok(op.includes('summary.id="mentor-adaptive-summary"')&&op.includes("Mentor adaptativo")&&op.includes("Motor local · R$ 0 API"),"adaptive mentor must be present and explicitly API-free");
   assert.ok(op.includes('LOG_KEY="central-estudos:study-log-v1"')&&op.includes("scheduledOn")&&op.includes("confidence(logs)")&&op.includes("PENDENTE NO REGISTRO"),"mentor must derive guidance from real study logs and the current schedule");
-  assert.ok(op.includes("sem registro na Central")&&op.includes("não inventa matéria fraca nem desempenho"),"mentor must explain missing evidence without inventing performance");
+  assert.ok(op.includes("sem registro na Central")&&op.includes("campo ausente continua desconhecido"),"mentor must explain missing evidence without inventing performance");
   assert.ok(op.includes('FOCUS_KEY="central-estudos:focus-project"')&&!op.includes("localStorage.setItem(FOCUS_KEY"),"mentor may read human focus but must never change it");
   assert.ok(op.includes("MutationObserver")&&op.includes("America/Sao_Paulo")&&!op.includes("openai")&&!op.includes("api.openai.com"),"mentor must react locally with Brasília dates and no OpenAI API dependency");
   assert.ok(css.includes(".adaptive-mentor")&&css.includes(".adaptive-kpis")&&css.includes("@media(max-width:719px)")&&css.includes("@media(pointer:coarse)"),"adaptive mentor must have responsive and touch-aware styling");
   assert.ok(html.includes("REGISTRADO</strong>: carregando seus blocos locais.")&&!html.includes("FEITO · informado em 28/09"),"static closeout must be generic instead of freezing stale study state");
   assert.ok(!sw.includes("./js/operational-v13.js")&&!sw.includes("./css/operational-v13.css"),"adaptive operational layer must stay outside the offline shell budget");
-  pass("v27.8 API-free adaptive mentor, confidence and explainable recommendations");
+  pass("v27.9 API-free adaptive mentor, confidence and explainable recommendations");
 }
 
-function testHomeResponsiveLayout() {
+function testV279ProjectStudySignals(registry) {\n  const schema=JSON.parse(read("config/status-contract.schema.json")),op=read("js/operational-v13.js"),sync=read("js/study-sync-v1.js");\n  const prf=registry.projects.find(project=>project.id==="prf-adm");\n  assert.equal(prf?.statusUrl,"https://rodrigorosadantas.github.io/prf-administrativo-dashboard/central-status.json","PRF must publish a read-only status contract");\n  assert.ok(schema.properties.study&&schema.properties.study.properties.accuracy&&schema.properties.study.properties.reviewsDue&&schema.properties.study.properties.activeErrors,"status contract must support optional pedagogical signals");\n  assert.ok(op.includes("publishedStudy=new Map")&&op.includes("privateStudy=new Map")&&op.includes("central:contract-state")&&op.includes("central:private-study-state"),"Mentor must combine public and authorized private study signals");\n  assert.ok(op.includes("revisão(ões) vencida(s)")&&op.includes("desempenho publicado")&&op.includes("erro(s) ativo(s)")&&op.includes("próxima unidade publicada"),"Mentor must consume explicit study signals");\n  assert.ok(op.includes("campo ausente continua desconhecido")&&!op.includes("api.openai.com"),"missing data must stay unknown and the Mentor must remain API-free");\n  assert.ok(sync.includes("/rest/v1/tce_progress_state")&&sync.includes("owner_id")&&sync.includes("central:private-study-state"),"TCE private progress must stay behind authenticated Supabase");\n  pass("v27.9 project study signals, PRF contract and private TCE bridge");\n}\n\nfunction testHomeResponsiveLayout() {
   const home=read("css/home-v1.css");
   const desktop=home.lastIndexOf(".presence-v21{grid-template-columns:minmax(0,1.4fr) minmax(285px,.6fr)");
   const responsive=home.lastIndexOf("@media(max-width:979px){.presence-v21{grid-template-columns:1fr");
@@ -1021,13 +1021,14 @@ function testStudySync() {
   assert.ok(source.includes("create_user:false"), "Central sync must authenticate only existing Supabase users");
   assert.ok(source.includes("/rest/v1/central_study_logs") && source.includes("resolution=ignore-duplicates") && source.includes("user_id"), "sync writes must target the Central table idempotently and scope rows by user");
   assert.ok(source.includes("state.accountId&&state.accountId!==user.id"), "a device bound to one account must not merge another account's records");
-  assert.ok(!source.includes("service_role") && !source.includes("sb_secret_") && !source.includes("tce_progress_state"), "browser sync must not expose server secrets or couple to TCE progress tables");
+  assert.ok(!source.includes("service_role") && !source.includes("sb_secret_"), "browser sync must not expose server secrets");
+  assert.ok(source.includes("/rest/v1/tce_progress_state") && source.includes("owner_id") && source.includes("central:private-study-state"), "authenticated Central must read only private TCE progress for the signed-in user");
   pass("optional Supabase study sync, existing-account auth and device-local logout");
 }
 function testStudyPlanner(registry) {
   const html = read("index.html"), sw = read("sw.js"), planner = read("js/study-planner-v1.js"), css = read("css/study-planner-v1.css");
   const catalog = JSON.parse(read("config/study-catalog-v1.json"));
-  assert.equal(catalog.version, "27.8.0", "matter catalog must match the guided planner release");
+  assert.equal(catalog.version, "27.9.0", "matter catalog must match the guided planner release");
   assert.deepEqual(Object.keys(catalog.projects).sort(), registry.projects.filter(project => project.status === "active").map(project => project.id).sort(), "guided catalogs must cover exactly the four active study projects");
   assert.equal(catalog.projects.seedf.groups[0].items.length, 12, "SEEDF must offer Leis Primeiro and its mapped norms");
   assert.equal(catalog.projects.tjdft.groups[0].items.length, 18, "TJDFT must map all P01–P18 Portuguese units");
@@ -1039,15 +1040,15 @@ function testStudyPlanner(registry) {
   assert.ok(html.includes('id="study-log-confirmed"')&&html.includes("Marque só depois de estudar."), "the planner must only record real study after explicit confirmation");
   assert.ok(planner.includes(".schedule-day-card[data-weekday=")&&planner.includes("const projectIds = { P1: \"seedf\", P2: \"tjdft\", P3: \"tcego\", P4: \"prf-adm\" }"), "planner must reuse the current weekly schedule and preserve its project mapping");
   assert.ok(planner.includes("central:study-date-selected")&&planner.includes("MutationObserver")&&planner.includes("TEMPO NA SEMANA SELECIONADA"), "day and week selectors must update the matching totals when local records change");
-  assert.ok(html.includes("./js/study-planner-v1.js?v=27.8.0")&&html.includes("./css/study-planner-v1.css?v=27.8.0"), "guided planner assets must be referenced with the release version");
+  assert.ok(html.includes("./js/study-planner-v1.js?v=27.9.0")&&html.includes("./css/study-planner-v1.css?v=27.9.0"), "guided planner assets must be referenced with the release version");
   const appShell = sw.match(/const APP_SHELL = \[([\s\S]*?)\];/)?.[1] || "";
   const runtimeStart = sw.indexOf("const RUNTIME_ASSETS");
   const runtimeEnd = sw.indexOf("self.addEventListener('install'", runtimeStart);
   const runtime = sw.slice(runtimeStart, runtimeEnd);
-  for (const asset of ["./js/study-planner-v1.js?v=27.8.0", "./css/study-planner-v1.css?v=27.8.0", "./config/study-catalog-v1.json?v=27.8.0"]) {
+  for (const asset of ["./js/study-planner-v1.js?v=27.9.0", "./css/study-planner-v1.css?v=27.9.0", "./config/study-catalog-v1.json?v=27.9.0"]) {
     assert.ok(runtime.includes(asset) && !appShell.includes(asset), `${asset} must use the scoped runtime cache and preserve the approved app-shell ceiling`);
   }
-  assert.ok(sw.includes("central-study-runtime-v27.8.0")&&sw.includes("return saved || new Response('', { status: 503 });"), "guided catalog resources must be cached same-origin with an offline fallback");
+  assert.ok(sw.includes("central-study-runtime-v27.9.0")&&sw.includes("return saved || new Response('', { status: 503 });"), "guided catalog resources must be cached same-origin with an offline fallback");
   assert.ok(css.includes('.study-log-day-choice[aria-pressed=true]')&&css.includes("@media(max-width:360px)")&&css.includes("min-height:42px"), "weekday and plan controls must remain touch-friendly on narrow phones");
   pass("v27.7 guided weekday, mapped subject catalogs, real-study confirmation and offline runtime fallback");
 }
@@ -1087,7 +1088,7 @@ function testV274PrfSiteAndToolDirectory(registry) {
   const toolsStart = html.indexOf('<div class="study-tools"');
   const toolsEnd = html.indexOf("</div></section><section id=\"workspace\"", toolsStart);
 
-    assert.equal(registry.central.version, "27.8.0", "catalog must identify current release v27.8.0");
+    assert.equal(registry.central.version, "27.9.0", "catalog must identify current release v27.9.0");
     assert.equal(registry.central.defaultProject, "prf-adm", "the default Today focus must use the P4 PRF site");
   assert.ok(prf && prf.status === "active" && prf.priority === "normal" && prf.studyPriority === 4, "PRF must be active, ranked P4 in the study schedule, and keep normal focus semantics");
   assert.equal(prf.description, "Roda PRFADM01–33", "Central catalog must show the current 33-session PRF cycle");
@@ -1375,6 +1376,7 @@ testV23TodayMentor();
 testV24ScreensAndViews(registry);
 testV27DailySchedule(registry);
 testV278AdaptiveMentor(registry);
+testV279ProjectStudySignals(registry);
 testHomeResponsiveLayout();
 testStudyLog(registry);
 testStudySync();
