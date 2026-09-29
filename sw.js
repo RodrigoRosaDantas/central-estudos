@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'central-shell-v27.7.1-supabase-study-sync-20260929';
+const CACHE_VERSION = 'central-shell-v27.7.0-guided-log-20260928-supabase-study-sync-20260929';
 const APP_SHELL = [
 './',
 './index.html',
