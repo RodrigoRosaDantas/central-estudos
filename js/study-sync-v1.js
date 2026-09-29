@@ -30,14 +30,14 @@ function mount(){
  const panel=document.createElement("section");panel.className="study-log-backup";panel.setAttribute("aria-label","Sincronização segura dos registros");
  const status=add(panel,"p","study-log-privacy","");status.id="study-sync-status";status.setAttribute("role","status");status.setAttribute("aria-live","polite");
  const details=document.createElement("details");details.className="study-log-manual";
- add(details,"summary","study-log-subtitle","Sincronizar entre aparelhos");
+ add(details,"summary","button button-ghost","Sincronizar entre aparelhos");
  const form=document.createElement("form");form.id="study-sync-form";form.className="study-log-form";
  const label=add(form,"label","catalog-field study-log-field study-log-project-field","E-mail já cadastrado no Supabase");
  const input=document.createElement("input");input.id="study-sync-email";input.type="email";input.name="email";input.autocomplete="email";input.required=true;input.placeholder="voce@exemplo.com";label.append(input);
  const button=add(form,"button","study-log-save command-primary","Enviar link de acesso");button.type="submit";
- const foot=add(form,"p","study-log-privacy","Este formulário não cria usuários. O link vai para uma conta já cadastrada no Supabase.");
- form.append(button,foot);
- details.append(form);
+ const foot=document.createElement("p");foot.className="study-log-privacy";foot.textContent="Este formulário não cria usuários. O link vai para uma conta já cadastrada no Supabase.";
+ form.append(button);
+ details.append(form,foot);
  const signout=add(details,"button","button button-ghost","Desconectar deste aparelho");signout.type="button";signout.id="study-sync-signout";signout.hidden=true;
  panel.append(details);
  planner.insertAdjacentElement("beforebegin",panel);
