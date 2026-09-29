@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'central-shell-v27.7.0-guided-log-20260928-supabase-study-sync-20260929';
+const CACHE_VERSION = 'central-shell-v27.7.0-guided-log-20260928-supabase-study-sync-20260929-label-fix';
 const APP_SHELL = [
 './',
 './index.html',
@@ -26,7 +26,7 @@ const APP_SHELL = [
 ];
 const RUNTIME_CACHE = 'central-study-runtime-v27.7.0';
 const RUNTIME_ASSETS = new Set([
-'./js/study-sync-v1.js',
+'./js/study-sync-v1.js?v=sync-label-20260929',
 './js/study-planner-v1.js?v=27.7.0',
 './css/study-planner-v1.css?v=27.7.0',
 './config/study-catalog-v1.json?v=27.7.0'
