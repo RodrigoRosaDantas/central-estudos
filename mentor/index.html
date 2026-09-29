@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#070b14" />
+<meta name="color-scheme" content="dark" />
+<meta name="referrer" content="strict-origin-when-cross-origin" />
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://fqqkkyusnzhuuizahkww.supabase.co; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; upgrade-insecure-requests" />
+<meta name="description" content="Mentor da Central de Estudos: orientação adaptativa com sinais reais dos projetos." />
+<title>Mentor · Central de Estudos</title>
+<link rel="icon" href="../assets/icon.svg" type="image/svg+xml" />
+<link rel="manifest" href="../manifest.webmanifest" />
+<link rel="stylesheet" href="../css/app.css" />
+<link rel="stylesheet" href="./mentor.css?v=28.0.0" />
+</head>
+<body class="mentor-body">
+<a class="skip-link" href="#mentor-main">Ir para o conteúdo</a>
+<div class="mentor-shell">
+<header class="mentor-topbar">
+  <div>
+    <a class="mentor-back" href="../">← Central de Estudos</a>
+    <p class="eyebrow">CENTRAL · MENTOR</p>
+    <h1>Mentor Central</h1>
+    <p class="mentor-subtitle">Orientação adaptativa com os sinais que os próprios projetos conseguem comprovar.</p>
+  </div>
+  <div class="mentor-top-actions">
+    <span class="mentor-chip mentor-chip-free">R$ 0 API</span>
+    <span id="mentor-clock" class="mentor-chip">Brasília · --:--</span>
+    <button id="mentor-refresh" class="mentor-button mentor-button-secondary" type="button">Atualizar dados</button>
+  </div>
+</header>
+
+<nav class="mentor-tabs" aria-label="Áreas do Mentor">
+  <button class="mentor-tab is-active" type="button" data-mentor-view="agora" aria-pressed="true">Agora</button>
+  <button class="mentor-tab" type="button" data-mentor-view="projetos" aria-pressed="false">Projetos</button>
+  <button class="mentor-tab" type="button" data-mentor-view="revisoes" aria-pressed="false">Revisões & riscos</button>
+  <button class="mentor-tab" type="button" data-mentor-view="metodo" aria-pressed="false">Como decide</button>
+</nav>
+
+<main id="mentor-main">
+<section class="mentor-view is-active" data-mentor-panel="agora" aria-labelledby="mentor-now-title">
+  <div class="mentor-hero">
+    <div>
+      <p class="eyebrow">PRÓXIMO PASSO</p>
+      <h2 id="mentor-now-title">Analisando seus projetos…</h2>
+      <p id="mentor-recommendation-copy" class="mentor-lead">Carregando grade, contratos publicados e histórico local.</p>
+      <div id="mentor-primary-actions" class="mentor-actions"></div>
+    </div>
+    <div class="mentor-confidence-card">
+      <span>CONFIANÇA</span>
+      <strong id="mentor-confidence">—</strong>
+      <small id="mentor-confidence-note">Aguardando fontes.</small>
+    </div>
+  </div>
+
+  <div class="mentor-metrics" aria-label="Resumo do Mentor">
+    <article><span>HOJE</span><strong id="mentor-today-time">0 min</strong><small>tempo registrado na Central</small></article>
+    <article><span>7 DIAS</span><strong id="mentor-week-time">0 min</strong><small>blocos registrados</small></article>
+    <article><span>SINAIS</span><strong id="mentor-signal-count">0/4</strong><small>projetos com evidência</small></article>
+    <article><span>REVISÕES</span><strong id="mentor-review-count">—</strong><small>publicadas e vencidas</small></article>
+  </div>
+
+  <div class="mentor-grid mentor-grid-main">
+    <article class="mentor-card mentor-reasons-card">
+      <div class="mentor-card-head"><div><p class="eyebrow">POR QUÊ?</p><h3>Motivos da recomendação</h3></div><span id="mentor-score-label" class="mentor-mini-chip">sem ranking oculto</span></div>
+      <div id="mentor-reasons" class="mentor-reason-list"><p class="mentor-empty">Aguardando análise.</p></div>
+    </article>
+
+    <article class="mentor-card">
+      <div class="mentor-card-head"><div><p class="eyebrow">GRADE</p><h3>Hoje no cronograma</h3></div><span id="mentor-weekday" class="mentor-mini-chip">—</span></div>
+      <div id="mentor-schedule" class="mentor-schedule-list"></div>
+    </article>
+  </div>
+
+  <article class="mentor-card mentor-data-health">
+    <div class="mentor-card-head"><div><p class="eyebrow">SAÚDE DOS DADOS</p><h3>O que o Mentor realmente sabe</h3></div><span id="mentor-last-refresh" class="mentor-mini-chip">não atualizado</span></div>
+    <div id="mentor-data-health-list" class="mentor-source-grid"></div>
+  </article>
+</section>
+
+<section class="mentor-view" data-mentor-panel="projetos" aria-labelledby="mentor-projects-title" hidden>
+  <div class="mentor-section-head">
+    <div><p class="eyebrow">4 PROJETOS</p><h2 id="mentor-projects-title">Leitura individual</h2><p>O Mentor não mistura ausência de dado com nota zero.</p></div>
+    <a class="mentor-button mentor-button-secondary" href="../#projetos">Abrir projetos na Central</a>
+  </div>
+  <div id="mentor-project-grid" class="mentor-project-grid"></div>
+</section>
+
+<section class="mentor-view" data-mentor-panel="revisoes" aria-labelledby="mentor-reviews-title" hidden>
+  <div class="mentor-section-head">
+    <div><p class="eyebrow">PENDÊNCIAS EXPLÍCITAS</p><h2 id="mentor-reviews-title">Revisões e riscos</h2><p>Somente sinais publicados ou privados autorizados entram aqui.</p></div>
+  </div>
+  <div class="mentor-grid">
+    <article class="mentor-card"><div class="mentor-card-head"><div><p class="eyebrow">REVISÕES</p><h3>Vencidas ou próximas</h3></div></div><div id="mentor-review-list"></div></article>
+    <article class="mentor-card"><div class="mentor-card-head"><div><p class="eyebrow">ATENÇÃO</p><h3>Erros, desempenho e lacunas</h3></div></div><div id="mentor-risk-list"></div></article>
+  </div>
+</section>
+
+<section class="mentor-view" data-mentor-panel="metodo" aria-labelledby="mentor-method-title" hidden>
+  <div class="mentor-section-head">
+    <div><p class="eyebrow">TRANSPARÊNCIA</p><h2 id="mentor-method-title">Como o Mentor decide</h2><p>É um motor determinístico, não um chatbot e não uma OpenAI API.</p></div>
+  </div>
+  <div class="mentor-grid">
+    <article class="mentor-card">
+      <h3>Sinais usados</h3>
+      <div class="mentor-method-list">
+        <p><strong>+70</strong><span>Projeto previsto hoje sem execução confirmada nem tempo registrado.</span></p>
+        <p><strong>+45</strong><span>Há revisão vencida publicada pelo projeto.</span></p>
+        <p><strong>+25 / +15 / +5</strong><span>Precisão publicada abaixo de 70%, 80% ou 90%, com amostra mínima de 10 questões.</span></p>
+        <p><strong>até +20</strong><span>Erros ativos publicados pelo projeto.</span></p>
+        <p><strong>até +20</strong><span>Lacunas de registro em dias previstos recentemente.</span></p>
+        <p><strong>−50</strong><span>Projeto já executado hoje por registro local ou evidência confirmada do próprio projeto.</span></p>
+      </div>
+    </article>
+    <article class="mentor-card">
+      <h3>Regras de integridade</h3>
+      <div class="mentor-rule-list">
+        <p>Ausência de campo = <strong>desconhecido</strong>, nunca zero.</p>
+        <p>Tempo estudado não prova domínio ou conclusão.</p>
+        <p>O foco escolhido por você não é alterado automaticamente.</p>
+        <p>TCE-GO privado só entra com sessão Supabase válida e RLS do próprio usuário.</p>
+        <p>PRF, SEEDF e TJDFT chegam por contratos read-only sanitizados.</p>
+        <p>Nenhuma chave do Notion ou OpenAI fica no navegador.</p>
+      </div>
+    </article>
+  </div>
+  <article class="mentor-card">
+    <div class="mentor-card-head"><div><p class="eyebrow">FONTES</p><h3>Proveniência atual</h3></div></div>
+    <div id="mentor-source-details" class="mentor-source-details"></div>
+  </article>
+</section>
+</main>
+
+<footer class="mentor-footer">
+  <span>Mentor Central · v28.0.0</span>
+  <span>Projetos continuam sendo as fontes de verdade.</span>
+</footer>
+</div>
+<script src="./mentor.js?v=28.0.0" defer></script>
+</body>
+</html>
