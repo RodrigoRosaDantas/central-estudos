@@ -1410,8 +1410,9 @@ function testReleaseDocumentationCoherence(registry) {
   }
 
   if (version === "28.0.3") {
-    const roadmap283=read("docs/ROADMAP-V28.0.3.md"),checkpoint283=read("docs/V28.0.3-CHECKPOINT.md"),acceptance283=read("docs/ACCEPTANCE-V28.0.3.md"),risks283=read("docs/RISK-REGISTER-V28.0.3.md");
-    assert.ok(roadmap283.includes("P1–P4")&&roadmap283.includes("READY_FOR_RELEASE")&&checkpoint283.includes("28.0.3")&&acceptance283.includes("[x] A aba “Agora”")&&risks283.includes("Precisão parece uma medida de conclusão"),"v28.0.3 governance must cover the P1–P4 Mentor page, acceptance and data-interpretation risks");
+    const roadmap283=read("docs/ROADMAP-V28.0.3.md"),checkpoint283=read("docs/V28.0.3-CHECKPOINT.md"),acceptance283=read("docs/ACCEPTANCE-V28.0.3.md"),risks283=read("docs/RISK-REGISTER-V28.0.3.md"),audit283=read("docs/FINAL-AUDIT-V28.0.3.md");
+    assert.ok(roadmap283.includes("P1–P4")&&roadmap283.includes("PUBLISHED")&&checkpoint283.includes("PUBLISHED")&&acceptance283.includes("[x] A aba “Agora”")&&risks283.includes("Precisão parece uma medida de conclusão"),"v28.0.3 governance must cover the P1–P4 Mentor page, acceptance and data-interpretation risks");
+    assert.ok(audit283.includes("#26")&&audit283.includes("9f1bba387d5d2592d8e8650daa3a778759bc7fa0")&&audit283.includes("36612869668")&&audit283.includes("Inspeção visual separada em viewport móvel não foi executada"),"v28.0.3 final audit must bind the publication and disclose the remaining visual mobile review");
     assert.ok(readme.includes("aprimora a página `/mentor/`")&&changelog.includes("## [28.0.3]")&&architecture.includes("Panorama visual P1–P4 — v28.0.3"),"current Mentor redesign must be reflected in README, changelog and architecture");
   }
 
