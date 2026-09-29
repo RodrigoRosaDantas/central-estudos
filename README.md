@@ -6,7 +6,9 @@ Camada de entrada para os projetos de estudo TCE-GO, SEEDF, TJDFT e PRF Administ
 
 A Central não altera nem replica o conteúdo dos projetos. O registro é preenchido pelo usuário, fica neste navegador e pode sincronizar entre aparelhos na mesma conta Supabase. Não escreve nem sincroniza horas com o Notion ou com os projetos.
 
-## Estado atual — v27.7
+## Estado atual — v27.8
+
+A v27.8.0 adiciona um **Mentor adaptativo local, sem OpenAI API paga**. Ele cruza a grade do dia com os blocos de estudo realmente registrados na Central, observa recência e distribuição dos últimos dias, calcula uma sugestão explicável e mostra o nível de confiança da base. A sugestão nunca muda o foco escolhido pelo usuário e não afirma desempenho, domínio, erro ou progresso quando esses dados não existem. O fechamento do dia deixa de congelar estados manuais e passa a ser preenchido a partir do registro real quando a camada operacional está disponível.
 
 A v27.7.0 torna o registro diário guiado pela grade: escolha a semana e o dia, selecione uma atividade prevista, depois a matéria/unidade e a duração real. O tempo só entra no histórico após confirmação explícita. Os catálogos cobrem as leis e trilhas SEEDF, P01–P18/RL01–RL13/REV01–REV06 do TJDFT, as 36 matérias atuais de estudo do TCE-GO e PRFADM01–PRFADM33. Dia e semana selecionados atualizam os totais locais.
 
