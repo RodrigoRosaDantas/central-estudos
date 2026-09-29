@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'central-shell-v28.0.1-prf-focus-closeout-20260929';
+const CACHE_VERSION = 'central-shell-v28.0.2-prf-live-action-20260929';
 const APP_SHELL = [
 './',
 './index.html',
@@ -13,28 +13,28 @@ const APP_SHELL = [
 './css/workspace-v26.css?v=quote-desktop-20260928',
 './css/workspace-v27.css',
 './css/study-log-v1.css',
-'./js/app.js?v=28.0.1',
+'./js/app.js?v=28.0.2',
 './js/personalization-v5.js',
 './js/pwa-v6.js',
 './js/timeline-v8.js',
 './js/pro-v11.js',
 './js/contracts-v12.js',
-'./js/command-context-v1.js?v=28.0.1',
+'./js/command-context-v1.js?v=28.0.2',
 './js/workspace-v24.js',
 './js/study-log-v1.js',
-'./config/projects.json?v=28.0.1',
-'./config/study-schedule-v1.json?v=28.0.1',
+'./config/projects.json?v=28.0.2',
+'./config/study-schedule-v1.json?v=28.0.2',
 './mentor/index.html',
-'./mentor/mentor.css?v=28.0.1',
-'./mentor/mentor.js?v=28.0.1'
+'./mentor/mentor.css?v=28.0.2',
+'./mentor/mentor.js?v=28.0.2'
 ];
-const RUNTIME_CACHE = 'central-study-runtime-v28.0.1';
+const RUNTIME_CACHE = 'central-study-runtime-v28.0.2';
 const RUNTIME_ASSETS = new Set([
 './js/study-sync-v1.js?v=local-logout-20260929',
-'./js/study-planner-v1.js?v=28.0.1',
-'./css/study-planner-v1.css?v=28.0.1',
+'./js/study-planner-v1.js?v=28.0.2',
+'./css/study-planner-v1.css?v=28.0.2',
 './css/home-v1.css?v=home-20260929d',
-'./config/study-catalog-v1.json?v=28.0.1'
+'./config/study-catalog-v1.json?v=28.0.2'
 ].map((path) => new URL(path, self.registration.scope).href));
 self.addEventListener('install', (event) => {
 event.waitUntil(caches.open(CACHE_VERSION).then((cache) => cache.addAll(APP_SHELL)));
