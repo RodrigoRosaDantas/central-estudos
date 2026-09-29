@@ -11,7 +11,8 @@
 
 ### Validado
 - Suíte `node tests/quality.mjs`, verificação sintática do motor do Mentor e análise de JSON: PASS.
-- Inspeção visual da página publicada e estado do workflow Pages: registrar no checkpoint após deploy.
+- Workflow #435 / run `36612869668`: Quality gate e Pages Deploy — `success`; página publicada conferida em desktop.
+- Navegação por teclado conferida ao vivo; inspeção visual móvel separada permanece pendente.
 
 ## [28.0.2] - 2026-09-29
 

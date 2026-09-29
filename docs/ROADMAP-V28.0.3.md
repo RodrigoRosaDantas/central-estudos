@@ -1,6 +1,6 @@
 # Roadmap v28.0.3 — panorama do Mentor P1–P4
 
-**Stage:** READY_FOR_RELEASE
+**Stage:** PUBLISHED
 **Base:** `main` v28.0.2
 **Escopo:** melhorar a página filha `/mentor/` para tornar mais clara e visual a leitura simultânea dos quatro projetos ativos.
 
@@ -22,5 +22,10 @@
 
 1. `node tests/quality.mjs` e validações sintáticas/JSON locais.
 2. Publicação pela branch protegida e Quality gate antes de Pages Deploy.
-3. Conferência da página publicada em desktop e celular, incluindo navegação por teclado.
+3. Conferência da página publicada em desktop e navegação por teclado; breakpoints responsivos cobertos pela quality gate. A inspeção visual em viewport móvel fica registrada como não executada nesta sessão.
 
+## Publicação
+
+- PR #26, squash merge `9f1bba387d5d2592d8e8650daa3a778759bc7fa0`.
+- Workflow #435 / run `36612869668`: Quality gate e Deploy to GitHub Pages — `success`.
+- Página conferida: `https://rodrigorosadantas.github.io/central-estudos/mentor/#agora`.
