@@ -1,5 +1,18 @@
 # CHANGELOG — Central de Estudos
 
+## [28.1.0] - 2026-09-29
+
+### Integração Central ↔ Jornada
+- O registry registra os códigos P1–P4, nomes curtos, ordem e categoria sem reordenar a grade nem mudar o foco padrão TCE-GO.
+- O cabeçalho oferece acesso direto ao Painel Estratégico/Jornada.
+- Pull requests executam o gate de qualidade, mas só `main` pode publicar no GitHub Pages; permissões de Pages ficam limitadas ao job de deploy.
+- A Jornada pode ler o mesmo registry e os contratos públicos dos quatro projetos; a Central não depende da Jornada.
+
+### Validado
+- Contratos v1 mantêm compatibilidade; estado ausente, contrato antigo e falha de rede continuam distintos.
+- A Jornada lê apenas estado e proveniência, sem consumir progresso privado do TCE-GO nem reabrir as integrações Notion dos projetos.
+- Grade semanal, TCE-GO como foco padrão e repositórios P1–P4 permanecem inalterados.
+
 ## [28.0.3] - 2026-09-29
 
 ### Melhorias no Mentor
