@@ -501,3 +501,16 @@ Regras de integridade:
 - a camada fica em `operational-v13.js`/CSS, carregada online e fora do `APP_SHELL`, preservando o orçamento offline.
 
 O fechamento diário usa a mesma semântica: previsto, registrado e pendente **no registro**, sem fabricar execução. Os projetos-filhos continuam soberanos sobre seu próprio progresso.
+
+
+## Sinais pedagógicos dos projetos — v27.9
+
+A v27.9 amplia o contrato read-only sem transformar a Central em fonte de verdade. O campo opcional `study` pode publicar somente sinais sanitizados que o projeto de origem consegue comprovar: última unidade, próxima unidade, data de execução, questões, acertos, erros, dúvidas, precisão, revisões, erros ativos e contagens de sessões. Campo ausente é desconhecido, não zero.
+
+Fluxos:
+- **SEEDF:** Notion → workflow do projeto → snapshots sanitizados → `public/central-status.json` → Central.
+- **TJDFT:** Notion → Study OS/snapshots sanitizados → `public/central-status.json` → Central.
+- **PRF Administrativo:** Notion → `content/prf-notion.json` → `central-status.json` → Central. O token permanece no GitHub Actions.
+- **TCE-GO:** contrato público continua sem progresso privado. Quando a Central está autenticada no Supabase, ela lê `tce_progress_state` sob RLS `owner_id = auth.uid()` e transforma o resultado em sinal somente em memória no navegador.
+
+A recomendação do Mentor pode considerar revisão vencida, precisão publicada, erros ativos, próxima unidade, recência e grade do dia. Ela não altera o foco e não cria escrita nos projetos-filhos. O TCE não perde a separação entre calendário público e execução privada.

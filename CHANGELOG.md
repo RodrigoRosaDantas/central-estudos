@@ -1,5 +1,19 @@
 # CHANGELOG — Central de Estudos
 
+## [27.9.0] - 2026-09-29
+
+### Adicionado
+- PRF Administrativo entra na observabilidade read-only por `central-status.json`, gerado a partir do snapshot sanitizado do Notion.
+- Contrato de status aceita bloco opcional `study` com unidade, questões, precisão, erros, revisões e evidência.
+- Mentor combina sinais publicados de SEEDF/TJDFT/PRF com registros de tempo da Central.
+- TCE-GO pode fornecer progresso privado ao Mentor somente após autenticação no Supabase; o progresso não é publicado no site do TCE.
+
+### Integridade
+- Ausência de campo continua desconhecida; não é convertida em zero.
+- A Central não acessa o Notion diretamente e não recebe tokens de integração.
+- O foco escolhido pelo usuário continua separado da recomendação do Mentor.
+- OpenAI API permanece ausente e o custo por tokens continua R$ 0.
+
 ## [27.8.0] - 2026-09-29
 
 ### Adicionado

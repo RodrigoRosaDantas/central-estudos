@@ -6,7 +6,9 @@ Camada de entrada para os projetos de estudo TCE-GO, SEEDF, TJDFT e PRF Administ
 
 A Central não altera nem replica o conteúdo dos projetos. O registro é preenchido pelo usuário, fica neste navegador e pode sincronizar entre aparelhos na mesma conta Supabase. Não escreve nem sincroniza horas com o Notion ou com os projetos.
 
-## Estado atual — v27.8
+## Estado atual — v27.9
+
+A v27.9.0 conecta o Mentor aos **sinais reais publicados pelos projetos**. SEEDF, TJDFT e PRF Administrativo passam a fornecer um contrato read-only com unidade atual/próxima, execução, questões, erros e revisões quando esses dados existem. O TCE-GO preserva o progresso privado: a Central só o lê quando o usuário está autenticado no Supabase, por RLS de leitura do próprio usuário. Campo ausente continua desconhecido e nunca vira zero. O Mentor continua sem OpenAI API paga.
 
 A v27.8.0 adiciona um **Mentor adaptativo local, sem OpenAI API paga**. Ele cruza a grade do dia com os blocos de estudo realmente registrados na Central, observa recência e distribuição dos últimos dias, calcula uma sugestão explicável e mostra o nível de confiança da base. A sugestão nunca muda o foco escolhido pelo usuário e não afirma desempenho, domínio, erro ou progresso quando esses dados não existem. O fechamento do dia deixa de congelar estados manuais e passa a ser preenchido a partir do registro real quando a camada operacional está disponível.
 
