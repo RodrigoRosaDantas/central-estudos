@@ -986,7 +986,7 @@ function testV28DedicatedMentor(registry) {
   assert.ok(schedule.weekdays.monday.join(",")==="seedf,tjdft,prf-adm"&&schedule.weekdays.tuesday.join(",")==="seedf,tjdft,tcego"&&schedule.weekdays.sunday.length===0,"Mentor schedule config must match the current weekly plan");
   assert.ok(css.includes(".mentor-project-grid")&&css.includes("@media(max-width:860px)")&&css.includes("@media(pointer:coarse)"),"Mentor page must be responsive and touch-aware");
   for(const asset of ["./mentor/index.html","./mentor/mentor.css?v=28.0.0","./mentor/mentor.js?v=28.0.0","./config/study-schedule-v1.json?v=28.0.0"])assert.ok(sw.includes(asset),`PWA shell missing dedicated Mentor asset: ${asset}`);
-  assert.ok(sw.includes("mentorNavigation")&&sw.includes("('./mentor/index.html')"),"offline navigation must preserve the Mentor child page");
+  assert.ok(sw.includes("mentorNavigation")&&sw.includes("'./mentor/index.html'"),"offline navigation must preserve the Mentor child page");
   pass("v28 dedicated Mentor child page, project signals and expanded offline shell");
 }
 
