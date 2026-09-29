@@ -210,16 +210,30 @@ function renderPriorityBoard(signals){
  });
 }
 function sourceLabel(signal){
- if(signal.id==="tcego"&&state.projectStates.get("tcego")?.privateStatus==="private")return["Privado autenticado","live"];
  const s=signal.contractState?.status||"unavailable";
+ if(signal.id==="tcego"){
+  const privateStatus=state.projectStates.get("tcego")?.privateStatus;
+  if(privateStatus==="private")return["Privado autenticado","live"];
+  if(privateStatus==="signed-out")return["Privado desconectado","signed-out"];
+  if(privateStatus==="empty")return["Sem registro privado","partial"];
+  if(privateStatus==="unavailable")return["Privado indisponível","unavailable"];
+ }
  if(s==="live")return["Contrato atualizado","live"];
  if(s==="partial")return["Contrato parcial","partial"];
- if(signal.id==="tcego"&&state.projectStates.get("tcego")?.privateStatus==="signed-out")return["TCE privado desconectado","signed-out"];
  return["Indisponível","unavailable"];
 }
 function renderDataHealth(signals){
  const box=$("mentor-data-health-list");box.replaceChildren();
- signals.forEach(s=>{const [label,status]=sourceLabel(s),card=node("div","mentor-source-card"),updated=s.contractState?.contract?.source?.updatedAt||s.study?.updatedAt||null;card.append(node("strong","",s.name),node("span","",updated?"Atualizado: "+fmtDate(updated):"Sem data confiável"),node("small","",s.study?.sourceRef||s.contractState?.contract?.source?.ref||"Sem sinal pedagógico"));const st=node("span","mentor-source-status",label);st.dataset.state=status;card.append(st);box.append(card)});
+ signals.forEach(s=>{
+  const [label,status]=sourceLabel(s),card=node("div","mentor-source-card"),updated=s.contractState?.contract?.source?.updatedAt||s.study?.updatedAt||null;
+  card.append(node("strong","",s.name),node("span","",updated?"Atualizado: "+fmtDate(updated):"Sem data confiável"),node("small","",s.study?.sourceRef||s.contractState?.contract?.source?.ref||"Sem sinal pedagógico"));
+  const st=node("span","mentor-source-status",label);st.dataset.state=status;card.append(st);
+  if(s.id==="tcego"){
+   const privateState=state.projectStates.get("tcego");
+   if(privateState?.reason){const note=node("small","mentor-source-private-note",privateState.reason);note.dataset.state=privateState.privateStatus||"unknown";card.append(note)}
+  }
+  box.append(card);
+});
 }
 function renderProjectCards(signals){
  const box=$("mentor-project-grid");box.replaceChildren();
@@ -245,9 +259,15 @@ function renderSources(signals){
  const box=$("mentor-source-details");box.replaceChildren();
  signals.forEach(s=>{const row=node("div","mentor-source-row"),source=s.study?.sourceRef||s.contractState?.contract?.source?.ref||"sem sinal";row.append(node("strong","",s.name+" · "+source),node("span","",s.contractState?.contract?.source?.updatedAt?"Atualização da fonte: "+s.contractState.contract.source.updatedAt:"Sem timestamp público disponível"));box.append(row)});
 }
+function reviewSummary(signals){
+ const reported=signals.filter(s=>Number.isInteger(s.study?.reviewsDue)&&s.study.reviewsDue>=0);
+ const total=reported.reduce((n,s)=>n+s.study.reviewsDue,0),sources=reported.length;
+ const coverage=!sources?"sem dados publicados":sources===signals.length?"publicadas · "+sources+"/"+signals.length+" fontes":"parcial · "+sources+"/"+signals.length+" fontes";
+ return{count:sources?String(total):"—",coverage};
+}
 function renderAll(){
- const signals=allSignals(),rec=recommendation(signals),conf=confidence(signals),studyCount=signals.filter(s=>s.study&&["confirmed","partial"].includes(s.study.evidence)).length,reviews=signals.reduce((n,s)=>n+(Number(s.study?.reviewsDue)||0),0);
- $("mentor-now-title").textContent=rec.title;$("mentor-recommendation-copy").textContent=rec.message;$("mentor-confidence").textContent=conf.label;$("mentor-confidence-note").textContent=conf.note;$("mentor-today-time").textContent=duration(totalToday());$("mentor-week-time").textContent=duration(totalWeek());$("mentor-signal-count").textContent=studyCount+"/4";$("mentor-review-count").textContent=String(reviews);$("mentor-score-label").textContent=rec.top?"prioridade explicada":"sem ação extra";$("mentor-last-refresh").textContent=state.lastRefresh?"Atualizado "+new Intl.DateTimeFormat("pt-BR",{timeZone:"America/Sao_Paulo",hour:"2-digit",minute:"2-digit"}).format(state.lastRefresh):"não atualizado";
+ const signals=allSignals(),rec=recommendation(signals),conf=confidence(signals),studyCount=signals.filter(s=>s.study&&["confirmed","partial"].includes(s.study.evidence)).length,reviews=reviewSummary(signals);
+ $("mentor-now-title").textContent=rec.title;$("mentor-recommendation-copy").textContent=rec.message;$("mentor-confidence").textContent=conf.label;$("mentor-confidence-note").textContent=conf.note;$("mentor-today-time").textContent=duration(totalToday());$("mentor-week-time").textContent=duration(totalWeek());$("mentor-signal-count").textContent=studyCount+"/4";$("mentor-review-count").textContent=reviews.count;$("mentor-review-coverage").textContent=reviews.coverage;$("mentor-score-label").textContent=rec.top?"prioridade explicada":"sem ação extra";$("mentor-last-refresh").textContent=state.lastRefresh?"Atualizado "+new Intl.DateTimeFormat("pt-BR",{timeZone:"America/Sao_Paulo",hour:"2-digit",minute:"2-digit"}).format(state.lastRefresh):"não atualizado";
  const actions=$("mentor-primary-actions");actions.replaceChildren();if(rec.top){const a=node("a","mentor-button mentor-button-primary","Abrir "+rec.top.name);a.href=studyUrl(rec.top.id);actions.append(a)}const refresh=node("button","mentor-button mentor-button-secondary","Recalcular");refresh.type="button";refresh.addEventListener("click",loadAll);actions.append(refresh);
  renderReasons(rec);renderSchedule(signals);renderPriorityBoard(signals);renderDataHealth(signals);renderProjectCards(signals);renderReviews(signals);renderSources(signals);
 }

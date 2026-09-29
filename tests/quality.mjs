@@ -988,7 +988,7 @@ function testV27DailySchedule(registry) {
   assert.ok(html.includes('id="daily-motivation-author"')&&html.includes('id="daily-motivation-source"')&&html.includes("Frases do Major Cadar · muda a cada 5 min")&&html.includes('id="daily-motivation" class="daily-motivation" aria-live="polite" aria-atomic="true"')&&html.includes("Seja forte ou seja vencido.")&&app.includes('author:"Major Cadar"')&&app.includes('second:"2-digit"')&&app.includes("setInterval(e,1e3)"),"Major Cadar quote, accessible rotation label, attribution/source and Brasília clock seconds must remain visible");
   assert.ok(quoteCss.includes("border-left:4px solid #b69cff")&&quoteCss.includes("font-size:clamp(1rem,2.2vw,1.5rem)")&&quoteCss.includes("font-weight:800")&&quoteCss.includes("#a78bfa30"),"daily quote card must keep a readable, high-contrast visual treatment");
   assert.ok(quoteCss.includes("@media(min-width:900px)")&&quoteCss.includes("grid-template-columns:.8fr 1.2fr")&&quoteCss.includes("grid-area:1/2/4/3")&&quoteCss.includes("min-height:154px"),"desktop quote must use the open header space as a balanced featured panel");
-  assert.ok(html.includes('href="./css/workspace-v26.css?v=quote-desktop-20260928"')&&sw.includes("'./css/workspace-v26.css?v=quote-desktop-20260928'")&&sw.includes("central-shell-v28.1.0-mentor-portfolio-20260929"),"current release must refresh installed PWA clients");
+  assert.ok(html.includes('href="./css/workspace-v26.css?v=quote-desktop-20260928"')&&sw.includes("'./css/workspace-v26.css?v=quote-desktop-20260928'")&&sw.includes("central-shell-v28.1.0-mentor-integrity-20260929"),"current release must refresh installed PWA clients");
   pass("v28.1.0 keeps the fixed weekly schedule and factual closeout fallback");
 }
 
@@ -1039,8 +1039,22 @@ function testV28DedicatedMentor(registry) {
   assert.ok(js.includes("PRECISÃO PUBLICADA")&&js.includes("Sem amostra de questões publicada")&&js.includes("mentor-priority-source"),"portfolio metrics must label published accuracy and missing samples without fabricating zeros");
   assert.ok(css.includes(".mentor-priority-card[data-priority=\"1\"]")&&css.includes(".mentor-priority-card[data-priority=\"4\"]")&&css.includes(".mentor-accuracy-meter")&&css.includes("@media(max-width:380px)")&&css.includes(":focus-visible"),"P1–P4 portfolio cards need distinct styling, responsive layout and visible keyboard focus");
   assert.ok(js.includes('event.key==="ArrowRight"')&&js.includes('event.key==="Home"')&&js.includes('event.key==="End"')&&js.includes("board.replaceChildren"),"tab keyboard controls and project-load fallback must be implemented");
-  for(const asset of ["./mentor/index.html","./mentor/mentor.css?v=28.1.0","./mentor/mentor.js?v=28.1.0","./config/study-schedule-v1.json?v=28.1.0"])assert.ok(sw.includes(asset),`PWA shell missing dedicated Mentor asset: ${asset}`);
+  for(const asset of ["./mentor/index.html","./mentor/mentor.css?v=28.1.0","./mentor/mentor.js?v=mentor-integrity-20260929","./config/study-schedule-v1.json?v=28.1.0"])assert.ok(sw.includes(asset),`PWA shell missing dedicated Mentor asset: ${asset}`);
   assert.ok(sw.includes("mentorNavigation")&&sw.includes("'./mentor/index.html'"),"offline navigation must preserve the Mentor child page");
+  assert.ok(mentor.includes('id="mentor-review-coverage"')&&js.includes("function reviewSummary(signals)")&&js.includes("Number.isInteger(s.study?.reviewsDue)"),"review totals must preserve absent values as unknown and report source coverage");
+  assert.ok(mentor.includes("<strong>até +10</strong>")&&mentor.includes("acréscimo progressivo, limitado a +10"),"recency explanation must match the capped progressive score");
+  assert.ok(js.includes('privateStatus==="signed-out")return["Privado desconectado","signed-out"]')&&js.includes("privateState?.reason"),"TCE private status and its reason must remain visible beside the public contract");
+  const extractMentorFunction=(name,next)=>{const start=js.indexOf(`function ${name}(`),end=js.indexOf(`\nfunction ${next}(`,start);assert.ok(start>=0&&end>start,`could not isolate Mentor function ${name}`);return js.slice(start,end).trim()};
+  const reviewSummary=vm.runInNewContext(`${extractMentorFunction("reviewSummary","renderAll")}\nreviewSummary;`);
+  const asJson=value=>JSON.parse(JSON.stringify(value));
+  assert.deepEqual(asJson(reviewSummary([{study:null},{study:{reviewsDue:null}},{study:{}}])),{count:"—",coverage:"sem dados publicados"},"unknown review totals must remain unknown");
+  assert.deepEqual(asJson(reviewSummary([{study:{reviewsDue:0}},{study:{reviewsDue:2}},{study:null}])),{count:"2",coverage:"parcial · 2/3 fontes"},"partial review totals must include only reported sources and declare coverage");
+  assert.deepEqual(asJson(reviewSummary([{study:{reviewsDue:0}},{study:{reviewsDue:0}}])),{count:"0",coverage:"publicadas · 2/2 fontes"},"a real published zero must remain distinct from missing data");
+  const healthBox={children:[],replaceChildren(...items){this.children=[...items]},append(...items){this.children.push(...items)}},mockNode=(tag,className,text)=>({tag,className,textContent:text,dataset:{},children:[],append(...items){this.children.push(...items)}});
+  const privateState={privateStatus:"signed-out",reason:"Conecte o Supabase pela Central principal."};
+  vm.runInNewContext(`${extractMentorFunction("sourceLabel","renderDataHealth")}\n${extractMentorFunction("renderDataHealth","renderProjectCards")}\nrenderDataHealth(signals);`,{state:{projectStates:new Map([["tcego",privateState]])},$:()=>healthBox,node:mockNode,fmtDate:value=>value,signals:[{id:"tcego",name:"TCE-GO",contractState:{status:"live",contract:{source:{updatedAt:"2026-09-29",ref:"public:tce"}}},study:null}]});
+  const healthText=healthBox.children.flatMap(card=>card.children.map(item=>item.textContent));
+  assert.ok(healthText.includes("Privado desconectado")&&healthText.includes(privateState.reason),"live public TCE contract must not hide the private connection state or its explanation");
   pass("v28 dedicated Mentor child page, project signals and expanded offline shell");
 }
 
