@@ -22,7 +22,12 @@
 - [x] Projetos-filhos permanecem read-only para a Central.
 - [x] Nenhuma credencial, OpenAI API ou endpoint privado novo é introduzido.
 
-## Validação
+## Validação e publicação
 
-- Suíte local `node tests/quality.mjs`: pendente nesta etapa.
-- Workflow principal e publicação Pages: confirmar após merge.
+- [x] Suíte local `node tests/quality.mjs`: PASS antes do PR.
+- [x] GitHub Actions [workflow #431](https://github.com/RodrigoRosaDantas/central-estudos/actions/runs/36596520699): PASS no commit `b4d5e4f6e234a3baf338701662259243338b7370`.
+- [x] Job **Quality gate**: success.
+- [x] Job **Deploy**, incluindo **Deploy to GitHub Pages**: success.
+- [x] PR [#22](https://github.com/RodrigoRosaDantas/central-estudos/pull/22) merged no `main`.
+
+Site: https://rodrigorosadantas.github.io/central-estudos/
