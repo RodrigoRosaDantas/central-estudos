@@ -2,10 +2,10 @@
   "use strict";
 
   const api = window.CentralStudyLogV1;
-  const catalogUrl = "./config/study-catalog-v1.json?v=27.7.1";
+  const catalogUrl = "./config/study-catalog-v1.json?v=27.7.2";
   const weekdayNames = ["Domingo", "Segunda-feira", "Terça-feira", "Quarta-feira", "Quinta-feira", "Sexta-feira", "Sábado"];
   const weekdayKeys = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
-  const projectIds = { P1: "seedf", P2: "tjdft", P3: "tcego", PRF: "prf-adm" };
+  const projectIds = { P1: "seedf", P2: "tjdft", P3: "tcego", P4: "prf-adm" };
   const fallback = {
     seedf: { name: "SEEDF", groups: [{ label: "Matéria", items: ["Leis — Leis Primeiro", "Ciclo vigente — unidade Dxx", "Questões / revisão", "Outro assunto — detalhe abaixo"] }] },
     tjdft: { name: "TJDFT", groups: [{ label: "Matéria", items: ["Português Primeiro", "RLM Preventivo", "Revisão integrada", "Outro assunto — detalhe abaixo"] }] },
@@ -247,7 +247,7 @@
       const response = await fetch(catalogUrl, { cache: "no-cache" });
       if (!response.ok) throw new Error("Catálogo indisponível");
       const data = await response.json();
-      if (data.version !== "27.7.1" || !data.projects || !["seedf", "tjdft", "tcego", "prf-adm"].every(id => data.projects[id]?.groups?.length)) throw new Error("Catálogo inválido");
+      if (data.version !== "27.7.2" || !data.projects || !["seedf", "tjdft", "tcego", "prf-adm"].every(id => data.projects[id]?.groups?.length)) throw new Error("Catálogo inválido");
       for (const project of Object.values(data.projects)) {
         for (const group of project.groups) {
           if (!Array.isArray(group.items) || group.items.some(item => typeof item !== "string" || item.length > 100)) throw new Error("Matéria inválida");

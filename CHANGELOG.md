@@ -1,5 +1,12 @@
 # CHANGELOG — Central de Estudos
 
+## [27.7.2] - 2026-09-29
+
+### Corrigido
+- As linhas de segunda, quarta e sexta passam a identificar PRF Administrativo como P4, conforme a faixa de prioridades.
+- O registro guiado associa P4 ao site do PRF Administrativo sem alterar os dias ou a grade semanal.
+- Cache da Central atualizado para levar o ajuste também às instalações PWA.
+
 ## [27.7.1] - 2026-09-29
 
 ### Corrigido
