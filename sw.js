@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'central-shell-v27.7.3-guided-log-20260928-supabase-local-logout-20260929';
+const CACHE_VERSION = 'central-shell-v27.8.0-adaptive-mentor-20260929';
 const APP_SHELL = [
 './',
 './index.html',
@@ -13,24 +13,24 @@ const APP_SHELL = [
 './css/workspace-v26.css?v=quote-desktop-20260928',
 './css/workspace-v27.css',
 './css/study-log-v1.css',
-'./js/app.js?v=27.7.3',
+'./js/app.js?v=27.8.0',
 './js/personalization-v5.js',
 './js/pwa-v6.js',
 './js/timeline-v8.js',
 './js/pro-v11.js',
 './js/contracts-v12.js',
-'./js/command-context-v1.js?v=27.7.3',
+'./js/command-context-v1.js?v=27.8.0',
 './js/workspace-v24.js',
 './js/study-log-v1.js',
-'./config/projects.json?v=27.7.3'
+'./config/projects.json?v=27.8.0'
 ];
-const RUNTIME_CACHE = 'central-study-runtime-v27.7.3';
+const RUNTIME_CACHE = 'central-study-runtime-v27.8.0';
 const RUNTIME_ASSETS = new Set([
 './js/study-sync-v1.js?v=local-logout-20260929',
-'./js/study-planner-v1.js?v=27.7.3',
-'./css/study-planner-v1.css?v=27.7.3',
+'./js/study-planner-v1.js?v=27.8.0',
+'./css/study-planner-v1.css?v=27.8.0',
 './css/home-v1.css?v=home-20260929d',
-'./config/study-catalog-v1.json?v=27.7.3'
+'./config/study-catalog-v1.json?v=27.8.0'
 ].map((path) => new URL(path, self.registration.scope).href));
 self.addEventListener('install', (event) => {
 event.waitUntil(caches.open(CACHE_VERSION).then((cache) => cache.addAll(APP_SHELL)));
