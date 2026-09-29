@@ -1,5 +1,13 @@
 # CHANGELOG — Central de Estudos
 
+## [27.7.1] - 2026-09-29
+
+### Corrigido
+- O painel Hoje passa a abrir o site próprio do PRF Administrativo identificado como P4.
+- O resumo de Hoje deixa de exibir unidade ou ação do TCE-GO sem confirmação no projeto; a grade P3 permanece intacta.
+- O fechamento reflete a última execução informada e o estado mais recente do PRF no Notion, sem inventar duração ou sessão concluída.
+- Cache do app e do módulo operacional atualizado para a instalação PWA receber a correção.
+
 ## [27.7.0] - 2026-09-28
 
 ### Interface refinada — 2026-09-29

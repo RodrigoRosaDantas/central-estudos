@@ -1,165 +1,186 @@
 {
-  "version": "27.7.0",
-  "asOf": "2026-09-28",
+  "version": "27.7.1",
+  "asOf": "2026-09-29",
   "notice": "Catálogo de referência. A sequência, a liberação de materiais e o progresso continuam nos projetos de origem; este registro só mede o tempo informado.",
   "projects": {
     "seedf": {
       "name": "SEEDF",
       "groups": [
-        {"label": "Leis — Leis Primeiro", "items": [
-          "Trilha de leis — Leis Primeiro",
-          "CF/88 — Educação e Administração Pública",
-          "Lei nº 9.394/1996 — LDB",
-          "Portaria SEEDF nº 15/2015 — Regimento Escolar",
-          "Lei nº 15.388/2026 — Plano Nacional de Educação",
-          "LC DF nº 840/2011 — Regime Jurídico",
-          "Lei Orgânica do DF — recorte SEEDF",
-          "Lei DF nº 4.751/2012 — Gestão Democrática",
-          "Resolução CEDF nº 2/2023 — Educação Básica no DF",
-          "Lei nº 14.533/2023 — Educação Digital",
-          "Portaria SEEDF nº 167/2026 — Regimento Interno",
-          "Lei nº 5.106/2013 — Carreira PPGE"
-        ]},
-        {"label": "Ciclo, questões e revisão", "items": [
-          "Ciclo vigente — unidade Dxx (confira no projeto)",
-          "Questões do dia — SEEDF",
-          "Revisão do ciclo — somente se prevista",
-          "Outro assunto — detalhe abaixo"
-        ]}
+        {
+          "label": "Leis — Leis Primeiro",
+          "items": [
+            "Trilha de leis — Leis Primeiro",
+            "CF/88 — Educação e Administração Pública",
+            "Lei nº 9.394/1996 — LDB",
+            "Portaria SEEDF nº 15/2015 — Regimento Escolar",
+            "Lei nº 15.388/2026 — Plano Nacional de Educação",
+            "LC DF nº 840/2011 — Regime Jurídico",
+            "Lei Orgânica do DF — recorte SEEDF",
+            "Lei DF nº 4.751/2012 — Gestão Democrática",
+            "Resolução CEDF nº 2/2023 — Educação Básica no DF",
+            "Lei nº 14.533/2023 — Educação Digital",
+            "Portaria SEEDF nº 167/2026 — Regimento Interno",
+            "Lei nº 5.106/2013 — Carreira PPGE"
+          ]
+        },
+        {
+          "label": "Ciclo, questões e revisão",
+          "items": [
+            "Ciclo vigente — unidade Dxx (confira no projeto)",
+            "Questões do dia — SEEDF",
+            "Revisão do ciclo — somente se prevista",
+            "Outro assunto — detalhe abaixo"
+          ]
+        }
       ]
     },
     "tjdft": {
       "name": "TJDFT",
       "groups": [
-        {"label": "Português Primeiro", "items": [
-          "P01 — Classes gramaticais e função morfossintática",
-          "P02 — Morfologia: formação, flexão nominal e verbal, tempos e modos",
-          "P03 — Sintaxe I: frase, oração, período, sujeito, predicado e núcleos",
-          "P04 — Sintaxe II: complementos, predicativos, vozes verbais e partícula se",
-          "P05 — Coordenação, subordinação e conjunções",
-          "P06 — Concordância verbal",
-          "P07 — Concordância nominal",
-          "P08 — Transitividade e regência verbal",
-          "P09 — Regência nominal e emprego das preposições",
-          "P10 — Crase",
-          "P11 — Pronomes, referenciação e colocação pronominal",
-          "P12 — Pontuação baseada em sintaxe",
-          "P13 — Coesão, conectores, referenciação e progressão textual",
-          "P14 — Semântica, vocabulário e relações de sentido",
-          "P15 — Reescrita, substituição, deslocamento e paralelismo",
-          "P16 — Ortografia e acentuação",
-          "P17 — Gêneros e tipos textuais, interpretação e variação linguística",
-          "P18 — Consolidação FGV/TJDFT + caderno de erros"
-        ]},
-        {"label": "RLM Preventivo", "items": [
-          "RL01 — Proposição, sentença aberta e valor lógico",
-          "RL02 — Conectivos e tabelas-verdade",
-          "RL03 — Condicional, bicondicional e condição necessária/suficiente",
-          "RL04 — Negações, equivalências e Leis de De Morgan",
-          "RL05 — Quantificadores e negação de quantificadores",
-          "RL06 — Argumentação, validade, inferências e silogismos",
-          "RL07 — Conjuntos, diagramas de Venn e inclusão-exclusão",
-          "RL08 — Princípios aditivo e multiplicativo de contagem",
-          "RL09 — Permutação, arranjo e combinação",
-          "RL10 — Probabilidade básica",
-          "RL11 — Sequências, padrões, PA e PG",
-          "RL12 — Ordenação, cruzamento de informações e problemas dedutivos",
-          "RL13 — Consolidação mista + saneamento do caderno de erros"
-        ]},
-        {"label": "Revisão integrada", "items": [
-          "REV01 — Revisão 01 — dias 1 a 5",
-          "REV02 — Revisão 02 — dias 6 a 10 + retomada acumulada",
-          "REV03 — Revisão 03 — dias 11 a 15 + últimos 15 dias estudados",
-          "REV04 — Revisão 04 — dias 16 a 20 + retomada acumulada",
-          "REV05 — Revisão 05 — dias 21 a 25 + retomada acumulada",
-          "REV06 — Revisão 06 — dias 26 a 30 + últimos 30 dias estudados",
-          "Outro assunto — detalhe abaixo"
-        ]}
+        {
+          "label": "Português Primeiro",
+          "items": [
+            "P01 — Classes gramaticais e função morfossintática",
+            "P02 — Morfologia: formação, flexão nominal e verbal, tempos e modos",
+            "P03 — Sintaxe I: frase, oração, período, sujeito, predicado e núcleos",
+            "P04 — Sintaxe II: complementos, predicativos, vozes verbais e partícula se",
+            "P05 — Coordenação, subordinação e conjunções",
+            "P06 — Concordância verbal",
+            "P07 — Concordância nominal",
+            "P08 — Transitividade e regência verbal",
+            "P09 — Regência nominal e emprego das preposições",
+            "P10 — Crase",
+            "P11 — Pronomes, referenciação e colocação pronominal",
+            "P12 — Pontuação baseada em sintaxe",
+            "P13 — Coesão, conectores, referenciação e progressão textual",
+            "P14 — Semântica, vocabulário e relações de sentido",
+            "P15 — Reescrita, substituição, deslocamento e paralelismo",
+            "P16 — Ortografia e acentuação",
+            "P17 — Gêneros e tipos textuais, interpretação e variação linguística",
+            "P18 — Consolidação FGV/TJDFT + caderno de erros"
+          ]
+        },
+        {
+          "label": "RLM Preventivo",
+          "items": [
+            "RL01 — Proposição, sentença aberta e valor lógico",
+            "RL02 — Conectivos e tabelas-verdade",
+            "RL03 — Condicional, bicondicional e condição necessária/suficiente",
+            "RL04 — Negações, equivalências e Leis de De Morgan",
+            "RL05 — Quantificadores e negação de quantificadores",
+            "RL06 — Argumentação, validade, inferências e silogismos",
+            "RL07 — Conjuntos, diagramas de Venn e inclusão-exclusão",
+            "RL08 — Princípios aditivo e multiplicativo de contagem",
+            "RL09 — Permutação, arranjo e combinação",
+            "RL10 — Probabilidade básica",
+            "RL11 — Sequências, padrões, PA e PG",
+            "RL12 — Ordenação, cruzamento de informações e problemas dedutivos",
+            "RL13 — Consolidação mista + saneamento do caderno de erros"
+          ]
+        },
+        {
+          "label": "Revisão integrada",
+          "items": [
+            "REV01 — Revisão 01 — dias 1 a 5",
+            "REV02 — Revisão 02 — dias 6 a 10 + retomada acumulada",
+            "REV03 — Revisão 03 — dias 11 a 15 + últimos 15 dias estudados",
+            "REV04 — Revisão 04 — dias 16 a 20 + retomada acumulada",
+            "REV05 — Revisão 05 — dias 21 a 25 + retomada acumulada",
+            "REV06 — Revisão 06 — dias 26 a 30 + últimos 30 dias estudados",
+            "Outro assunto — detalhe abaixo"
+          ]
+        }
       ]
     },
     "tcego": {
       "name": "TCE-GO",
       "groups": [
-        {"label": "Matérias e sessões do projeto", "items": [
-          "Administrativo + Constitucional",
-          "Administração",
-          "Administração Estratégica",
-          "AFO",
-          "AFO + Licitações",
-          "Auditoria I",
-          "Auditoria II",
-          "Auditoria III",
-          "Auditoria IV",
-          "Bloco aplicado FCC + Redação R4",
-          "CASP I",
-          "CASP II",
-          "CASP III",
-          "CASP IV",
-          "CASP V",
-          "CASP VI",
-          "CASP VII",
-          "CASP VIII",
-          "CASP IX",
-          "Controle + CASP",
-          "Controle Externo",
-          "Controle Externo II",
-          "Controle Externo III",
-          "Controle Externo IV",
-          "Direito Administrativo",
-          "Legislação Institucional",
-          "Legislação Institucional I",
-          "Legislação Institucional II",
-          "Legislação Institucional III",
-          "Legislação Institucional IV",
-          "Legislação Institucional V",
-          "Legislação Institucional VI",
-          "Licitações",
-          "Matemática/RLM",
-          "Português",
-          "Pré-checkpoint D90",
-          "Outro assunto — detalhe abaixo"
-        ]}
+        {
+          "label": "Matérias e sessões do projeto",
+          "items": [
+            "Administrativo + Constitucional",
+            "Administração",
+            "Administração Estratégica",
+            "AFO",
+            "AFO + Licitações",
+            "Auditoria I",
+            "Auditoria II",
+            "Auditoria III",
+            "Auditoria IV",
+            "Bloco aplicado FCC + Redação R4",
+            "CASP I",
+            "CASP II",
+            "CASP III",
+            "CASP IV",
+            "CASP V",
+            "CASP VI",
+            "CASP VII",
+            "CASP VIII",
+            "CASP IX",
+            "Controle + CASP",
+            "Controle Externo",
+            "Controle Externo II",
+            "Controle Externo III",
+            "Controle Externo IV",
+            "Direito Administrativo",
+            "Legislação Institucional",
+            "Legislação Institucional I",
+            "Legislação Institucional II",
+            "Legislação Institucional III",
+            "Legislação Institucional IV",
+            "Legislação Institucional V",
+            "Legislação Institucional VI",
+            "Licitações",
+            "Matemática/RLM",
+            "Português",
+            "Pré-checkpoint D90",
+            "Outro assunto — detalhe abaixo"
+          ]
+        }
       ]
     },
     "prf-adm": {
       "name": "PRF Administrativo",
       "groups": [
-        {"label": "Roda PRFADM01–33 — siga o próximo código no Notion", "items": [
-          "PRFADM01 — Informática I",
-          "PRFADM02 — Lei 8.112/1990 I",
-          "PRFADM03 — Administração Geral",
-          "PRFADM04 — Arquivologia I",
-          "PRFADM05 — Lei 8.112/1990 II",
-          "PRFADM06 — Administração Pública e Governança",
-          "PRFADM07 — Informática II",
-          "PRFADM08 — Lei 9.784/1999",
-          "PRFADM09 — Gestão de Pessoas",
-          "PRFADM10 — Arquivologia II",
-          "PRFADM11 — Ética Pública Federal",
-          "PRFADM12 — Processos e Projetos",
-          "PRFADM13 — Informática III",
-          "PRFADM14 — LGPD",
-          "PRFADM15 — Lei 14.133/2021 I",
-          "PRFADM16 — Arquivologia III",
-          "PRFADM17 — Constitucional aplicado",
-          "PRFADM18 — Contratos Administrativos",
-          "PRFADM19 — Informática IV",
-          "PRFADM20 — Direito Administrativo",
-          "PRFADM21 — Recursos Materiais e Patrimônio",
-          "PRFADM22 — Redação Oficial Federal",
-          "PRFADM23 — AFO I",
-          "PRFADM24 — Compras e Logística",
-          "PRFADM25 — Transparência e Integridade",
-          "PRFADM26 — AFO II",
-          "PRFADM27 — Inovação e Transformação Digital",
-          "PRFADM28 — PRF — Base Institucional",
-          "PRFADM29 — Questões Integradas",
-          "PRFADM30 — Língua Portuguesa",
-          "PRFADM31 — Raciocínio Lógico",
-          "PRFADM32 — Discursiva + Atualidades",
-          "PRFADM33 — Fechamento da volta",
-          "Outro assunto — detalhe abaixo"
-        ]}
+        {
+          "label": "Roda PRFADM01–33 — siga o próximo código no Notion",
+          "items": [
+            "PRFADM01 — Informática I",
+            "PRFADM02 — Lei 8.112/1990 I",
+            "PRFADM03 — Administração Geral",
+            "PRFADM04 — Arquivologia I",
+            "PRFADM05 — Lei 8.112/1990 II",
+            "PRFADM06 — Administração Pública e Governança",
+            "PRFADM07 — Informática II",
+            "PRFADM08 — Lei 9.784/1999",
+            "PRFADM09 — Gestão de Pessoas",
+            "PRFADM10 — Arquivologia II",
+            "PRFADM11 — Ética Pública Federal",
+            "PRFADM12 — Processos e Projetos",
+            "PRFADM13 — Informática III",
+            "PRFADM14 — LGPD",
+            "PRFADM15 — Lei 14.133/2021 I",
+            "PRFADM16 — Arquivologia III",
+            "PRFADM17 — Constitucional aplicado",
+            "PRFADM18 — Contratos Administrativos",
+            "PRFADM19 — Informática IV",
+            "PRFADM20 — Direito Administrativo",
+            "PRFADM21 — Recursos Materiais e Patrimônio",
+            "PRFADM22 — Redação Oficial Federal",
+            "PRFADM23 — AFO I",
+            "PRFADM24 — Compras e Logística",
+            "PRFADM25 — Transparência e Integridade",
+            "PRFADM26 — AFO II",
+            "PRFADM27 — Inovação e Transformação Digital",
+            "PRFADM28 — PRF — Base Institucional",
+            "PRFADM29 — Questões Integradas",
+            "PRFADM30 — Língua Portuguesa",
+            "PRFADM31 — Raciocínio Lógico",
+            "PRFADM32 — Discursiva + Atualidades",
+            "PRFADM33 — Fechamento da volta",
+            "Outro assunto — detalhe abaixo"
+          ]
+        }
       ]
     }
   }
