@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "timezone": "America/Sao_Paulo",
+  "weekdays": {
+    "monday": [
+      "seedf",
+      "tjdft",
+      "prf-adm"
+    ],
+    "tuesday": [
+      "seedf",
+      "tjdft",
+      "tcego"
+    ],
+    "wednesday": [
+      "seedf",
+      "tjdft",
+      "prf-adm"
+    ],
+    "thursday": [
+      "seedf",
+      "tjdft",
+      "tcego"
+    ],
+    "friday": [
+      "seedf",
+      "tjdft",
+      "prf-adm"
+    ],
+    "saturday": [
+      "seedf",
+      "tjdft",
+      "tcego"
+    ],
+    "sunday": []
+  },
+  "notes": {
+    "saturday": "SEEDF e TJDFT em revisão; TCE-GO em sessão prevista.",
+    "sunday": "Descanso. D7/D20 somente quando o próprio projeto indicar."
+  }
+}
