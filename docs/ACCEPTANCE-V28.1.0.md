@@ -8,4 +8,6 @@
 - [x] P1–P4 e suas rotinas Notion permanecem sem alteração.
 - [x] TCE-GO continua com estado de progresso privado.
 - [x] O cronograma semanal e o foco padrão passam na regressão.
-- [ ] CI do PR, auditoria de segurança, QA desktop/mobile e publicação em `main`.
+- [x] CI do PR, auditoria de segurança, QA desktop/mobile e publicação da integração em `main`.
+- [x] Inspeção pública confirma quatro cards e contratos reais P1–P4, com ausência de dado apresentada como desconhecida.
+- [x] Sites individuais seguem acessíveis e nenhuma escrita foi feita nos quatro repositórios de projeto.

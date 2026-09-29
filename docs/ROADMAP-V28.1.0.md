@@ -1,6 +1,6 @@
 # Roadmap v28.1.0 — Central ↔ Jornada
 
-Status: `READY_FOR_RELEASE` after the local and pull request gates pass.
+Status: `PUBLISHED`; implementation and its post-deploy contract view are live. A title-only follow-up is recorded in the final audit.
 
 ## Objetivo
 
@@ -22,3 +22,10 @@ Integrar a Central Operacional (`central-estudos`) e o Painel Estratégico/Jorna
 - Nenhum segredo aparece em arquivos públicos.
 - Ações do GitHub publicam Pages somente a partir de `main`.
 - Merge depende de todos os gates verdes.
+
+## Registro de publicação
+
+- Central PR #28 passou no quality workflow e publicou a versão `28.1.0` no GitHub Pages.
+- Jornada PR #27 passou nas suítes de auditoria e UI e publicou o Painel Estratégico.
+- Os ajustes de cache da Jornada PR #28 passaram nas suítes; a sincronização Notion preservou o fluxo e alterou apenas `data/snapshot.json`.
+- O estado vivo P1–P4 e os hashes de CI/deploy estão em [`FINAL-AUDIT-V28.1.0.md`](FINAL-AUDIT-V28.1.0.md).
