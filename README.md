@@ -6,7 +6,10 @@ Camada de entrada para os projetos de estudo TCE-GO, SEEDF, TJDFT e PRF Administ
 
 A Central não altera nem replica o conteúdo dos projetos. O registro é preenchido pelo usuário, fica neste navegador e pode sincronizar entre aparelhos na mesma conta Supabase. Não escreve nem sincroniza horas com o Notion ou com os projetos.
 
-## Estado atual — v28.0
+## Estado atual — v28.0.1
+
+A v28.0.1 mantém TCE-GO como foco padrão e PRF Administrativo como P4 nas segundas, quartas e sextas. O fechamento diário voltou a atualizar mesmo com o painel antigo do Mentor removido da Home. Ele separa tempo lançado na Central de execução confirmada pelo projeto, usa a data de Brasília e mantém desconhecida qualquer informação ausente.
+
 
 A v28.0.0 transforma o **Mentor em uma página filha própria** (`/mentor/`). A Home volta a ser um centro de comando enxuto; o Mentor ganha espaço dedicado para recomendação atual, confiança, motivos, grade do dia, leitura individual dos quatro projetos, revisões/riscos e metodologia transparente. A página usa os contratos read-only de SEEDF/TJDFT/PRF, o histórico local da Central e o TCE-GO privado apenas quando há sessão Supabase válida. Continua sem OpenAI API paga. O app shell foi ampliado por autorização explícita para **256 KiB bruto / 80 KiB gzip**, permitindo publicar o Mentor completo também como parte do PWA.
 
