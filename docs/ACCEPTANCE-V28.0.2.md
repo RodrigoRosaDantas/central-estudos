@@ -15,7 +15,9 @@
 - [x] Os três estados PRF (publicado, cache antigo e indisponível) têm teste de regressão.
 - [x] Cache de aplicação/PWA atualizado para v28.0.2.
 
-## Validação
+## Validação e publicação
 
-- Suíte local node tests/quality.mjs: PASS.
-- Workflow principal e publicação Pages: pendentes de confirmação após merge.
+- [x] Suíte local `node tests/quality.mjs`: PASS.
+- [x] GitHub Actions [workflow #433](https://github.com/RodrigoRosaDantas/central-estudos/actions/runs/36605206713): success.
+- [x] Job **Quality gate** e job **Deploy**, incluindo **Deploy to GitHub Pages**: success.
+- [x] PR [#24](https://github.com/RodrigoRosaDantas/central-estudos/pull/24) integrado ao `main`.
