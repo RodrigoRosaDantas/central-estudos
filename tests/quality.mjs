@@ -989,6 +989,16 @@ function testStudyLog(registry) {
   pass("v27.6 local study log, date/project validation, weekly totals and backups");
 }
 
+function testStudySync() {
+  const html = read("index.html"), sw = read("sw.js"), source = read("js/study-sync-v1.js");
+  assert.ok(source.includes('/auth/v1/logout?scope=local'), "disconnecting this device must not revoke other Supabase sessions");
+  assert.ok(html.includes("./js/study-sync-v1.js?v=local-logout-20260929") && sw.includes("./js/study-sync-v1.js?v=local-logout-20260929"), "the fixed sync module must load in online and installed PWA clients");
+  assert.ok(source.includes("create_user:false"), "Central sync must authenticate only existing Supabase users");
+  assert.ok(source.includes("/rest/v1/central_study_logs") && source.includes("resolution=ignore-duplicates") && source.includes("user_id"), "sync writes must target the Central table idempotently and scope rows by user");
+  assert.ok(source.includes("state.accountId&&state.accountId!==user.id"), "a device bound to one account must not merge another account's records");
+  assert.ok(!source.includes("service_role") && !source.includes("sb_secret_") && !source.includes("tce_progress_state"), "browser sync must not expose server secrets or couple to TCE progress tables");
+  pass("optional Supabase study sync, existing-account auth and device-local logout");
+}
 function testStudyPlanner(registry) {
   const html = read("index.html"), sw = read("sw.js"), planner = read("js/study-planner-v1.js"), css = read("css/study-planner-v1.css");
   const catalog = JSON.parse(read("config/study-catalog-v1.json"));
@@ -1259,6 +1269,7 @@ function testSecurityAndContracts(registry) {
     "js/operational-v13.js",
     "js/workspace-v24.js",
     "js/study-log-v1.js",
+    "js/study-sync-v1.js",
     "js/study-planner-v1.js",
     "config/study-catalog-v1.json",
     "css/study-log-v1.css",
@@ -1298,6 +1309,7 @@ const syntaxFiles = [
   "js/operational-v13.js",
   "js/workspace-v24.js",
   "js/study-log-v1.js",
+  "js/study-sync-v1.js",
   "js/study-planner-v1.js",
   "sw.js"
 ];
@@ -1338,6 +1350,7 @@ testV23TodayMentor();
 testV24ScreensAndViews(registry);
 testV27DailySchedule(registry);
 testStudyLog(registry);
+testStudySync();
 testStudyPlanner(registry);
 testCommandContext();
 testV274PrfSiteAndToolDirectory(registry);

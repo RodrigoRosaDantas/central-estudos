@@ -1,16 +1,16 @@
 # Central de Estudos
 
-Camada de entrada para os projetos de estudo TCE-GO, SEEDF, TJDFT e PRF Administrativo, com uma seção separada para a Plataforma de Questões e um registro local de tempo estudado.
+Camada de entrada para os projetos de estudo TCE-GO, SEEDF, TJDFT e PRF Administrativo, com uma seção separada para a Plataforma de Questões e um registro local-first de tempo estudado, com sincronização opcional entre aparelhos.
 
 > **A Central observa e direciona. Os projetos executam e decidem.**
 
-A Central não altera nem replica o conteúdo dos projetos. O registro de estudo é preenchido pelo usuário e fica neste navegador; não sincroniza com os projetos nem com o Notion.
+A Central não altera nem replica o conteúdo dos projetos. O registro é preenchido pelo usuário, fica neste navegador e pode sincronizar entre aparelhos na mesma conta Supabase. Não escreve nem sincroniza horas com o Notion ou com os projetos.
 
 ## Estado atual — v27.7
 
 A v27.7.0 torna o registro diário guiado pela grade: escolha a semana e o dia, selecione uma atividade prevista, depois a matéria/unidade e a duração real. O tempo só entra no histórico após confirmação explícita. Os catálogos cobrem as leis e trilhas SEEDF, P01–P18/RL01–RL13/REV01–REV06 do TJDFT, as 36 matérias atuais de estudo do TCE-GO e PRFADM01–PRFADM33. Dia e semana selecionados atualizam os totais locais.
 
-O cronograma permanece intacto. Nenhuma opção selecionada é tratada como estudo concluído, e nenhum projeto avança automaticamente. Os registros existentes continuam no mesmo armazenamento local, com exportação e restauração JSON; não sincronizam com Notion nem com outros aparelhos. Os catálogos são uma fotografia de 28/09/2026: confira ordem, liberação de materiais e progresso no projeto de origem. O registro manual continua disponível se a camada guiada não carregar. Horas informadas medem tempo, não domínio ou progresso. A grade de domingo continua protegida.
+O cronograma permanece intacto. Nenhuma opção selecionada é tratada como estudo concluído, e nenhum projeto avança automaticamente. Os registros ficam neste navegador, com exportação e restauração JSON, e podem sincronizar entre aparelhos depois de entrar na mesma conta Supabase já cadastrada. Essa sincronização é opcional, não conversa com o Notion e não altera projetos-filhos. Os catálogos são uma fotografia de 28/09/2026: confira ordem, liberação de materiais e progresso no projeto de origem. O registro manual continua disponível se a camada guiada não carregar. Horas informadas medem tempo, não domínio ou progresso. A grade de domingo continua protegida.
 
 O fechamento do dia da v27.5.0 continua separando grade prevista, bloqueio editorial e retomada. Os contratos em Evolução mostram a origem e a atualização do estado publicado; esses sinais não confirmam uma sessão individual. O PRF continua sem contrato de status e mantém o Notion como fonte de verdade.
 
@@ -197,7 +197,7 @@ Capacidades consolidadas:
 - observabilidade somente leitura, não bloqueante, com disponibilidade, publicação técnica e deploy separados;
 - falhas de rede/rate limit tratadas sem falso estado offline;
 - linha do tempo local de acessos separada de atividade técnica e sem inferência pedagógica;
-- PWA network-first e shell offline com o registro local de estudo; a interface de status publicada e os controles avançados do catálogo continuam carregando pela rede; cache `central-shell-v27.6.1-study-log-20260928` restrito à Central;
+- PWA network-first e shell offline com o registro local; a sincronização opcional via Supabase exige conexão. Status publicado e controles avançados do catálogo continuam carregando pela rede; o cache fica restrito à Central;
 - quality gate automatizado antes de todo deploy;
 - CSP, escape de conteúdo, HTTPS, contraste, teclado, forced colors e touch targets auditados;
 - orçamento de shell <= 128 KiB na geração v16+ (v15 fechou <= 120 KiB) e zero dependências externas de JS/CSS;
@@ -227,4 +227,4 @@ A fonte dinâmica de verdade é `config/projects.json` (schema v3). Cada item de
 
 ## Governança e auditoria
 
-A esteira histórica v1→v10 permanece congelada em `docs/V10-CHECKPOINT.md` e `docs/FINAL-AUDIT-V10.md`. A geração v11→v15 permanece congelada em `docs/ROADMAP-V15.md` e `docs/V15-CHECKPOINT.md`. A geração v16→v20 é encerrada pela auditoria terminal em `docs/FINAL-AUDIT-V20.md`. A esteira terminal v21 Presença e Ritmo está registrada em `docs/ROADMAP-V21.md` e `docs/V21-CHECKPOINT.md`. As releases recentes estão registradas em seus respectivos roadmaps, critérios de aceitação e auditorias: v27.1.1 (catálogo e ferramenta), v27.2.2 (rotação das frases do Major Cadar), v27.3.0 (destaque do dia e comparação local de contratos), v27.4.0 (site GitHub Pages do PRF com acesso ao Notion preservado) e v27.4.1 (redesenho desktop da frase do Major Cadar) e v27.4.2 (PRF P4) e v27.4.3 (correção do ciclo PRF e manifesto PWA), v27.5.0 (fechamento do dia) e v27.6.0 (registro local de tempo por projeto/trilha/tópico) e v27.6.1 (ajuste visual dos campos de duração) e v27.7.0 (registro guiado por dia e matéria).
+A esteira histórica v1→v10 permanece congelada em `docs/V10-CHECKPOINT.md` e `docs/FINAL-AUDIT-V10.md`. A geração v11→v15 permanece congelada em `docs/ROADMAP-V15.md` e `docs/V15-CHECKPOINT.md`. A geração v16→v20 é encerrada pela auditoria terminal em `docs/FINAL-AUDIT-V20.md`. A esteira terminal v21 Presença e Ritmo está registrada em `docs/ROADMAP-V21.md` e `docs/V21-CHECKPOINT.md`. As releases recentes estão registradas em seus respectivos roadmaps, critérios de aceitação e auditorias: v27.1.1 (catálogo e ferramenta), v27.2.2 (rotação das frases do Major Cadar), v27.3.0 (destaque do dia e comparação local de contratos), v27.4.0 (site GitHub Pages do PRF com acesso ao Notion preservado) e v27.4.1 (redesenho desktop da frase do Major Cadar) e v27.4.2 (PRF P4) e v27.4.3 (correção do ciclo PRF e manifesto PWA), v27.5.0 (fechamento do dia) e v27.6.0 (registro local de tempo por projeto/trilha/tópico) e v27.6.1 (ajuste visual dos campos de duração) e v27.7.0 (registro guiado por dia e matéria, com sincronização Supabase opcional documentada em `docs/STUDY-HOURS-SUPABASE.md`).

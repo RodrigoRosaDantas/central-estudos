@@ -5,11 +5,15 @@
 ### Added
 - Seletor de semana e dia que reaproveita os cartões da grade semanal vigente.
 - Seleção guiada das unidades e matérias catalogadas de SEEDF, TJDFT, TCE-GO e PRF.
-- Totais do dia e da semana acompanham a seleção; registro continua local e exige confirmação do estudo real.
+- Totais do dia e da semana acompanham a seleção; registro local-first, com sincronização Supabase opcional para conta já cadastrada, e confirmação do estudo real.
+
+### Fixed in post-release audit — 2026-09-29
+- “Desconectar deste aparelho” agora encerra só a sessão atual (`scope=local`), preservando logins em outros dispositivos.
+- O cache PWA carrega a correção pelo novo caminho versionado do módulo de sincronização.
 
 ### Preserved
 - Grade, prioridades, blocos previstos, histórico e esquema de backup. Nenhum projeto avança automaticamente.
-- Domingo protegido e fontes de projeto no Notion; a camada central não escreve nem sincroniza progresso.
+- Domingo protegido e fontes de projeto no Notion; horas sincronizam apenas na tabela isolada da Central, sem escrita no Notion ou nos projetos-filhos.
 
 
 ## [27.6.1] - 2026-09-28

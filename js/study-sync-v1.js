@@ -107,7 +107,7 @@ async function sendMagicLink(event){
 }
 async function signOut(){
  const session=state.session;
- if(session?.access_token){try{await fetch(SUPABASE_URL+"/auth/v1/logout",{method:"POST",headers:authHeaders(session.access_token)})}catch{}}
+ if(session?.access_token){try{await fetch(SUPABASE_URL+"/auth/v1/logout?scope=local",{method:"POST",headers:authHeaders(session.access_token)})}catch{}}
  state.session=null;saveState();$("study-sync-signout").hidden=true;renderStatus("Desconectado. Os registros continuam guardados neste aparelho.");
 }
 function syncUrl(){
