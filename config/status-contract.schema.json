@@ -104,6 +104,151 @@
           "maxItems": 10
         }
       }
+    },
+    "study": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "evidence",
+        "sourceRef",
+        "updatedAt",
+        "trail",
+        "lastCompletedUnit",
+        "nextUnit",
+        "lastStudiedAt",
+        "questionsDone",
+        "correct",
+        "errors",
+        "doubts",
+        "accuracy",
+        "reviewsDue",
+        "nextReviewAt",
+        "activeErrors",
+        "completedSessions",
+        "totalSessions",
+        "notes"
+      ],
+      "properties": {
+        "evidence": {
+          "enum": [
+            "confirmed",
+            "partial",
+            "planned",
+            "unavailable"
+          ]
+        },
+        "sourceRef": {
+          "type": "string",
+          "minLength": 1
+        },
+        "updatedAt": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "trail": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "lastCompletedUnit": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "nextUnit": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "lastStudiedAt": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "questionsDone": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "correct": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "errors": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "doubts": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "accuracy": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 1
+        },
+        "reviewsDue": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "nextReviewAt": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "activeErrors": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "completedSessions": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "totalSessions": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "notes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 8
+        }
+      }
     }
   }
 }
