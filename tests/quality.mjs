@@ -917,7 +917,7 @@ function testV27DailySchedule(registry) {
   const cards=Object.fromEntries(days.map(key=>[key,day(key)]));
   const weekdays=days.slice(0,5);
   for(const key of weekdays)assert.ok(cards[key].includes(">SEEDF</a>")&&cards[key].includes(">TJDFT</a>")&&cards[key].includes("Estudo"),`${key} must show SEEDF P1 and TJDFT P2 study`);
-  for(const key of ["monday","wednesday","friday"])assert.ok(cards[key].includes("PRF Administrativo")&&cards[key].includes("PRFADMxx")&&cards[key].includes('href="https://rodrigorosadantas.github.io/prf-administrativo-dashboard/"')&&cards[key].includes('class="schedule-mark schedule-mark-track">P4</span>'),`${key} must show the PRF Administrative track as P4 with its own site link`);
+  for(const key of ["monday","wednesday","friday"])assert.ok(cards[key].includes("PRF ADM")&&cards[key].includes("PRFADMxx")&&cards[key].includes('href="/prf-administrativo-dashboard/"')&&cards[key].includes('class="schedule-mark schedule-mark-track">P4</span>'),`${key} must show the PRF Administrative track as P4 with its own site link`);
   for(const key of ["tuesday","thursday"])assert.ok(cards[key].includes("TCE-GO")&&!cards[key].includes("PRF Administrativo"),`${key} must show TCE-GO without adding PRF`);
   assert.ok(cards.saturday.includes("SEEDF")&&cards.saturday.includes("TJDFT")&&cards.saturday.includes("Revisão")&&cards.saturday.includes("TCE-GO"),"Saturday must review SEEDF/TJDFT and retain TCE-GO");
   assert.ok(cards.sunday.includes("Descanso")&&cards.sunday.includes("D7/D20"),"Sunday must remain protected with only scheduled reviews");
