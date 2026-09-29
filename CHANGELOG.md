@@ -1,5 +1,16 @@
 # CHANGELOG — Central de Estudos
 
+## [28.0.2] - 2026-09-29
+
+### Corrigido
+- O resumo rápido de foco do PRF agora exibe a próxima ação publicada pelo contrato do próprio projeto, sem fixar PRFADM01.
+- Contrato em cache antigo é marcado como último estado conhecido; contrato ausente não inventa unidade.
+- Mantém o transporte somente leitura, a grade P4 e a sincronização Notion → GitHub Actions → site do PRF.
+
+### Validado
+- Teste de regressão cobre ação publicada atual, cache antigo e contrato indisponível.
+- Nenhum repositório filho foi escrito nesta alteração da Central.
+
 ## [28.0.1] - 2026-09-29
 
 ### Corrigido
