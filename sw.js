@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'central-shell-v27.7.0-guided-log-20260928';
+const CACHE_VERSION = 'central-shell-v27.7.1-supabase-study-sync-20260929';
 const APP_SHELL = [
 './',
 './index.html',
@@ -13,6 +13,7 @@ const APP_SHELL = [
 './css/workspace-v26.css?v=quote-desktop-20260928',
 './css/workspace-v27.css',
 './css/study-log-v1.css',
+'./css/study-sync-v1.css',
 './js/app.js?v=27.7.0',
 './js/personalization-v5.js',
 './js/pwa-v6.js',
@@ -22,6 +23,7 @@ const APP_SHELL = [
 './js/command-context-v1.js?v=27.7.0',
 './js/workspace-v24.js',
 './js/study-log-v1.js',
+'./js/study-sync-v1.js',
 './config/projects.json?v=27.7.0'
 ];
 const RUNTIME_CACHE = 'central-study-runtime-v27.7.0';
