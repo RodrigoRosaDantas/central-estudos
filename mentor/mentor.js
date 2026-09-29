@@ -1,6 +1,6 @@
 (()=>{"use strict";
-const REGISTRY_URL="../config/projects.json?v=28.0.2";
-const SCHEDULE_URL="../config/study-schedule-v1.json?v=28.0.2";
+const REGISTRY_URL="../config/projects.json?v=28.0.3";
+const SCHEDULE_URL="../config/study-schedule-v1.json?v=28.0.3";
 const LOG_KEY="central-estudos:study-log-v1";
 const SYNC_KEY="central-estudos:study-sync-v1";
 const FOCUS_KEY="central-estudos:focus-project";
@@ -9,6 +9,7 @@ const SUPABASE_KEY="sb_publishable_GfoaAPKtYuSu_UY6wE8jMg_XsVjdWU7";
 const ORDER=["seedf","tjdft","tcego","prf-adm"];
 const LABEL={seedf:"SEEDF",tjdft:"TJDFT",tcego:"TCE-GO","prf-adm":"PRF ADM"};
 const PRIORITY={seedf:"P1",tjdft:"P2",tcego:"P3","prf-adm":"P4"};
+const VIEWS=["agora","projetos","revisoes","metodo"];
 const WEEKDAYS=["sunday","monday","tuesday","wednesday","thursday","friday","saturday"];
 const WEEKDAY_PT={sunday:"Domingo",monday:"Segunda-feira",tuesday:"Terça-feira",wednesday:"Quarta-feira",thursday:"Quinta-feira",friday:"Sexta-feira",saturday:"Sábado"};
 const $=id=>document.getElementById(id);
@@ -172,6 +173,42 @@ function renderSchedule(signals){
  if(!schedule.ids.length){box.append(node("p","mentor-empty",state.schedule?.notes?.[schedule.key]||"Nenhum bloco regular previsto."));return}
  schedule.ids.forEach(id=>{const s=signals.find(x=>x.id===id),item=node("div","mentor-schedule-item");item.dataset.state=s?.executedToday?"done":"pending";item.append(node("strong","",(PRIORITY[id]||"")+" · "+projectName(id)),node("span","",s?.executedToday?"Execução confirmada hoje.":s?.study?.nextUnit?"Próximo: "+s.study.nextUnit:"Previsto na grade; próxima unidade não publicada."));box.append(item)});
 }
+function portfolioStatus(signal){
+ if(signal.executedToday)return signal.logs.todayMinutes?"Registrado na Central hoje":"Execução confirmada pelo projeto";
+ if(!signal.scheduled)return"Sem sessão prevista hoje";
+ if(signal.contractState?.status==="unavailable")return"Na grade · fonte indisponível";
+ return"Na grade · sem confirmação publicada";
+}
+function renderPriorityBoard(signals){
+ const box=$("mentor-priority-board");box.replaceChildren();
+ const chosen=focusId(),defaultId=state.registry?.central?.defaultProject;
+ signals.forEach(s=>{
+  const card=node("a","mentor-priority-card"),priority=PRIORITY[s.id]||"—";
+  card.dataset.priority=priority.replace("P","");card.href=studyUrl(s.id);
+  const head=node("span","mentor-priority-head"),mark=node("span","mentor-priority-mark",priority),[source,sourceState]=sourceLabel(s),sourceBadge=node("span","mentor-priority-source",source);
+  sourceBadge.dataset.state=sourceState;head.append(mark,sourceBadge);
+  const title=node("span","mentor-priority-title-row");title.append(node("strong","mentor-priority-name",s.name));
+  if(chosen===s.id)title.append(node("span","mentor-focus-label","Seu foco"));
+  else if(!chosen&&defaultId===s.id)title.append(node("span","mentor-focus-label","Foco padrão"));
+  const status=node("span","mentor-priority-status",portfolioStatus(s));status.dataset.state=s.executedToday?"done":s.scheduled?"scheduled":"off";
+  const next=s.study?.nextUnit?"Próxima etapa · "+s.study.nextUnit:s.study?.lastCompletedUnit?"Última etapa publicada · "+s.study.lastCompletedUnit:"Etapa não publicada";
+  const nextLine=node("span","mentor-priority-next",next);
+  const metrics=node("span","mentor-priority-metrics"),questions=s.study?.questionsDone,accuracy=s.study?.accuracy;
+  const questionMetric=node("span","mentor-priority-metric"),timeMetric=node("span","mentor-priority-metric");
+  questionMetric.append(node("small","","QUESTÕES"),node("strong","",Number.isInteger(questions)?String(questions):"—"));
+  timeMetric.append(node("small","","TEMPO · CENTRAL · 7D"),node("strong","",duration(s.logs.weekMinutes)));
+  metrics.append(questionMetric,timeMetric);
+  const accuracyWrap=node("span","mentor-priority-accuracy");
+  if(Number.isFinite(accuracy)&&Number.isInteger(questions)){
+   const accuracyLabel=node("span","mentor-priority-accuracy-label");accuracyLabel.append(node("small","","PRECISÃO PUBLICADA"),node("strong","",pct(accuracy)+" · "+questions+" questões"));
+   const progress=node("progress","mentor-accuracy-meter");progress.max=100;progress.value=Math.round(accuracy*100);progress.setAttribute("aria-label","Precisão publicada: "+pct(accuracy)+" em "+questions+" questões");
+   accuracyWrap.append(accuracyLabel,progress);
+  }else accuracyWrap.append(node("small","mentor-priority-unknown","Sem amostra de questões publicada"));
+  card.setAttribute("aria-label",priority+" · "+s.name+" · "+portfolioStatus(s)+" · "+next);
+  card.append(head,title,status,nextLine,metrics,accuracyWrap,node("span","mentor-priority-open","Abrir projeto ↗"));
+  box.append(card);
+ });
+}
 function sourceLabel(signal){
  if(signal.id==="tcego"&&state.projectStates.get("tcego")?.privateStatus==="private")return["Privado autenticado","live"];
  const s=signal.contractState?.status||"unavailable";
@@ -212,7 +249,7 @@ function renderAll(){
  const signals=allSignals(),rec=recommendation(signals),conf=confidence(signals),studyCount=signals.filter(s=>s.study&&["confirmed","partial"].includes(s.study.evidence)).length,reviews=signals.reduce((n,s)=>n+(Number(s.study?.reviewsDue)||0),0);
  $("mentor-now-title").textContent=rec.title;$("mentor-recommendation-copy").textContent=rec.message;$("mentor-confidence").textContent=conf.label;$("mentor-confidence-note").textContent=conf.note;$("mentor-today-time").textContent=duration(totalToday());$("mentor-week-time").textContent=duration(totalWeek());$("mentor-signal-count").textContent=studyCount+"/4";$("mentor-review-count").textContent=String(reviews);$("mentor-score-label").textContent=rec.top?"prioridade explicada":"sem ação extra";$("mentor-last-refresh").textContent=state.lastRefresh?"Atualizado "+new Intl.DateTimeFormat("pt-BR",{timeZone:"America/Sao_Paulo",hour:"2-digit",minute:"2-digit"}).format(state.lastRefresh):"não atualizado";
  const actions=$("mentor-primary-actions");actions.replaceChildren();if(rec.top){const a=node("a","mentor-button mentor-button-primary","Abrir "+rec.top.name);a.href=studyUrl(rec.top.id);actions.append(a)}const refresh=node("button","mentor-button mentor-button-secondary","Recalcular");refresh.type="button";refresh.addEventListener("click",loadAll);actions.append(refresh);
- renderReasons(rec);renderSchedule(signals);renderDataHealth(signals);renderProjectCards(signals);renderReviews(signals);renderSources(signals);
+ renderReasons(rec);renderSchedule(signals);renderPriorityBoard(signals);renderDataHealth(signals);renderProjectCards(signals);renderReviews(signals);renderSources(signals);
 }
 async function loadAll(){
  if(state.loading)return;state.loading=true;document.body.classList.add("mentor-loading");$("mentor-refresh").disabled=true;
@@ -225,16 +262,31 @@ async function loadAll(){
   const tce=await tcePrivateStudy();state.projectStates.set("tcego",{privateStatus:tce.status,reason:tce.reason});state.privateStudy.clear();if(tce.study)state.privateStudy.set("tcego",tce.study);
   state.lastRefresh=new Date();renderAll();
  }catch(err){
-  $("mentor-now-title").textContent="Não foi possível montar o Mentor";$("mentor-recommendation-copy").textContent=err?.message||"Falha ao carregar as fontes.";const reasons=$("mentor-reasons");reasons.replaceChildren(node("p","mentor-alert","A Central continua disponível. Volte e tente atualizar os dados novamente."));
+  $("mentor-now-title").textContent="Não foi possível montar o Mentor";$("mentor-recommendation-copy").textContent=err?.message||"Falha ao carregar as fontes.";const reasons=$("mentor-reasons");reasons.replaceChildren(node("p","mentor-alert","A Central continua disponível. Volte e tente atualizar os dados novamente."));const board=$("mentor-priority-board");board.replaceChildren(node("p","mentor-alert","Não foi possível atualizar a leitura dos projetos. Tente novamente."));
  }finally{state.loading=false;document.body.classList.remove("mentor-loading");$("mentor-refresh").disabled=false}
 }
 function switchView(view){
+ if(!VIEWS.includes(view))return;
  document.querySelectorAll("[data-mentor-panel]").forEach(p=>{const active=p.dataset.mentorPanel===view;p.hidden=!active;p.classList.toggle("is-active",active)});
- document.querySelectorAll("[data-mentor-view]").forEach(b=>{const active=b.dataset.mentorView===view;b.classList.toggle("is-active",active);b.setAttribute("aria-pressed",String(active))});
+ document.querySelectorAll("[data-mentor-view]").forEach(b=>{const active=b.dataset.mentorView===view;b.classList.toggle("is-active",active);b.setAttribute("aria-selected",String(active));b.tabIndex=active?0:-1});
 }
 function initTabs(){
- const allowed=new Set(["agora","projetos","revisoes","metodo"]);let current=location.hash.replace("#","");if(!allowed.has(current))current="agora";switchView(current);
- document.querySelectorAll("[data-mentor-view]").forEach(b=>b.addEventListener("click",()=>{const v=b.dataset.mentorView;switchView(v);history.replaceState(null,"","#"+v)}));
+ let current=location.hash.replace("#","");if(!VIEWS.includes(current))current="agora";switchView(current);
+ const tabs=[...document.querySelectorAll("[data-mentor-view]")];
+ tabs.forEach((b,index)=>{
+  b.addEventListener("click",()=>{const v=b.dataset.mentorView;switchView(v);history.replaceState(null,"","#"+v)});
+  b.addEventListener("keydown",event=>{
+   let next=null;
+   if(event.key==="ArrowRight")next=(index+1)%tabs.length;
+   else if(event.key==="ArrowLeft")next=(index-1+tabs.length)%tabs.length;
+   else if(event.key==="Home")next=0;
+   else if(event.key==="End")next=tabs.length-1;
+   if(next===null)return;
+   event.preventDefault();tabs[next].focus();tabs[next].click();
+  });
+ });
+ document.querySelectorAll("[data-mentor-open]").forEach(b=>b.addEventListener("click",()=>{const v=b.dataset.mentorOpen;switchView(v);history.replaceState(null,"","#"+v);document.querySelector(`[data-mentor-view="${v}"]`)?.focus()}));
+ window.addEventListener("hashchange",()=>{const view=location.hash.replace("#","");if(VIEWS.includes(view))switchView(view)});
 }
 function renderClock(){
  const now=new Date(),time=new Intl.DateTimeFormat("pt-BR",{timeZone:"America/Sao_Paulo",hour:"2-digit",minute:"2-digit",second:"2-digit"}).format(now);$("mentor-clock").textContent="Brasília · "+time;

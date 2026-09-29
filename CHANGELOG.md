@@ -1,5 +1,18 @@
 # CHANGELOG — Central de Estudos
 
+## [28.0.3] - 2026-09-29
+
+### Melhorias no Mentor
+- “Agora” traz um panorama visual dos quatro projetos ativos em ordem P1–P4, com situação da fonte, próxima etapa e indicadores disponíveis.
+- Questões e precisão só aparecem quando publicados pelo projeto; tempo de sete dias é explicitamente identificado como registro local da Central.
+- Abas passam a usar semântica de tabs, navegação por setas/Home/End e foco visível.
+- O botão de atualização esclarece que relê contratos publicados e não executa a sincronização do Notion.
+- TCE-GO continua como foco padrão; fonte ausente segue como desconhecida. Nenhum projeto-filho é alterado.
+
+### Validado
+- Suíte `node tests/quality.mjs`, verificação sintática do motor do Mentor e análise de JSON: PASS.
+- Inspeção visual da página publicada e estado do workflow Pages: registrar no checkpoint após deploy.
+
 ## [28.0.2] - 2026-09-29
 
 ### Corrigido

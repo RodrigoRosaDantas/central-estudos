@@ -7,12 +7,12 @@
 <meta name="color-scheme" content="dark" />
 <meta name="referrer" content="strict-origin-when-cross-origin" />
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://fqqkkyusnzhuuizahkww.supabase.co; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; upgrade-insecure-requests" />
-<meta name="description" content="Mentor da Central de Estudos: orientação adaptativa com sinais reais dos projetos." />
+<meta name="description" content="Mentor da Central de Estudos: visão P1–P4, orientação explicável e sinais publicados pelos projetos." />
 <title>Mentor · Central de Estudos</title>
 <link rel="icon" href="../assets/icon.svg" type="image/svg+xml" />
 <link rel="manifest" href="../manifest.webmanifest" />
 <link rel="stylesheet" href="../css/app.css" />
-<link rel="stylesheet" href="./mentor.css?v=28.0.2" />
+<link rel="stylesheet" href="./mentor.css?v=28.0.3" />
 </head>
 <body class="mentor-body">
 <a class="skip-link" href="#mentor-main">Ir para o conteúdo</a>
@@ -27,19 +27,20 @@
   <div class="mentor-top-actions">
     <span class="mentor-chip mentor-chip-free">R$ 0 API</span>
     <span id="mentor-clock" class="mentor-chip">Brasília · --:--</span>
-    <button id="mentor-refresh" class="mentor-button mentor-button-secondary" type="button">Atualizar dados</button>
+    <button id="mentor-refresh" class="mentor-button mentor-button-secondary" type="button" aria-describedby="mentor-refresh-help">Atualizar dados</button>
   </div>
 </header>
+<p id="mentor-refresh-help" class="mentor-refresh-help">Atualiza a leitura dos contratos publicados. A sincronização do Notion é feita pelo projeto de origem.</p>
 
-<nav class="mentor-tabs" aria-label="Áreas do Mentor">
-  <button class="mentor-tab is-active" type="button" data-mentor-view="agora" aria-pressed="true">Agora</button>
-  <button class="mentor-tab" type="button" data-mentor-view="projetos" aria-pressed="false">Projetos</button>
-  <button class="mentor-tab" type="button" data-mentor-view="revisoes" aria-pressed="false">Revisões & riscos</button>
-  <button class="mentor-tab" type="button" data-mentor-view="metodo" aria-pressed="false">Como decide</button>
+<nav class="mentor-tabs" role="tablist" aria-label="Áreas do Mentor">
+  <button id="mentor-tab-agora" class="mentor-tab is-active" type="button" role="tab" data-mentor-view="agora" aria-controls="mentor-panel-agora" aria-selected="true" tabindex="0">Agora</button>
+  <button id="mentor-tab-projetos" class="mentor-tab" type="button" role="tab" data-mentor-view="projetos" aria-controls="mentor-panel-projetos" aria-selected="false" tabindex="-1">Projetos</button>
+  <button id="mentor-tab-revisoes" class="mentor-tab" type="button" role="tab" data-mentor-view="revisoes" aria-controls="mentor-panel-revisoes" aria-selected="false" tabindex="-1">Revisões & riscos</button>
+  <button id="mentor-tab-metodo" class="mentor-tab" type="button" role="tab" data-mentor-view="metodo" aria-controls="mentor-panel-metodo" aria-selected="false" tabindex="-1">Como decide</button>
 </nav>
 
 <main id="mentor-main">
-<section class="mentor-view is-active" data-mentor-panel="agora" aria-labelledby="mentor-now-title">
+<section id="mentor-panel-agora" class="mentor-view is-active" data-mentor-panel="agora" role="tabpanel" aria-labelledby="mentor-tab-agora" tabindex="0">
   <div class="mentor-hero">
     <div>
       <p class="eyebrow">PRÓXIMO PASSO</p>
@@ -61,6 +62,16 @@
     <article><span>REVISÕES</span><strong id="mentor-review-count">—</strong><small>publicadas e vencidas</small></article>
   </div>
 
+  <section class="mentor-portfolio-overview" aria-labelledby="mentor-portfolio-title">
+    <div class="mentor-card-head">
+      <div><p class="eyebrow">SEU PORTFÓLIO · P1–P4</p><h3 id="mentor-portfolio-title">Quatro projetos, uma visão</h3><p class="mentor-portfolio-note">Status e desempenho vêm dos projetos; o tempo mostra apenas o que foi registrado nesta Central.</p></div>
+      <button class="mentor-button mentor-button-secondary mentor-view-link" type="button" data-mentor-open="projetos">Ver leitura individual</button>
+    </div>
+    <div id="mentor-priority-board" class="mentor-priority-board" aria-live="polite">
+      <p class="mentor-empty">Carregando os quatro projetos…</p>
+    </div>
+  </section>
+
   <div class="mentor-grid mentor-grid-main">
     <article class="mentor-card mentor-reasons-card">
       <div class="mentor-card-head"><div><p class="eyebrow">POR QUÊ?</p><h3>Motivos da recomendação</h3></div><span id="mentor-score-label" class="mentor-mini-chip">sem ranking oculto</span></div>
@@ -79,15 +90,15 @@
   </article>
 </section>
 
-<section class="mentor-view" data-mentor-panel="projetos" aria-labelledby="mentor-projects-title" hidden>
+<section id="mentor-panel-projetos" class="mentor-view" data-mentor-panel="projetos" role="tabpanel" aria-labelledby="mentor-tab-projetos" tabindex="0" hidden>
   <div class="mentor-section-head">
-    <div><p class="eyebrow">4 PROJETOS</p><h2 id="mentor-projects-title">Leitura individual</h2><p>O Mentor não mistura ausência de dado com nota zero.</p></div>
+    <div><p class="eyebrow">4 PROJETOS · P1–P4</p><h2 id="mentor-projects-title">Leitura individual</h2><p>Tempo em 7 dias soma apenas blocos registrados na Central. Execução e desempenho publicados pelos projetos têm fontes e datas próprias.</p></div>
     <a class="mentor-button mentor-button-secondary" href="../#projetos">Abrir projetos na Central</a>
   </div>
   <div id="mentor-project-grid" class="mentor-project-grid"></div>
 </section>
 
-<section class="mentor-view" data-mentor-panel="revisoes" aria-labelledby="mentor-reviews-title" hidden>
+<section id="mentor-panel-revisoes" class="mentor-view" data-mentor-panel="revisoes" role="tabpanel" aria-labelledby="mentor-tab-revisoes" tabindex="0" hidden>
   <div class="mentor-section-head">
     <div><p class="eyebrow">PENDÊNCIAS EXPLÍCITAS</p><h2 id="mentor-reviews-title">Revisões e riscos</h2><p>Somente sinais publicados ou privados autorizados entram aqui.</p></div>
   </div>
@@ -97,7 +108,7 @@
   </div>
 </section>
 
-<section class="mentor-view" data-mentor-panel="metodo" aria-labelledby="mentor-method-title" hidden>
+<section id="mentor-panel-metodo" class="mentor-view" data-mentor-panel="metodo" role="tabpanel" aria-labelledby="mentor-tab-metodo" tabindex="0" hidden>
   <div class="mentor-section-head">
     <div><p class="eyebrow">TRANSPARÊNCIA</p><h2 id="mentor-method-title">Como o Mentor decide</h2><p>É um motor determinístico, não um chatbot e não uma OpenAI API.</p></div>
   </div>
@@ -133,10 +144,10 @@
 </main>
 
 <footer class="mentor-footer">
-  <span>Mentor Central · v28.0.2</span>
+  <span>Mentor Central · v28.0.3</span>
   <span>Projetos continuam sendo as fontes de verdade.</span>
 </footer>
 </div>
-<script src="./mentor.js?v=28.0.2" defer></script>
+<script src="./mentor.js?v=28.0.3" defer></script>
 </body>
 </html>

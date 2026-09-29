@@ -6,9 +6,11 @@ Camada de entrada para os projetos de estudo TCE-GO, SEEDF, TJDFT e PRF Administ
 
 A Central não altera nem replica o conteúdo dos projetos. O registro é preenchido pelo usuário, fica neste navegador e pode sincronizar entre aparelhos na mesma conta Supabase. Não escreve nem sincroniza horas com o Notion ou com os projetos.
 
-## Estado atual — v28.0.2
+## Estado atual — v28.0.3
 
-A v28.0.2 mantém TCE-GO como foco padrão e PRF Administrativo como P4 nas segundas, quartas e sextas. O resumo rápido do PRF agora lê a próxima ação publicada em central-status.json, indica quando o contrato está em cache antigo e usa um fallback sem unidade inventada quando o contrato não está disponível. A Central continua consumindo o contrato por GET; a sincronização Notion → Actions → site do PRF permanece no repositório do PRF.
+A v28.0.3 aprimora a página `/mentor/` com um panorama visual dos quatro projetos: SEEDF (P1), TJDFT (P2), TCE-GO (P3) e PRF Administrativo (P4). O painel reúne a próxima etapa e a situação da fonte, exibe questões/precisão somente quando publicadas e mantém o tempo de 7 dias identificado como registro local da Central. As abas agora seguem o padrão acessível de teclado. TCE-GO continua como foco padrão; o Mentor segue somente leitura e sem OpenAI API paga.
+
+A v28.0.2 mantém PRF Administrativo como P4 nas segundas, quartas e sextas. O resumo rápido do PRF lê a próxima ação publicada em central-status.json, indica quando o contrato está em cache antigo e usa um fallback sem unidade inventada quando o contrato não está disponível. A Central continua consumindo o contrato por GET; a sincronização Notion → Actions → site do PRF permanece no repositório do PRF.
 
 
 A v28.0.0 transforma o **Mentor em uma página filha própria** (`/mentor/`). A Home volta a ser um centro de comando enxuto; o Mentor ganha espaço dedicado para recomendação atual, confiança, motivos, grade do dia, leitura individual dos quatro projetos, revisões/riscos e metodologia transparente. A página usa os contratos read-only de SEEDF/TJDFT/PRF, o histórico local da Central e o TCE-GO privado apenas quando há sessão Supabase válida. Continua sem OpenAI API paga. O app shell foi ampliado por autorização explícita para **256 KiB bruto / 80 KiB gzip**, permitindo publicar o Mentor completo também como parte do PWA.

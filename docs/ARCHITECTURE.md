@@ -529,3 +529,9 @@ Fontes autorizadas:
 A página não escreve em nenhum projeto-filho. Seu motor é determinístico e explica os sinais usados. Revisões vencidas, precisão e erros só entram quando publicados por uma fonte validada. Campo ausente permanece desconhecido. O foco humano continua separado da recomendação. Não há chamada à OpenAI API.
 
 A Home preserva Radar/estado técnico e apenas direciona ao Mentor. O comando rápido `Ir para Mentor` e o sexto item da navegação principal abrem a página filha, evitando duplicação do painel completo dentro da Home.
+
+### Panorama visual P1–P4 — v28.0.3
+
+Na aba “Agora”, um painel resume SEEDF (P1), TJDFT (P2), TCE-GO (P3) e PRF Administrativo (P4) na ordem de prioridade. Cada cartão expõe a situação da fonte, execução prevista/confirmada, próxima etapa publicada e questões/precisão quando existem. Um indicador distingue o tempo dos últimos sete dias registrado localmente na Central dos dados publicados pelos projetos. Ausência de contrato, amostra ou progresso permanece explicitamente desconhecida.
+
+As quatro abas usam `tablist`/`tab`/`tabpanel`, seleção única e navegação por setas, Home e End. O status de sincronização explica que “Atualizar dados” relê contratos; sincronizações de origem continuam nos projetos. O layout reflowa para duas colunas em telas menores e uma coluna em telas muito estreitas. O Mentor continua read-only e não altera o foco padrão TCE-GO nem os projetos-filhos.
