@@ -457,7 +457,7 @@ function testV12Contracts(registry) {
   }
 
   const prf = registry.projects.find(project => project.id === "prf-adm");
-  assert.equal(prf.statusUrl, undefined, "PRF Pages must not be treated as a project status contract");
+  assert.equal(prf.statusUrl, "https://rodrigorosadantas.github.io/prf-administrativo-dashboard/central-status.json", "PRF Pages must expose the read-only project status contract after v27.9");
 
   assert.ok(contracts.includes("3e5"), "v12 contracts must use short cache");
   assert.ok(contracts.includes("3500"), "v12 contracts must use timeout");
@@ -467,6 +467,7 @@ function testV12Contracts(registry) {
   assert.ok(contracts.includes("project-id-mismatch"), "v12 must bind contract to registry project");
   assert.ok(contracts.includes("stale-cache"), "v12 must degrade to stale cache");
   assert.ok(contracts.includes("central:contract-state"), "v12 must publish contract state events");
+  assert.ok(contracts.includes("invalid-study-evidence")&&contracts.includes("invalid-study-accuracy")&&contracts.includes("invalid-study-notes"), "optional study signals must be validated before presentation");
   assert.ok(timeline.includes("central:contract-state"), "diagnostics must consume v12 contract state");
   assert.ok(timeline.includes("contrato operacional inválido"), "diagnostics must explain invalid contract");
   assert.ok(timeline.includes("isso não afeta o projeto nem seus links"), "contract failure must not affect navigation");
