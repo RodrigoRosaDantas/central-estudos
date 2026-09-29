@@ -1109,7 +1109,7 @@ function testV274PrfSiteAndToolDirectory(registry) {
   assert.equal(prf.url, "https://rodrigorosadantas.github.io/prf-administrativo-dashboard/", "PRF must use its published Pages URL");
   assert.equal(prf.repository, "https://github.com/RodrigoRosaDantas/prf-administrativo-dashboard", "PRF must use its own GitHub repository");
   assert.equal(prf.notionUrl, "https://app.notion.com/p/3e8cf5a2673181679cd2f5532e0abf60", "PRF must keep the Notion source of truth available");
-  assert.equal(prf.statusUrl, undefined, "PRF site must not claim an operational status contract");
+  assert.equal(prf.statusUrl, "https://rodrigorosadantas.github.io/prf-administrativo-dashboard/central-status.json", "PRF site must expose its sanitized operational status contract");
   assert.ok(gridStart >= 0 && gridEnd > gridStart, "project fallback grid must be present");
   const grid = html.slice(gridStart, gridEnd);
   assert.ok(grid.includes('data-project-id="prf-adm"') && grid.includes(prf.url), "PRF project must appear in the no-JavaScript project catalogue");
