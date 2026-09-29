@@ -6,7 +6,9 @@ Camada de entrada para os projetos de estudo TCE-GO, SEEDF, TJDFT e PRF Administ
 
 A Central não altera nem replica o conteúdo dos projetos. O registro é preenchido pelo usuário, fica neste navegador e pode sincronizar entre aparelhos na mesma conta Supabase. Não escreve nem sincroniza horas com o Notion ou com os projetos.
 
-## Estado atual — v27.9
+## Estado atual — v28.0
+
+A v28.0.0 transforma o **Mentor em uma página filha própria** (`/mentor/`). A Home volta a ser um centro de comando enxuto; o Mentor ganha espaço dedicado para recomendação atual, confiança, motivos, grade do dia, leitura individual dos quatro projetos, revisões/riscos e metodologia transparente. A página usa os contratos read-only de SEEDF/TJDFT/PRF, o histórico local da Central e o TCE-GO privado apenas quando há sessão Supabase válida. Continua sem OpenAI API paga. O app shell foi ampliado por autorização explícita para **256 KiB bruto / 80 KiB gzip**, permitindo publicar o Mentor completo também como parte do PWA.
 
 A v27.9.0 conecta o Mentor aos **sinais reais publicados pelos projetos**. SEEDF, TJDFT e PRF Administrativo passam a fornecer um contrato read-only com unidade atual/próxima, execução, questões, erros e revisões quando esses dados existem. O TCE-GO preserva o progresso privado: a Central só o lê quando o usuário está autenticado no Supabase, por RLS de leitura do próprio usuário. Campo ausente continua desconhecido e nunca vira zero. O Mentor continua sem OpenAI API paga.
 
@@ -16,16 +18,16 @@ A v27.7.0 torna o registro diário guiado pela grade: escolha a semana e o dia, 
 
 O cronograma permanece intacto. Nenhuma opção selecionada é tratada como estudo concluído, e nenhum projeto avança automaticamente. Os registros ficam neste navegador, com exportação e restauração JSON, e podem sincronizar entre aparelhos depois de entrar na mesma conta Supabase já cadastrada. Essa sincronização é opcional, não conversa com o Notion e não altera projetos-filhos. Os catálogos são uma fotografia de 28/09/2026: confira ordem, liberação de materiais e progresso no projeto de origem. O registro manual continua disponível se a camada guiada não carregar. Horas informadas medem tempo, não domínio ou progresso. A grade de domingo continua protegida.
 
-O fechamento do dia da v27.5.0 continua separando grade prevista, bloqueio editorial e retomada. Os contratos em Evolução mostram a origem e a atualização do estado publicado; esses sinais não confirmam uma sessão individual. O PRF continua sem contrato de status e mantém o Notion como fonte de verdade.
+O fechamento do dia continua separando grade prevista, registro e orientação. Os contratos em Evolução mostram origem e atualização do estado publicado; esses sinais não confirmam uma sessão individual. O PRF mantém o Notion como fonte de verdade e publica um contrato sanitizado read-only pelo próprio site.
 
-O teto do app shell para a linha pós-v20 é 144 KiB bruto e 48 KiB gzip, autorizado em 28/09/2026 e registrado em [`docs/APP-SHELL-BUDGET-CHANGE-2026-09-28.md`](docs/APP-SHELL-BUDGET-CHANGE-2026-09-28.md). O limite histórico v16→v20 permanece 128 KiB; novos aumentos exigem autorização explícita.
+O teto do app shell da v28 passa a **256 KiB bruto e 80 KiB gzip**, autorizado em 29/09/2026 e registrado em [`docs/APP-SHELL-BUDGET-CHANGE-2026-09-29.md`](docs/APP-SHELL-BUDGET-CHANGE-2026-09-29.md). Os limites históricos permanecem registrados nas releases anteriores; novos aumentos continuam exigindo autorização explícita.
 
 A V27 apresenta um cartão para cada dia da semana e a V27.0.1 compacta a grade em celulares sem esconder tarefas nem mudar a ordem de prioridades.
 
 - Retomada mostra separadamente o foco escolhido e o último acesso local; acesso não representa estudo ou progresso.
 - Projetos reúne os quatro projetos ativos; a Plataforma de Questões tem cartão próprio, fora da contagem de concursos.
 - Inbox tem filtros próprios por tipo e projeto; o Radar mantém a visão completa dos contratos disponíveis.
-- Evolução reúne Radar, Mentor, preferências e estado técnico.
+- Evolução mantém Radar, preferências e estado técnico; o Mentor possui página própria em `/mentor/`.
 - Views locais salvam também a tela atual; views anteriores sem esse campo continuam abrindo em Hoje.
 - Prioridades: SEEDF (P1), TJDFT (P2), TCE-GO (P3) e PRF Administrativo (P4). SEEDF e TJDFT estudam de segunda a sexta e revisam no sábado; TCE-GO tem sessões terça, quinta e sábado.
 - PRF-ADM segue segunda, quarta e sexta, na sequência PRFADM01→PRFADM33, sem pular códigos quando uma sessão é perdida.
@@ -33,7 +35,7 @@ A V27 apresenta um cartão para cada dia da semana e a V27.0.1 compacta a grade 
 - Relógio de Brasília usa `America/Sao_Paulo` e atualiza a cada segundo.
 - O cronograma apresenta os sete dias em cartões individuais e usa linhas compactas em telas estreitas.
 - A grade não muda o foco. O tempo estudado só aparece após lançamento e confirmação explícitos; a Central não infere sessão, duração, domínio ou progresso a partir do cronograma ou de sinais técnicos.
-- O cartão do PRF abre o site GitHub Pages e mantém um link separado para a fonte de verdade no Notion; a Central só verifica disponibilidade do site e metadados públicos do repositório.
+- O cartão do PRF abre o site GitHub Pages e mantém link separado para o Notion; o site publica `central-status.json` sanitizado para a Central sem expor a integração do Notion.
 - A Plataforma de Questões abre o site independente e não entra na prioridade nem nos indicadores dos concursos.
 - Cada tela possui âncora direta; sem JavaScript, os links diretos dos quatro projetos e da ferramenta continuam disponíveis.
 - contratos read-only, sem chamadas novas, sem ranking ou progresso inferido;
