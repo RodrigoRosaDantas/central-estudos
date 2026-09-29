@@ -961,7 +961,19 @@ function testV278AdaptiveMentor(registry) {
   pass("v27.9 API-free adaptive mentor, confidence and explainable recommendations");
 }
 
-function testV279ProjectStudySignals(registry) {\n  const schema=JSON.parse(read("config/status-contract.schema.json")),op=read("js/operational-v13.js"),sync=read("js/study-sync-v1.js");\n  const prf=registry.projects.find(project=>project.id==="prf-adm");\n  assert.equal(prf?.statusUrl,"https://rodrigorosadantas.github.io/prf-administrativo-dashboard/central-status.json","PRF must publish a read-only status contract");\n  assert.ok(schema.properties.study&&schema.properties.study.properties.accuracy&&schema.properties.study.properties.reviewsDue&&schema.properties.study.properties.activeErrors,"status contract must support optional pedagogical signals");\n  assert.ok(op.includes("publishedStudy=new Map")&&op.includes("privateStudy=new Map")&&op.includes("central:contract-state")&&op.includes("central:private-study-state"),"Mentor must combine public and authorized private study signals");\n  assert.ok(op.includes("revisão(ões) vencida(s)")&&op.includes("desempenho publicado")&&op.includes("erro(s) ativo(s)")&&op.includes("próxima unidade publicada"),"Mentor must consume explicit study signals");\n  assert.ok(op.includes("campo ausente continua desconhecido")&&!op.includes("api.openai.com"),"missing data must stay unknown and the Mentor must remain API-free");\n  assert.ok(sync.includes("/rest/v1/tce_progress_state")&&sync.includes("owner_id")&&sync.includes("central:private-study-state"),"TCE private progress must stay behind authenticated Supabase");\n  pass("v27.9 project study signals, PRF contract and private TCE bridge");\n}\n\nfunction testHomeResponsiveLayout() {
+function testV279ProjectStudySignals(registry) {
+  const schema=JSON.parse(read("config/status-contract.schema.json")),op=read("js/operational-v13.js"),sync=read("js/study-sync-v1.js");
+  const prf=registry.projects.find(project=>project.id==="prf-adm");
+  assert.equal(prf?.statusUrl,"https://rodrigorosadantas.github.io/prf-administrativo-dashboard/central-status.json","PRF must publish a read-only status contract");
+  assert.ok(schema.properties.study&&schema.properties.study.properties.accuracy&&schema.properties.study.properties.reviewsDue&&schema.properties.study.properties.activeErrors,"status contract must support optional pedagogical signals");
+  assert.ok(op.includes("publishedStudy=new Map")&&op.includes("privateStudy=new Map")&&op.includes("central:contract-state")&&op.includes("central:private-study-state"),"Mentor must combine public and authorized private study signals");
+  assert.ok(op.includes("revisão(ões) vencida(s)")&&op.includes("desempenho publicado")&&op.includes("erro(s) ativo(s)")&&op.includes("próxima unidade publicada"),"Mentor must consume explicit study signals");
+  assert.ok(op.includes("campo ausente continua desconhecido")&&!op.includes("api.openai.com"),"missing data must stay unknown and the Mentor must remain API-free");
+  assert.ok(sync.includes("/rest/v1/tce_progress_state")&&sync.includes("owner_id")&&sync.includes("central:private-study-state"),"TCE private progress must stay behind authenticated Supabase");
+  pass("v27.9 project study signals, PRF contract and private TCE bridge");
+}
+
+function testHomeResponsiveLayout() {
   const home=read("css/home-v1.css");
   const desktop=home.lastIndexOf(".presence-v21{grid-template-columns:minmax(0,1.4fr) minmax(285px,.6fr)");
   const responsive=home.lastIndexOf("@media(max-width:979px){.presence-v21{grid-template-columns:1fr");
