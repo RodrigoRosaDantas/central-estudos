@@ -1,5 +1,14 @@
 # CHANGELOG — Central de Estudos
 
+## [28.0.1] - 2026-09-29
+
+### Corrigido
+- Mantém TCE-GO como foco padrão da Central; PRF Administrativo segue identificado como P4 na grade, sem assumir o foco automaticamente.
+- Reativa o fechamento diário após a retirada do painel antigo do Mentor na Home.
+- O fechamento separa horário local registrado, execução confirmada pela fonte do projeto e ausência de tempo lançado; dado ausente não significa que não houve estudo.
+- Atualiza a referência para o dia de Brasília quando novos sinais chegam, a aba volta ao primeiro plano ou a data muda à meia-noite.
+- Acrescenta validação para o fechamento sem `routing-panel`, a separação P4/PRF e P3/TCE-GO e a virada de data.
+
 ## [28.0.0] - 2026-09-29
 
 ### Mentor dedicado
