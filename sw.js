@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'central-shell-v28.1.0-mentor-portfolio-20260929';
+const CACHE_VERSION = 'central-shell-v28.1.0-mentor-integrity-20260929';
 const APP_SHELL = [
 './',
 './index.html',
@@ -27,7 +27,7 @@ const APP_SHELL = [
 './config/study-schedule-v1.json?v=28.1.0',
 './mentor/index.html',
 './mentor/mentor.css?v=28.1.0',
-'./mentor/mentor.js?v=28.1.0'
+'./mentor/mentor.js?v=mentor-integrity-20260929'
 ];
 const RUNTIME_CACHE = 'central-study-runtime-v28.1.0';
 const RUNTIME_ASSETS = new Set([
