@@ -23,7 +23,7 @@
 .command-primary{box-shadow:0 8px 22px rgba(94,234,212,.13)}
 .command-primary:hover{transform:translateY(-1px);filter:brightness(1.04)}
 .command-secondary{background:rgba(255,255,255,.035)}
-.presence-clock{display:grid;grid-template-columns:minmax(0,1fr) auto;align-content:center;align-items:center;gap:7px 14px;min-height:0;padding:19px;border-color:rgba(94,234,212,.2);border-radius:19px;background:linear-gradient(145deg,rgba(94,234,212,.085),rgba(3,7,15,.82) 72%)}
+.presence-clock{display:grid;grid-template-columns:minmax(0,1fr) auto;align-content:center;align-items:center;align-self:center;gap:7px 14px;min-height:124px;padding:19px;border-color:rgba(94,234,212,.2);border-radius:19px;background:linear-gradient(145deg,rgba(94,234,212,.085),rgba(3,7,15,.82) 72%)}
 .pro-now-kicker{grid-column:1;grid-row:1;font-size:.61rem;letter-spacing:.13em}
 .clock-zone{grid-column:1;grid-row:2;margin-top:0;font-size:.68rem}
 .command-center #brasilia-time{grid-column:2;grid-row:1/4;align-self:center;margin:0;font-size:clamp(2.25rem,3.8vw,2.85rem);line-height:1;letter-spacing:-.055em}
@@ -88,7 +88,7 @@
   .command-lead{margin-top:9px;font-size:.91rem}
   .command-actions{margin-top:15px}
   .command-actions>a{flex:1 1 135px}
-  .presence-clock{gap:5px 9px;padding:12px 13px;border-radius:14px}
+  .presence-clock{align-self:stretch;gap:5px 9px;min-height:82px;padding:12px 13px;border-radius:14px}
   .pro-now-kicker{font-size:.56rem}
   .clock-zone{font-size:.62rem}
   .command-center #brasilia-time{font-size:clamp(1.85rem,8.8vw,2.45rem)}
