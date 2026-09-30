@@ -1,3 +1,10 @@
+## [28.3.0] - 2026-09-30
+- Registra 1 hora automaticamente para uma unidade concluída quando o contrato público confirma a execução e publica a data real do estudo no dia de Brasília.
+- Evita duplicações por projeto, unidade e dia; não converte grade, próxima unidade, materiais produzidos ou sincronização técnica em tempo estudado.
+- Reconsulta contratos somente quando a Central volta ao primeiro plano, sem polling; os blocos novos disparam o sincronizador existente e são preservados mesmo se ele já estiver ocupado.
+- O contrato atual do PRF não publica `lastStudiedAt`; o P3 fica sem lançamento automático até a fonte publicar a data real. A Central não altera Notion nem repositórios dos projetos.
+- Quality gate e publicação verificados após merge.
+
 ## [28.2.0] - 2026-09-30
 - Reorganiza a carteira ativa para SEEDF P1, TJDFT P2 e PRF Administrativo P3.
 - Arquiva TCE-GO no Workspace sem apagar o repositório nem o histórico; remove-o da agenda, do foco ativo e dos catálogos correntes.
