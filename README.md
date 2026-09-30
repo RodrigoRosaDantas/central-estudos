@@ -6,9 +6,9 @@ Camada de entrada para os projetos de estudo SEEDF (P1), TJDFT (P2), TCE-GO (P3)
 
 A Central não altera nem replica o conteúdo dos projetos. O registro é preenchido pelo usuário, fica neste navegador e pode sincronizar entre aparelhos na mesma conta Supabase. Não escreve nem sincroniza horas com o Notion ou com os projetos.
 
-## Estado atual — v28.1.1
+## Estado atual — v28.1.2
 
-A v28.1.1 alinha o foco padrão e a ordem visual da Central à prioridade P1–P4: SEEDF (P1), TJDFT (P2), TCE-GO (P3) e PRF Administrativo (P4). A grade semanal permanece intacta; TCE-GO e PRF Administrativo continuam em dias diferentes. A interface e o registry reconhecem os quatro níveis de prioridade sem transformar uma escolha de foco em alteração do cronograma.
+A v28.1.2 preserva o foco padrão SEEDF (P1) e a ordem P1–P4 na Central, inclusive em aparelhos que ainda guardavam a antiga ordem padrão TCE-GO (P3), SEEDF (P1), TJDFT (P2), PRF Administrativo (P4). Só essa sequência antiga é migrada; outras ordens locais personalizadas permanecem intactas. A grade semanal segue igual, com TCE-GO e PRF Administrativo em dias diferentes.
 
 A integração lançada na v28.1.0 mantém as duas centrais conectadas sem fundi-las. A Jornada lê o mesmo registry e os contratos `central-status.json` publicados por cada projeto; mostra fase, unidade/ação publicada, procedência e data, sem consultar Notion, replicar métricas privadas ou depender da Central Operacional. Acesso direto à Jornada fica no cabeçalho.
 
