@@ -12,11 +12,13 @@ Estado da Central em 29/09/2026. Este documento registra a integração opcional
 
 ## Modelo e limites do banco
 
-Cada linha representa um bloco confirmado pelo usuário. A tabela contém:
+Cada linha representa um bloco manual confirmado pelo usuário ou um bloco automático de 60 minutos baseado em conclusão confirmada e data real publicada pela fonte. A tabela contém:
 
 - `id` UUID interno; `client_id` idempotente gerado pelo navegador;
 - `study_date`, `project_id`, `trail`, `topic` opcional e `duration_minutes`;
 - `created_at` e `user_id`, com chave estrangeira para `auth.users(id)` e exclusão em cascata ao apagar a conta.
+
+IDs automáticos usam a forma idempotente `auto_<projeto>_<AAAAMMDD>_<unidade>` e passam pelo mesmo fluxo de inserção já existente; nenhuma tabela, política RLS ou credencial foi alterada. Para tempo acima de 1h, o usuário lança apenas o excedente como outro bloco. A Central só cria o automático quando a data de estudo publicada é o dia atual de Brasília. O contrato atual do PRF não publica essa data e não deve usar o horário de sincronização como substituto.
 
 Restrições verificadas: projetos permitidos `seedf`, `tjdft`, `tcego` e `prf-adm`; matéria de 1–100 caracteres; tópico até 140; duração entre 1 e 1.440 minutos; unicidade de `(user_id, client_id)`. Índices de consulta cobrem usuário/data e usuário/projeto/data. O cliente sincroniza no máximo 5.000 linhas por ciclo.
 

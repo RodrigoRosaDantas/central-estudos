@@ -18,9 +18,9 @@ O fallback estático de index.html contém links mínimos para os três projetos
 
 ## Estado local e separação semântica
 
-A Central usa `localStorage` para preferências/continuidade e para um registro de estudo explicitamente preenchido pelo usuário. **Foco**, **retomada/último acesso**, **favorito**, **acesso local**, **recência técnica** e **tempo estudado** são conceitos independentes.
+A Central usa `localStorage` para preferências/continuidade e para registros de estudo manuais ou automáticos a partir de conclusões confirmadas dos projetos. **Foco**, **retomada/último acesso**, **favorito**, **acesso local**, **recência técnica** e **tempo estudado** são conceitos independentes.
 
-O registro usa a chave `central-estudos:study-log-v1` e guarda data, ID do projeto, trilha/matéria, tópico opcional, minutos líquidos e confirmação explícita. Cada bloco representa um tópico; os resumos somam minutos por dia, semana, projeto, trilha e tópico. O tempo não é inferido do cronograma, de visitas, da publicação de materiais ou de contratos. Ele não mede domínio, desempenho ou progresso.
+O registro usa a chave `central-estudos:study-log-v1` e guarda data, ID do projeto, trilha/matéria, tópico opcional, minutos líquidos e confirmação. O lançamento manual exige confirmação explícita. O automático registra 60 minutos quando o contrato read-only está sincronizado, a evidência é `confirmed`, há `lastCompletedUnit` e `lastStudiedAt` corresponde ao dia atual em Brasília. A deduplicação usa projeto, unidade e data. Grade, próxima unidade, produção de materiais, visitas e `updatedAt` de sincronização não geram horas; os registros não medem domínio, desempenho ou progresso.
 
 Os dados continuam local-first no `localStorage`. Quando o usuário entra em uma conta Supabase já cadastrada, a Central pode sincronizar apenas os registros de tempo na tabela isolada `central_study_logs`, com RLS por usuário. Não há sincronização com Notion nem escrita nos projetos-filhos. Exportar/restaurar backup JSON continua disponível como portabilidade manual.
 
@@ -545,7 +545,7 @@ O Painel Estratégico, servido pelo repositório independente `plano-de-transica
 A Central aponta para a Jornada por link. Não há chamada da Central ao Painel Estratégico, do Painel ao Notion dos projetos, nem dependência operacional entre as duas páginas. Se o catálogo ou um endpoint falhar, os módulos existentes e os links diretos continuam disponíveis.
 
 
-## Carteira ativa P1–P3 e arquivo TCE-GO — v28.2.0
+## Carteira ativa P1–P3 e arquivo TCE-GO — v28.3.0
 
 A Central mantém SEEDF (P1), TJDFT (P2) e PRF Administrativo (P3) como projetos ativos. TCE-GO muda para status archived e disponibilidade archive-only; o registry retém seu link, repositório e nota histórica, mas não o usa para agenda, foco, catálogo de matérias, monitoramento ou leitura de progresso privado. O Workspace continua expondo o link de histórico.
 

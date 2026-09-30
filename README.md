@@ -2,11 +2,11 @@
 
 Camada de entrada dos projetos ativos SEEDF (P1), TJDFT (P2) e PRF Administrativo (P3). TCE-GO permanece arquivado para consulta histórica, sem apagar seu repositório ou seus registros.
 
-## Estado atual — v28.2
+## Estado atual — v28.3.0
 
 A carteira ativa agora é SEEDF (P1), TJDFT (P2) e PRF Administrativo (P3). TCE-GO foi arquivado em 30/09/2026: saiu da agenda, do foco ativo, dos cartões e do Mentor, mas continua no Workspace com acesso histórico. Preferências antigas de foco TCE-GO migram uma vez para SEEDF; a última visita TCE-GO continua registrada como histórico. Ordens locais personalizadas mantêm a sequência relativa dos projetos que seguem ativos.
 
-A Jornada consulta somente os contratos públicos dos três projetos ativos. O cartão TCE-GO fica em uma seção histórica separada e não tem o endpoint de status consultado. O registro local de horas e sua sincronização opcional entre aparelhos continuam disponíveis; o Mentor não lê o estado privado do TCE-GO.
+A Jornada consulta somente os contratos públicos dos três projetos ativos. O cartão TCE-GO fica em uma seção histórica separada e não tem o endpoint de status consultado. O registro local de horas continua disponível e pode sincronizar entre aparelhos. A v28.3.0 lança 1h por conclusão confirmada com data de estudo publicada igual ao dia de Brasília. O P3 ainda não publica essa data no contrato e continua manual até isso existir; produção de material não é sessão concluída. O Mentor não lê o estado privado do TCE-GO.
 
 A v28.0.3 aprimora a página `/mentor/` com um panorama visual dos quatro projetos: SEEDF (P1), TJDFT (P2), TCE-GO (P3) e PRF Administrativo (P4). O painel reúne a próxima etapa e a situação da fonte, exibe questões/precisão somente quando publicadas e mantém o tempo de 7 dias identificado como registro local da Central. As abas agora seguem o padrão acessível de teclado. TCE-GO continua como foco padrão; o Mentor segue somente leitura e sem OpenAI API paga.
 
@@ -21,11 +21,11 @@ A v27.9.0 conecta o Mentor aos **sinais reais publicados pelos projetos**. SEEDF
 
 A v27.8.0 adiciona um **Mentor adaptativo local, sem OpenAI API paga**. Ele cruza a grade do dia com os blocos de estudo realmente registrados na Central, observa recência e distribuição dos últimos dias, calcula uma sugestão explicável e mostra o nível de confiança da base. A sugestão nunca muda o foco escolhido pelo usuário e não afirma desempenho, domínio, erro ou progresso quando esses dados não existem. O fechamento do dia deixa de congelar estados manuais e passa a ser preenchido a partir do registro real quando a camada operacional está disponível.
 
-A v27.7.0 torna o registro diário guiado pela grade: escolha a semana e o dia, selecione uma atividade prevista, depois a matéria/unidade e a duração real. O tempo só entra no histórico após confirmação explícita. Os catálogos cobrem as leis e trilhas SEEDF, P01–P18/RL01–RL13/REV01–REV06 do TJDFT, as 36 matérias atuais de estudo do TCE-GO e PRFADM01–PRFADM33. Dia e semana selecionados atualizam os totais locais.
+A v27.7.0 torna o registro diário guiado pela grade: escolha a semana e o dia, selecione uma atividade prevista, depois a matéria/unidade e a duração real. O lançamento manual só entra no histórico após confirmação explícita. Os catálogos cobrem as leis e trilhas SEEDF, P01–P18/RL01–RL13/REV01–REV06 do TJDFT, as 36 matérias atuais de estudo do TCE-GO e PRFADM01–PRFADM33. Dia e semana selecionados atualizam os totais locais.
 
 O cronograma permanece intacto. Nenhuma opção selecionada é tratada como estudo concluído, e nenhum projeto avança automaticamente. Os registros ficam neste navegador, com exportação e restauração JSON, e podem sincronizar entre aparelhos depois de entrar na mesma conta Supabase já cadastrada. Essa sincronização é opcional, não conversa com o Notion e não altera projetos-filhos. Os catálogos são uma fotografia de 28/09/2026: confira ordem, liberação de materiais e progresso no projeto de origem. O registro manual continua disponível se a camada guiada não carregar. Horas informadas medem tempo, não domínio ou progresso. A grade de domingo continua protegida.
 
-O fechamento do dia continua separando grade prevista, registro e orientação. Os contratos em Evolução mostram origem e atualização do estado publicado; esses sinais não confirmam uma sessão individual. O PRF mantém o Notion como fonte de verdade e publica um contrato sanitizado read-only pelo próprio site.
+O fechamento do dia continua separando grade prevista, registro e orientação. Os contratos em Evolução mostram origem e atualização do estado publicado. Só evidência confirmada, unidade concluída e data de estudo publicada formam um lançamento automático; a atualização técnica do contrato não vale como data da sessão. O PRF mantém o Notion como fonte de verdade e publica um contrato sanitizado read-only pelo próprio site.
 
 O teto do app shell da v28 passa a **256 KiB bruto e 80 KiB gzip**, autorizado em 29/09/2026 e registrado em [`docs/APP-SHELL-BUDGET-CHANGE-2026-09-29.md`](docs/APP-SHELL-BUDGET-CHANGE-2026-09-29.md). Os limites históricos permanecem registrados nas releases anteriores; novos aumentos continuam exigindo autorização explícita.
 
@@ -41,7 +41,7 @@ A V27 apresenta um cartão para cada dia da semana e a V27.0.1 compacta a grade 
 - As frases do Major Cadar alternam automaticamente a cada cinco minutos, com autoria e link da fonte, sem chamada externa automática.
 - Relógio de Brasília usa `America/Sao_Paulo` e atualiza a cada segundo.
 - O cronograma apresenta os sete dias em cartões individuais e usa linhas compactas em telas estreitas.
-- A grade não muda o foco. O tempo estudado só aparece após lançamento e confirmação explícitos; a Central não infere sessão, duração, domínio ou progresso a partir do cronograma ou de sinais técnicos.
+- A grade não muda o foco. O registro manual exige confirmação explícita. O automático só lança 1h quando o contrato confirma uma unidade concluída e a data real de estudo é hoje em Brasília; grade, material produzido, acesso e horário de sincronização não geram horas.
 - O cartão do PRF abre o site GitHub Pages e mantém link separado para o Notion; o site publica `central-status.json` sanitizado para a Central sem expor a integração do Notion.
 - A Plataforma de Questões abre o site independente e não entra na prioridade nem nos indicadores dos concursos.
 - Cada tela possui âncora direta; sem JavaScript, os links diretos dos três projetos ativos, do histórico e da ferramenta continuam disponíveis.

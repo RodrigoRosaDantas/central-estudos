@@ -10,7 +10,7 @@ const projectSelect=$("study-log-project");
 const planner=$("study-log-planner");
 if(!projectSelect||!planner)return;
 const knownIds=new Set([...projectSelect.options].map(option=>option.value).filter(Boolean));knownIds.add("tcego");
-let state=readState(),busy=false,timer=null,authMessage="",authType="info";
+let state=readState(),busy=false,timer=null,authMessage="",authType="info",syncAgain=false;
 function add(parent,tag,className,text){const node=document.createElement(tag);if(className)node.className=className;if(text!==undefined)node.textContent=text;parent.append(node);return node}
 function readState(){try{const v=JSON.parse(localStorage.getItem(SESSION_KEY)||"null");if(v&&v.version===1)return{version:1,session:v.session&&typeof v.session.access_token==="string"?v.session:null,accountId:typeof v.accountId==="string"?v.accountId:"",pendingDeletes:Array.isArray(v.pendingDeletes)?v.pendingDeletes.filter(x=>typeof x==="string").slice(-MAX):[],lastSyncedAt:typeof v.lastSyncedAt==="string"?v.lastSyncedAt:""} }catch{}return{version:1,session:null,accountId:"",pendingDeletes:[],lastSyncedAt:""}}
 function saveState(){try{localStorage.setItem(SESSION_KEY,JSON.stringify(state))}catch{}}
@@ -165,7 +165,7 @@ async function syncNow(){
  try{
   const user=await ensureSession();if(!user)return;
   await deletePending(user);
-  const local=api.read(knownIds),remote=await fetchRemote(user),localIds=new Set(local.map(entry=>entry.id)),hasNewRemote=remote.some(entry=>!localIds.has(entry.id)),merged=api.merge(local,remote).slice(-MAX);
+  const remote=await fetchRemote(user),local=api.read(knownIds),localIds=new Set(local.map(entry=>entry.id)),hasNewRemote=remote.some(entry=>!localIds.has(entry.id)),merged=api.merge(local,remote).slice(-MAX);
   api.save(merged);
   if(hasNewRemote){window.location.reload();return}
   await pushLocal(user,merged);
@@ -173,9 +173,9 @@ async function syncNow(){
   renderStatus("Sincronizado agora. Seus registros estão disponíveis neste aparelho e nos próximos em que entrar.");
  }catch{
   renderStatus("Sincronização pendente. Seus blocos continuam salvos neste aparelho; tente novamente quando a conexão voltar.","error");
- }finally{busy=false}
+ }finally{busy=false;if(syncAgain){syncAgain=false;scheduleSync()}}
 }
-function scheduleSync(){if(!state.session)return;clearTimeout(timer);timer=setTimeout(syncNow,700)}
+function scheduleSync(){if(!state.session)return;if(busy){syncAgain=true;return}clearTimeout(timer);timer=setTimeout(syncNow,700)}
 function trackDeletes(event){
  const button=event.target.closest(".study-log-delete");if(!button)return;
  const before=api.read(knownIds).map(entry=>entry.id);
@@ -191,7 +191,7 @@ function init(){
  const arrived=handleAuthCallback();
  const entryForm=$("study-log-form");if(entryForm)entryForm.addEventListener("submit",scheduleSync);
  const importInput=$("study-log-import");if(importInput)importInput.addEventListener("change",scheduleSync);
- const recent=$("study-log-recent");if(recent)recent.addEventListener("click",trackDeletes,true);
+ const recent=$("study-log-recent");if(recent)recent.addEventListener("click",trackDeletes,true);document.addEventListener("central:study-log-auto-added",scheduleSync);
  window.addEventListener("online",scheduleSync);
  window.addEventListener("storage",event=>{if(event.key===api.key)scheduleSync()});
  if(state.session||arrived){$("study-sync-signout").hidden=false;renderStatus(arrived?"Link confirmado. Sincronizando seus blocos…":undefined);syncNow()}
