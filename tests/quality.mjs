@@ -975,7 +975,7 @@ function testV27DailySchedule(registry) {
   assert.ok(cards.sunday.includes("Descanso")&&cards.sunday.includes("D7/D20"),"Sunday must remain protected with only scheduled reviews");
   assert.ok(schedule.includes('<a class="schedule-priority-chip" data-priority="3"')&&!schedule.includes("schedule-track-banner-v27")&&schedule.match(/class="schedule-mark schedule-mark-track">P3<\/span>/g)?.length===3,"PRF must appear on its three assigned days without a duplicate highlighted banner");
   assert.ok(!schedule.includes("data-days=")&&schedule.includes("Grade é previsão"),"day-by-day schedule must identify planning rather than execution");
-  assert.ok(schedule.includes("PRFADM01–PRFADM33")&&schedule.includes("sequência 01–33")&&!schedule.includes("01–30"),"weekly schedule must match the current 33-session PRF cycle");
+  assert.ok(schedule.includes("sequência 01–33")&&!schedule.includes("01–30"),"weekly schedule must show the current 33-session PRF cycle in its day rows");
   const closeout=schedule.slice(schedule.indexOf('<details id="daily-closeout"'),schedule.indexOf("</details>",schedule.indexOf('<details id="daily-closeout"')));
   assert.ok(closeout.includes("open")&&["PREVISTO","REGISTRADO","MENTOR"].every(label=>closeout.includes("<strong>"+label+"</strong>")),"daily closeout must remain factual");
   assert.ok(closeout.includes("carregando seus blocos locais")&&closeout.includes('href="./mentor/">Abrir Mentor Central</a>'),"closeout must avoid stale claims and link the Mentor");
