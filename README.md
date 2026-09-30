@@ -1,14 +1,16 @@
 # Central de Estudos
 
-Camada de entrada para os projetos de estudo TCE-GO, SEEDF, TJDFT e PRF Administrativo, com uma seção separada para a Plataforma de Questões e um registro local-first de tempo estudado, com sincronização opcional entre aparelhos.
+Camada de entrada para os projetos de estudo SEEDF (P1), TJDFT (P2), TCE-GO (P3) e PRF Administrativo (P4), com uma seção separada para a Plataforma de Questões e um registro local-first de tempo estudado, com sincronização opcional entre aparelhos.
 
 > **A Central observa e direciona. Os projetos executam e decidem.**
 
 A Central não altera nem replica o conteúdo dos projetos. O registro é preenchido pelo usuário, fica neste navegador e pode sincronizar entre aparelhos na mesma conta Supabase. Não escreve nem sincroniza horas com o Notion ou com os projetos.
 
-## Estado atual — v28.1.0
+## Estado atual — v28.1.1
 
-A v28.1.0 liga a Central Operacional à **Jornada / Painel Estratégico** sem fundir os produtos. O registry público passa a declarar P1 SEEDF, P2 TJDFT, P3 TCE-GO e P4 PRF Administrativo com códigos, ordem e links próprios; a Central continua com TCE-GO como foco padrão e a grade semanal permanece intacta. A Jornada lê esse mesmo registry e os contratos `central-status.json` publicados por cada projeto. Ela mostra apenas fase, unidade/ação publicada, procedência e data do estado; não lê o Notion, não replica números de desempenho e continua funcional se o catálogo ou algum contrato estiver indisponível. Acesso direto à Jornada fica no cabeçalho.
+A v28.1.1 alinha o foco padrão e a ordem visual da Central à prioridade P1–P4: SEEDF (P1), TJDFT (P2), TCE-GO (P3) e PRF Administrativo (P4). A grade semanal permanece intacta; TCE-GO e PRF Administrativo continuam em dias diferentes. A interface e o registry reconhecem os quatro níveis de prioridade sem transformar uma escolha de foco em alteração do cronograma.
+
+A integração lançada na v28.1.0 mantém as duas centrais conectadas sem fundi-las. A Jornada lê o mesmo registry e os contratos `central-status.json` publicados por cada projeto; mostra fase, unidade/ação publicada, procedência e data, sem consultar Notion, replicar métricas privadas ou depender da Central Operacional. Acesso direto à Jornada fica no cabeçalho.
 
 A publicação do GitHub Pages continua restrita a `main`; o gate de qualidade agora também roda em pull requests sem publicar a branch de trabalho.
 
