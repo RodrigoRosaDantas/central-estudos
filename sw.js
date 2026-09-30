@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'central-shell-v28.1.2-catalog-order-migration-20260929';
+const CACHE_VERSION = 'central-shell-v28.1.2-catalog-migration-refresh-20260929';
 const APP_SHELL = [
 './',
 './index.html',

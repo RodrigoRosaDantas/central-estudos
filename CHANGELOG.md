@@ -5,6 +5,7 @@
 ### Catálogo alinhado a P1–P4
 - Migra a antiga ordem padrão salva TCE-GO, SEEDF, TJDFT e PRF Administrativo para P1–P4 em aparelhos existentes.
 - Preserva outras ordens personalizadas localmente e mantém a agenda semanal intacta.
+- Versiona o script do catálogo e renova o service worker para clientes instalados carregarem a migração.
 
 ### Validado
 - Quality gate cobre a migração do padrão antigo, a preservação de preferência personalizada e o padrão P1–P4 em uma instalação nova.
