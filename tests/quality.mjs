@@ -969,7 +969,7 @@ function testV27DailySchedule(registry) {
   const day=key=>{const at=schedule.indexOf('data-weekday="'+key+'"');return schedule.slice(at,schedule.indexOf("</article>",at)+10)};
   const cards=Object.fromEntries(days.map(key=>[key,day(key)]));
   for(const key of days.slice(0,5))assert.ok(cards[key].includes(">SEEDF</a>")&&cards[key].includes(">TJDFT</a>")&&cards[key].includes("Estudo"),key+" must show SEEDF P1 and TJDFT P2 study");
-  for(const key of ["monday","wednesday","friday"])assert.ok(cards[key].includes("PRF ADM")&&cards[key].includes("PRFADMxx")&&cards[key].includes('href="/prf-administrativo-dashboard/"')&&cards[key].includes('class="schedule-mark schedule-mark-track">P3</span>'),key+" must show PRF Administrative as P3");
+  for(const key of ["monday","wednesday","friday"])assert.ok(cards[key].includes("PRF ADM")&&cards[key].includes("Materiais prontos · 33/33")&&cards[key].includes('href="/prf-administrativo-dashboard/"')&&cards[key].includes('class="schedule-mark">P3</span>'),key+" must show PRF Administrative as P3 with all materials ready");
   for(const key of ["tuesday","thursday"])assert.ok(!cards[key].includes("TCE-GO")&&!cards[key].includes("PRF ADM"),key+" must keep only scheduled SEEDF and TJDFT blocks");
   assert.ok(cards.saturday.includes("SEEDF")&&cards.saturday.includes("TJDFT")&&cards.saturday.includes("Revisão")&&!cards.saturday.includes("TCE-GO"),"Saturday must review SEEDF and TJDFT without TCE-GO");
   assert.ok(cards.sunday.includes("Descanso")&&cards.sunday.includes("D7/D20"),"Sunday must remain protected with only scheduled reviews");
