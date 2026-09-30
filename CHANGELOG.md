@@ -1,5 +1,16 @@
 # CHANGELOG — Central de Estudos
 
+## [28.1.3] - 2026-09-30
+
+### Contrato público P3 na Visão Agora
+- A Central agora mostra a próxima ação planejada do calendário TCE-GO quando o contrato a publica; sem ação no contrato, mantém o aviso manual.
+- Atualiza o teste de regressão, o cache busting do catálogo e do renderer, a versão do registry e o cache do service worker.
+- Mantém P1 SEEDF, P2 TJDFT, P3 TCE-GO e P4 PRF ADM; agenda semanal e dias distintos de P3/P4 inalterados.
+
+### Validado
+- Quality gate cobre a exibição do D001 planejado, o fallback quando o contrato estiver indisponível e a preservação do tipo de evidência.
+
+
 ## [28.1.2] - 2026-09-29
 
 ### Catálogo alinhado a P1–P4
