@@ -14,7 +14,7 @@ A fonte dinâmica de verdade é `config/projects.json` (`schemaVersion: 3`). O l
 
 ## Fallback e progressive enhancement
 
-`index.html` contém links mínimos para os quatro projetos e a Plataforma de Questões. Essa duplicação é intencional e restrita ao fallback. Se JavaScript ou registry falharem, TCE-GO, SEEDF, TJDFT, painel PRF, Notion e plataforma continuam acessíveis. JavaScript melhora foco, retomada, catálogo, preferências, diagnóstico e observabilidade, mas nunca é requisito para abrir um projeto.
+O fallback estático de index.html contém links mínimos para os três projetos ativos, o arquivo histórico e a Plataforma de Questões. Se JavaScript ou registry falharem, SEEDF, TJDFT, painel PRF, TCE-GO histórico e plataforma continuam acessíveis.
 
 ## Estado local e separação semântica
 
@@ -543,3 +543,14 @@ As quatro abas usam `tablist`/`tab`/`tabpanel`, seleção única e navegação p
 O Painel Estratégico, servido pelo repositório independente `plano-de-transicao`, consulta o catálogo público da Central e, em seguida, faz somente `GET` nos `statusUrl` declarados para P1–P4. Ele valida `schemaVersion: 1` e o `projectId`, mostra fase/ação/proveniência e identifica publicação antiga ou indisponível. O widget não lê o objeto opcional `study`; assim ele não transforma o progresso privado do TCE-GO em dado público nem duplica indicadores detalhados já expostos pelos outros projetos.
 
 A Central aponta para a Jornada por link. Não há chamada da Central ao Painel Estratégico, do Painel ao Notion dos projetos, nem dependência operacional entre as duas páginas. Se o catálogo ou um endpoint falhar, os módulos existentes e os links diretos continuam disponíveis.
+
+
+## Carteira ativa P1–P3 e arquivo TCE-GO — v28.2.0
+
+A Central mantém SEEDF (P1), TJDFT (P2) e PRF Administrativo (P3) como projetos ativos. TCE-GO muda para status archived e disponibilidade archive-only; o registry retém seu link, repositório e nota histórica, mas não o usa para agenda, foco, catálogo de matérias, monitoramento ou leitura de progresso privado. O Workspace continua expondo o link de histórico.
+
+O foco salvo tcego migra uma única vez para o foco ativo padrão, SEEDF. A chave de última visita permanece intacta e a tela de retomada a rotula como histórico, sem oferecer reabertura como ação ativa. Preferências de ordenação removem IDs arquivados e preservam a ordem relativa dos IDs ativos.
+
+Os logs locais continuam aceitando tcego como ID conhecido para ler, exportar e importar registros históricos; os totais atuais consideram apenas projetos ativos. A sincronização opcional continua restrita à tabela genérica central_study_logs. O Mentor e o painel operacional não consultam tce_progress_state; a Jornada lista projetos arquivados separadamente e só consulta statusUrl de projetos ativos.
+
+Na SEEDF, o normalizador aceita IDs de sessão L, R e Q. Uma sessão de questões L05 pode aparecer como atividade mais recente sem avançar lastCompletedUnit; leitura e D0 permanecem pendentes até serem confirmados na fonte. O workflow de sincronização publica o estado sanitizado a partir do Notion após a alteração do contrato.

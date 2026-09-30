@@ -1,18 +1,12 @@
 # Central de Estudos
 
-Camada de entrada para os projetos de estudo SEEDF (P1), TJDFT (P2), TCE-GO (P3) e PRF Administrativo (P4), com uma seção separada para a Plataforma de Questões e um registro local-first de tempo estudado, com sincronização opcional entre aparelhos.
+Camada de entrada dos projetos ativos SEEDF (P1), TJDFT (P2) e PRF Administrativo (P3). TCE-GO permanece arquivado para consulta histórica, sem apagar seu repositório ou seus registros.
 
-> **A Central observa e direciona. Os projetos executam e decidem.**
+## Estado atual — v28.2
 
-A Central não altera nem replica o conteúdo dos projetos. O registro é preenchido pelo usuário, fica neste navegador e pode sincronizar entre aparelhos na mesma conta Supabase. Não escreve nem sincroniza horas com o Notion ou com os projetos.
+A carteira ativa agora é SEEDF (P1), TJDFT (P2) e PRF Administrativo (P3). TCE-GO foi arquivado em 30/09/2026: saiu da agenda, do foco ativo, dos cartões e do Mentor, mas continua no Workspace com acesso histórico. Preferências antigas de foco TCE-GO migram uma vez para SEEDF; a última visita TCE-GO continua registrada como histórico. Ordens locais personalizadas mantêm a sequência relativa dos projetos que seguem ativos.
 
-## Estado atual — v28.1.2
-
-A v28.1.2 preserva o foco padrão SEEDF (P1) e a ordem P1–P4 na Central, inclusive em aparelhos que ainda guardavam a antiga ordem padrão TCE-GO (P3), SEEDF (P1), TJDFT (P2), PRF Administrativo (P4). Só essa sequência antiga é migrada; outras ordens locais personalizadas permanecem intactas. A grade semanal segue igual, com TCE-GO e PRF Administrativo em dias diferentes.
-
-A integração lançada na v28.1.0 mantém as duas centrais conectadas sem fundi-las. A Jornada lê o mesmo registry e os contratos `central-status.json` publicados por cada projeto; mostra fase, unidade/ação publicada, procedência e data, sem consultar Notion, replicar métricas privadas ou depender da Central Operacional. Acesso direto à Jornada fica no cabeçalho.
-
-A publicação do GitHub Pages continua restrita a `main`; o gate de qualidade agora também roda em pull requests sem publicar a branch de trabalho.
+A Jornada consulta somente os contratos públicos dos três projetos ativos. O cartão TCE-GO fica em uma seção histórica separada e não tem o endpoint de status consultado. O registro local de horas e sua sincronização opcional entre aparelhos continuam disponíveis; o Mentor não lê o estado privado do TCE-GO.
 
 A v28.0.3 aprimora a página `/mentor/` com um panorama visual dos quatro projetos: SEEDF (P1), TJDFT (P2), TCE-GO (P3) e PRF Administrativo (P4). O painel reúne a próxima etapa e a situação da fonte, exibe questões/precisão somente quando publicadas e mantém o tempo de 7 dias identificado como registro local da Central. As abas agora seguem o padrão acessível de teclado. TCE-GO continua como foco padrão; o Mentor segue somente leitura e sem OpenAI API paga.
 
@@ -38,11 +32,11 @@ O teto do app shell da v28 passa a **256 KiB bruto e 80 KiB gzip**, autorizado e
 A V27 apresenta um cartão para cada dia da semana e a V27.0.1 compacta a grade em celulares sem esconder tarefas nem mudar a ordem de prioridades.
 
 - Retomada mostra separadamente o foco escolhido e o último acesso local; acesso não representa estudo ou progresso.
-- Projetos reúne os quatro projetos ativos; a Plataforma de Questões tem cartão próprio, fora da contagem de concursos.
+- Projetos reúne os três projetos ativos; TCE-GO fica na aba Arquivados e a Plataforma de Questões tem cartão próprio, fora da contagem de concursos.
 - Inbox tem filtros próprios por tipo e projeto; o Radar mantém a visão completa dos contratos disponíveis.
 - Evolução mantém Radar, preferências e estado técnico; o Mentor possui página própria em `/mentor/`.
 - Views locais salvam também a tela atual; views anteriores sem esse campo continuam abrindo em Hoje.
-- Prioridades: SEEDF (P1), TJDFT (P2), TCE-GO (P3) e PRF Administrativo (P4). SEEDF e TJDFT estudam de segunda a sexta e revisam no sábado; TCE-GO tem sessões terça, quinta e sábado.
+- Prioridades: SEEDF (P1), TJDFT (P2) e PRF Administrativo (P3). SEEDF e TJDFT estudam de segunda a sexta e revisam no sábado; PRF mantém seus blocos de segunda, quarta e sexta.
 - PRF-ADM segue segunda, quarta e sexta, na sequência PRFADM01→PRFADM33, sem pular códigos quando uma sessão é perdida.
 - As frases do Major Cadar alternam automaticamente a cada cinco minutos, com autoria e link da fonte, sem chamada externa automática.
 - Relógio de Brasília usa `America/Sao_Paulo` e atualiza a cada segundo.
@@ -50,7 +44,7 @@ A V27 apresenta um cartão para cada dia da semana e a V27.0.1 compacta a grade 
 - A grade não muda o foco. O tempo estudado só aparece após lançamento e confirmação explícitos; a Central não infere sessão, duração, domínio ou progresso a partir do cronograma ou de sinais técnicos.
 - O cartão do PRF abre o site GitHub Pages e mantém link separado para o Notion; o site publica `central-status.json` sanitizado para a Central sem expor a integração do Notion.
 - A Plataforma de Questões abre o site independente e não entra na prioridade nem nos indicadores dos concursos.
-- Cada tela possui âncora direta; sem JavaScript, os links diretos dos quatro projetos e da ferramenta continuam disponíveis.
+- Cada tela possui âncora direta; sem JavaScript, os links diretos dos três projetos ativos, do histórico e da ferramenta continuam disponíveis.
 - contratos read-only, sem chamadas novas, sem ranking ou progresso inferido;
 - TCE-GO, SEEDF, TJDFT, painel e repositório do PRF, Notion e Plataforma de Questões permanecem fora de qualquer escrita pela Central.
 

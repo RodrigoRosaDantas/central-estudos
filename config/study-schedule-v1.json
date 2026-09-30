@@ -9,8 +9,7 @@
     ],
     "tuesday": [
       "seedf",
-      "tjdft",
-      "tcego"
+      "tjdft"
     ],
     "wednesday": [
       "seedf",
@@ -19,8 +18,7 @@
     ],
     "thursday": [
       "seedf",
-      "tjdft",
-      "tcego"
+      "tjdft"
     ],
     "friday": [
       "seedf",
@@ -29,13 +27,12 @@
     ],
     "saturday": [
       "seedf",
-      "tjdft",
-      "tcego"
+      "tjdft"
     ],
     "sunday": []
   },
   "notes": {
-    "saturday": "SEEDF e TJDFT em revisão; TCE-GO em sessão prevista.",
+    "saturday": "SEEDF e TJDFT em revisão.",
     "sunday": "Descanso. D7/D20 somente quando o próprio projeto indicar."
   }
 }

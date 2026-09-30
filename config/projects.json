@@ -3,7 +3,7 @@
   "central": {
     "name": "Central de Estudos",
     "owner": "Rodrigo",
-    "version": "28.1.2",
+    "version": "28.2.0",
     "defaultProject": "seedf",
     "journeyUrl": "https://rodrigorosadantas.github.io/plano-de-transicao/"
   },
@@ -49,18 +49,16 @@
       "name": "TCE-GO",
       "description": "Controle Externo",
       "phase": "Edital publicado",
-      "status": "active",
+      "status": "archived",
       "priority": "normal",
       "icon": "🏛️",
       "url": "https://rodrigorosadantas.github.io/tce-go-dashboard/",
       "repository": "https://github.com/RodrigoRosaDantas/tce-go-dashboard",
       "statusUrl": "https://rodrigorosadantas.github.io/tce-go-dashboard/central-status.json",
-      "code": "P3",
       "shortName": "TCE-GO",
-      "order": 3,
-      "category": "active-contest",
-      "availability": "contract-published",
-      "studyPriority": 3
+      "category": "historical",
+      "availability": "archive-only",
+      "archiveNote": "Concurso preservado para consulta histórica. Prioridade e sessões pausadas em 30/09/2026 para concentrar a rotina nos projetos ativos."
     },
     {
       "id": "prf-adm",
@@ -74,11 +72,11 @@
       "url": "https://rodrigorosadantas.github.io/prf-administrativo-dashboard/",
       "repository": "https://github.com/RodrigoRosaDantas/prf-administrativo-dashboard",
       "notionUrl": "https://app.notion.com/p/3e8cf5a2673181679cd2f5532e0abf60",
-      "studyPriority": 4,
+      "studyPriority": 3,
       "statusUrl": "https://rodrigorosadantas.github.io/prf-administrativo-dashboard/central-status.json",
-      "code": "P4",
+      "code": "P3",
       "shortName": "PRF ADM",
-      "order": 4,
+      "order": 3,
       "category": "active-contest",
       "availability": "contract-published"
     },

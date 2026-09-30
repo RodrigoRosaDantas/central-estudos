@@ -1,3 +1,12 @@
+## [28.2.0] - 2026-09-30
+- Reorganiza a carteira ativa para SEEDF P1, TJDFT P2 e PRF Administrativo P3.
+- Arquiva TCE-GO no Workspace sem apagar o repositório nem o histórico; remove-o da agenda, do foco ativo e dos catálogos correntes.
+- Migra o foco salvo TCE-GO uma vez para SEEDF e preserva a última visita como histórico. Preferências locais personalizadas mantêm a ordem relativa dos projetos ativos.
+- Mantém logs de horas local-first e a sincronização opcional entre aparelhos. Mentor, Hoje e Jornada deixam de ler progresso privado do TCE-GO.
+- Jornada mostra projetos arquivados em seção separada e consulta status público apenas dos ativos.
+- Corrige a captura de sessão SEEDF identificada com sufixo Q: L05 aparece como atividade de questões concluída, sem marcar leitura ou D0 pendentes como concluídos.
+- QA: qualidade da Central, migração de catálogo/foco, contrato de progresso L05, testes estáticos e de interface da Jornada; deploy e Pages verificados após merge.
+
 # CHANGELOG — Central de Estudos
 
 ## [28.1.2] - 2026-09-29

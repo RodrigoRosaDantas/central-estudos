@@ -2,14 +2,13 @@
   "use strict";
 
   const api = window.CentralStudyLogV1;
-  const catalogUrl = "./config/study-catalog-v1.json?v=28.1.0";
+  const catalogUrl = "./config/study-catalog-v1.json?v=28.2.0";
   const weekdayNames = ["Domingo", "Segunda-feira", "Terça-feira", "Quarta-feira", "Quinta-feira", "Sexta-feira", "Sábado"];
   const weekdayKeys = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
-  const projectIds = { P1: "seedf", P2: "tjdft", P3: "tcego", P4: "prf-adm" };
+  let projectIds = { P1: "seedf", P2: "tjdft", P3: "prf-adm" };
   const fallback = {
     seedf: { name: "SEEDF", groups: [{ label: "Matéria", items: ["Leis — Leis Primeiro", "Ciclo vigente — unidade Dxx", "Questões / revisão", "Outro assunto — detalhe abaixo"] }] },
     tjdft: { name: "TJDFT", groups: [{ label: "Matéria", items: ["Português Primeiro", "RLM Preventivo", "Revisão integrada", "Outro assunto — detalhe abaixo"] }] },
-    tcego: { name: "TCE-GO", groups: [{ label: "Matéria", items: ["Sessão TCE-GO — conferir unidade", "Outro assunto — detalhe abaixo"] }] },
     "prf-adm": { name: "PRF Administrativo", groups: [{ label: "Matéria", items: ["PRFADMxx — conferir próximo código e material no Notion", "Outro assunto — detalhe abaixo"] }] }
   };
 
@@ -127,7 +126,6 @@
     const descriptions = {
       seedf: item.activity === "Revisão" ? "Leis Primeiro, ciclo e revisões conforme o dia no projeto." : "Leis Primeiro ou unidade do ciclo; selecione o assunto feito.",
       tjdft: item.activity === "Revisão" ? "Escolha a revisão integrada ou o conteúdo que retomou." : "Escolha Português, RLM ou a unidade efetivamente estudada.",
-      tcego: "Sessão prevista. Confira no projeto se a unidade e o material estão liberados.",
       "prf-adm": "Roda leve. Confira no Notion o próximo código e se o material está pronto."
     };
     add(card, "p", "study-plan-description", descriptions[item.projectId]);
@@ -247,7 +245,8 @@
       const response = await fetch(catalogUrl, { cache: "no-cache" });
       if (!response.ok) throw new Error("Catálogo indisponível");
       const data = await response.json();
-      if (data.version !== "28.1.0" || !data.projects || !["seedf", "tjdft", "tcego", "prf-adm"].every(id => data.projects[id]?.groups?.length)) throw new Error("Catálogo inválido");
+      const activeIds = [...new Set(Object.values(projectIds))].sort();
+      if (data.version !== "28.2.0" || !data.projects || Object.keys(data.projects).sort().join("|") !== activeIds.join("|") || activeIds.some(id => !data.projects[id]?.groups?.length)) throw new Error("Catálogo inválido");
       for (const project of Object.values(data.projects)) {
         for (const group of project.groups) {
           if (!Array.isArray(group.items) || group.items.some(item => typeof item !== "string" || item.length > 100)) throw new Error("Matéria inválida");
@@ -292,6 +291,12 @@
     }
   });
 
+  document.addEventListener("central:app-ready", event => {
+    const projects = event.detail?.projects;
+    if (!Array.isArray(projects) || !projects.length) return;
+    projectIds = Object.fromEntries(projects.filter(project => /^P[1-9]\d*$/.test(project.code || "")).map(project => [project.code, project.id]));
+    render();
+  });
   render();
   loadCatalog();
 })();

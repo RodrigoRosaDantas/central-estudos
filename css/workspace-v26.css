@@ -10,7 +10,7 @@
 .weekly-schedule-v26{margin-top:16px;padding:clamp(13px,2.5vw,22px);border:1px solid var(--border);border-radius:20px;background:linear-gradient(145deg,rgba(94,234,212,.055),rgba(167,139,250,.04)),var(--surface)}
 .weekly-schedule-v26 .section-heading{margin:0 0 12px}
 .weekly-schedule-v26 .section-heading>p{max-width:38ch}
-.weekly-priority-strip{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:12px 0}
+.weekly-priority-strip{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:12px 0}
 .schedule-priority-chip{display:flex;align-items:center;justify-content:center;gap:8px;min-width:0;min-height:42px;padding:8px 10px;border:1px solid var(--border);border-radius:13px;background:rgba(255,255,255,.035);color:var(--text);text-decoration:none}
 .schedule-priority-chip>span{display:grid;place-items:center;flex:none;width:25px;height:25px;border-radius:8px;background:var(--accent-soft);color:var(--accent);font-size:.68rem;font-weight:850}
 .schedule-priority-chip strong{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:.8rem}
