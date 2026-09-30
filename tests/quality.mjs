@@ -990,7 +990,7 @@ function testV27DailySchedule(registry) {
   assert.ok(html.includes('id="daily-motivation-author"')&&html.includes('id="daily-motivation-source"')&&html.includes("Frases do Major Cadar · muda a cada 5 min")&&html.includes('id="daily-motivation" class="daily-motivation" aria-live="polite" aria-atomic="true"')&&html.includes("Seja forte ou seja vencido.")&&app.includes('author:"Major Cadar"')&&app.includes('second:"2-digit"')&&app.includes("setInterval(e,1e3)"),"Major Cadar quote, accessible rotation label, attribution/source and Brasília clock seconds must remain visible");
   assert.ok(quoteCss.includes("border-left:4px solid #b69cff")&&quoteCss.includes("font-size:clamp(1rem,2.2vw,1.5rem)")&&quoteCss.includes("font-weight:800")&&quoteCss.includes("#a78bfa30"),"daily quote card must keep a readable, high-contrast visual treatment");
   assert.ok(quoteCss.includes("@media(min-width:900px)")&&quoteCss.includes("grid-template-columns:.8fr 1.2fr")&&quoteCss.includes("grid-area:1/2/4/3")&&quoteCss.includes("min-height:154px"),"desktop quote must use the open header space as a balanced featured panel");
-  assert.ok(html.includes('href="./css/workspace-v26.css?v=quote-desktop-20260928"')&&sw.includes("'./css/workspace-v26.css?v=quote-desktop-20260928'")&&sw.includes("central-shell-v28.1.2-priority-p1-20260929"),"current release must refresh installed PWA clients");
+  assert.ok(html.includes('href="./css/workspace-v26.css?v=quote-desktop-20260928"')&&sw.includes("'./css/workspace-v26.css?v=quote-desktop-20260928'")&&sw.includes("central-shell-v28.1.2-catalog-order-migration-20260929"),"current release must refresh installed PWA clients");
   pass("v28.1.2 aligns P1 focus while preserving the weekly schedule and factual closeout");
 }
 
