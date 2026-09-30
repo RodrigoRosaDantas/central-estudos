@@ -3,7 +3,7 @@
   "central": {
     "name": "Central de Estudos",
     "owner": "Rodrigo",
-    "version": "28.1.2",
+    "version": "28.1.3",
     "defaultProject": "seedf",
     "journeyUrl": "https://rodrigorosadantas.github.io/plano-de-transicao/"
   },
