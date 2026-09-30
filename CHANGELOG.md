@@ -1,5 +1,16 @@
 # CHANGELOG — Central de Estudos
 
+## [28.1.1] - 2026-09-29
+
+### Prioridade P1–P4
+- O foco padrão da Central passa a ser o P1 SEEDF; a ordem visual e a prioridade numérica agora seguem P1, P2, P3 e P4.
+- O TCE-GO continua como P3 e o PRF Administrativo como P4; a grade semanal e os dias separados de P3/P4 não mudaram.
+- O snapshot público e as fontes privadas dos projetos permanecem independentes; nenhuma conexão Notion/Supabase foi centralizada.
+- O cache do app instalado recebeu uma versão nova para carregar o registry atualizado.
+
+### Validado
+- Auditoria de qualidade, teste de ordenação P1–P4, estrutura do fallback sem JavaScript, agenda semanal e compatibilidade do service worker.
+
 ## [28.1.0] - 2026-09-29
 
 ### Integração Central ↔ Jornada

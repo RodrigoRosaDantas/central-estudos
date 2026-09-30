@@ -99,7 +99,9 @@ function testRegistry(registry, html) {
   const defaultProject = registry.projects.find(project => project.id === registry.central.defaultProject);
   assert.equal(defaultProject?.status, "active", "defaultProject must exist and be active");
   const activeCodes = Object.fromEntries(registry.projects.filter(project => project.status === "active").map(project => [project.id, project.code]));
-  assert.deepEqual(activeCodes, { tcego: "P3", seedf: "P1", tjdft: "P2", "prf-adm": "P4" }, "operational registry order and P1–P4 mapping must remain explicit");
+  assert.deepEqual(activeCodes, { seedf: "P1", tjdft: "P2", tcego: "P3", "prf-adm": "P4" }, "operational registry order and P1–P4 mapping must remain explicit");
+  assert.deepEqual(Object.keys(activeCodes), ["seedf", "tjdft", "tcego", "prf-adm"], "registry cards must follow strategic P1–P4 order");
+  assert.deepEqual(registry.projects.filter(project => project.status === "active").map(project => project.studyPriority), [1, 2, 3, 4], "studyPriority must preserve the explicit P1–P4 ranking");
   assert.ok(html.includes('id="journey-link"') && html.includes("Painel Estratégico"), "Central must expose a direct Jornada link");
   for (const code of ["P1", "P2", "P3", "P4"]) assert.ok(html.includes(`<span class="project-code">${code}</span>`), `static project fallback must include ${code}`);
 
@@ -903,7 +905,7 @@ function testV22CommandCenter() {
 
 function testV23TodayMentor() {
   const html=read("index.html"),mentor=read("mentor/index.html"),pro=read("js/pro-v11.js"),operational=read("js/operational-v13.js");
-  assert.ok(html.includes(">Hoje<")&&html.includes("PLANO DE HOJE")&&html.includes("HOJE · V28.1.0"),"later releases must preserve Hoje in the command center");
+  assert.ok(html.includes(">Hoje<")&&html.includes("PLANO DE HOJE")&&html.includes(`HOJE · V${registry.central.version}`),"later releases must preserve Hoje in the command center");
   assert.ok(html.includes("RADAR OPERACIONAL")&&html.includes("Situação dos concursos"),"operational radar must remain available in the Central");
   assert.ok(html.includes('href="./mentor/"')&&mentor.includes("Mentor Central"),"Mentor must be a dedicated child page linked from the Central");
   assert.ok(html.includes('href="./mentor/">Abrir Mentor</a>')&&html.includes('href="#activity-panel">Histórico</a>'),"home shortcuts must expose the dedicated Mentor and history");
@@ -949,10 +951,10 @@ function testV27DailySchedule(registry) {
   const start=html.indexOf('<section id="agenda-semanal"'),end=html.indexOf("</section>",start);
   assert.ok(start>=0&&end>start,"weekly schedule must remain a section on the page");
   const schedule=html.slice(start,end);
-  assert.equal(registry.central.version,"28.1.0","registry must identify v28.1.0");
+  assert.equal(registry.central.version,"28.1.1","registry must identify v28.1.1");
   assert.ok(html.includes(`HOJE · V${registry.central.version}`),"Today panel version badge must match the current release");
-  assert.ok(html.includes('id="pro-now-focus-name">TCE-GO</strong>')&&html.includes('id="pro-now-focus-link" class="command-primary" href="https://rodrigorosadantas.github.io/tce-go-dashboard/"')&&html.includes('src="./js/operational-v13.js?v=28.1.0"')&&operational.includes('if(u==="tcego")')&&!operational.includes("r.currentUnit||r.nextAction"),"Today must retain TCE-GO as the configured default focus and keep detailed status in its own project");
-  assert.equal(registry.central.defaultProject,"tcego","TCE-GO must remain the default focus; PRF stays a separate P4 schedule priority");
+  assert.ok(html.includes('id="pro-now-focus-name">SEEDF</strong>')&&html.includes('id="pro-now-focus-link" class="command-primary" href="https://rodrigorosadantas.github.io/seedf-ppge-dashboard/"')&&html.includes('src="./js/operational-v13.js?v=28.1.0"')&&operational.includes('if(u==="tcego")')&&!operational.includes("r.currentUnit||r.nextAction"),"Today must default to P1 SEEDF while keeping each project status in its own project");
+  assert.equal(registry.central.defaultProject,"seedf","P1 SEEDF must be the default focus under the confirmed P1–P4 hierarchy");
   assert.ok(html.includes('href="#agenda-semanal">Cronograma</a>')&&router.includes('"agenda-semanal":"today"'),"schedule must have an accessible shortcut and route back to Hoje");
   const priorityStrip=schedule.slice(schedule.indexOf('<div class="weekly-priority-strip"'),schedule.indexOf("</div>",schedule.indexOf('<div class="weekly-priority-strip"')));
   assert.deepEqual([...priorityStrip.matchAll(/data-priority="([^"]+)"/g)].map(match=>match[1]),["1","2","3","4"],"study priorities must list SEEDF, TJDFT, TCE-GO and PRF in order");
@@ -979,8 +981,8 @@ function testV27DailySchedule(registry) {
   const mobileCss=css.slice(css.indexOf("@media(max-width:719px)"));
   assert.ok(html.includes("./css/workspace-v27.css")&&html.includes("weekly-schedule-v27")&&mobileCss.includes(".schedule-day-grid{grid-template-columns:1fr")&&mobileCss.includes(".schedule-day-card{grid-template-columns:minmax(82px,.34fr) minmax(0,1fr)")&&mobileCss.includes(".schedule-day-heading>span{display:none}")&&mobileCss.includes(".schedule-day-rest-v27 .schedule-day-heading>span{display:inline-flex}")&&mobileCss.includes(".schedule-day-card .schedule-item-copy{display:block")&&mobileCss.includes("min-width:0"),"v27 mobile schedule must keep seven days while compacting each day row and avoiding redundant labels");
   assert.ok(html.includes('src="./js/command-context-v1.js?v=28.1.0"')&&sw.includes("'./js/command-context-v1.js?v=28.1.0'"),"today marker and published-change summary must load as part of the app shell");
-  assert.ok(sw.includes("central-shell-v28.1.0")&&sw.includes("./css/workspace-v27.css"),"PWA shell cache must include the v27 stylesheet and current version");
-  assert.ok(html.includes('src="./js/app.js?v=28.1.0"')&&sw.includes("'./js/app.js?v=28.1.0'")&&sw.includes("'./config/projects.json?v=28.1.0'")&&app.includes("./config/projects.json?v=28.1.0"),"v28.1.0 must version app and registry cache URLs");
+  assert.ok(sw.includes("central-shell-v28.1.1")&&sw.includes("./css/workspace-v27.css"),"PWA shell cache must include the v27 stylesheet and current version");
+  assert.ok(html.includes('src="./js/app.js?v=28.1.0"')&&sw.includes("'./js/app.js?v=28.1.0'")&&sw.includes("'./config/projects.json?v=28.1.1'")&&app.includes("./config/projects.json?v=28.1.1"),"registry URL and app cache must use the current release");
   assert.ok(html.includes("Mudanças desde a última conferência")&&html.includes("contratos validados neste aparelho")&&html.includes('id="published-changes-list"'),"published changes must be shown with their local/read-only provenance");
   assert.ok(css.includes(".schedule-day-card.is-today")&&css.includes('content:"HOJE"'),"the current weekday must have a visible marker");
   assert.ok(html.includes("PRF Administrativo")&&html.includes(">P4</span>")&&!schedule.includes('class="schedule-mark schedule-mark-track">PRF</span>'),"the weekly routine must label PRF as P4 and retain its project identity");
@@ -988,14 +990,14 @@ function testV27DailySchedule(registry) {
   assert.ok(html.includes('id="daily-motivation-author"')&&html.includes('id="daily-motivation-source"')&&html.includes("Frases do Major Cadar · muda a cada 5 min")&&html.includes('id="daily-motivation" class="daily-motivation" aria-live="polite" aria-atomic="true"')&&html.includes("Seja forte ou seja vencido.")&&app.includes('author:"Major Cadar"')&&app.includes('second:"2-digit"')&&app.includes("setInterval(e,1e3)"),"Major Cadar quote, accessible rotation label, attribution/source and Brasília clock seconds must remain visible");
   assert.ok(quoteCss.includes("border-left:4px solid #b69cff")&&quoteCss.includes("font-size:clamp(1rem,2.2vw,1.5rem)")&&quoteCss.includes("font-weight:800")&&quoteCss.includes("#a78bfa30"),"daily quote card must keep a readable, high-contrast visual treatment");
   assert.ok(quoteCss.includes("@media(min-width:900px)")&&quoteCss.includes("grid-template-columns:.8fr 1.2fr")&&quoteCss.includes("grid-area:1/2/4/3")&&quoteCss.includes("min-height:154px"),"desktop quote must use the open header space as a balanced featured panel");
-  assert.ok(html.includes('href="./css/workspace-v26.css?v=quote-desktop-20260928"')&&sw.includes("'./css/workspace-v26.css?v=quote-desktop-20260928'")&&sw.includes("central-shell-v28.1.0-mentor-integrity-20260929"),"current release must refresh installed PWA clients");
-  pass("v28.1.0 keeps the fixed weekly schedule and factual closeout fallback");
+  assert.ok(html.includes('href="./css/workspace-v26.css?v=quote-desktop-20260928"')&&sw.includes("'./css/workspace-v26.css?v=quote-desktop-20260928'")&&sw.includes("central-shell-v28.1.1-priority-p1-20260929"),"current release must refresh installed PWA clients");
+  pass("v28.1.1 aligns P1 focus while preserving the weekly schedule and factual closeout");
 }
 
 
 function testV278AdaptiveMentor(registry) {
   const html=read("index.html"),op=read("js/operational-v13.js"),css=read("css/operational-v13.css"),sw=read("sw.js");
-  assert.equal(registry.central.version,"28.1.0","adaptive mentor release must be v28.1.0");
+  assert.equal(registry.central.version,"28.1.1","current Central release must preserve the adaptive Mentor");
   assert.ok(op.includes('summary.id="mentor-adaptive-summary"')&&op.includes("Mentor adaptativo")&&op.includes("Motor local · R$ 0 API"),"adaptive mentor must be present and explicitly API-free");
   assert.ok(op.includes('LOG_KEY="central-estudos:study-log-v1"')&&op.includes("scheduledOn")&&op.includes("confidence(logs)")&&op.includes("SEM TEMPO REGISTRADO NA CENTRAL"),"daily state must derive from real study logs and the current schedule");
   assert.ok(op.includes("sem registro na Central")&&op.includes("campo ausente continua desconhecido"),"mentor must explain missing evidence without inventing performance");
@@ -1012,7 +1014,8 @@ function testV279ProjectStudySignals(registry) {
   const prf=registry.projects.find(project=>project.id==="prf-adm");
   assert.equal(prf?.statusUrl,"https://rodrigorosadantas.github.io/prf-administrativo-dashboard/central-status.json","PRF must publish a read-only status contract");
   assert.equal(prf?.studyPriority,4,"PRF must remain P4 in the study schedule without taking over the configured focus");
-  assert.equal(registry.projects.find(project=>project.id==="tcego")?.priority,"focus","TCE-GO must retain focus semantics independently of PRF schedule priority");
+  assert.equal(registry.projects.find(project=>project.id==="seedf")?.priority,"focus","P1 SEEDF must carry the default focus state");
+  assert.equal(registry.projects.find(project=>project.id==="tcego")?.priority,"normal","P3 TCE-GO must remain P3 rather than overriding the higher P1 focus");
   assert.ok(schema.properties.study&&schema.properties.study.properties.accuracy&&schema.properties.study.properties.reviewsDue&&schema.properties.study.properties.activeErrors,"status contract must support optional pedagogical signals");
   assert.ok(op.includes("publishedStudy=new Map")&&op.includes("privateStudy=new Map")&&op.includes("central:contract-state")&&op.includes("central:private-study-state"),"Mentor must combine public and authorized private study signals");
   assert.ok(op.includes("revisão(ões) vencida(s)")&&op.includes("desempenho publicado")&&op.includes("erro(s) ativo(s)")&&op.includes("próxima unidade publicada"),"Mentor must consume explicit study signals");
@@ -1023,7 +1026,7 @@ function testV279ProjectStudySignals(registry) {
 
 function testV28DedicatedMentor(registry) {
   const html=read("index.html"),mentor=read("mentor/index.html"),js=read("mentor/mentor.js"),css=read("mentor/mentor.css"),sw=read("sw.js"),schedule=JSON.parse(read("config/study-schedule-v1.json"));
-  assert.equal(registry.central.version,"28.1.0","dedicated Mentor release must be v28.1.0");
+  assert.equal(registry.central.version,"28.1.1","current Central release must preserve the dedicated Mentor");
   assert.ok(!html.includes('id="routing-panel"')&&html.includes('href="./mentor/"'),"main Central must be cleaner and link to the Mentor child page");
   for(const tab of ["agora","projetos","revisoes","metodo"])assert.ok(mentor.includes(`data-mentor-view="${tab}"`),`Mentor tab missing: ${tab}`);
   assert.ok(mentor.includes("R$ 0 API")&&mentor.includes("Mentor Central")&&mentor.includes("Revisões & riscos"),"Mentor page must expose its dedicated identity and zero-API status");
@@ -1253,8 +1256,8 @@ function testV274PrfSiteAndToolDirectory(registry) {
   const toolsStart = html.indexOf('<div class="study-tools"');
   const toolsEnd = html.indexOf("</div></section><section id=\"workspace\"", toolsStart);
 
-    assert.equal(registry.central.version, "28.1.0", "catalog must identify current release v28.1.0");
-    assert.equal(registry.central.defaultProject, "tcego", "the default Today focus must remain TCE-GO while PRF stays P4");
+    assert.equal(registry.central.version, "28.1.1", "catalog must identify current release v28.1.1");
+    assert.equal(registry.central.defaultProject, "seedf", "P1 SEEDF must be the default Today focus while P4 stays in its own schedule days");
   assert.ok(prf && prf.status === "active" && prf.priority === "normal" && prf.studyPriority === 4, "PRF must be active, ranked P4 in the study schedule, and keep normal focus semantics");
   assert.equal(prf.description, "Roda PRFADM01–33", "Central catalog must show the current 33-session PRF cycle");
   assert.equal(prf.destinationType, "site", "PRF must open as a site");
@@ -1264,6 +1267,8 @@ function testV274PrfSiteAndToolDirectory(registry) {
   assert.equal(prf.statusUrl, "https://rodrigorosadantas.github.io/prf-administrativo-dashboard/central-status.json", "PRF site must expose its sanitized operational status contract");
   assert.ok(gridStart >= 0 && gridEnd > gridStart, "project fallback grid must be present");
   const grid = html.slice(gridStart, gridEnd);
+  assert.deepEqual([...grid.matchAll(/data-project-id="([^"]+)"/g)].map(match => match[1]), ["seedf", "tjdft", "tcego", "prf-adm"], "static project cards must follow the P1–P4 priority order");
+  assert.equal(grid.split("<article class=\"project-card").length - 1, grid.split("</article>").length - 1, "static project fallback must contain balanced cards");
   assert.ok(grid.includes('data-project-id="prf-adm"') && grid.includes(prf.url), "PRF project must appear in the no-JavaScript project catalogue");
   assert.ok(app.includes('function monitoredProjects(){return activeProjects().filter(e=>e.destinationType!=="notion")}'), "only dashboard projects may be technically monitored");
   assert.ok(grid.includes(prf.notionUrl), "static PRF card must preserve direct Notion access");

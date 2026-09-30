@@ -3,35 +3,18 @@
   "central": {
     "name": "Central de Estudos",
     "owner": "Rodrigo",
-    "version": "28.1.0",
-    "defaultProject": "tcego",
+    "version": "28.1.1",
+    "defaultProject": "seedf",
     "journeyUrl": "https://rodrigorosadantas.github.io/plano-de-transicao/"
   },
   "projects": [
-    {
-      "id": "tcego",
-      "name": "TCE-GO",
-      "description": "Controle Externo",
-      "phase": "Edital publicado",
-      "status": "active",
-      "priority": "focus",
-      "icon": "🏛️",
-      "url": "https://rodrigorosadantas.github.io/tce-go-dashboard/",
-      "repository": "https://github.com/RodrigoRosaDantas/tce-go-dashboard",
-      "statusUrl": "https://rodrigorosadantas.github.io/tce-go-dashboard/central-status.json",
-      "code": "P3",
-      "shortName": "TCE-GO",
-      "order": 3,
-      "category": "active-contest",
-      "availability": "contract-published"
-    },
     {
       "id": "seedf",
       "name": "SEEDF",
       "description": "Gestor + Analista — Apoio Administrativo",
       "phase": "Pré-edital",
       "status": "active",
-      "priority": "normal",
+      "priority": "focus",
       "icon": "📚",
       "url": "https://rodrigorosadantas.github.io/seedf-ppge-dashboard/",
       "repository": "https://github.com/RodrigoRosaDantas/seedf-ppge-dashboard",
@@ -40,7 +23,8 @@
       "shortName": "SEEDF",
       "order": 1,
       "category": "active-contest",
-      "availability": "contract-published"
+      "availability": "contract-published",
+      "studyPriority": 1
     },
     {
       "id": "tjdft",
@@ -57,7 +41,26 @@
       "shortName": "TJDFT",
       "order": 2,
       "category": "active-contest",
-      "availability": "contract-published"
+      "availability": "contract-published",
+      "studyPriority": 2
+    },
+    {
+      "id": "tcego",
+      "name": "TCE-GO",
+      "description": "Controle Externo",
+      "phase": "Edital publicado",
+      "status": "active",
+      "priority": "normal",
+      "icon": "🏛️",
+      "url": "https://rodrigorosadantas.github.io/tce-go-dashboard/",
+      "repository": "https://github.com/RodrigoRosaDantas/tce-go-dashboard",
+      "statusUrl": "https://rodrigorosadantas.github.io/tce-go-dashboard/central-status.json",
+      "code": "P3",
+      "shortName": "TCE-GO",
+      "order": 3,
+      "category": "active-contest",
+      "availability": "contract-published",
+      "studyPriority": 3
     },
     {
       "id": "prf-adm",
