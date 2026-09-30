@@ -6,4 +6,4 @@
 - [x] Atualiza contratos ao retornar à Central em primeiro plano, sem polling ou novas chamadas diretas na camada de registro.
 - [x] Aciona a sincronização Supabase já existente sem alterações de schema, RLS ou credenciais.
 - [x] PRF permanece sem lançamento automático enquanto seu contrato não publicar `lastStudiedAt`; a produção dos 33 materiais não conta como conclusão de estudo.
-- [ ] Quality gate, publicação e inspeção do comportamento no site concluídos.
+- [x] Quality gate passou na PR; versão v28.3.0 integrada e conferida na Central publicada.
