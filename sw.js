@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'central-shell-v28.1.0-mentor-integrity-20260929';
+const CACHE_VERSION = 'central-shell-v28.1.1-priority-p1-20260929';
 const APP_SHELL = [
 './',
 './index.html',
@@ -23,7 +23,7 @@ const APP_SHELL = [
 './js/command-context-v1.js?v=28.1.0',
 './js/workspace-v24.js',
 './js/study-log-v1.js',
-'./config/projects.json?v=28.1.0',
+'./config/projects.json?v=28.1.1',
 './config/study-schedule-v1.json?v=28.1.0',
 './mentor/index.html',
 './mentor/mentor.css?v=28.1.0',
