@@ -1,19 +1,16 @@
 (()=>{"use strict";
-const REGISTRY_URL="../config/projects.json?v=28.1.0";
-const SCHEDULE_URL="../config/study-schedule-v1.json?v=28.1.0";
+const REGISTRY_URL="../config/projects.json?v=28.2.0";
+const SCHEDULE_URL="../config/study-schedule-v1.json?v=28.2.0";
 const LOG_KEY="central-estudos:study-log-v1";
-const SYNC_KEY="central-estudos:study-sync-v1";
 const FOCUS_KEY="central-estudos:focus-project";
-const SUPABASE_URL="https://fqqkkyusnzhuuizahkww.supabase.co";
-const SUPABASE_KEY="sb_publishable_GfoaAPKtYuSu_UY6wE8jMg_XsVjdWU7";
-const ORDER=["seedf","tjdft","tcego","prf-adm"];
-const LABEL={seedf:"SEEDF",tjdft:"TJDFT",tcego:"TCE-GO","prf-adm":"PRF ADM"};
-const PRIORITY={seedf:"P1",tjdft:"P2",tcego:"P3","prf-adm":"P4"};
+let ORDER=["seedf","tjdft","prf-adm"];
+let LABEL={seedf:"SEEDF",tjdft:"TJDFT","prf-adm":"PRF ADM"};
+let PRIORITY={seedf:"P1",tjdft:"P2","prf-adm":"P3"};
 const VIEWS=["agora","projetos","revisoes","metodo"];
 const WEEKDAYS=["sunday","monday","tuesday","wednesday","thursday","friday","saturday"];
 const WEEKDAY_PT={sunday:"Domingo",monday:"Segunda-feira",tuesday:"Terça-feira",wednesday:"Quarta-feira",thursday:"Quinta-feira",friday:"Sexta-feira",saturday:"Sábado"};
 const $=id=>document.getElementById(id);
-const state={registry:null,schedule:null,logs:[],contracts:new Map,privateStudy:new Map,projectStates:new Map,lastRefresh:null,loading:false};
+const state={registry:null,schedule:null,logs:[],contracts:new Map,lastRefresh:null,loading:false};
 
 function node(tag,cls,text){const el=document.createElement(tag);if(cls)el.className=cls;if(text!==undefined)el.textContent=text;return el}
 function isoToday(){const parts=new Intl.DateTimeFormat("en-GB",{timeZone:"America/Sao_Paulo",year:"numeric",month:"2-digit",day:"2-digit"}).formatToParts(new Date()),m=Object.fromEntries(parts.map(x=>[x.type,x.value]));return m.year+"-"+m.month+"-"+m.day}
@@ -22,7 +19,7 @@ function dayDiff(a,b){if(!a||!b)return null;const x=Date.parse(String(a).slice(0
 function duration(n){n=Number(n)||0;const h=Math.floor(n/60),m=n%60;return h?h+"h"+(m?" "+m+"min":""):m+" min"}
 function pct(v){return Number.isFinite(v)?Math.round(v*100)+"%":"—"}
 function fmtDate(v){if(!v)return"—";const s=String(v).slice(0,10),p=s.split("-");return p.length===3?p.reverse().join("/"):String(v)}
-function focusId(){try{const v=localStorage.getItem(FOCUS_KEY);return ORDER.includes(v)?v:null}catch{return null}}
+function focusId(){try{const v=localStorage.getItem(FOCUS_KEY);return ORDER.includes(v)?v:v==="tcego"&&ORDER.includes("seedf")?"seedf":null}catch{return null}}
 function project(id){return state.registry?.projects?.find(p=>p.id===id)||null}
 function projectName(id){return project(id)?.name||LABEL[id]||id}
 function studyUrl(id){return project(id)?.url||"../#projetos"}
@@ -62,6 +59,9 @@ async function loadRegistry(){
  const [registry,schedule]=await Promise.all([fetchJson(REGISTRY_URL),fetchJson(SCHEDULE_URL)]);
  if(registry?.schemaVersion!==3||!Array.isArray(registry.projects))throw new Error("registry inválido");
  if(!schedule?.weekdays)throw new Error("cronograma inválido");
+ const active=registry.projects.filter(p=>p.status==="active").sort((a,b)=>(a.order??999)-(b.order??999));
+ if(!active.length)throw new Error("sem projetos ativos");
+ ORDER=active.map(p=>p.id);LABEL=Object.fromEntries(active.map(p=>[p.id,p.shortName||p.name]));PRIORITY=Object.fromEntries(active.map(p=>[p.id,p.code||""]));
  state.registry=registry;state.schedule=schedule;
 }
 async function loadContract(p){
@@ -72,52 +72,8 @@ async function loadContract(p){
   return{status:data.source?.status==="partial"?"partial":"live",contract:data,reason:null};
  }catch(err){return{status:"unavailable",contract:null,reason:err?.message||"falha ao ler contrato"}}
 }
-function readSyncState(){
- try{const v=JSON.parse(localStorage.getItem(SYNC_KEY)||"null");return v&&v.version===1?v:null}catch{return null}
-}
-function decodeJwt(token){try{const part=token.split(".")[1].replace(/-/g,"+").replace(/_/g,"/");return JSON.parse(atob(part+"=".repeat((4-part.length%4)%4)))}catch{return{}}}
-async function refreshSupabaseSession(sync){
- if(!sync?.session?.refresh_token)return null;
- try{
-  const res=await fetch(SUPABASE_URL+"/auth/v1/token?grant_type=refresh_token",{method:"POST",headers:{apikey:SUPABASE_KEY,"Content-Type":"application/json"},body:JSON.stringify({refresh_token:sync.session.refresh_token})});
-  const data=await res.json();
-  if(!res.ok||!data.access_token)return null;
-  const exp=Number(data.expires_at)?Number(data.expires_at)*1000:Date.now()+(Number(data.expires_in)||3600)*1000;
-  sync.session={access_token:data.access_token,refresh_token:data.refresh_token||sync.session.refresh_token,expires_at:exp,user_id:data.user?.id||sync.session.user_id||""};
-  sync.accountId=sync.accountId||data.user?.id||sync.session.user_id||"";
-  localStorage.setItem(SYNC_KEY,JSON.stringify(sync));
-  return sync;
- }catch{return null}
-}
-async function tcePrivateStudy(){
- let sync=readSyncState();
- if(!sync?.session?.access_token)return{status:"signed-out",study:null,reason:"Conecte o Supabase na Central principal para incluir o progresso privado do TCE-GO."};
- const jwt=decodeJwt(sync.session.access_token),expires=(Number(sync.session.expires_at)||Number(jwt.exp)*1000||0);
- if(expires&&expires<Date.now()+60000)sync=await refreshSupabaseSession(sync);
- if(!sync?.session?.access_token)return{status:"signed-out",study:null,reason:"Sessão Supabase expirada. Reconecte pela Central principal."};
- const userId=sync.accountId||sync.session.user_id||decodeJwt(sync.session.access_token).sub;
- if(!userId)return{status:"signed-out",study:null,reason:"Sessão sem usuário identificável."};
- const url=new URL(SUPABASE_URL+"/rest/v1/tce_progress_state");
- url.searchParams.set("select","dxx,resolved_sxx,studied,completed,time_minutes,questions_done,correct,errors,doubts,canonical_status,confirmed_at,updated_at,event_occurred_at,canonical_revision");
- url.searchParams.set("owner_id","eq."+userId);
- url.searchParams.set("order","event_occurred_at.desc");
- url.searchParams.set("limit","150");
- try{
-  const res=await fetch(url.toString(),{method:"GET",headers:{apikey:SUPABASE_KEY,Authorization:"Bearer "+sync.session.access_token,Accept:"application/json"}});
-  if(res.status===401)return{status:"signed-out",study:null,reason:"Sessão Supabase precisa ser renovada na Central principal."};
-  if(!res.ok)throw new Error("HTTP "+res.status);
-  const rows=await res.json();
-  if(!Array.isArray(rows)||!rows.length)return{status:"empty",study:null,reason:"Nenhuma execução privada confirmada no TCE-GO."};
-  const questions=rows.reduce((n,r)=>n+(Number(r.questions_done)||0),0),correct=rows.reduce((n,r)=>n+(Number(r.correct)||0),0),errors=rows.reduce((n,r)=>n+(Number(r.errors)||0),0),doubts=rows.reduce((n,r)=>n+(Number(r.doubts)||0),0);
-  const last=rows[0],lastCompleted=rows.find(r=>r.completed),reviewDates=rows.map(r=>r.canonical_revision).filter(Boolean).sort(),today=isoToday();
-  const due=reviewDates.filter(v=>String(v).slice(0,10)<=today).length;
-  return{status:"private",study:normalizeStudy({evidence:"confirmed",sourceRef:"supabase:tce_progress_state",updatedAt:last.event_occurred_at||last.updated_at||null,trail:"TCE-GO",lastCompletedUnit:lastCompleted?.dxx||null,nextUnit:null,lastStudiedAt:last.event_occurred_at||last.confirmed_at||null,questionsDone:questions,correct,errors,doubts,accuracy:questions?correct/questions:null,reviewsDue:due,nextReviewAt:reviewDates.find(v=>String(v).slice(0,10)>today)||null,activeErrors:errors,completedSessions:rows.filter(r=>r.completed).length,totalSessions:null,notes:["Progresso privado lido somente com sua sessão Supabase."]}),reason:null};
- }catch(err){return{status:"unavailable",study:null,reason:err?.message||"Não foi possível ler o TCE privado."}}
-}
-function combinedStudy(id){
- const publicStudy=normalizeStudy(state.contracts.get(id)?.contract?.study),privateStudy=state.privateStudy.get(id)||null;
- return privateStudy?{...(publicStudy||{}),...privateStudy}:publicStudy;
-}
+function combinedStudy(id){return normalizeStudy(state.contracts.get(id)?.contract?.study)}
+
 function scheduleToday(){
  const key=WEEKDAYS[new Date(isoToday()+"T00:00:00Z").getUTCDay()];
  return{key,ids:Array.isArray(state.schedule?.weekdays?.[key])?state.schedule.weekdays[key]:[]};
@@ -211,13 +167,6 @@ function renderPriorityBoard(signals){
 }
 function sourceLabel(signal){
  const s=signal.contractState?.status||"unavailable";
- if(signal.id==="tcego"){
-  const privateStatus=state.projectStates.get("tcego")?.privateStatus;
-  if(privateStatus==="private")return["Privado autenticado","live"];
-  if(privateStatus==="signed-out")return["Privado desconectado","signed-out"];
-  if(privateStatus==="empty")return["Sem registro privado","partial"];
-  if(privateStatus==="unavailable")return["Privado indisponível","unavailable"];
- }
  if(s==="live")return["Contrato atualizado","live"];
  if(s==="partial")return["Contrato parcial","partial"];
  return["Indisponível","unavailable"];
@@ -228,10 +177,6 @@ function renderDataHealth(signals){
   const [label,status]=sourceLabel(s),card=node("div","mentor-source-card"),updated=s.contractState?.contract?.source?.updatedAt||s.study?.updatedAt||null;
   card.append(node("strong","",s.name),node("span","",updated?"Atualizado: "+fmtDate(updated):"Sem data confiável"),node("small","",s.study?.sourceRef||s.contractState?.contract?.source?.ref||"Sem sinal pedagógico"));
   const st=node("span","mentor-source-status",label);st.dataset.state=status;card.append(st);
-  if(s.id==="tcego"){
-   const privateState=state.projectStates.get("tcego");
-   if(privateState?.reason){const note=node("small","mentor-source-private-note",privateState.reason);note.dataset.state=privateState.privateStatus||"unknown";card.append(note)}
-  }
   box.append(card);
 });
 }
@@ -267,7 +212,7 @@ function reviewSummary(signals){
 }
 function renderAll(){
  const signals=allSignals(),rec=recommendation(signals),conf=confidence(signals),studyCount=signals.filter(s=>s.study&&["confirmed","partial"].includes(s.study.evidence)).length,reviews=reviewSummary(signals);
- $("mentor-now-title").textContent=rec.title;$("mentor-recommendation-copy").textContent=rec.message;$("mentor-confidence").textContent=conf.label;$("mentor-confidence-note").textContent=conf.note;$("mentor-today-time").textContent=duration(totalToday());$("mentor-week-time").textContent=duration(totalWeek());$("mentor-signal-count").textContent=studyCount+"/4";$("mentor-review-count").textContent=reviews.count;$("mentor-review-coverage").textContent=reviews.coverage;$("mentor-score-label").textContent=rec.top?"prioridade explicada":"sem ação extra";$("mentor-last-refresh").textContent=state.lastRefresh?"Atualizado "+new Intl.DateTimeFormat("pt-BR",{timeZone:"America/Sao_Paulo",hour:"2-digit",minute:"2-digit"}).format(state.lastRefresh):"não atualizado";
+ $("mentor-now-title").textContent=rec.title;$("mentor-recommendation-copy").textContent=rec.message;$("mentor-confidence").textContent=conf.label;$("mentor-confidence-note").textContent=conf.note;$("mentor-today-time").textContent=duration(totalToday());$("mentor-week-time").textContent=duration(totalWeek());$("mentor-signal-count").textContent=studyCount+"/"+signals.length;$("mentor-review-count").textContent=reviews.count;$("mentor-review-coverage").textContent=reviews.coverage;$("mentor-score-label").textContent=rec.top?"prioridade explicada":"sem ação extra";$("mentor-last-refresh").textContent=state.lastRefresh?"Atualizado "+new Intl.DateTimeFormat("pt-BR",{timeZone:"America/Sao_Paulo",hour:"2-digit",minute:"2-digit"}).format(state.lastRefresh):"não atualizado";
  const actions=$("mentor-primary-actions");actions.replaceChildren();if(rec.top){const a=node("a","mentor-button mentor-button-primary","Abrir "+rec.top.name);a.href=studyUrl(rec.top.id);actions.append(a)}const refresh=node("button","mentor-button mentor-button-secondary","Recalcular");refresh.type="button";refresh.addEventListener("click",loadAll);actions.append(refresh);
  renderReasons(rec);renderSchedule(signals);renderPriorityBoard(signals);renderDataHealth(signals);renderProjectCards(signals);renderReviews(signals);renderSources(signals);
 }
@@ -279,7 +224,6 @@ async function loadAll(){
   const active=state.registry.projects.filter(p=>p.status==="active"&&ORDER.includes(p.id));
   const results=await Promise.all(active.map(async p=>[p.id,await loadContract(p)]));
   state.contracts=new Map(results);
-  const tce=await tcePrivateStudy();state.projectStates.set("tcego",{privateStatus:tce.status,reason:tce.reason});state.privateStudy.clear();if(tce.study)state.privateStudy.set("tcego",tce.study);
   state.lastRefresh=new Date();renderAll();
  }catch(err){
   $("mentor-now-title").textContent="Não foi possível montar o Mentor";$("mentor-recommendation-copy").textContent=err?.message||"Falha ao carregar as fontes.";const reasons=$("mentor-reasons");reasons.replaceChildren(node("p","mentor-alert","A Central continua disponível. Volte e tente atualizar os dados novamente."));const board=$("mentor-priority-board");board.replaceChildren(node("p","mentor-alert","Não foi possível atualizar a leitura dos projetos. Tente novamente."));

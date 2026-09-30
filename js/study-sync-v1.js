@@ -9,7 +9,7 @@ const $=id=>document.getElementById(id);
 const projectSelect=$("study-log-project");
 const planner=$("study-log-planner");
 if(!projectSelect||!planner)return;
-const knownIds=new Set([...projectSelect.options].map(option=>option.value).filter(Boolean));
+const knownIds=new Set([...projectSelect.options].map(option=>option.value).filter(Boolean));knownIds.add("tcego");
 let state=readState(),busy=false,timer=null,authMessage="",authType="info";
 function add(parent,tag,className,text){const node=document.createElement(tag);if(className)node.className=className;if(text!==undefined)node.textContent=text;parent.append(node);return node}
 function readState(){try{const v=JSON.parse(localStorage.getItem(SESSION_KEY)||"null");if(v&&v.version===1)return{version:1,session:v.session&&typeof v.session.access_token==="string"?v.session:null,accountId:typeof v.accountId==="string"?v.accountId:"",pendingDeletes:Array.isArray(v.pendingDeletes)?v.pendingDeletes.filter(x=>typeof x==="string").slice(-MAX):[],lastSyncedAt:typeof v.lastSyncedAt==="string"?v.lastSyncedAt:""} }catch{}return{version:1,session:null,accountId:"",pendingDeletes:[],lastSyncedAt:""}}
@@ -108,7 +108,7 @@ async function sendMagicLink(event){
 async function signOut(){
  const session=state.session;
  if(session?.access_token){try{await fetch(SUPABASE_URL+"/auth/v1/logout?scope=local",{method:"POST",headers:authHeaders(session.access_token)})}catch{}}
- state.session=null;saveState();$("study-sync-signout").hidden=true;document.dispatchEvent(new CustomEvent("central:private-study-state",{detail:{projectId:"tcego",status:"signed-out",study:null}}));renderStatus("Desconectado. Os registros continuam guardados neste aparelho.");
+ state.session=null;saveState();$("study-sync-signout").hidden=true;renderStatus("Desconectado. Os registros continuam guardados neste aparelho.");
 }
 function syncUrl(){
  const url=new URL(SUPABASE_URL+"/rest/v1/central_study_logs");
@@ -159,53 +159,11 @@ async function pushLocal(user,entries){
   if(!response.ok)throw new Error("upsert");
  }
 }
-async function fetchTceProgress(user){
- const url=new URL(SUPABASE_URL+"/rest/v1/tce_progress_state");
- url.searchParams.set("select","dxx,resolved_sxx,studied,completed,time_minutes,questions_done,correct,errors,doubts,canonical_status,confirmed_at,updated_at,event_occurred_at");
- url.searchParams.set("owner_id","eq."+user.id);
- url.searchParams.set("order","event_occurred_at.desc");
- url.searchParams.set("limit","100");
- const response=await authedFetch(url.toString(),{method:"GET"},user);
- if(!response.ok)throw new Error("tce-progress-select");
- const rows=await readResponse(response);
- if(!Array.isArray(rows))throw new Error("tce-progress-shape");
- if(!rows.length){
-  document.dispatchEvent(new CustomEvent("central:private-study-state",{detail:{projectId:"tcego",status:"empty",study:null}}));
-  return;
- }
- const questions=rows.reduce((n,row)=>n+(Number(row.questions_done)||0),0);
- const correct=rows.reduce((n,row)=>n+(Number(row.correct)||0),0);
- const errors=rows.reduce((n,row)=>n+(Number(row.errors)||0),0);
- const doubts=rows.reduce((n,row)=>n+(Number(row.doubts)||0),0);
- const last=rows[0],lastCompleted=rows.find(row=>row.completed),updatedAt=last.event_occurred_at||last.confirmed_at||last.updated_at||null;
- const study={
-  evidence:"confirmed",
-  sourceRef:"supabase:tce_progress_state",
-  updatedAt,
-  trail:"TCE-GO",
-  lastCompletedUnit:lastCompleted?.dxx||null,
-  nextUnit:null,
-  lastStudiedAt:updatedAt,
-  questionsDone:questions,
-  correct,
-  errors,
-  doubts,
-  accuracy:questions>0?correct/questions:null,
-  reviewsDue:null,
-  nextReviewAt:null,
-  activeErrors:errors,
-  completedSessions:rows.filter(row=>row.completed).length,
-  totalSessions:null,
-  notes:["Estado privado confirmado no Supabase; não é publicado no contrato público do TCE-GO."]
- };
- document.dispatchEvent(new CustomEvent("central:private-study-state",{detail:{projectId:"tcego",status:"available",study}}));
-}
 async function syncNow(){
  if(busy||!state.session||!navigator.onLine)return;
  busy=true;
  try{
   const user=await ensureSession();if(!user)return;
-  await fetchTceProgress(user);
   await deletePending(user);
   const local=api.read(knownIds),remote=await fetchRemote(user),localIds=new Set(local.map(entry=>entry.id)),hasNewRemote=remote.some(entry=>!localIds.has(entry.id)),merged=api.merge(local,remote).slice(-MAX);
   api.save(merged);
@@ -229,6 +187,7 @@ function trackDeletes(event){
 }
 function init(){
  mount();
+ document.addEventListener("central:workspace-ready",event=>{for(const project of event.detail?.projects||[])if(typeof project.id==="string")knownIds.add(project.id)});
  const arrived=handleAuthCallback();
  const entryForm=$("study-log-form");if(entryForm)entryForm.addEventListener("submit",scheduleSync);
  const importInput=$("study-log-import");if(importInput)importInput.addEventListener("change",scheduleSync);

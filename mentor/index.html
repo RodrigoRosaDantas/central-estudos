@@ -6,13 +6,13 @@
 <meta name="theme-color" content="#070b14" />
 <meta name="color-scheme" content="dark" />
 <meta name="referrer" content="strict-origin-when-cross-origin" />
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://fqqkkyusnzhuuizahkww.supabase.co; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; upgrade-insecure-requests" />
-<meta name="description" content="Mentor da Central de Estudos: visão P1–P4, orientação explicável e sinais publicados pelos projetos." />
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; upgrade-insecure-requests" />
+<meta name="description" content="Mentor da Central de Estudos: visão P1–P3, orientação explicável e sinais publicados pelos projetos." />
 <title>Mentor · Central de Estudos</title>
 <link rel="icon" href="../assets/icon.svg" type="image/svg+xml" />
 <link rel="manifest" href="../manifest.webmanifest" />
 <link rel="stylesheet" href="../css/app.css" />
-<link rel="stylesheet" href="./mentor.css?v=28.1.0" />
+<link rel="stylesheet" href="./mentor.css?v=28.2.0" />
 </head>
 <body class="mentor-body">
 <a class="skip-link" href="#mentor-main">Ir para o conteúdo</a>
@@ -64,11 +64,11 @@
 
   <section class="mentor-portfolio-overview" aria-labelledby="mentor-portfolio-title">
     <div class="mentor-card-head">
-      <div><p class="eyebrow">SEU PORTFÓLIO · P1–P4</p><h3 id="mentor-portfolio-title">Quatro projetos, uma visão</h3><p class="mentor-portfolio-note">Status e desempenho vêm dos projetos; o tempo mostra apenas o que foi registrado nesta Central.</p></div>
+      <div><p class="eyebrow">SEU PORTFÓLIO · P1–P3</p><h3 id="mentor-portfolio-title">Projetos ativos em uma visão</h3><p class="mentor-portfolio-note">Status e desempenho vêm dos projetos; o tempo mostra apenas o que foi registrado nesta Central.</p></div>
       <button class="mentor-button mentor-button-secondary mentor-view-link" type="button" data-mentor-open="projetos">Ver leitura individual</button>
     </div>
     <div id="mentor-priority-board" class="mentor-priority-board" aria-live="polite">
-      <p class="mentor-empty">Carregando os quatro projetos…</p>
+      <p class="mentor-empty">Carregando os projetos ativos…</p>
     </div>
   </section>
 
@@ -92,7 +92,7 @@
 
 <section id="mentor-panel-projetos" class="mentor-view" data-mentor-panel="projetos" role="tabpanel" aria-labelledby="mentor-tab-projetos" tabindex="0" hidden>
   <div class="mentor-section-head">
-    <div><p class="eyebrow">4 PROJETOS · P1–P4</p><h2 id="mentor-projects-title">Leitura individual</h2><p>Tempo em 7 dias soma apenas blocos registrados na Central. Execução e desempenho publicados pelos projetos têm fontes e datas próprias.</p></div>
+    <div><p class="eyebrow">3 PROJETOS · P1–P3</p><h2 id="mentor-projects-title">Leitura individual</h2><p>Tempo em 7 dias soma apenas blocos registrados na Central. Execução e desempenho publicados pelos projetos têm fontes e datas próprias.</p></div>
     <a class="mentor-button mentor-button-secondary" href="../#projetos">Abrir projetos na Central</a>
   </div>
   <div id="mentor-project-grid" class="mentor-project-grid"></div>
@@ -130,7 +130,7 @@
         <p>Ausência de campo = <strong>desconhecido</strong>, nunca zero.</p>
         <p>Tempo estudado não prova domínio ou conclusão.</p>
         <p>O foco escolhido por você não é alterado automaticamente.</p>
-        <p>TCE-GO privado só entra com sessão Supabase válida e RLS do próprio usuário.</p>
+        <p>Projetos arquivados aparecem no Workspace como histórico; o Mentor não lê dados privados arquivados.</p>
         <p>PRF, SEEDF e TJDFT chegam por contratos read-only sanitizados.</p>
         <p>Nenhuma chave do Notion ou OpenAI fica no navegador.</p>
       </div>
@@ -144,7 +144,7 @@
 </main>
 
 <footer class="mentor-footer">
-  <span>Mentor Central · v28.1.0</span>
+  <span>Mentor Central · v28.2.0</span>
   <span>Projetos continuam sendo as fontes de verdade.</span>
 </footer>
 </div>

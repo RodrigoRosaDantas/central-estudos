@@ -86,8 +86,7 @@ body.mentor-body{margin:0;background:radial-gradient(circle at top right,rgba(79
 .mentor-priority-card:hover{transform:translateY(-2px);border-color:color-mix(in srgb,var(--priority-accent) 58%,transparent);box-shadow:0 12px 30px rgba(0,0,0,.22)}
 .mentor-priority-card[data-priority="1"]{--priority-accent:#54d6c4}
 .mentor-priority-card[data-priority="2"]{--priority-accent:#b3a0ff}
-.mentor-priority-card[data-priority="3"]{--priority-accent:#f2c66f}
-.mentor-priority-card[data-priority="4"]{--priority-accent:#8ab4ff}
+.mentor-priority-card[data-priority="3"]{--priority-accent:#8ab4ff}
 .mentor-priority-head,.mentor-priority-title-row{display:flex;align-items:center;justify-content:space-between;gap:8px;min-width:0}
 .mentor-priority-mark{display:inline-flex;flex:none;align-items:center;justify-content:center;min-width:38px;height:30px;border:1px solid rgba(255,255,255,.12);border-color:color-mix(in srgb,var(--priority-accent) 36%,transparent);border-radius:9px;background:rgba(255,255,255,.045);background:color-mix(in srgb,var(--priority-accent) 12%,transparent);color:var(--priority-accent);font-size:.72rem;font-weight:950;letter-spacing:.04em}
 .mentor-priority-source{max-width:calc(100% - 46px);overflow:hidden;color:var(--mentor-muted);font-size:.61rem;font-weight:800;text-align:right;text-overflow:ellipsis;white-space:nowrap}

@@ -1,6 +1,6 @@
 {
-  "version": "28.1.0",
-  "asOf": "2026-09-29",
+  "version": "28.2.0",
+  "asOf": "2026-09-30",
   "notice": "Catálogo de referência. A sequência, a liberação de materiais e o progresso continuam nos projetos de origem; este registro só mede o tempo informado.",
   "projects": {
     "seedf": {
@@ -87,53 +87,6 @@
             "REV04 — Revisão 04 — dias 16 a 20 + retomada acumulada",
             "REV05 — Revisão 05 — dias 21 a 25 + retomada acumulada",
             "REV06 — Revisão 06 — dias 26 a 30 + últimos 30 dias estudados",
-            "Outro assunto — detalhe abaixo"
-          ]
-        }
-      ]
-    },
-    "tcego": {
-      "name": "TCE-GO",
-      "groups": [
-        {
-          "label": "Matérias e sessões do projeto",
-          "items": [
-            "Administrativo + Constitucional",
-            "Administração",
-            "Administração Estratégica",
-            "AFO",
-            "AFO + Licitações",
-            "Auditoria I",
-            "Auditoria II",
-            "Auditoria III",
-            "Auditoria IV",
-            "Bloco aplicado FCC + Redação R4",
-            "CASP I",
-            "CASP II",
-            "CASP III",
-            "CASP IV",
-            "CASP V",
-            "CASP VI",
-            "CASP VII",
-            "CASP VIII",
-            "CASP IX",
-            "Controle + CASP",
-            "Controle Externo",
-            "Controle Externo II",
-            "Controle Externo III",
-            "Controle Externo IV",
-            "Direito Administrativo",
-            "Legislação Institucional",
-            "Legislação Institucional I",
-            "Legislação Institucional II",
-            "Legislação Institucional III",
-            "Legislação Institucional IV",
-            "Legislação Institucional V",
-            "Legislação Institucional VI",
-            "Licitações",
-            "Matemática/RLM",
-            "Português",
-            "Pré-checkpoint D90",
             "Outro assunto — detalhe abaixo"
           ]
         }
