@@ -969,13 +969,13 @@ function testV27DailySchedule(registry) {
   const day=key=>{const at=schedule.indexOf('data-weekday="'+key+'"');return schedule.slice(at,schedule.indexOf("</article>",at)+10)};
   const cards=Object.fromEntries(days.map(key=>[key,day(key)]));
   for(const key of days.slice(0,5))assert.ok(cards[key].includes(">SEEDF</a>")&&cards[key].includes(">TJDFT</a>")&&cards[key].includes("Estudo"),key+" must show SEEDF P1 and TJDFT P2 study");
-  for(const key of ["monday","wednesday","friday"])assert.ok(cards[key].includes("PRF ADM")&&cards[key].includes("PRFADMxx")&&cards[key].includes('href="/prf-administrativo-dashboard/"')&&cards[key].includes('class="schedule-mark schedule-mark-track">P3</span>'),key+" must show PRF Administrative as P3");
+  for(const key of ["monday","wednesday","friday"])assert.ok(cards[key].includes("PRF ADM")&&cards[key].includes("Materiais prontos · 33/33")&&cards[key].includes('href="/prf-administrativo-dashboard/"')&&cards[key].includes('class="schedule-mark">P3</span>'),key+" must show PRF Administrative as P3 with all materials ready");
   for(const key of ["tuesday","thursday"])assert.ok(!cards[key].includes("TCE-GO")&&!cards[key].includes("PRF ADM"),key+" must keep only scheduled SEEDF and TJDFT blocks");
   assert.ok(cards.saturday.includes("SEEDF")&&cards.saturday.includes("TJDFT")&&cards.saturday.includes("Revisão")&&!cards.saturday.includes("TCE-GO"),"Saturday must review SEEDF and TJDFT without TCE-GO");
   assert.ok(cards.sunday.includes("Descanso")&&cards.sunday.includes("D7/D20"),"Sunday must remain protected with only scheduled reviews");
-  assert.ok(schedule.includes('<a class="schedule-priority-chip" data-priority="3"')&&!schedule.includes("schedule-track-banner-v27")&&schedule.match(/class="schedule-mark schedule-mark-track">P3<\/span>/g)?.length===3,"PRF must appear on its three assigned days without a duplicate highlighted banner");
+  assert.ok(schedule.includes('<a class="schedule-priority-chip" data-priority="3"')&&!schedule.includes("schedule-track-banner-v27")&&!schedule.includes("schedule-mark-track")&&schedule.match(/class="schedule-mark">P3<\/span>/g)?.length===3,"PRF must use the shared priority badge on its three assigned days without a duplicate banner");
   assert.ok(!schedule.includes("data-days=")&&schedule.includes("Grade é previsão"),"day-by-day schedule must identify planning rather than execution");
-  assert.ok(schedule.includes("sequência 01–33")&&!schedule.includes("01–30"),"weekly schedule must show the current 33-session PRF cycle in its day rows");
+  assert.ok(schedule.match(/Materiais prontos · 33\/33/g)?.length===3&&!schedule.includes("PRFADMxx"),"weekly schedule must show that all 33 PRF materials are ready instead of a placeholder unit");
   const closeout=schedule.slice(schedule.indexOf('<details id="daily-closeout"'),schedule.indexOf("</details>",schedule.indexOf('<details id="daily-closeout"')));
   assert.ok(closeout.includes("open")&&["PREVISTO","REGISTRADO","MENTOR"].every(label=>closeout.includes("<strong>"+label+"</strong>")),"daily closeout must remain factual");
   assert.ok(closeout.includes("carregando seus blocos locais")&&closeout.includes('href="./mentor/">Abrir Mentor Central</a>'),"closeout must avoid stale claims and link the Mentor");
