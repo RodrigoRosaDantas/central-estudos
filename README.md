@@ -2,9 +2,9 @@
 
 Camada de entrada dos projetos ativos SEEDF (P1), TJDFT (P2) e PRF Administrativo (P3). TCE-GO permanece arquivado para consulta histórica, sem apagar seu repositório ou seus registros.
 
-## Estado atual — v28.6.1
+## Estado atual — v28.6.2
 
-A v28.6.1 concentra a Home no foco e nas ações do dia: registrar estudo fica ao lado de abrir o foco, fase e disponibilidade passam para um painel recolhível, e o cronograma semanal começa compacto no celular. O fechamento fica logo abaixo do foco e mostra tempo lançado e confirmações sem inferir ausência de estudo. A Evolução também exibe notas editoriais sanitizadas quando o projeto as publica, mantendo materiais disponíveis separados de sessões concluídas. O lembrete do topo agora alterna 14 frases verificadas do Major Cadar, com link para a publicação ou página correspondente.
+A v28.6.1 concentra a Home no foco e nas ações do dia: registrar estudo fica ao lado de abrir o foco, fase e disponibilidade passam para um painel recolhível, e o cronograma semanal começa compacto no celular. O fechamento fica logo abaixo do foco e mostra tempo lançado e confirmações sem inferir ausência de estudo. A Evolução também exibe notas editoriais sanitizadas quando o projeto as publica, mantendo materiais disponíveis separados de sessões concluídas. O lembrete do topo agora alterna 14 frases verificadas do Major Cadar, com link para a publicação ou página correspondente. A v28.6.2 corrige a estrutura que fazia as áreas escaparem da navegação e se acumularem na Home; no celular, cada aba volta a mostrar somente a tela selecionada.
 
 A carteira ativa agora é SEEDF (P1), TJDFT (P2) e PRF Administrativo (P3). TCE-GO foi arquivado em 30/09/2026: saiu da agenda, do foco ativo, dos cartões e do Mentor, mas continua no Workspace com acesso histórico. Preferências antigas de foco TCE-GO migram uma vez para SEEDF; a última visita TCE-GO continua registrada como histórico. Ordens locais personalizadas mantêm a sequência relativa dos projetos que seguem ativos.
 

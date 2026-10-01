@@ -1,3 +1,7 @@
+## [28.6.2] - 2026-10-01
+- Corrige uma tag de fechamento extra que destacava o conteúdo do contêiner principal e empilhava as áreas na Home mobile.
+- Restringe o fechamento diário à tela Hoje e valida a estrutura do HTML para preservar a navegação por telas.
+
 ## [28.6.1] - 2026-10-01
 - Completa o pedido de 14 frases do Major Cadar, cada uma ligada à publicação ou página de origem; alternância continua a cada cinco minutos e sem chamadas externas automáticas.
 - Troca a frase mais genérica por uma linha do perfil oficial, deixando o conjunto mais característico.
