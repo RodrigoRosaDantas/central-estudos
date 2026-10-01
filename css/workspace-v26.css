@@ -1,11 +1,4 @@
-.daily-quote-v26{max-width:58ch;margin:12px 0 0;padding:12px 16px;border:1px solid #a78bfa55;border-left:4px solid #b69cff;border-radius:16px;background:linear-gradient(110deg,#a78bfa30,#5eead40d 78%);box-shadow:0 8px 24px #a78bfa12}
-.daily-quote-v26 blockquote{margin:0;color:#fff;font-size:clamp(1rem,2.2vw,1.5rem);font-weight:800;line-height:1.32;text-wrap:pretty}
-.daily-quote-heading{margin:0 0 8px;color:#d1c4ff;font-size:.64rem;font-weight:900;letter-spacing:.12em;line-height:1.35;text-transform:uppercase}
-.daily-quote-v26 figcaption{display:flex;flex-wrap:wrap;gap:4px;margin-top:9px;color:var(--muted);font-size:.72rem;line-height:1.4}
-.daily-quote-v26 cite{font-style:normal;font-weight:700;color:#e2d9ff}
-.daily-quote-v26 a{color:#d1d9ea;text-decoration:underline}
 .schedule-priority-chip:focus-visible,.schedule-item a:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px}
-@media(min-width:900px){.topbar>div:first-child{display:grid;grid-template-columns:.8fr 1.2fr;align-items:center;gap:0 18px;flex:1;min-width:0}.topbar>div:first-child>:not(.daily-quote-v26){grid-column:1}.topbar>div:first-child>.daily-quote-v26{grid-area:1/2/4/3;display:grid;align-content:center;max-width:none;min-width:0;min-height:154px;margin:0;padding:18px 22px}}
 .command-clock #brasilia-time{display:block;width:max-content;max-width:100%;font-size:clamp(2.2rem,8vw,3.35rem);font-variant-numeric:tabular-nums;letter-spacing:-.045em;line-height:1.05;white-space:nowrap}
 .weekly-schedule-v26{margin-top:16px;padding:clamp(13px,2.5vw,22px);border:1px solid var(--border);border-radius:20px;background:linear-gradient(145deg,rgba(94,234,212,.055),rgba(167,139,250,.04)),var(--surface)}
 .weekly-schedule-v26 .section-heading{margin:0 0 12px}
