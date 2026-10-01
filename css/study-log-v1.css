@@ -14,7 +14,7 @@
 .closeout-project{color:#8de8dc;text-decoration:underline;text-decoration-color:rgba(141,232,220,.45);text-underline-offset:2px}
 .closeout-project:focus-visible,.closeout-footer a:focus-visible{outline:2px solid #5eead4;outline-offset:3px;border-radius:3px}
 .closeout-note{margin:0;color:#aeb9c9;font-size:.75rem;line-height:1.45}
-.closeout-action{width:max-content;max-width:100%;color:#8de8dc;font-size:.8rem;font-weight:750;text-underline-offset:3px;overflow-wrap:anywhere}
+
 .closeout-footer{margin:10px 2px 0;font-size:.78rem;line-height:1.45}
 .closeout-footer a{color:#8de8dc;text-underline-offset:3px}
 @media(max-width:719px){.daily-closeout-v1{margin-top:14px;padding:13px}#daily-closeout .command-next.closeout-summary{gap:10px;padding:11px}.closeout-grid{grid-template-columns:1fr}.closeout-item{padding:10px}.closeout-value{font-size:.9rem}}

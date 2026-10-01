@@ -1,3 +1,7 @@
+## [28.5.1] - 2026-10-01
+- Remove o segundo atalho para o Mentor dentro do resumo: a ação fica uma única vez no rodapé do cartão.
+- Atualiza a versão e os endereços de cache para que clientes instalados carreguem esse ajuste.
+
 ## [28.5.0] - 2026-10-01
 - Restaura seis frases atribuídas ao Major Cadar, com autoria e link para a fonte em cada uma; a frase muda a cada cinco minutos sem recarregar a página.
 - Simplifica o fechamento diário em três blocos: grade prevista, tempo lançado na Central e confirmações publicadas pelos projetos.
