@@ -1,3 +1,10 @@
+## [28.4.0] - 2026-10-01
+- Troca as seis frases exibidas a cada cinco minutos por 14 lembretes originais, concretos e ligados à rotina de SEEDF, TJDFT e PRF ADM.
+- Mantém cada lembrete durante o dia de Brasília e alterna duas versões por dia da semana ao longo de duas semanas, sem atribuir mensagens sem fonte a terceiros.
+- Corrige o cabeçalho em telas menores: Jornada e Opções ficam na primeira linha, título e saudação ocupam a largura completa e o lembrete não disputa espaço lateral.
+- Remove o estilo lavanda antigo, aplica o acento turquesa e adiciona o cartão ao shell offline da PWA.
+- Validação de qualidade, publicação e conferência visual: em andamento.
+
 ## [28.3.0] - 2026-09-30
 - Registra 1 hora automaticamente para uma unidade concluída quando o contrato público confirma a execução e publica a data real do estudo no dia de Brasília.
 - Evita duplicações por projeto, unidade e dia; não converte grade, próxima unidade, materiais produzidos ou sincronização técnica em tempo estudado.
