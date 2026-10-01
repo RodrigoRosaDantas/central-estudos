@@ -1,3 +1,8 @@
+## [28.6.1] - 2026-10-01
+- Completa o pedido de 14 frases do Major Cadar, cada uma ligada à publicação ou página de origem; alternância continua a cada cinco minutos e sem chamadas externas automáticas.
+- Substitui a frase genérica que não tinha fonte suficientemente clara por uma linha do perfil oficial.
+- Atualiza a versão, os arquivos de cache da PWA e a validação de qualidade para conferir as 14 frases distintas, seus links e a rotação completa.
+
 ## [28.6.0] - 2026-10-01
 - Reorganiza a Home em torno do foco do dia: abre o foco ou registra estudo, com o relógio mais compacto e sem repetir ações de acesso.
 - Move fase e disponibilidade para um painel recolhível; usa turquesa para o estado de foco e tons neutros para o que está apenas planejado.
