@@ -1,3 +1,9 @@
+## [28.5.0] - 2026-10-01
+- Restaura seis frases atribuídas ao Major Cadar, com autoria e link para a fonte em cada uma; a frase muda a cada cinco minutos sem recarregar a página.
+- Simplifica o fechamento diário em três blocos: grade prevista, tempo lançado na Central e confirmações publicadas pelos projetos.
+- Retira a repetição sobre tempo ausente, preserva a distinção entre previsão e estudo realizado e aplica o acento turquesa com layout móvel empilhado.
+- Mantém os registros locais, a agenda e as regras de evidência já existentes.
+
 ## [28.4.0] - 2026-10-01
 - Troca as seis frases exibidas a cada cinco minutos por 14 lembretes originais, concretos e ligados à rotina de SEEDF, TJDFT e PRF ADM.
 - Mantém cada lembrete durante o dia de Brasília e alterna duas versões por dia da semana ao longo de duas semanas, sem atribuir mensagens sem fonte a terceiros.

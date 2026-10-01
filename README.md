@@ -2,13 +2,13 @@
 
 Camada de entrada dos projetos ativos SEEDF (P1), TJDFT (P2) e PRF Administrativo (P3). TCE-GO permanece arquivado para consulta histórica, sem apagar seu repositório ou seus registros.
 
-## Estado atual — v28.4.0
+## Estado atual — v28.5.0
 
-A v28.4.0 troca as frases repetitivas por 14 lembretes originais e práticos, com duas variações por dia da semana. A mensagem fica estável durante o dia de Brasília; o cartão usa a paleta turquesa e ocupa a largura disponível em telas menores. O calendário e o rodízio não fazem chamadas externas.
+A v28.5.0 restaura seis frases atribuídas ao Major Cadar, com autoria e fonte oficial vinculadas; a frase muda a cada cinco minutos, sem recarregar a página. O fechamento diário separa previsão, tempo lançado e confirmação publicada, com acento turquesa e leitura empilhada no celular.
 
 A carteira ativa agora é SEEDF (P1), TJDFT (P2) e PRF Administrativo (P3). TCE-GO foi arquivado em 30/09/2026: saiu da agenda, do foco ativo, dos cartões e do Mentor, mas continua no Workspace com acesso histórico. Preferências antigas de foco TCE-GO migram uma vez para SEEDF; a última visita TCE-GO continua registrada como histórico. Ordens locais personalizadas mantêm a sequência relativa dos projetos que seguem ativos.
 
-A Jornada consulta somente os contratos públicos dos três projetos ativos. O cartão TCE-GO fica em uma seção histórica separada e não tem o endpoint de status consultado. O registro local de horas continua disponível e pode sincronizar entre aparelhos. A v28.3.0 lança 1h por conclusão confirmada com data de estudo publicada igual ao dia de Brasília. O P3 ainda não publica essa data no contrato e continua manual até isso existir; produção de material não é sessão concluída. O Mentor não lê o estado privado do TCE-GO.
+A Jornada consulta somente os contratos públicos dos três projetos ativos. O cartão TCE-GO fica em uma seção histórica separada e não tem o endpoint de status consultado. O registro local de horas continua disponível e pode sincronizar entre aparelhos. A v28.4.0 havia substituído essas frases por 14 lembretes de estudo ligados à agenda. A v28.3.0 lança 1h por conclusão confirmada com data de estudo publicada igual ao dia de Brasília. O P3 ainda não publica essa data no contrato e continua manual até isso existir; produção de material não é sessão concluída. O Mentor não lê o estado privado do TCE-GO.
 
 A v28.0.3 aprimora a página `/mentor/` com um panorama visual dos quatro projetos: SEEDF (P1), TJDFT (P2), TCE-GO (P3) e PRF Administrativo (P4). O painel reúne a próxima etapa e a situação da fonte, exibe questões/precisão somente quando publicadas e mantém o tempo de 7 dias identificado como registro local da Central. As abas agora seguem o padrão acessível de teclado. TCE-GO continua como foco padrão; o Mentor segue somente leitura e sem OpenAI API paga.
 

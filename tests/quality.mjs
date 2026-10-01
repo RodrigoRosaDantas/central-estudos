@@ -836,7 +836,7 @@ function testV20EvolutionRefreshAll() {
 }
 
 function testV21PresenceRuntime() {
-  const {context}=loadAppForTests(),nodes={greeting:{},"brasilia-time":{},"brasilia-date":{},"daily-study-message":{}};
+  const {context}=loadAppForTests(),nodes={greeting:{},"brasilia-time":{},"brasilia-date":{},"daily-motivation":{},"daily-motivation-author":{},"daily-motivation-source":{}};
   context.document.getElementById=id=>nodes[id]||null;
   let instant=Date.parse("2026-09-27T03:15:40Z");
   class FixedDate extends Date { constructor(...args){super(...(args.length?args:[instant]))} }
@@ -846,50 +846,56 @@ function testV21PresenceRuntime() {
   assert.equal(nodes.greeting.textContent,"Bom dia, Rodrigo.","greeting must follow Brasília hour");
   const expectedDate=new Intl.DateTimeFormat("pt-BR",{timeZone:"America/Sao_Paulo",weekday:"long",day:"numeric",month:"long"}).format(new Date(instant));
   assert.equal(nodes["brasilia-date"].textContent,expectedDate[0].toUpperCase()+expectedDate.slice(1),"calendar date must use Brasília and Portuguese");
-  assert.ok(nodes["daily-study-message"].textContent,"the daily study reminder must render");
-  const first=nodes["daily-study-message"].textContent;
-  vm.runInContext("renderPresence()",context);
-  assert.equal(nodes["daily-study-message"].textContent,first,"reminder must remain stable within the Brasília day");
-  instant=Date.parse("2026-09-28T03:15:40Z");vm.runInContext("renderPresence()",context);
-  assert.notEqual(nodes["daily-study-message"].textContent,first,"reminder must change at the next Brasília date");
-  pass("Brasília clock and stable daily study reminder");
+  const runtimeQuotes=vm.runInContext("quotes",context),activeQuote=runtimeQuotes[Math.floor(instant/300000)%runtimeQuotes.length];
+  assert.equal(nodes["daily-motivation"].textContent,activeQuote.text,"the current quote must render with its approved wording");
+  assert.equal(nodes["daily-motivation-author"].textContent,activeQuote.author,"quote author must render with its source");
+  assert.equal(nodes["daily-motivation-source"].href,activeQuote.source,"quote source must be linked");
+  pass("Brasília clock and attributed Major Cadar quote");
 }
 
-function testV284DailyMessages() {
-  const {context}=loadAppForTests(),nodes={greeting:{},"brasilia-time":{},"brasilia-date":{},"daily-study-message":{}};
+function testV285CadarQuotes() {
+  const {context}=loadAppForTests(),nodes={greeting:{},"brasilia-time":{},"brasilia-date":{},"daily-motivation":{},"daily-motivation-author":{},"daily-motivation-source":{}};
   context.document.getElementById=id=>nodes[id]||null;
-  const start=Date.parse("2026-09-27T03:15:00Z"),texts=new Set();
-  let instant=start;
+  const expected=["Seja forte ou seja vencido.","Tudo que eu ensino, eu vivi.","Planeja como General e executa como soldado.","Tudo que eu cobro, eu pratiquei.","Não negocia com a tua mente.","Comemore suas pequenas vitórias."];
+  const quotes=vm.runInContext("quotes",context);
+  assert.deepEqual([...quotes].map(quote=>quote.text),expected,"the six source-backed Cadar quotes must preserve their wording");
+  assert.ok(quotes.every(quote=>quote.author==="Major Cadar"&&/^https:\/\//.test(quote.source)&&quote.reference),"each quote must preserve authorship and a direct source");
+  assert.equal(quotes.length,6,"the quote carousel must replace the 14 generated reminders with six verified phrases");
+  let instant=Date.parse("2026-09-27T03:15:00Z");
   class FixedDate extends Date { constructor(...args){super(...(args.length?args:[instant]))} }
   context.Date=FixedDate;
-  for(let day=0;day<14;day++){
-    instant=start+day*86400000;
+  const seen=[];
+  for(let index=0;index<=quotes.length;index++){
+    instant=Date.parse("2026-09-27T03:15:00Z")+index*300000;
     vm.runInContext("renderPresence()",context);
-    const text=nodes["daily-study-message"].textContent;
-    assert.ok(text&&/(SEEDF|TJDFT|PRF|D7|questões|revisão|bloco)/i.test(text),"each date must show a concrete study reminder");
-    const first=text;
+    seen.push(nodes["daily-motivation"].textContent);
+    const active=quotes[Math.floor(instant/300000)%quotes.length];
+    assert.equal(nodes["daily-motivation-author"].textContent,active.author,"authorship must rotate with the quote");
+    assert.equal(nodes["daily-motivation-source"].href,active.source,"source must rotate with the quote");
+    assert.equal(nodes["daily-motivation-source"].textContent,active.reference,"source label must rotate with the quote");
+    instant+=299999;
     vm.runInContext("renderPresence()",context);
-    assert.equal(nodes["daily-study-message"].textContent,first,"reminder must stay stable for the full Brasília date");
-    texts.add(text);
+    assert.equal(nodes["daily-motivation"].textContent,active.text,"quote must remain stable for its five-minute window");
   }
-  assert.equal(texts.size,14,"two weeks must show 14 distinct weekday-aligned reminders");
+  assert.equal(new Set(seen.slice(0,quotes.length)).size,quotes.length,"all six quotes must appear in sequence");
+  assert.equal(seen.at(-1),seen[0],"the six-quote sequence must wrap around");
   const app=read("js/app.js");
-  assert.ok(app.includes("formatToParts")&&app.includes('timeZone:zone')&&!app.includes("quoteIntervalMs")&&!app.includes('author:"Major Cadar"'),"daily selection must use Brasília date without unsupported attribution or five-minute rotation");
-  pass("v28.4.0 practical daily messages and Brasília date rotation");
+  assert.ok(app.includes("quoteIntervalMs=300000")&&app.includes("Math.floor(now.getTime()/quoteIntervalMs)%quotes.length"),"quote rotation must advance every five minutes without reload");
+  pass("v28.5.0 six attributed Cadar quotes and five-minute rotation");
 }
 
 function testV21PresenceExperience() {
   const html=read("index.html"),app=read("js/app.js"),css=read("css/pro-v11.css"),roadmap=read("docs/ROADMAP-V21.md"),acceptance=read("docs/ACCEPTANCE-V21.md");
-  assert.ok(html.indexOf('id="daily-study-message"')<html.indexOf('<nav class="pro-nav"'),"daily reminder must appear at the start of the page");
+  assert.ok(html.indexOf('id="daily-motivation"')<html.indexOf('<nav class="pro-nav"'),"Cadar quotes must appear at the start of the page");
+  assert.ok(html.includes('id="daily-motivation-author"')&&html.includes('id="daily-motivation-source"')&&html.includes("FRASES DO MAJOR CADAR")&&html.includes("MUDA A CADA 5 MIN"),"quote attribution and five-minute cadence must be accessible");
   assert.ok(html.includes('<time id="brasilia-time"')&&html.includes('id="brasilia-date"')&&html.includes("HORÁRIO DE BRASÍLIA"),"v21 must expose an accessible Brasília clock and date");
-  assert.ok(app.includes('="America/Sao_Paulo"')&&app.includes('day:"numeric"')&&app.includes("dailyMessages[")&&app.includes("America/Sao_Paulo"),"daily reminder and clock must use the Brasília calendar date");
-  assert.ok(app.includes("setInterval(e,1e3)")&&app.includes('second:"2-digit"')&&app.includes("visibilitychange"),"clock must refresh every second and when the tab resumes");
+  assert.ok(app.includes('="America/Sao_Paulo"')&&app.includes("quotes[Math.floor(now.getTime()/quoteIntervalMs)%quotes.length]")&&app.includes("America/Sao_Paulo"),"quote selection and clock must remain timezone-safe");
+  assert.ok(app.includes("setInterval(e,1e3)")&&app.includes('second:"2-digit"')&&app.includes("visibilitychange"),"clock and quote should refresh in the existing one-second loop");
   const presence=app.slice(app.indexOf("function renderPresence"),app.indexOf("function readHealthCache"));
-  assert.ok(app.includes("dailyMessages[") ,"daily reminder must derive from the Brasília calendar date");
-  assert.ok(presence&&!presence.includes("fetch("),"v21 presence UI must not add a remote dependency");
+  assert.ok(presence&&!presence.includes("fetch("),"quote and presence UI must not add a remote dependency");
   assert.ok(css.includes(".presence-v21")&&css.includes(".presence-clock")&&css.includes("font-variant-numeric:tabular-nums")&&css.includes("@media(max-width:719px)"),"v21 welcome and clock must have responsive styling");
   assert.ok(roadmap.includes("21.0.0")&&acceptance.includes("Experiência inicial"),"v21 governance and acceptance must be explicit");
-  pass("v21 welcome, daily motivation and Brasília clock");
+  pass("v21 welcome, Cadar quote and Brasília clock");
 }
 
 function testV22CommandCenter() {
@@ -945,13 +951,13 @@ function testV24ScreensAndViews(registry) {
 }
 
 function testV27DailySchedule(registry) {
-  const html=read("index.html"),router=read("js/workspace-v24.js"),css=read("css/workspace-v27.css"),quoteCss=read("css/workspace-v26.css"),dailyCss=read("css/daily-message-v1.css"),sw=read("sw.js"),app=read("js/app.js"),operational=read("js/operational-v13.js");
+  const html=read("index.html"),router=read("js/workspace-v24.js"),css=read("css/workspace-v27.css"),quoteCss=read("css/workspace-v26.css"),dailyCss=read("css/daily-message-v1.css"),studyLogCss=read("css/study-log-v1.css"),sw=read("sw.js"),app=read("js/app.js"),operational=read("js/operational-v13.js");
   const start=html.indexOf('<section id="agenda-semanal"'),end=html.indexOf("</section>",start);
   assert.ok(start>=0&&end>start,"weekly schedule must remain a section on the page");
   const schedule=html.slice(start,end);
-  assert.equal(registry.central.version,"28.4.0","registry must identify v28.4.0");
+  assert.equal(registry.central.version,"28.5.0","registry must identify v28.5.0");
   assert.ok(html.includes("HOJE · V"+registry.central.version),"Today panel version badge must match the current release");
-  assert.ok(html.includes('id="pro-now-focus-name">SEEDF</strong>')&&html.includes('id="pro-now-focus-link" class="command-primary" href="https://rodrigorosadantas.github.io/seedf-ppge-dashboard/"')&&html.includes('src="./js/operational-v13.js?v=28.2.0"')&&operational.includes('MARK={P1:"seedf",P2:"tjdft",P3:"prf-adm"}')&&!operational.includes('if(u==="tcego")')&&!operational.includes("central:private-study-state"),"Today must use active P1–P3 without private TCE reads");
+  assert.ok(html.includes('id="pro-now-focus-name">SEEDF</strong>')&&html.includes('id="pro-now-focus-link" class="command-primary" href="https://rodrigorosadantas.github.io/seedf-ppge-dashboard/"')&&html.includes('src="./js/operational-v13.js?v=28.5.0"')&&operational.includes('MARK={P1:"seedf",P2:"tjdft",P3:"prf-adm"}')&&!operational.includes('if(u==="tcego")')&&!operational.includes("central:private-study-state"),"Today must use active P1–P3 without private TCE reads");
   assert.equal(registry.central.defaultProject,"seedf","P1 SEEDF must be the default active focus");
   assert.ok(html.includes('href="#agenda-semanal">Cronograma</a>')&&router.includes('"agenda-semanal":"today"'),"schedule must have an accessible shortcut and route back to Hoje");
   const stripStart=schedule.indexOf('<div class="weekly-priority-strip"');
@@ -972,37 +978,41 @@ function testV27DailySchedule(registry) {
   assert.ok(!schedule.includes("data-days=")&&schedule.includes("Grade é previsão"),"day-by-day schedule must identify planning rather than execution");
   assert.ok(!schedule.includes("Materiais prontos · 33/33")&&!schedule.includes("PRFADMxx"),"weekly schedule must omit P3 production notes and placeholder units");
   const closeout=schedule.slice(schedule.indexOf('<details id="daily-closeout"'),schedule.indexOf("</details>",schedule.indexOf('<details id="daily-closeout"')));
-  assert.ok(closeout.includes("open")&&["PREVISTO","REGISTRADO","MENTOR"].every(label=>closeout.includes("<strong>"+label+"</strong>")),"daily closeout must remain factual");
-  assert.ok(closeout.includes("carregando seus blocos locais")&&closeout.includes('href="./mentor/">Abrir Mentor Central</a>'),"closeout must avoid stale claims and link the Mentor");
-  assert.ok(closeout.includes("Grade é previsão")&&closeout.includes("tempo registrado não confirma progresso")&&!closeout.includes("FEITO · informado em 28/09"),"closeout must distinguish planning and time logging from progress");
+  assert.ok(closeout.includes("open")&&closeout.includes('class="command-next closeout-summary"')&&closeout.includes("Carregando o resumo de hoje"),"daily closeout must use its compact live summary");
+  assert.ok(closeout.includes('href="./mentor/">Ver análise detalhada')&&!closeout.includes("Abrir Mentor Central</a>."),"closeout must link to the dedicated Mentor without repeating its caveat");
+  assert.ok(closeout.includes("daily-closeout-v1")&&!closeout.includes("weekly-schedule-note")&&!closeout.includes("tempo registrado não confirma progresso"),"closeout must use the aligned palette and a single short evidence note");
+  assert.ok(app.includes("daily-motivation")&&app.includes("quoteIntervalMs=300000")&&app.includes('author:"Major Cadar"')&&html.includes("FRASES DO MAJOR CADAR"),"top message must use source-backed Cadar quotes rather than generated reminders");
+  assert.ok(dailyCss.includes(".daily-message-attribution")&&dailyCss.includes("@media(max-width:480px)"),"quote attribution must stay readable on mobile");
+  assert.ok(operational.includes("Progresso publicado hoje")&&operational.includes("Nenhum bloco de tempo lançado na Central hoje.")&&!operational.includes("SEM TEMPO REGISTRADO NA CENTRAL"),"closeout must separate published evidence and avoid duplicate missing-time fields");
   const mobileCss=css.slice(css.indexOf("@media(max-width:719px)"));
   assert.ok(html.includes("./css/workspace-v27.css")&&html.includes("weekly-schedule-v27")&&mobileCss.includes(".schedule-day-grid{grid-template-columns:1fr")&&mobileCss.includes(".schedule-day-card{grid-template-columns:minmax(82px,.34fr) minmax(0,1fr)")&&mobileCss.includes(".schedule-day-heading>span{display:none}")&&mobileCss.includes(".schedule-day-rest-v27 .schedule-day-heading>span{display:inline-flex}")&&mobileCss.includes(".schedule-day-card .schedule-item-copy{display:block")&&mobileCss.includes("min-width:0"),"v27 mobile schedule must keep seven compact day rows without overflow");
   assert.ok(html.includes('src="./js/command-context-v1.js?v=28.1.0"')&&sw.includes("'./js/command-context-v1.js?v=28.1.0'"),"today marker and change summary must remain in the app shell");
-  assert.ok(sw.includes("central-shell-v28.4.0-daily-message-20261001")&&sw.includes("./css/workspace-v27.css"),"PWA shell cache must include the v27 stylesheet and current version");
-  assert.ok(html.includes('src="./js/app.js?v=28.4.0"')&&sw.includes("'./js/app.js?v=28.4.0'")&&sw.includes("'./config/projects.json?v=28.4.0'")&&app.includes("./config/projects.json?v=28.4.0"),"registry URL and app cache must use the current release");
+  assert.ok(sw.includes("central-shell-v28.5.0-cadar-quotes-20261001")&&sw.includes("./css/workspace-v27.css"),"PWA shell cache must include the v27 stylesheet and current version");
+  assert.ok(html.includes('src="./js/app.js?v=28.5.0"')&&sw.includes("'./js/app.js?v=28.5.0'")&&sw.includes("'./config/projects.json?v=28.5.0'")&&app.includes("./config/projects.json?v=28.5.0"),"registry URL and app cache must use the current release");
   assert.ok(sw.includes("./config/study-schedule-v1.json?v=28.2.0"),"PWA shell must refresh the active schedule");
   assert.ok(html.includes("Mudanças desde a última conferência")&&html.includes("contratos validados neste aparelho")&&html.includes('id="published-changes-list"'),"published changes must show their local/read-only provenance");
   assert.ok(css.includes(".schedule-day-card.is-today")&&css.includes('content:"HOJE"'),"current weekday must have a visible marker");
   assert.ok(html.includes("PRF Administrativo")&&html.includes(">P3</span>"),"weekly routine must label PRF as P3");
-  assert.ok(html.includes('aria-label="Lembrete diário de estudo da Central"')&&html.includes('id="daily-study-message" class="daily-message-text" aria-live="polite" aria-atomic="true"')&&html.includes("LEMBRETE DE ESTUDO · ALINHADO À SUA GRADE")&&app.includes("dailyMessages[")&&app.includes('timeZone:zone')&&app.includes('second:"2-digit"')&&app.includes("setInterval(e,1e3)"),"daily reminder and Brasília clock must remain accessible and locally derived");
-  assert.ok(dailyCss.includes(".daily-message-v1")&&dailyCss.includes("border-left:3px solid #5eead4")&&!dailyCss.includes("#a78bfa"),"daily card must use the Central teal accent without purple");
-  assert.ok(dailyCss.includes("@media(min-width:900px)")&&dailyCss.includes("grid-template-columns:.8fr 1.2fr")&&dailyCss.includes("@media(max-width:899px)")&&dailyCss.includes('grid-template-areas:"eyebrow journey options" "title title title" "greeting greeting greeting" "message message message"')&&dailyCss.includes("width:100%"),"daily reminder must align on desktop and use full width on mobile");
-  assert.ok(html.includes('href="./css/daily-message-v1.css?v=28.4.0"')&&sw.includes("'./css/daily-message-v1.css?v=28.4.0'")&&sw.includes("central-shell-v28.4.0-daily-message-20261001"),"current PWA shell must cache and refresh the responsive message");
-  pass("v28.4.0 active P1–P3 portfolio, daily messages and factual closeout");
+  assert.ok(html.includes('aria-label="Frases do Major Cadar"')&&html.includes('id="daily-motivation"')&&html.includes('id="daily-motivation-author"')&&html.includes('id="daily-motivation-source"')&&html.includes("FRASES DO MAJOR CADAR")&&app.includes("quoteIntervalMs=300000")&&app.includes("timeZone:zone")&&app.includes('second:"2-digit"')&&app.includes("setInterval(e,1e3)"),"Cadar quotes must include their attribution and rotate locally alongside the Brasília clock");
+  assert.ok(dailyCss.includes(".daily-message-v1")&&dailyCss.includes(".daily-message-attribution")&&dailyCss.includes("border-left:3px solid #5eead4")&&!dailyCss.includes("#a78bfa"),"quote card must use teal and style source attribution without purple");
+  assert.ok(dailyCss.includes("@media(min-width:900px)")&&dailyCss.includes("grid-template-columns:.8fr 1.2fr")&&dailyCss.includes("@media(max-width:899px)")&&dailyCss.includes('grid-template-areas:"eyebrow journey options" "title title title" "greeting greeting greeting" "message message message"')&&dailyCss.includes("width:100%"),"quote card must align on desktop and use full width on mobile");
+  assert.ok(studyLogCss.includes(".closeout-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))")&&studyLogCss.includes("@media(max-width:719px)")&&studyLogCss.includes(".closeout-grid{grid-template-columns:1fr}"),"daily closeout must stack its three summary blocks on mobile");
+  assert.ok(html.includes('href="./css/daily-message-v1.css?v=28.5.0"')&&sw.includes("'./css/daily-message-v1.css?v=28.5.0'")&&sw.includes("central-shell-v28.5.0-cadar-quotes-20261001"),"current PWA shell must cache and refresh the responsive message");
+  pass("v28.5.0 active P1–P3 portfolio, Cadar quotes and factual closeout");
 }
 
 function testV278AdaptiveMentor(registry) {
   const html=read("index.html"),op=read("js/operational-v13.js"),css=read("css/operational-v13.css"),sw=read("sw.js");
-  assert.equal(registry.central.version,"28.4.0","current Central release must preserve the adaptive Mentor");
+  assert.equal(registry.central.version,"28.5.0","current Central release must preserve the adaptive Mentor");
   assert.ok(op.includes('summary.id="mentor-adaptive-summary"')&&op.includes("Mentor adaptativo")&&op.includes("Motor local · R$ 0 API"),"adaptive mentor must be present and explicitly API-free");
-  assert.ok(op.includes('LOG_KEY="central-estudos:study-log-v1"')&&op.includes("scheduledOn")&&op.includes("confidence(logs)")&&op.includes("SEM TEMPO REGISTRADO NA CENTRAL"),"daily state must derive from real study logs and the current schedule");
+  assert.ok(op.includes('LOG_KEY="central-estudos:study-log-v1"')&&op.includes("scheduledOn")&&op.includes("confidence(logs)")&&op.includes("Tempo lançado"),"daily state must derive from real study logs and the current schedule");
   assert.ok(op.includes("sem registro na Central")&&op.includes("campo ausente continua desconhecido"),"mentor must explain missing evidence without inventing performance");
   assert.ok(op.includes('FOCUS_KEY="central-estudos:focus-project"')&&!op.includes("localStorage.setItem(FOCUS_KEY"),"mentor may read human focus but must never change it");
   assert.ok(op.includes("MutationObserver")&&op.includes("America/Sao_Paulo")&&!op.includes("openai")&&!op.includes("api.openai.com"),"mentor must react locally with Brasília dates and no OpenAI API dependency");
   assert.ok(css.includes(".adaptive-mentor")&&css.includes(".adaptive-kpis")&&css.includes("@media(max-width:719px)")&&css.includes("@media(pointer:coarse)"),"adaptive mentor must have responsive and touch-aware styling");
-  assert.ok(html.includes("REGISTRADO</strong>: carregando seus blocos locais.")&&!html.includes("FEITO · informado em 28/09"),"static closeout must be generic instead of freezing stale study state");
+  assert.ok(html.includes("Carregando o resumo de hoje")&&!html.includes("FEITO · informado em 28/09")&&html.includes("daily-closeout-v1"),"static closeout must use the current compact, neutral shell");
   assert.ok(!sw.includes("./js/operational-v13.js")&&!sw.includes("./css/operational-v13.css"),"adaptive operational layer must stay outside the offline shell budget");
-  pass("v27.9 API-free adaptive mentor, confidence and explainable recommendations");
+  pass("v28.5.0 API-free adaptive mentor, confidence and explainable recommendations");
 }
 
 function testV279ProjectStudySignals(registry) {
@@ -1023,7 +1033,7 @@ function testV279ProjectStudySignals(registry) {
 
 function testV28DedicatedMentor(registry) {
   const html=read("index.html"),mentor=read("mentor/index.html"),js=read("mentor/mentor.js"),css=read("mentor/mentor.css"),sw=read("sw.js"),schedule=JSON.parse(read("config/study-schedule-v1.json"));
-  assert.equal(registry.central.version,"28.4.0","current Central release must preserve the dedicated Mentor");
+  assert.equal(registry.central.version,"28.5.0","current Central release must preserve the dedicated Mentor");
   assert.ok(!html.includes('id="routing-panel"')&&html.includes('href="./mentor/"'),"main Central must link to the dedicated Mentor");
   for(const tab of ["agora","projetos","revisoes","metodo"])assert.ok(mentor.includes('data-mentor-view="'+tab+'"'),"Mentor tab missing: "+tab);
   assert.ok(mentor.includes("R$ 0 API")&&mentor.includes("Mentor Central")&&mentor.includes("Revisões & riscos"),"Mentor must expose its identity and zero-API status");
@@ -1104,24 +1114,28 @@ function testV281DailyCloseoutHydration() {
   for (const callback of timeouts) callback();
   const textOf = value => String(value?.textContent || "") + (value?.children || []).map(textOf).join("");
   let output = textOf(box);
-  assert.ok(output.includes("DATA · BRASÍLIA: 29/09/2026"), "closeout must render today in the Brasília timezone");
-  assert.ok(output.includes("TEMPO REGISTRADO NA CENTRAL: SEEDF 25 min"), "closeout must show explicitly confirmed local study time");
-  assert.ok(output.includes("SEM TEMPO REGISTRADO NA CENTRAL: TJDFT"), "closeout must distinguish missing Central time from absence of study");
-  assert.ok(output.includes("Ausência de registro não prova ausência de estudo"), "closeout must preserve unknown-as-unknown semantics");
+  assert.ok(output.includes("Terça-feira, 29 de setembro · Brasília"), "closeout must render today in the Brasília timezone");
+  assert.ok(output.includes("Na grade")&&output.includes("SEEDF")&&output.includes("TJDFT"), "closeout must summarize the scheduled projects");
+  assert.ok(output.includes("Tempo lançado")&&output.includes("1 bloco · 25 min")&&output.includes("SEEDF · 25 min"), "closeout must show local time and project breakdown");
+  assert.ok(output.includes("Progresso publicado hoje")&&output.includes("Sem confirmação publicada hoje pelos projetos."), "closeout must distinguish a lack of published evidence from local time");
+  assert.ok(output.includes("Sem lançamento na Central não significa que você não estudou"), "closeout must preserve unknown-as-unknown semantics");
+  assert.ok(!output.includes("SEM TEMPO REGISTRADO NA CENTRAL"), "closeout must not repeat a missing-time list");
 
   for (const callback of handlers.get("central:contract-state") || []) callback({ detail: { id: "tjdft", contract: { study: { evidence: "confirmed", lastStudiedAt: "2026-09-29", lastCompletedUnit: "P01" } } } });
   for (const callback of handlers.get("central:contract-state") || []) callback({ detail: { id: "prf-adm", contract: { study: { evidence: "confirmed", lastStudiedAt: null, nextUnit: "PRFADM01" } } } });
   output = textOf(box);
-  assert.ok(output.includes("EXECUÇÃO CONFIRMADA PELO PROJETO: TJDFT · P01"), "closeout must show only dated project confirmations from their matching project IDs");
-  assert.ok(!output.includes("PRF ADM"), "a generic PRF contract signal without a study date must not become a completed-session claim");
+  assert.ok(output.includes("Progresso publicado hoje")&&output.includes("TJDFT · P01"), "closeout must show only dated project confirmations from their matching project IDs");
+  assert.ok(!output.includes("PRF ADM · PRFADM01"), "a generic PRF contract signal without a study date must not become a completed-session claim");
 
   now = Date.parse("2026-09-30T03:01:00.000Z");
   assert.equal(typeof midnightCheck, "function", "closeout must schedule a Brasília date rollover check");
   midnightCheck();
   output = textOf(box);
-  assert.ok(output.includes("DATA · BRASÍLIA: 30/09/2026"), "open pages must refresh the closeout after Brasília midnight");
-  assert.ok(output.includes("SEM TEMPO REGISTRADO NA CENTRAL: SEEDF · TJDFT · PRF ADM"), "the next day's schedule must be recalculated without carrying yesterday's state");
-  pass("v28.4.0 dynamic daily closeout, active PRF summary and Brasília date rollover");
+  assert.ok(output.includes("Quarta-feira, 30 de setembro · Brasília"), "open pages must refresh the closeout after Brasília midnight");
+  assert.ok(output.includes("Na grade")&&output.includes("SEEDF")&&output.includes("TJDFT")&&output.includes("PRF ADM"), "the next day's schedule must be recalculated without carrying yesterday's state");
+  assert.ok(output.includes("Nenhum bloco de tempo lançado na Central hoje."), "the next day's empty time total must stay explicit");
+  assert.ok(!output.includes("TJDFT · P01"), "yesterday's project confirmation must not carry into today's closeout");
+  pass("v28.5.0 dynamic daily closeout, active PRF summary and Brasília date rollover");
 }
 
 function testHomeResponsiveLayout() {
@@ -1138,7 +1152,7 @@ function testStudyLog(registry) {
   assert.ok(html.includes('class="catalog-field study-log-field" for="study-log-hours"') && html.includes('class="catalog-field study-log-field" for="study-log-minutes"'), "duration labels must use the stacked input style on desktop and mobile");
   assert.ok(html.includes('id="study-log-projects"') && html.includes('id="study-log-today-total"') && html.includes('id="study-log-week-total"') && html.includes('id="study-log-days"'), "study log must show daily totals, weekday totals and per-project summaries");
   assert.ok(html.includes("não sincronizam com o Notion") && html.includes("Exportar backup JSON") && html.includes("Restaurar backup"), "local storage scope and backup/restore must be explicit");
-  assert.ok(html.includes('./js/study-log-v1.js') && html.includes('./css/study-log-v1.css') && sw.includes("'./js/study-log-v1.js'") && sw.includes("'./css/study-log-v1.css'"), "tracker assets must be referenced and available in the offline shell");
+  assert.ok(html.includes('./js/study-log-v1.js') && html.includes('./css/study-log-v1.css?v=28.5.0') && sw.includes("'./js/study-log-v1.js'") && sw.includes("'./css/study-log-v1.css?v=28.5.0'"), "tracker assets must be referenced and available in the offline shell");
   assert.ok(!source.includes("fetch(") && !source.includes("XMLHttpRequest"), "study tracking must not add network requests");
   assert.ok(source.includes('central-estudos:study-log-v1') && source.includes('central:workspace-ready'), "tracker must use an isolated local key and current project registry");
   assert.ok(source.includes("central:contract-state") && source.includes("central:contract-refresh") && source.includes("visibilitychange") && source.includes("autoEntryFromContract"), "automatic logging must react to confirmed contract updates and refresh on return without polling");
@@ -1212,7 +1226,7 @@ function testStudyLog(registry) {
 function testStudySync() {
   const html = read("index.html"), sw = read("sw.js"), source = read("js/study-sync-v1.js");
   assert.ok(source.includes('/auth/v1/logout?scope=local'), "disconnecting this device must not revoke other Supabase sessions");
-  assert.ok(html.includes("./js/study-sync-v1.js?v=28.4.0") && sw.includes("./js/study-sync-v1.js?v=28.4.0"), "the fixed sync module must load in online and installed PWA clients");
+  assert.ok(html.includes("./js/study-sync-v1.js?v=28.5.0") && sw.includes("./js/study-sync-v1.js?v=28.5.0"), "the fixed sync module must load in online and installed PWA clients");
   assert.ok(source.includes("create_user:false"), "Central sync must authenticate only existing Supabase users");
   assert.ok(source.includes("central:study-log-auto-added"), "new automatic blocks must use the existing optional sync flow");
   assert.ok(source.includes("syncAgain") && source.includes("const remote=await fetchRemote(user),local=api.read(knownIds)"), "study entries created during an active sync must be preserved and sent on the queued retry");
@@ -1245,7 +1259,7 @@ function testStudyPlanner(registry) {
   for (const asset of ["./js/study-planner-v1.js?v=28.2.0", "./css/study-planner-v1.css?v=28.2.0", "./config/study-catalog-v1.json?v=28.2.0"]) {
     assert.ok(runtime.includes(asset) && !appShell.includes(asset), `${asset} must use the scoped runtime cache and preserve the approved app-shell ceiling`);
   }
-  assert.ok(sw.includes("central-study-runtime-v28.4.0")&&sw.includes("return saved || new Response('', { status: 503 });"), "guided catalog resources must be cached same-origin with an offline fallback");
+  assert.ok(sw.includes("central-study-runtime-v28.5.0")&&sw.includes("return saved || new Response('', { status: 503 });"), "guided catalog resources must be cached same-origin with an offline fallback");
   assert.ok(css.includes('.study-log-day-choice[aria-pressed=true]')&&css.includes("@media(max-width:360px)")&&css.includes("min-height:42px"), "weekday and plan controls must remain touch-friendly on narrow phones");
   pass("v27.7 guided weekday, mapped subject catalogs, real-study confirmation and offline runtime fallback");
 }
@@ -1352,7 +1366,7 @@ function testV274PrfSiteAndToolDirectory(registry) {
   const toolsStart = html.indexOf('<div class="study-tools"');
   const toolsEnd = html.indexOf("</div></section><section id=\"workspace\"", toolsStart);
 
-    assert.equal(registry.central.version, "28.4.0", "catalog must identify current release v28.4.0");
+    assert.equal(registry.central.version, "28.5.0", "catalog must identify current release v28.5.0");
     assert.equal(registry.central.defaultProject, "seedf", "P1 SEEDF must be the default Today focus while P3 PRF stays on its assigned days");
   assert.ok(prf && prf.status === "active" && prf.priority === "normal" && prf.studyPriority === 3, "PRF must be active, ranked P3 in the study schedule, and keep normal focus semantics");
   assert.equal(prf.description, "Roda PRFADM01–33", "Central catalog must show the current 33-session PRF cycle");
@@ -1652,7 +1666,7 @@ testV20UxPolish();
 testV20MobileHomeSimplification();
 testV20EvolutionRefreshAll();
 testV21PresenceRuntime();
-testV284DailyMessages();
+testV285CadarQuotes();
 testV21PresenceExperience();
 testV22CommandCenter();
 testV23TodayMentor();
