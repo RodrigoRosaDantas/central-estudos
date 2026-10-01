@@ -979,7 +979,7 @@ function testV27DailySchedule(registry) {
   assert.ok(!schedule.includes("Materiais prontos · 33/33")&&!schedule.includes("PRFADMxx"),"weekly schedule must omit P3 production notes and placeholder units");
   const closeout=schedule.slice(schedule.indexOf('<details id="daily-closeout"'),schedule.indexOf("</details>",schedule.indexOf('<details id="daily-closeout"')));
   assert.ok(closeout.includes("open")&&closeout.includes('class="command-next closeout-summary"')&&closeout.includes("Carregando o resumo de hoje"),"daily closeout must use its compact live summary");
-  assert.ok(closeout.includes('href="./mentor/">Ver análise no Mentor Central')&&!closeout.includes("Abrir Mentor Central</a>."),"closeout must link to the dedicated Mentor without repeating its caveat");
+  assert.ok(closeout.includes('href="./mentor/">Ver análise detalhada')&&!closeout.includes("Abrir Mentor Central</a>."),"closeout must link to the dedicated Mentor without repeating its caveat");
   assert.ok(closeout.includes("daily-closeout-v1")&&!closeout.includes("weekly-schedule-note")&&!closeout.includes("tempo registrado não confirma progresso"),"closeout must use the aligned palette and a single short evidence note");
   assert.ok(app.includes("daily-motivation")&&app.includes("quoteIntervalMs=300000")&&app.includes('author:"Major Cadar"')&&html.includes("FRASES DO MAJOR CADAR"),"top message must use source-backed Cadar quotes rather than generated reminders");
   assert.ok(dailyCss.includes(".daily-message-attribution")&&dailyCss.includes("@media(max-width:480px)"),"quote attribution must stay readable on mobile");
