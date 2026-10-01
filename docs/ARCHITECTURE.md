@@ -1,5 +1,11 @@
 # Arquitetura — Central de Estudos
 
+## Interface do lembrete diário — v28.4.0
+
+A abertura exibe uma mensagem original da Central, selecionada pelo dia da semana e pela paridade da semana usando o calendário `America/Sao_Paulo`. São 14 textos concretos ligados à grade P1 SEEDF, P2 TJDFT e P3 PRF ADM; cada mensagem permanece estável até a virada do dia em Brasília. O componente não atribui frases a terceiros nem consulta serviços externos.
+
+Em larguras abaixo de 900 px, o cabeçalho vira grade: Jornada e Opções permanecem na primeira linha; título, saudação e lembrete usam a largura total. O cartão usa acento turquesa, sem lavanda, e fica no shell offline da PWA.
+
 ## Responsabilidade
 
 A Central é uma camada de **navegação, observabilidade leve e registro local de tempo estudado**.

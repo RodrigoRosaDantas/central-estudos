@@ -4,10 +4,6 @@
 .topbar-greeting{margin-top:5px;font-size:.82rem}
 .user-pill{border-color:rgba(94,234,212,.22);background:rgba(94,234,212,.07)}
 .user-pill:hover{border-color:rgba(94,234,212,.48);background:rgba(94,234,212,.12)}
-.daily-quote-v26{min-height:0;padding:13px 17px;border-color:rgba(167,139,250,.28);border-left-width:3px;border-radius:15px;background:linear-gradient(115deg,rgba(167,139,250,.14),rgba(94,234,212,.045));box-shadow:none}
-.daily-quote-heading{margin-bottom:5px;font-size:.6rem;letter-spacing:.13em}
-.daily-quote-v26 blockquote{font-size:clamp(1rem,1.7vw,1.25rem);line-height:1.28}
-.daily-quote-v26 figcaption{margin-top:6px;font-size:.66rem}
 .pro-nav{gap:6px;margin-bottom:16px;padding:6px;border-color:rgba(153,177,211,.15);background:rgba(7,12,22,.92);box-shadow:0 10px 30px rgba(0,0,0,.18)}
 .pro-nav-link{transition:background .16s ease,color .16s ease}
 .command-center{padding:clamp(18px,2.3vw,28px);border-color:rgba(94,234,212,.22);border-radius:26px;background:radial-gradient(ellipse at 3% 0,rgba(94,234,212,.12),transparent 32rem),radial-gradient(ellipse at 100% 5%,rgba(167,139,250,.09),transparent 28rem),linear-gradient(145deg,#0d1728,#0a1120 74%);box-shadow:0 22px 54px rgba(0,0,0,.24)}
@@ -70,15 +66,8 @@
   .presence-clock{min-height:86px}
   .command-center #brasilia-time{font-size:2.55rem}
 }
-@media(min-width:900px){
-  .topbar>div:first-child{grid-template-columns:.82fr 1.18fr;gap:0 20px}
-  .topbar>div:first-child>.daily-quote-v26{min-height:116px;padding:15px 19px}
-}
 @media(max-width:719px){
   .topbar{align-items:flex-start;gap:10px;margin-bottom:13px}
-  .daily-quote-v26{margin-top:10px;padding:11px 13px}
-  .daily-quote-v26 blockquote{font-size:1rem}
-  .daily-quote-v26 figcaption{font-size:.62rem}
   .pro-nav{margin-bottom:12px}
   .command-center{padding:16px;border-radius:21px}
   .presence-v21{grid-template-columns:1fr;gap:12px;padding-bottom:14px}
@@ -172,10 +161,6 @@
 @media(max-width:719px){
   .shell{width:calc(100% - 22px)}
   .topbar{margin-bottom:12px}
-  .daily-quote-v26{margin-top:8px;padding:9px 12px}
-  .daily-quote-heading{margin-bottom:3px;font-size:.54rem}
-  .daily-quote-v26 blockquote{font-size:.94rem;line-height:1.22}
-  .daily-quote-v26 figcaption{margin-top:4px;font-size:.59rem}
   .command-center{padding:15px;border-radius:20px}
   .presence-v21{gap:10px;padding-bottom:13px}
   .command-status{margin-bottom:12px}
