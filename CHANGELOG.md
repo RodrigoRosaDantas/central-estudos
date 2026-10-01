@@ -1,3 +1,12 @@
+## [28.6.0] - 2026-10-01
+- Reorganiza a Home em torno do foco do dia: abre o foco ou registra estudo, com o relógio mais compacto e sem repetir ações de acesso.
+- Move fase e disponibilidade para um painel recolhível; usa turquesa para o estado de foco e tons neutros para o que está apenas planejado.
+- Aproxima o fechamento diário do foco e deixa o resumo rápido sempre visível; os detalhes continuam separando grade, tempo lançado e progresso confirmado pelos projetos.
+- Mantém o dia atual à vista e recolhe a semana completa por padrão em telas estreitas; com JavaScript desativado, a grade semanal continua aberta.
+- Exibe no Radar apenas notas de produção editorial publicadas nos contratos; no PRF, 33/33 materiais e 33/33 questões ficam separados de 0/33 sessões estudadas.
+- Preserva P1 SEEDF, P2 TJDFT e P3 PRF ADM, os sites-filhos read-only, os links diretos e o registro automático de 1h somente após confirmação com data real.
+- Atualiza o cache da PWA e o quality gate para a nova Home.
+
 ## [28.5.1] - 2026-10-01
 - Remove o segundo atalho para o Mentor dentro do resumo: a ação fica uma única vez no rodapé do cartão.
 - Atualiza a versão e os endereços de cache para que clientes instalados carreguem esse ajuste.

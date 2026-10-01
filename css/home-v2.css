@@ -1,0 +1,76 @@
+/* v28.6.0 — Home focused on the next useful action. */
+.command-context{margin-top:12px;padding-top:5px;border-top:1px solid rgba(157,179,210,.12)}
+.command-context>summary{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:48px;padding:5px 2px;color:#c5d1e1;cursor:pointer;list-style:none}
+.command-context>summary::-webkit-details-marker,.week-schedule-details>summary::-webkit-details-marker{display:none}
+.command-context>summary>span:first-child,.week-schedule-details>summary>span:first-child{display:grid;gap:3px;min-width:0}
+.command-context>summary strong,.week-schedule-details>summary strong{font-size:.78rem;font-weight:800}
+.command-context>summary small,.week-schedule-details>summary small{color:var(--muted);font-size:.66rem;line-height:1.35}
+.command-context-icon,.week-disclosure-icon,.closeout-expand-icon{flex:0 0 auto;color:#91e9dd;font-size:1.05rem;transition:transform .18s ease}
+.command-context[open] .command-context-icon,.week-schedule-details[open] .week-disclosure-icon,#daily-closeout[open] .closeout-expand-icon{transform:rotate(180deg)}
+.command-context .command-metrics{margin-top:6px}
+.command-center #brasilia-time{font-size:clamp(2rem,3vw,2.45rem)}
+.command-actions{align-items:stretch}
+.command-actions .command-primary,.command-actions .command-secondary{min-height:48px}
+.command-actions #home-study-log{border-color:rgba(157,179,210,.18);background:rgba(255,255,255,.045)}
+#focus-new-tab{display:none!important}
+.command-shortcuts{grid-template-columns:repeat(3,minmax(0,1fr))}
+.command-shortcuts a{min-height:44px}
+#pro-now-focus-operational{margin-top:12px;padding:13px 15px;border-left:3px solid var(--accent);border-radius:0 12px 12px 0;background:linear-gradient(90deg,rgba(94,234,212,.11),rgba(94,234,212,.025) 72%,transparent);color:#dcebe8;font-size:.8rem;line-height:1.55}
+#pro-now-focus-operational[data-kind="planned"]{border-left-color:#5eead4}
+#pro-now-focus-operational[data-stale="true"]{border-left-color:#f6c85f;background:linear-gradient(90deg,rgba(246,200,95,.1),rgba(246,200,95,.02) 72%,transparent)}
+#daily-closeout{margin:12px 0 0;padding:0;border-color:rgba(157,179,210,.15);border-radius:17px;background:linear-gradient(120deg,rgba(94,234,212,.035),rgba(255,255,255,.014)),var(--surface)}
+#daily-closeout>summary{display:grid;grid-template-columns:minmax(145px,.7fr) minmax(0,1.8fr) auto;align-items:center;gap:10px;min-height:70px;padding:12px 16px;color:#e7edf5;cursor:pointer;list-style:none}
+#daily-closeout>summary::-webkit-details-marker{display:none}
+.closeout-summary-title{display:grid;gap:3px}
+.closeout-summary-title strong{font-size:.91rem;line-height:1.25}
+.closeout-summary-title small{color:var(--muted);font-size:.67rem;line-height:1.35}
+.closeout-quickline{color:#afbdce;font-size:.71rem;line-height:1.45;overflow-wrap:anywhere}
+.closeout-loading{margin:0;color:var(--muted);font-size:.76rem;line-height:1.5}
+#daily-closeout .closeout-expand-icon{font-size:1rem}
+#daily-closeout .command-next.closeout-summary{margin:0 14px 12px;padding:14px;border-color:rgba(94,234,212,.15);border-left-color:var(--accent);border-radius:14px;background:rgba(7,11,20,.28)}
+#daily-closeout[open]>summary{border-bottom:1px solid rgba(157,179,210,.11)}
+#daily-closeout .closeout-footer{padding:0 14px 13px}
+.today-week-preview{margin:0 0 10px;padding:11px 13px;border:1px solid rgba(157,179,210,.13);border-radius:13px;background:rgba(255,255,255,.025);color:#d8e3ef;font-size:.76rem;font-weight:750;line-height:1.45}
+.week-schedule-details{margin-top:10px}
+.week-schedule-details>summary{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:55px;padding:10px 13px;border:1px solid rgba(157,179,210,.16);border-radius:14px;background:rgba(255,255,255,.025);color:#e0e9f4;cursor:pointer;list-style:none}
+.week-schedule-details[open]>summary{border-radius:14px 14px 0 0;border-color:rgba(157,179,210,.2)}
+.week-schedule-content{padding-top:10px}
+.weekly-schedule-v27 .schedule-day-card.is-today{border-color:rgba(94,234,212,.62)}
+.weekly-schedule-v27 .schedule-day-card.is-today:before{background:linear-gradient(90deg,#5eead4,rgba(94,234,212,.08))}
+@media(max-width:979px){.command-center #brasilia-time{font-size:2.35rem}}
+@media(max-width:719px){
+  body{padding-bottom:calc(88px + env(safe-area-inset-bottom,0px))}
+  .pro-nav{bottom:max(10px,env(safe-area-inset-bottom,0px))}
+  .command-open{bottom:calc(82px + env(safe-area-inset-bottom,0px))}
+  .command-center #brasilia-time{font-size:clamp(1.72rem,7.8vw,2.2rem)}
+  .command-context{margin-top:9px}
+  .command-context>summary{min-height:46px}
+  .command-context .command-metrics{grid-template-columns:1fr 1fr}
+  .command-context .command-metric:first-child{grid-column:1/-1}
+  .command-actions{display:grid;grid-template-columns:1fr 1fr}
+  .command-actions #pro-now-focus-link{grid-column:1/-1}
+  .command-actions #home-study-log{grid-column:1/-1}
+  .command-shortcuts{grid-template-columns:repeat(3,minmax(0,1fr));gap:5px}
+  .command-shortcuts a{min-height:44px;padding:6px 3px;font-size:.6rem;line-height:1.2}
+  #daily-closeout>summary{grid-template-columns:minmax(0,1fr) auto;gap:6px 10px;min-height:64px;padding:11px 12px}
+  .closeout-summary-title{grid-column:1}
+  .closeout-quickline{grid-column:1/-1;grid-row:2;font-size:.67rem}
+  .closeout-expand-icon{grid-column:2;grid-row:1}
+  #daily-closeout .command-next.closeout-summary{gap:9px;margin:0 9px 10px;padding:10px}
+  #daily-closeout .closeout-grid{grid-template-columns:1fr}
+  #daily-closeout .closeout-item{padding:10px}
+  .today-week-preview{margin-bottom:8px;padding:9px 10px;font-size:.69rem}
+  .week-schedule-details>summary{min-height:52px;padding:9px 11px}
+  .week-schedule-content{padding-top:8px}
+}
+@media(max-width:379px){
+  .command-status{gap:5px}
+  .command-chip{padding-inline:8px;font-size:.59rem}
+  .command-shortcuts a{font-size:.56rem}
+  #daily-closeout>summary{padding-inline:10px}
+}
+@media(forced-colors:active){
+  .command-context,.week-schedule-details>summary,#daily-closeout,.today-week-preview{border:1px solid CanvasText}
+  #pro-now-focus-operational{border-left:3px solid CanvasText}
+}
+
