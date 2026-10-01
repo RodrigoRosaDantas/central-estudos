@@ -2,7 +2,9 @@
 
 Camada de entrada dos projetos ativos SEEDF (P1), TJDFT (P2) e PRF Administrativo (P3). TCE-GO permanece arquivado para consulta histórica, sem apagar seu repositório ou seus registros.
 
-## Estado atual — v28.3.0
+## Estado atual — v28.4.0
+
+A v28.4.0 troca as frases repetitivas por 14 lembretes originais e práticos, com duas variações por dia da semana. A mensagem fica estável durante o dia de Brasília; o cartão usa a paleta turquesa e ocupa a largura disponível em telas menores. O calendário e o rodízio não fazem chamadas externas.
 
 A carteira ativa agora é SEEDF (P1), TJDFT (P2) e PRF Administrativo (P3). TCE-GO foi arquivado em 30/09/2026: saiu da agenda, do foco ativo, dos cartões e do Mentor, mas continua no Workspace com acesso histórico. Preferências antigas de foco TCE-GO migram uma vez para SEEDF; a última visita TCE-GO continua registrada como histórico. Ordens locais personalizadas mantêm a sequência relativa dos projetos que seguem ativos.
 
