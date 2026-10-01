@@ -18,3 +18,4 @@
 .closeout-footer{margin:10px 2px 0;font-size:.78rem;line-height:1.45}
 .closeout-footer a{color:#8de8dc;text-underline-offset:3px}
 @media(max-width:719px){.daily-closeout-v1{margin-top:14px;padding:13px}#daily-closeout .command-next.closeout-summary{gap:10px;padding:11px}.closeout-grid{grid-template-columns:1fr}.closeout-item{padding:10px}.closeout-value{font-size:.9rem}}
+.closeout-footer-label{display:inline-block;margin-right:7px;color:#aeb9c9;font-size:.66rem;font-weight:850;letter-spacing:.08em;text-transform:uppercase}
