@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'central-shell-v28.7.1-mobile-clock-audit-20261002';
+const CACHE_VERSION = 'central-shell-v28.7.1-hours-visible-20261002';
 const APP_SHELL = [
 './',
 './index.html',
@@ -14,7 +14,7 @@ const APP_SHELL = [
 './css/workspace-v26.css?v=portfolio-20260930',
 './css/daily-message-v1.css?v=28.7.1',
 './css/workspace-v27.css',
-'./css/study-log-v1.css?v=28.7.1',
+'./css/study-log-v1.css?v=28.8.0',
 './js/app.js?v=28.7.1',
 './js/personalization-v5.js',
 './js/pwa-v6.js',
@@ -23,7 +23,7 @@ const APP_SHELL = [
 './js/contracts-v12.js',
 './js/command-context-v1.js?v=28.1.0',
 './js/workspace-v24.js?v=28.7.1',
-'./js/study-log-v1.js?v=28.7.1',
+'./js/study-log-v1.js?v=28.8.0',
 './js/study-dates-v1.js?v=28.7.1',
 './config/projects.json?v=28.7.1',
 './css/daily-workspace-v1.css?v=28.7.1-mobile-clock-2',
