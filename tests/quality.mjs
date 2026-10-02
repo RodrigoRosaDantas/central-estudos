@@ -1041,7 +1041,7 @@ function testV279ProjectStudySignals(registry) {
   assert.equal(registry.projects.find(project=>project.id==="seedf")?.priority,"focus","P1 SEEDF must keep default focus");
   assert.equal(tce?.status,"archived","TCE-GO must remain archived history");
   assert.equal(tce?.availability,"archive-only","archived TCE-GO must be excluded from active reads");
-  assert.ok(schema.properties.study&&schema.properties.study.properties.accuracy&&schema.properties.study.properties.reviewsDue&&schema.properties.study.properties.activeErrors,"status contract must support optional pedagogical signals");
+  assert.ok(schema.properties.study&&schema.properties.study.properties.accuracy&&schema.properties.study.properties.reviewsDue&&schema.properties.study.properties.activeErrors&&schema.properties.study.properties.timeCredits,"status contract must support pedagogical signals and explicit time credits");
   assert.ok(op.includes("publishedStudy=new Map")&&op.includes("central:contract-state")&&!op.includes("privateStudy")&&!op.includes("central:private-study-state"),"operational Mentor must use public signals and omit private TCE state");
   assert.ok(op.includes("revisão(ões) vencida(s)")&&op.includes("desempenho publicado")&&op.includes("erro(s) ativo(s)")&&op.includes("próxima unidade publicada"),"Mentor must consume explicit study signals");
   assert.ok(op.includes("campo ausente continua desconhecido")&&!op.includes("api.openai.com"),"missing data must remain unknown and Mentor API-free");
@@ -1197,7 +1197,7 @@ function testStudyLog(registry) {
   assert.ok(!source.includes("fetch(") && !source.includes("XMLHttpRequest"), "study tracking must not add network requests");
   assert.ok(source.includes('central-estudos:study-log-v1') && source.includes('central:workspace-ready'), "tracker must use an isolated local key and current project registry");
   assert.ok(source.includes("central:contract-state") && source.includes("central:contract-refresh") && source.includes("visibilitychange") && source.includes("autoEntryFromContract"), "automatic logging must react to confirmed contract updates and refresh on return without polling");
-  assert.ok(html.includes("Conclusões com data de estudo de hoje publicada entram automaticamente com 1h"), "the study log must explain the automatic one-hour rule");
+  assert.ok(html.includes("cada leitura confirmada vale 1h")&&html.includes("cada dia/unidade de estudo confirmada vale 1h")&&html.includes("somam 2h"), "the study log must explain separate one-hour reading and study credits");
   assert.ok(html.includes("./js/operational-v13.js") && !sw.includes("./js/operational-v13.js"), "online operational UI must remain available without displacing the local study log from the offline shell");
 
   const store = createLocalStorage();
@@ -1218,6 +1218,20 @@ function testStudyLog(registry) {
   const testDate = api.today();
   const completion = (id,unit,date,evidence="confirmed",status="live",sourceStatus="synced") => ({ id, status, contract: { schemaVersion: 1, projectId: id, source: { kind: "public-project-state", status: sourceStatus }, study: { evidence, lastCompletedUnit: unit, lastStudiedAt: date, trail: id === "tjdft" ? "Português Primeiro" : id === "prf-adm" ? "Roda PRFADM" : "Leis Primeiro" } } });
   const automatic = api.autoEntryFromContract(completion("seedf","L03",testDate+"T12:00:00-03:00"), ids, testDate);
+  const previousDay = new Date(testDate+"T00:00:00Z"); previousDay.setUTCDate(previousDay.getUTCDate()-1);
+  const creditDate = previousDay.toISOString().slice(0,10);
+  const creditDetail = completion("seedf","L03",testDate);
+  creditDetail.contract.study.timeCredits = [
+    { id:"seedf:study:L02:"+creditDate, date:creditDate, kind:"study", unit:"L02", trail:"Leis Primeiro", minutes:60, sourceRef:"snapshot#sessions" },
+    { id:"seedf:study:L03:"+testDate, date:testDate, kind:"study", unit:"L03", trail:"Leis Primeiro", minutes:60, sourceRef:"snapshot#sessions" },
+    { id:"seedf:reading:L03:"+testDate, date:testDate, kind:"reading", unit:"L03", trail:"Leis Primeiro", minutes:60, sourceRef:"snapshot#sessions" }
+  ];
+  const creditEntries = api.autoEntriesFromContract(creditDetail, ids, testDate);
+  assert.equal(creditEntries.length, 3, "published time credits must backfill historical study and reading blocks");
+  assert.equal(api.total(creditEntries), 180, "one reading plus two study credits must total three hours");
+  assert.ok(creditEntries.some(entry=>entry.date===testDate&&entry.topic==="L03")&&creditEntries.some(entry=>entry.date===testDate&&entry.topic==="Leitura · L03"), "reading and study for the same unit must remain distinct one-hour credits");
+  const pairedCredits=creditEntries.filter(entry=>entry.date===testDate);
+  assert.equal(api.appendAutoEntry([pairedCredits[0]],pairedCredits[1]).length,2,"reading and study on the same unit/day must both be counted");
   assert.equal(automatic.minutes, 60, "confirmed same-day completion must create exactly one hour");
   assert.equal(automatic.date, testDate, "automatic duration must use the published study date");
   assert.match(automatic.id, /^auto_seedf_\d{8}_L03$/, "automatic IDs must be stable, valid sync client IDs");
