@@ -2,9 +2,9 @@
 
 Camada de entrada dos projetos ativos SEEDF (P1), TJDFT (P2) e PRF Administrativo (P3). TCE-GO permanece arquivado para consulta histórica, sem apagar seu repositório ou seus registros.
 
-## Estado atual — v28.7.0
+## Estado atual — v28.7.1
 
-A v28.7.0 reúne o plano do dia por projeto, os atalhos de material/questões/erros e uma tela de revisões com dados publicados. A navegação principal passa a Hoje, Projetos, Revisões e Mais; Mentor, Retomada, Histórico, alertas, preferências e Jornada continuam acessíveis. A camada nova não escreve nos projetos e não gera lançamentos de estudo. Escopo, critérios e limites da validação: `docs/UX-V28.7.md`.
+A v28.7.1 reúne o plano do dia por projeto, os atalhos de material/questões/erros e uma tela de revisões com dados publicados. A navegação principal passa a Hoje, Projetos, Revisões e Mais; Mentor, Retomada, Histórico, alertas, preferências e Jornada continuam acessíveis. Registrar tempo abre diretamente o formulário, seleciona o dia de hoje e o projeto escolhido. A camada nova não escreve nos projetos e não gera lançamentos de estudo. Escopo, critérios e limites da validação: `docs/UX-V28.7.md`.
 
 A v28.6.3 corrige a preservação de blocos históricos nos lançamentos automáticos, aplica a data de Brasília aos timestamps de estudo e restabelece a atualização do Mentor entre abas. As versões dos recursos do Mentor e do registro de horas agora coincidem com as entradas do cache offline. O fallback do foco SEEDF informa Pré-edital. As prioridades e a grade continuam P1 SEEDF, P2 TJDFT e P3 PRF Administrativo.
 

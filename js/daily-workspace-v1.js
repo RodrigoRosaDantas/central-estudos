@@ -69,9 +69,15 @@
     a.setAttribute("aria-label", "Registrar tempo de estudo — " + p.name);
     a.addEventListener("click", event => {
       event.preventDefault(); window.CentralWorkspaceV24?.setScreen("projects");
+      const form = $("study-log-form"), panel = $("study-log-entry-panel"), input = $("study-log-date"), context = $("study-log-form-context");
+      if (panel) panel.open = true;
+      form?.classList.remove("is-guided-entry");
+      if (context) context.hidden = true;
+      if (input) { input.value = date(); input.dispatchEvent(new Event("change", { bubbles:true })); }
+      if ($("study-log-entry-summary")) $("study-log-entry-summary").textContent = "Registrar bloco";
       document.dispatchEvent(new CustomEvent("central:study-log-select-project", { detail: { id:p.id } }));
-      $("study-log-form")?.scrollIntoView({ block:"start", behavior:"smooth" });
-      $("study-log-date")?.focus({ preventScroll:true });
+      form?.scrollIntoView({ block:"start", behavior:"smooth" });
+      input?.focus({ preventScroll:true });
     });
     return a;
   }

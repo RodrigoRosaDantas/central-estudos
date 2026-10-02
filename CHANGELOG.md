@@ -1,3 +1,10 @@
+## [28.7.1] - 2026-10-02
+
+- Corrige o atalho Registrar tempo da Home: abre o formulário antes de rolar e focar a data.
+- Seleciona hoje em Brasília mesmo após consultar uma semana anterior e remove o contexto guiado do projeto anterior.
+- Preserva duração e confirmação manuais; abrir o formulário não grava bloco de estudo.
+- Renova os endereços dos recursos e o cache da PWA; cenário funcional cobre o painel recolhido e o dia anterior.
+
 ## [28.7.0] - 2026-10-02
 
 - Home com grade diária de P1 SEEDF, P2 TJDFT e P3 PRF Administrativo, próxima ação publicada, minutos locais e último bloco confirmado apresentados separadamente.
