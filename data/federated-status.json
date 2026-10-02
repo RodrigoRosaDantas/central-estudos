@@ -1,6 +1,8 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-02T20:10:48.356Z",
+  "generatedAt": "2026-10-02T20:54:54.211Z",
+  "checkedAt": "2026-10-02T20:54:54.211Z",
+  "latestSourceAt": "2026-10-02T20:10:48.356Z",
   "toleranceSeconds": 120,
   "sources": {
     "seedf": {
