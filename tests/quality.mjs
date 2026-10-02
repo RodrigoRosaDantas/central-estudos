@@ -1679,6 +1679,27 @@ function testReleaseDocumentationCoherence(registry) {
   pass("release documentation coherence");
 }
 
+function testFederatedIntegrationWorkflow() {
+  const workflow = read(".github/workflows/sync-integrations.yml");
+  const sync = read("scripts/sync-federated-status.mjs");
+  const config = JSON.parse(read("config/integration-sources-v1.json"));
+
+  assert.ok(workflow.includes('cron: "*/15 * * * *"'), "federated integrity sync must run every 15 minutes");
+  assert.ok(workflow.includes('"config/integration-sources-v1.json"'), "changes to the Notion probe map must trigger a federated refresh");
+  assert.ok(workflow.includes("timeout-minutes: 12"), "federated sync must keep an explicit execution budget");
+  for (const secretName of ["SEEDF", "TJDFT_NOTION_TOKEN", "PRF_ADM_GITHUB", "PLATAFORMA_DE_QUESTOES", "PLANO_DE_TRANSICAO_GITHUB"]) {
+    assert.ok(workflow.includes(`secrets.${secretName}`), `workflow must reference ${secretName} only through GitHub Secrets`);
+  }
+  assert.equal(config.schemaVersion, 1, "Notion probe map must remain versioned");
+  assert.equal(config.toleranceSeconds, 120, "integrity tolerance must remain explicit");
+  for (const id of ["seedf", "tjdft", "prf-adm", "plataforma-questoes", "plano-de-transicao"]) {
+    assert.ok(Array.isArray(config.sources?.[id]?.probes) && config.sources[id].probes.length > 0, `missing Notion probes for ${id}`);
+  }
+  assert.ok(sync.includes("notionLatestEditedAt") && sync.includes("source-newer") && sync.includes("partial-check"), "sync must compare Notion freshness with public snapshots");
+  assert.ok(sync.includes("notionContentStored: false") && sync.includes("tokenValuesStored: false"), "federated output must explicitly prohibit publishing Notion content or token values");
+  pass("federated integrity workflow cadence, triggers, secrets and privacy");
+}
+
 function testSecurityAndContracts(registry) {
   const frontendFiles = [
     "index.html",
@@ -1805,6 +1826,7 @@ testV274PrfSiteAndToolDirectory(registry);
 testCatalogLegacyPriorityOrder();
 testDailyWorkspace();
 testReleaseDocumentationCoherence(registry);
+testFederatedIntegrationWorkflow();
 testSecurityAndContracts(registry);
 
 console.log("\nQuality gate PASS");
