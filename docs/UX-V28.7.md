@@ -1,6 +1,6 @@
 # Experiência de estudo — v28.7.0
 
-Entrega de 02/10/2026, preparada para revisão da prévia antes da publicação.
+Entrega de 02/10/2026.
 
 ## Escopo
 
@@ -42,7 +42,7 @@ Os destinos foram conferidos no código desses projetos. Alterações externas p
 
 Gate determinístico: `node tests/quality.mjs`, incluindo cenários novos em `tests/daily-workspace.mjs`.
 
-A verificação visual usa a aplicação real da branch com contratos publicados. Nenhum registro de estudo de teste deve ser criado. A prévia local não é uma publicação e não é um endereço externo compartilhável.
+A verificação visual deve usar a aplicação real com contratos publicados. Nenhum registro de estudo de teste deve ser criado. A prévia local não é uma publicação e não é um endereço externo compartilhável.
 
 ### Resultado nesta entrega
 
