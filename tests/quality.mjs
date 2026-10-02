@@ -1696,6 +1696,7 @@ function testFederatedIntegrationWorkflow() {
     assert.ok(Array.isArray(config.sources?.[id]?.probes) && config.sources[id].probes.length > 0, `missing Notion probes for ${id}`);
   }
   assert.ok(sync.includes("notionLatestEditedAt") && sync.includes("source-newer") && sync.includes("partial-check"), "sync must compare Notion freshness with public snapshots");
+  assert.ok(sync.includes("const checkedAt = new Date().toISOString()") && sync.includes("latestSourceAt"), "federated snapshot must separate check time from latest source time");
   assert.ok(sync.includes("notionContentStored: false") && sync.includes("tokenValuesStored: false"), "federated output must explicitly prohibit publishing Notion content or token values");
   pass("federated integrity workflow cadence, triggers, secrets and privacy");
 }
