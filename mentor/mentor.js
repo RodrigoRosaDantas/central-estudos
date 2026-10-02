@@ -1,7 +1,7 @@
 (()=>{"use strict";
 const REGISTRY_URL="../config/projects.json?v=28.7.1";
 const SCHEDULE_URL="../config/study-schedule-v1.json?v=28.2.0";
-const FEDERATED_URL="https://api.github.com/repos/RodrigoRosaDantas/central-estudos/contents/data/federated-status.json?ref=main";
+const FEDERATED_URL="https://raw.githubusercontent.com/RodrigoRosaDantas/central-estudos/main/data/federated-status.json";
 const LOG_KEY="central-estudos:study-log-v1";
 const FOCUS_KEY="central-estudos:focus-project";
 let ORDER=["seedf","tjdft","prf-adm"];
