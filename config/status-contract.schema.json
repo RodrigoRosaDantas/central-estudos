@@ -247,6 +247,58 @@
             "type": "string"
           },
           "maxItems": 8
+        },
+        "timeCredits": {
+          "type": "array",
+          "maxItems": 1000,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "id",
+              "date",
+              "kind",
+              "unit",
+              "trail",
+              "minutes",
+              "sourceRef"
+            ],
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 160
+              },
+              "date": {
+                "type": "string",
+                "format": "date"
+              },
+              "kind": {
+                "enum": [
+                  "reading",
+                  "study"
+                ]
+              },
+              "unit": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 80
+              },
+              "trail": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 120
+              },
+              "minutes": {
+                "const": 60
+              },
+              "sourceRef": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 240
+              }
+            }
+          }
         }
       }
     }
