@@ -1187,6 +1187,30 @@ function testHomeResponsiveLayout() {
   pass("home focus and clock stack on narrow screens after desktop overrides");
 }
 
+function testStudyAnalyticsDashboard() {
+  const html = read("index.html");
+  const source = read("js/study-dashboard-v1.js");
+  const css = read("css/study-dashboard-v1.css");
+  const sw = read("sw.js");
+
+  for (const id of [
+    "dashboard-total","dashboard-today","dashboard-week","dashboard-days",
+    "dashboard-projects","dashboard-seven-days","dashboard-reading","dashboard-study",
+    "dashboard-integrity","dashboard-integrity-summary"
+  ]) {
+    assert.ok(html.includes(`id="${id}"`), `study dashboard missing #${id}`);
+  }
+  assert.ok(html.includes("Distribuição por projeto") && html.includes("Últimos 7 dias") && html.includes("Composição do tempo") && html.includes("Confiabilidade das fontes"), "dashboard must expose the four analytical views");
+  assert.ok(html.includes('./js/study-dashboard-v1.js?v=28.9.0') && html.includes('./css/study-dashboard-v1.css?v=28.9.0'), "dashboard assets must be cache-busted in HTML");
+  assert.ok(sw.includes("'./js/study-dashboard-v1.js?v=28.9.0'") && sw.includes("'./css/study-dashboard-v1.css?v=28.9.0'"), "dashboard assets must be available in the PWA shell");
+  assert.ok(source.includes('central:study-log-updated') && source.includes('central:study-log-auto-added') && source.includes('central:contract-state'), "dashboard must react to local study changes and source integrity");
+  assert.ok(source.includes('Math.round(minutes/grand*100)') && source.includes('grand?100-readingShare:0'), "dashboard percentages must have an explicit time denominator");
+  assert.ok(source.includes('source-newer') && source.includes('partial-check') && source.includes('public-unavailable'), "dashboard must distinguish source-integrity states");
+  assert.ok(!source.includes("fetch(") && !source.includes("XMLHttpRequest"), "dashboard must reuse trusted local and contract events without adding network calls");
+  assert.ok(css.includes("@media(max-width:560px)") && css.includes(".study-dashboard-grid") && css.includes(".dashboard-seven-days"), "dashboard must include responsive analytical layout rules");
+  pass("study analytics dashboard: KPIs, project distribution, 7-day rhythm, composition and source health");
+}
+
 function testStudyLog(registry) {
   const html = read("index.html"), sw = read("sw.js"), source = read("js/study-log-v1.js");
   assert.ok(html.includes('id="study-log-form"') && html.includes('id="study-log-confirmed"') && html.includes('id="study-log-hours"') && html.includes('id="study-log-minutes"'), "daily study log must collect an explicit confirmation and hours/minutes");
@@ -1769,6 +1793,7 @@ const syntaxFiles = [
   "js/workspace-v24.js",
   "js/daily-workspace-v1.js",
   "js/study-log-v1.js",
+  "js/study-dashboard-v1.js",
   "js/study-dates-v1.js",
   "js/study-sync-v1.js",
   "js/study-planner-v1.js",
@@ -1819,6 +1844,7 @@ testStudyDateAndMentorIntegrity();
 testPublishedEditorialReadiness();
 testV281DailyCloseoutHydration();
 testHomeResponsiveLayout();
+testStudyAnalyticsDashboard();
 testStudyLog(registry);
 testStudySync();
 testStudyPlanner(registry);
