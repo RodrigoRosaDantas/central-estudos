@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "toleranceSeconds": 120,
+  "sources": {
+    "seedf": {
+      "notionVersion": "2026-03-11",
+      "probes": [
+        {"label": "painel", "kind": "page", "id": "3d4cf5a2-6731-8106-a2c9-c97816aa6cf5"},
+        {"label": "dias e execução", "kind": "dataSource", "id": "60966f0a-b3eb-416b-8995-64253ed26a45"},
+        {"label": "questões", "kind": "dataSource", "id": "8a241986-94e7-4340-b898-dc905b19fd58"},
+        {"label": "caderno de erros", "kind": "dataSource", "id": "68d7c880-165b-4e44-988b-cb9e3c38d8b2"},
+        {"label": "histórico Leis Primeiro", "kind": "dataSource", "id": "61340ed0-f7cf-4fbf-b543-62e1c2b6f458"}
+      ]
+    },
+    "tjdft": {
+      "notionVersion": "2026-03-11",
+      "probes": [
+        {"label": "painel", "kind": "page", "id": "3d5cf5a2-6731-81aa-8acb-ebd128dada89"},
+        {"label": "dias", "kind": "dataSource", "id": "a06ef2a6-c492-4800-a556-8ebf562b1e4e"},
+        {"label": "questões", "kind": "dataSource", "id": "76f5f5ec-fc73-4f6e-86b1-69eeeb6cdc37"},
+        {"label": "erros", "kind": "dataSource", "id": "b4abcf79-27a8-46bc-a917-739a1e1811c4"},
+        {"label": "execuções", "kind": "dataSource", "id": "063faa8a-502f-440c-be64-87be151a666d"},
+        {"label": "unidades Português + RLM", "kind": "dataSource", "id": "f89ae5e0-4cc3-49f7-ae82-6c84f38a81e5"},
+        {"label": "conteúdos", "kind": "dataSource", "id": "01da7685-5903-4a48-ae8e-987a7d35b447"}
+      ]
+    },
+    "prf-adm": {
+      "notionVersion": "2026-03-11",
+      "probes": [
+        {"label": "raiz", "kind": "page", "id": "3e8cf5a2-6731-8167-9cd2-f5532e0abf60"},
+        {"label": "execução", "kind": "page", "id": "3e8cf5a2-6731-8101-bdee-c4ed78182897"},
+        {"label": "materiais", "kind": "page", "id": "3e8cf5a2-6731-8105-a5f5-fa52cabf3a3a"},
+        {"label": "questões editoriais", "kind": "page", "id": "3e8cf5a2-6731-8197-b509-f976a15315d5"},
+        {"label": "checkpoint", "kind": "page", "id": "3e8cf5a2-6731-8184-8c45-ff9eb5095239"}
+      ]
+    },
+    "plataforma-questoes": {
+      "notionVersion": "2026-03-11",
+      "probes": [
+        {"label": "Banco Mestre", "kind": "dataSource", "id": "784234ae-deca-4514-b60d-19524e122a89"}
+      ]
+    },
+    "plano-de-transicao": {
+      "notionVersion": "2022-06-28",
+      "probes": [
+        {"label": "home", "kind": "page", "id": "239cf5a2-6731-80a1-a2a2-df40b502a899"},
+        {"label": "estratégia", "kind": "page", "id": "3c8cf5a2-6731-81e0-8ae8-f9eff95df293"},
+        {"label": "registro histórico", "kind": "database", "id": "f1a15942-ef2e-4844-b54e-d9b6f892ea2f"}
+      ]
+    }
+  }
+}
