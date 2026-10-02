@@ -1,6 +1,7 @@
 {
-  "schemaVersion": 1,
-  "generatedAt": "2026-10-02T17:52:43.937Z",
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-02T19:38:00.000Z",
+  "toleranceSeconds": 120,
   "sources": {
     "seedf": {
       "kind": "project",
@@ -8,6 +9,40 @@
       "notionStatus": "verified",
       "sourceUrl": "https://rodrigorosadantas.github.io/seedf-ppge-dashboard/central-status.json",
       "transport": "pages",
+      "integrity": {
+        "status": "source-newer",
+        "coverage": "5/5",
+        "notionLatestEditedAt": "2026-10-02T19:38:00.000Z",
+        "publishedUpdatedAt": "2026-10-02T16:15:32.987Z",
+        "sourceAheadSeconds": 12147,
+        "probes": [
+          {
+            "label": "painel",
+            "status": "ok",
+            "latestEditedAt": "2026-09-25T17:01:00.000Z"
+          },
+          {
+            "label": "dias e execução",
+            "status": "ok",
+            "latestEditedAt": "2026-10-02T14:48:00.000Z"
+          },
+          {
+            "label": "questões",
+            "status": "ok",
+            "latestEditedAt": "2026-10-02T14:39:00.000Z"
+          },
+          {
+            "label": "caderno de erros",
+            "status": "ok",
+            "latestEditedAt": "2026-10-02T14:39:00.000Z"
+          },
+          {
+            "label": "histórico Leis Primeiro",
+            "status": "ok",
+            "latestEditedAt": "2026-10-02T19:38:00.000Z"
+          }
+        ]
+      },
       "contract": {
         "schemaVersion": 1,
         "projectId": "seedf",
@@ -59,6 +94,50 @@
       "notionStatus": "verified",
       "sourceUrl": "https://rodrigorosadantas.github.io/tjdft-dashboard/central-status.json",
       "transport": "pages",
+      "integrity": {
+        "status": "aligned",
+        "coverage": "7/7",
+        "notionLatestEditedAt": "2026-09-29T19:31:00.000Z",
+        "publishedUpdatedAt": "2026-09-30T11:02:52.100Z",
+        "sourceAheadSeconds": 0,
+        "probes": [
+          {
+            "label": "painel",
+            "status": "ok",
+            "latestEditedAt": "2026-09-19T22:33:00.000Z"
+          },
+          {
+            "label": "dias",
+            "status": "ok",
+            "latestEditedAt": "2026-09-29T19:31:00.000Z"
+          },
+          {
+            "label": "questões",
+            "status": "ok",
+            "latestEditedAt": "2026-09-29T19:30:00.000Z"
+          },
+          {
+            "label": "erros",
+            "status": "ok",
+            "latestEditedAt": "2026-09-29T19:30:00.000Z"
+          },
+          {
+            "label": "execuções",
+            "status": "ok",
+            "latestEditedAt": "2026-09-29T19:30:00.000Z"
+          },
+          {
+            "label": "unidades Português + RLM",
+            "status": "ok",
+            "latestEditedAt": "2026-09-29T19:31:00.000Z"
+          },
+          {
+            "label": "conteúdos",
+            "status": "ok",
+            "latestEditedAt": "2026-09-09T14:16:00.000Z"
+          }
+        ]
+      },
       "contract": {
         "schemaVersion": 1,
         "projectId": "tjdft",
@@ -107,6 +186,40 @@
       "notionStatus": "verified",
       "sourceUrl": "https://rodrigorosadantas.github.io/prf-administrativo-dashboard/central-status.json",
       "transport": "pages",
+      "integrity": {
+        "status": "aligned",
+        "coverage": "5/5",
+        "notionLatestEditedAt": "2026-09-30T07:46:00.000Z",
+        "publishedUpdatedAt": "2026-10-02T16:17:03.968Z",
+        "sourceAheadSeconds": 0,
+        "probes": [
+          {
+            "label": "raiz",
+            "status": "ok",
+            "latestEditedAt": "2026-09-29T02:18:00.000Z"
+          },
+          {
+            "label": "execução",
+            "status": "ok",
+            "latestEditedAt": "2026-09-27T23:30:00.000Z"
+          },
+          {
+            "label": "materiais",
+            "status": "ok",
+            "latestEditedAt": "2026-09-27T23:35:00.000Z"
+          },
+          {
+            "label": "questões editoriais",
+            "status": "ok",
+            "latestEditedAt": "2026-09-30T07:46:00.000Z"
+          },
+          {
+            "label": "checkpoint",
+            "status": "ok",
+            "latestEditedAt": "2026-09-30T07:46:00.000Z"
+          }
+        ]
+      },
       "contract": {
         "schemaVersion": 1,
         "projectId": "prf-adm",
@@ -157,6 +270,20 @@
       "notionStatus": "verified",
       "sourceUrl": "https://rodrigorosadantas.github.io/plataforma-questoes/data/metadata.json",
       "transport": "pages",
+      "integrity": {
+        "status": "aligned",
+        "coverage": "1/1",
+        "notionLatestEditedAt": "2026-09-16T20:43:00.000Z",
+        "publishedUpdatedAt": "2026-10-02T12:46:25.844Z",
+        "sourceAheadSeconds": 0,
+        "probes": [
+          {
+            "label": "Banco Mestre",
+            "status": "ok",
+            "latestEditedAt": "2026-09-16T20:43:00.000Z"
+          }
+        ]
+      },
       "state": {
         "generatedAt": "2026-10-02T12:46:25.844Z",
         "questionCount": 3697,
@@ -172,6 +299,30 @@
       "notionStatus": "verified",
       "sourceUrl": "https://rodrigorosadantas.github.io/plano-de-transicao/data/snapshot.json",
       "transport": "pages",
+      "integrity": {
+        "status": "aligned",
+        "coverage": "3/3",
+        "notionLatestEditedAt": "2026-09-30T00:18:00.000Z",
+        "publishedUpdatedAt": "2026-10-02T17:52:43.937Z",
+        "sourceAheadSeconds": 0,
+        "probes": [
+          {
+            "label": "home",
+            "status": "ok",
+            "latestEditedAt": "2026-09-22T20:34:00.000Z"
+          },
+          {
+            "label": "estratégia",
+            "status": "ok",
+            "latestEditedAt": "2026-09-30T00:18:00.000Z"
+          },
+          {
+            "label": "registro histórico",
+            "status": "ok",
+            "latestEditedAt": "2026-09-22T22:25:00.000Z"
+          }
+        ]
+      },
       "state": {
         "generatedAt": "2026-10-02T17:52:43.937Z",
         "live": true,
@@ -184,6 +335,7 @@
   "privacy": {
     "secretsPublished": false,
     "tokenValuesStored": false,
-    "notionIdentityStored": false
+    "notionIdentityStored": false,
+    "notionContentStored": false
   }
 }
