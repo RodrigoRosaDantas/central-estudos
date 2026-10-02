@@ -58,6 +58,49 @@ export function testDailyWorkspace() {
   assert.ok(!read("js/daily-workspace-v1.js").includes("fetch("));
   assert.ok(!read("js/daily-workspace-v1.js").includes("localStorage.setItem"));
 
+  // Exercise the generated shortcut with a collapsed form and an older selected day.
+  class Node {
+    constructor(tag = "div") { this.tagName=tag; this.children=[]; this.dataset={}; this.attributes={}; this.handlers={}; this.textContent=""; this.value=""; this.className=""; this.classes=new Set(); this.classList={remove:name=>this.classes.delete(name)}; }
+    append(...children) { this.children.push(...children); }
+    replaceChildren(...children) { this.children=children; }
+    setAttribute(name,value) { this.attributes[name]=value; }
+    addEventListener(name,handler) { this.handlers[name]=handler; }
+    dispatchEvent(event) { this.events ||= []; this.events.push(event.type); this.handlers[event.type]?.(event); }
+    scrollIntoView() { this.scrolled=true; }
+    focus() { this.focused=true; }
+  }
+  const ids=["daily-plan-cards","daily-plan-date","daily-plan-caption","daily-records-note","review-project-cards","review-overview","daily-refresh","daily-refresh-status","study-log-form","study-log-entry-panel","study-log-date","study-log-form-context","study-log-entry-summary","study-log-hours","study-log-minutes","study-log-confirmed"];
+  const nodes=Object.fromEntries(ids.map(id=>[id,new Node()])), dailyProjects=["seedf","tjdft","prf-adm"].map(id=>{const n=new Node();n.dataset.dailyProject=id;n.textContent=id;return n;});
+  nodes["study-log-entry-panel"].open=false;
+  nodes["study-log-date"].value="2026-09-29";
+  nodes["study-log-form"].classes.add("is-guided-entry");
+  nodes["study-log-form-context"].hidden=false;
+  nodes["study-log-confirmed"].checked=false;
+  const uiListeners={}, events=[], screensOpened=[];
+  const uiContext=vm.createContext({
+    window:{CentralStudyLogV1:{today:()=>"2026-10-02"},CentralWorkspaceV24:{setScreen:screen=>screensOpened.push(screen)},addEventListener(){}},
+    document:{getElementById:id=>nodes[id]||null,querySelectorAll:query=>query==="[data-daily-project]"?dailyProjects:["P1","P2","P3"].map(text=>({textContent:text})),createElement:tag=>new Node(tag),addEventListener:(name,fn)=>{uiListeners[name]=fn;},dispatchEvent:event=>events.push(event)},
+    localStorage:{getItem:()=>null,setItem(){writes++;}},Intl,Date,Set,clearTimeout(){},setTimeout(){return 1;},
+    Event:class {constructor(type){this.type=type;}},CustomEvent:class {constructor(type,options){this.type=type;this.detail=options?.detail;}}
+  });
+  vm.runInContext(read("js/daily-workspace-v1.js"),uiContext);
+  uiListeners.DOMContentLoaded();
+  const card=nodes["daily-plan-cards"].children.find(el=>el.dataset.projectId==="tjdft");
+  card.children.find(el=>el.className==="daily-register").handlers.click({preventDefault(){}});
+  assert.deepEqual(screensOpened,["projects"]);
+  assert.equal(nodes["study-log-entry-panel"].open,true,"daily registration must expose the fields without a second click");
+  assert.equal(nodes["study-log-date"].value,"2026-10-02","daily shortcut must not retain an older planner day");
+  assert.ok(nodes["study-log-date"].events.includes("change"),"planner must receive the selected day");
+  assert.equal(events.find(e=>e.type==="central:study-log-select-project")?.detail.id,"tjdft");
+  assert.equal(nodes["study-log-form-context"].hidden,true,"old guided project context must be hidden");
+  assert.equal(nodes["study-log-form"].classes.has("is-guided-entry"),false);
+  assert.equal(nodes["study-log-date"].focused,true);
+  assert.equal(nodes["study-log-form"].scrolled,true);
+  assert.equal(nodes["study-log-hours"].value,"");
+  assert.equal(nodes["study-log-minutes"].value,"");
+  assert.equal(nodes["study-log-confirmed"].checked,false);
+  assert.equal(writes,0,"opening the form must never save a study block");
+
   function element(hash,screen){ return {hash,dataset:{screen},attributes:{},classes:new Set(),classList:{add(){},toggle(name,on){on?this._owner.classes.add(name):this._owner.classes.delete(name);}},setAttribute(name,value){this.attributes[name]=value;},removeAttribute(name){delete this.attributes[name];}}; }
   const nav = ["#agora","#projetos","#revisoes","#mais"].map(hash=>element(hash));
   const screens = ["today","projects","reviews","more","resume","inbox","history","evolution"].map(screen=>element(null,screen));
@@ -76,6 +119,6 @@ export function testDailyWorkspace() {
   assert.ok(read("js/pro-v11.js").includes('function oe(){if(window.CentralWorkspaceV24)return;'),"old scroll observer must not replace router selection");
   const html=read("index.html"),sw=read("sw.js");
   assert.equal((html.match(/class="pro-nav-link"/g)||[]).length,4);
-  for(const file of ["js/daily-workspace-v1.js","css/daily-workspace-v1.css"]){ assert.ok(html.includes(file+"?v=28.7.0")); assert.ok(sw.includes(file+"?v=28.7.0")); }
+  for(const file of ["js/daily-workspace-v1.js","css/daily-workspace-v1.css"]){ assert.ok(html.includes(file+"?v=28.7.1")); assert.ok(sw.includes(file+"?v=28.7.1")); }
   console.log("✓ v28.7 daily plan, verified routes, read-only evidence and four-screen navigation");
 }

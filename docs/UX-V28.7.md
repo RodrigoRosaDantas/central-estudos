@@ -1,4 +1,4 @@
-# Experiência de estudo — v28.7.0
+# Experiência de estudo — v28.7.0 / v28.7.1
 
 Entrega de 02/10/2026.
 
@@ -7,7 +7,7 @@ Entrega de 02/10/2026.
 1. Home com três projetos ativos em P1–P3, grade do dia, próximo passo publicado e atalhos reais.
 2. Revisões e erros por projeto, com consulta manual dos estados publicados.
 3. Navegação com Hoje, Projetos, Revisões e Mais; barra inferior no celular e lateral no computador.
-4. Acesso ao formulário de tempo com o projeto escolhido; atualização da Home após alterações feitas pelo tracker existente.
+4. Acesso ao formulário de tempo aberto no dia de hoje com o projeto escolhido; atualização da Home após alterações feitas pelo tracker existente.
 
 Timer, comparação semanal, mudança de tema e sincronização de origem ficam para outra entrega. A regra automática de 1h por conclusão elegível permanece no tracker existente; abrir um atalho não gera sessão.
 
@@ -50,3 +50,11 @@ A verificação visual deve usar a aplicação real com contratos publicados. Ne
 - Material SEEDF L06 e material TJDFT P03: abertos e confirmados no navegador; âncora das questões da L06 conferida no DOM público.
 - Prévia da aplicação local: bloqueada pelo navegador com `ERR_BLOCKED_BY_CLIENT`. Não há alegação de validação visual em 320/390/768/1363 nesta entrega. Essa verificação continua pendente antes de considerar o aceite visual completo.
 - As telas de revisão apresentadas na conversa reproduzem a marcação gerada pelo código da branch, com dados públicos capturados em 02/10 e sem carregar o tempo pessoal. Não são um deploy.
+
+### Publicação e conferência online
+
+- v28.7.0 integrada pela PR #49, commit `7c7bec549fa2a728d30c14dc2691f2ab45f1cb23`.
+- Workflow `37044141518`: Quality gate e Deploy concluídos com sucesso.
+- Aplicação online conferida: Hoje, Revisões, Mais, Projetos e Histórico; atualização manual dos contratos concluída e somente a tela solicitada visível.
+- Sem rolagem horizontal nas telas conferidas no viewport desktop de 1348/1363 pixels. Não houve ajuste de viewport para as larguras móveis.
+- A conferência online detectou que Registrar tempo selecionava o projeto, mas mantinha o formulário recolhido. A v28.7.1 abre o painel, atualiza a data e retira o contexto guiado anterior; o novo cenário funcional cobre esse fluxo sem salvar registros.
