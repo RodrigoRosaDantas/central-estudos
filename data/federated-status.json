@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-02T20:54:54.211Z",
-  "checkedAt": "2026-10-02T20:54:54.211Z",
+  "generatedAt": "2026-10-02T22:00:41.639Z",
+  "checkedAt": "2026-10-02T22:00:41.639Z",
   "latestSourceAt": "2026-10-02T20:10:48.356Z",
   "toleranceSeconds": 120,
   "sources": {
@@ -12,8 +12,8 @@
       "sourceUrl": "https://rodrigorosadantas.github.io/seedf-ppge-dashboard/central-status.json",
       "transport": "pages",
       "integrity": {
-        "status": "aligned",
-        "coverage": "5/5",
+        "status": "partial-check",
+        "coverage": "4/5",
         "notionLatestEditedAt": "2026-10-02T19:42:00.000Z",
         "publishedUpdatedAt": "2026-10-02T20:08:47.857Z",
         "sourceAheadSeconds": 0,
@@ -35,8 +35,8 @@
           },
           {
             "label": "caderno de erros",
-            "status": "ok",
-            "latestEditedAt": "2026-10-02T14:39:00.000Z"
+            "status": "error",
+            "latestEditedAt": null
           },
           {
             "label": "histórico Leis Primeiro",
