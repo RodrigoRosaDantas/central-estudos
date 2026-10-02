@@ -1,0 +1,189 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-10-02T17:52:43.937Z",
+  "sources": {
+    "seedf": {
+      "kind": "project",
+      "publicStatus": "live",
+      "notionStatus": "unverified",
+      "sourceUrl": "https://rodrigorosadantas.github.io/seedf-ppge-dashboard/central-status.json",
+      "transport": "github-source",
+      "contract": {
+        "schemaVersion": 1,
+        "projectId": "seedf",
+        "publishedAt": "2026-10-02",
+        "source": {
+          "kind": "public-project-state",
+          "ref": "data/seedf-snapshot.json#execution.leis_primeiro",
+          "status": "synced",
+          "updatedAt": "2026-10-02T16:15:32.987Z"
+        },
+        "state": {
+          "phase": "Fase 1",
+          "cycle": "Leis Primeiro",
+          "currentUnit": "L06",
+          "nextAction": "L06 — Lei Orgânica do Distrito Federal | Administração + Servidores + Educação",
+          "nextActionKind": "planned",
+          "alerts": [
+            "L06: 20 questões e 19 acertos registrados; leitura/material e D0 continuam pendentes."
+          ]
+        },
+        "study": {
+          "evidence": "confirmed",
+          "sourceRef": "data/seedf-snapshot.json#execution.leis_primeiro",
+          "updatedAt": "2026-10-02T16:15:32.987Z",
+          "trail": "Leis Primeiro",
+          "lastCompletedUnit": "L03",
+          "nextUnit": "L06",
+          "lastStudiedAt": "2026-09-30",
+          "questionsDone": 165,
+          "correct": 142,
+          "errors": 23,
+          "doubts": 0,
+          "accuracy": 0.8606060606060606,
+          "reviewsDue": 0,
+          "nextReviewAt": null,
+          "activeErrors": 23,
+          "completedSessions": 6,
+          "totalSessions": 34,
+          "notes": [
+            "Próxima lei não iniciada no banco: L06.",
+            "L06: 20 questões e 19 acertos registrados; leitura/material e D0 continuam pendentes."
+          ]
+        }
+      }
+    },
+    "tjdft": {
+      "kind": "project",
+      "publicStatus": "live",
+      "notionStatus": "unverified",
+      "sourceUrl": "https://rodrigorosadantas.github.io/tjdft-dashboard/central-status.json",
+      "transport": "github-source",
+      "contract": {
+        "schemaVersion": 1,
+        "projectId": "tjdft",
+        "publishedAt": "2026-09-30",
+        "source": {
+          "kind": "public-project-state",
+          "ref": "data/tjdft-snapshot.json#operational",
+          "status": "synced",
+          "updatedAt": "2026-09-30T11:02:52.100Z"
+        },
+        "state": {
+          "phase": "F-TJ-01 — Núcleo comum",
+          "cycle": "Português Primeiro + RLM Preventivo",
+          "currentUnit": "P02",
+          "nextAction": "P03 — Sintaxe I: frase, oração, período, sujeito, predicado e núcleos",
+          "nextActionKind": "operational",
+          "alerts": []
+        },
+        "study": {
+          "evidence": "confirmed",
+          "sourceRef": "data/tjdft-snapshot.json#operational",
+          "updatedAt": "2026-09-30T11:02:52.100Z",
+          "trail": "Português Primeiro",
+          "lastCompletedUnit": "P02",
+          "nextUnit": "P03",
+          "lastStudiedAt": "2026-09-29T00:00:00.000Z",
+          "questionsDone": 61,
+          "correct": 41,
+          "errors": 20,
+          "doubts": 0,
+          "accuracy": 0.6721311475409836,
+          "reviewsDue": 0,
+          "nextReviewAt": "2026-10-05T00:00:00.000Z",
+          "activeErrors": 12,
+          "completedSessions": 4,
+          "totalSessions": 37,
+          "notes": [
+            "Erros ativos: Particípio e formas nominais · Indicativo × subjuntivo · Pretérito perfeito × pretérito imperfeito"
+          ]
+        }
+      }
+    },
+    "prf-adm": {
+      "kind": "project",
+      "publicStatus": "live",
+      "notionStatus": "unverified",
+      "sourceUrl": "https://rodrigorosadantas.github.io/prf-administrativo-dashboard/central-status.json",
+      "transport": "github-source",
+      "contract": {
+        "schemaVersion": 1,
+        "projectId": "prf-adm",
+        "publishedAt": "2026-10-02",
+        "source": {
+          "kind": "public-project-state",
+          "ref": "content/prf-notion.json#projectState",
+          "status": "synced",
+          "updatedAt": "2026-10-02T16:17:03.968Z"
+        },
+        "state": {
+          "phase": "Roda contínua PRF Administrativo",
+          "cycle": "Volta 1",
+          "currentUnit": null,
+          "nextAction": "PRFADM01 — próxima sessão confirmada na execução do Notion",
+          "nextActionKind": "operational",
+          "alerts": []
+        },
+        "study": {
+          "evidence": "confirmed",
+          "sourceRef": "content/prf-notion.json#projectState.execution",
+          "updatedAt": "2026-10-02T16:17:03.968Z",
+          "trail": "Roda PRFADM",
+          "lastCompletedUnit": null,
+          "nextUnit": "PRFADM01",
+          "lastStudiedAt": null,
+          "questionsDone": null,
+          "correct": null,
+          "errors": null,
+          "doubts": null,
+          "accuracy": null,
+          "reviewsDue": 0,
+          "nextReviewAt": null,
+          "activeErrors": null,
+          "completedSessions": 0,
+          "totalSessions": 33,
+          "notes": [
+            "Materiais: 33/33",
+            "Questões editoriais: 33/33",
+            "Gate editorial: PRFADM 10/10 v2"
+          ]
+        }
+      }
+    },
+    "plataforma-questoes": {
+      "kind": "tool",
+      "publicStatus": "live",
+      "notionStatus": "unverified",
+      "sourceUrl": "https://rodrigorosadantas.github.io/plataforma-questoes/data/metadata.json",
+      "transport": "github-source",
+      "state": {
+        "generatedAt": "2026-10-02T12:46:25.844Z",
+        "questionCount": 3697,
+        "records": 3766,
+        "published": 3697,
+        "excluded": 69,
+        "sampleMode": false
+      }
+    },
+    "plano-de-transicao": {
+      "kind": "journey",
+      "publicStatus": "live",
+      "notionStatus": "unverified",
+      "sourceUrl": "https://rodrigorosadantas.github.io/plano-de-transicao/data/snapshot.json",
+      "transport": "github-source",
+      "state": {
+        "generatedAt": "2026-10-02T17:52:43.937Z",
+        "live": true,
+        "phase": "post-exam",
+        "syncWarnings": 0,
+        "dataWarnings": 0
+      }
+    }
+  },
+  "privacy": {
+    "secretsPublished": false,
+    "tokenValuesStored": false,
+    "notionIdentityStored": false
+  }
+}
