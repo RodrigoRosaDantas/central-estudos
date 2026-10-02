@@ -74,7 +74,7 @@ async function loadContract(p){
   return{status:data.source?.status==="partial"?"partial":"live",contract:data,reason:null};
  }catch(err){return{status:"unavailable",contract:null,reason:err?.message||"falha ao ler contrato"}}
 }
-function combinedStudy(id){return normalizeStudy(state.contracts.get(id)?.contract?.study)}
+function combinedStudy(id){const study=normalizeStudy(state.contracts.get(id)?.contract?.study),integrity=state.federated?.sources?.[id]?.integrity?.status;return study&&study.evidence==="confirmed"&&["source-newer","partial-check","public-unavailable","unverifiable"].includes(integrity)?{...study,evidence:"partial"}:study}
 
 function scheduleToday(){
  const key=WEEKDAYS[new Date(isoToday()+"T00:00:00Z").getUTCDay()];
