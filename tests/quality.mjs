@@ -963,7 +963,7 @@ function testV24ScreensAndViews(registry) {
 }
 
 function testV27DailySchedule(registry) {
-  const html=read("index.html"),router=read("js/workspace-v24.js"),css=read("css/workspace-v27.css"),quoteCss=read("css/workspace-v26.css"),dailyCss=read("css/daily-message-v1.css"),studyLogCss=read("css/study-log-v1.css"),sw=read("sw.js"),app=read("js/app.js"),operational=read("js/operational-v13.js");
+  const html=read("index.html"),router=read("js/workspace-v24.js"),css=read("css/workspace-v27.css"),quoteCss=read("css/workspace-v26.css"),dailyCss=read("css/daily-message-v1.css"),dailyWorkspaceCss=read("css/daily-workspace-v1.css"),studyLogCss=read("css/study-log-v1.css"),sw=read("sw.js"),app=read("js/app.js"),operational=read("js/operational-v13.js");
   const start=html.indexOf('<section id="agenda-semanal"'),end=html.indexOf("</section>",start);
   assert.ok(start>=0&&end>start,"weekly schedule must remain a section on the page");
   const schedule=html.slice(start,end);
@@ -1013,6 +1013,7 @@ function testV27DailySchedule(registry) {
   assert.ok(dailyCss.includes(".daily-message-v1")&&dailyCss.includes(".daily-message-attribution")&&dailyCss.includes("border-left:3px solid #5eead4")&&!dailyCss.includes("#a78bfa"),"quote card must use teal and style source attribution without purple");
   assert.ok(dailyCss.includes("@media(min-width:900px)")&&dailyCss.includes("grid-template-columns:.8fr 1.2fr")&&dailyCss.includes("@media(max-width:899px)")&&dailyCss.includes('grid-template-areas:"eyebrow journey options" "title title title" "greeting greeting greeting" "message message message"')&&dailyCss.includes("width:100%"),"quote card must align on desktop and use full width on mobile");
   assert.ok(studyLogCss.includes(".closeout-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))")&&studyLogCss.includes("@media(max-width:719px)")&&studyLogCss.includes(".closeout-grid{grid-template-columns:1fr}"),"daily closeout must stack its three summary blocks on mobile");
+  assert.ok(dailyWorkspaceCss.includes("Mobile clock hotfix")&&dailyWorkspaceCss.includes('grid-template-areas:"label time" "zone date"')&&dailyWorkspaceCss.includes("max-width:none")&&dailyWorkspaceCss.includes("white-space:nowrap")&&html.includes('href="./css/daily-workspace-v1.css?v=28.7.1-mobile-clock-1"')&&sw.includes("'./css/daily-workspace-v1.css?v=28.7.1-mobile-clock-1'"),"mobile Brasília clock must use a full-width two-column layout without vertical wrapping and refresh in the PWA");
   assert.ok(html.includes('href="./css/daily-message-v1.css?v=28.7.1"')&&sw.includes("'./css/daily-message-v1.css?v=28.7.1'")&&sw.includes("central-shell-v28.7.1-daily-register-20261002"),"current PWA shell must cache and refresh the responsive message");
   assert.ok(html.includes('href="./css/home-v2.css?v=28.7.1"')&&sw.includes("'./css/home-v2.css?v=28.7.1'"),"Home refinements must refresh in the installed PWA");
   pass("v28.7.1 active P1–P3 portfolio, Cadar quotes and factual closeout");
