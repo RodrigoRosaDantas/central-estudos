@@ -1,5 +1,5 @@
 (()=>{"use strict";
-const REGISTRY_URL="../config/projects.json?v=28.2.0";
+const REGISTRY_URL="../config/projects.json?v=28.6.3";
 const SCHEDULE_URL="../config/study-schedule-v1.json?v=28.2.0";
 const LOG_KEY="central-estudos:study-log-v1";
 const FOCUS_KEY="central-estudos:focus-project";
@@ -18,7 +18,8 @@ function shift(date,days){const d=new Date(date+"T00:00:00Z");d.setUTCDate(d.get
 function dayDiff(a,b){if(!a||!b)return null;const x=Date.parse(String(a).slice(0,10)+"T00:00:00Z"),y=Date.parse(String(b).slice(0,10)+"T00:00:00Z");return Number.isFinite(x)&&Number.isFinite(y)?Math.max(0,Math.round((y-x)/864e5)):null}
 function duration(n){n=Number(n)||0;const h=Math.floor(n/60),m=n%60;return h?h+"h"+(m?" "+m+"min":""):m+" min"}
 function pct(v){return Number.isFinite(v)?Math.round(v*100)+"%":"—"}
-function fmtDate(v){if(!v)return"—";const s=String(v).slice(0,10),p=s.split("-");return p.length===3?p.reverse().join("/"):String(v)}
+function fmtDate(v){const date=studyDate(v);return date?date.split("-").reverse().join("/"):"—"}
+function studyDate(value){return window.CentralStudyDatesV1?.publishedDate(value)||null}
 function focusId(){try{const v=localStorage.getItem(FOCUS_KEY);return ORDER.includes(v)?v:v==="tcego"&&ORDER.includes("seedf")?"seedf":null}catch{return null}}
 function project(id){return state.registry?.projects?.find(p=>p.id===id)||null}
 function projectName(id){return project(id)?.name||LABEL[id]||id}
@@ -29,7 +30,7 @@ function readLogs(){
   const raw=JSON.parse(localStorage.getItem(LOG_KEY)||"[]");
   if(!Array.isArray(raw))return[];
   const today=isoToday();
-  return raw.filter(e=>e&&typeof e==="object"&&ORDER.includes(e.projectId)&&typeof e.date==="string"&&e.date<=today&&Number.isInteger(e.minutes)&&e.minutes>0&&typeof e.trail==="string");
+  return raw.filter(e=>e&&typeof e==="object"&&ORDER.includes(e.projectId)&&window.CentralStudyDatesV1?.dateOnly(e.date)&&e.date<=today&&Number.isInteger(e.minutes)&&e.minutes>0&&e.minutes<=1440&&e.confirmed===true&&typeof e.trail==="string"&&e.trail.trim());
  }catch{return[]}
 }
 function logStats(id){
@@ -79,11 +80,11 @@ function scheduleToday(){
  return{key,ids:Array.isArray(state.schedule?.weekdays?.[key])?state.schedule.weekdays[key]:[]};
 }
 function latestEvidenceDate(id,study,logs){
- const candidates=[study?.lastStudiedAt,logs.lastDate].filter(Boolean).map(v=>String(v).slice(0,10)).sort();
+ const today=isoToday(),candidates=[studyDate(study?.lastStudiedAt),logs.lastDate].filter(date=>date&&date<=today).sort();
  return candidates.at(-1)||null;
 }
 function projectSignal(id){
- const logs=logStats(id),study=combinedStudy(id),today=isoToday(),schedule=scheduleToday(),scheduled=schedule.ids.includes(id),remoteToday=study?.evidence==="confirmed"&&String(study.lastStudiedAt||"").slice(0,10)===today,executedToday=logs.todayMinutes>0||remoteToday,lastDate=latestEvidenceDate(id,study,logs),daysSince=lastDate?dayDiff(lastDate,today):null,focus=focusId()===id;
+ const logs=logStats(id),study=combinedStudy(id),today=isoToday(),schedule=scheduleToday(),scheduled=schedule.ids.includes(id),remoteToday=study?.evidence==="confirmed"&&studyDate(study.lastStudiedAt)===today,executedToday=logs.todayMinutes>0||remoteToday,lastDate=latestEvidenceDate(id,study,logs),daysSince=lastDate?dayDiff(lastDate,today):null,focus=focusId()===id;
  let score=0;const reasons=[];
  if(scheduled&&!executedToday){score+=70;reasons.push({tone:"warn",title:"Previsto hoje",text:"Está na grade de hoje e ainda não há execução confirmada nem tempo registrado."})}
  if(scheduled&&executedToday){score-=50;reasons.push({tone:"good",title:"Executado hoje",text:logs.todayMinutes?"Há "+duration(logs.todayMinutes)+" registrados hoje.":"O próprio projeto publicou execução confirmada hoje."})}
@@ -110,7 +111,7 @@ function recommendation(signals){
  return{kind:"close",top:null,title:"Fechamento do dia",message:"Os projetos previstos hoje já têm execução confirmada ou tempo registrado. Verifique pendências explícitas e encerre sem criar compensação artificial."};
 }
 function confidence(signals){
- const withStudy=signals.filter(s=>s.study&&["confirmed","partial"].includes(s.study.evidence)),confirmed=withStudy.filter(s=>s.study.evidence==="confirmed").length,partial=withStudy.length-confirmed,recentLogs=state.logs.filter(e=>e.date>=shift(isoToday(),-13)),fresh=signals.filter(s=>{const d=s.contractState?.contract?.source?.updatedAt||s.study?.updatedAt;const age=d?dayDiff(String(d).slice(0,10),isoToday()):null;return age!=null&&age<=2}).length;
+ const withStudy=signals.filter(s=>s.study&&["confirmed","partial"].includes(s.study.evidence)),confirmed=withStudy.filter(s=>s.study.evidence==="confirmed").length,partial=withStudy.length-confirmed,recentLogs=state.logs.filter(e=>e.date>=shift(isoToday(),-13)),fresh=signals.filter(s=>{const d=s.contractState?.contract?.source?.updatedAt||s.study?.updatedAt;const date=studyDate(d),age=date&&date<=isoToday()?dayDiff(date,isoToday()):null;return age!=null&&age<=2}).length;
  if(confirmed>=3&&fresh>=3)return{label:"Alta",note:confirmed+" fontes confirmadas e "+fresh+" sinais atualizados recentemente."};
  if(withStudy.length>=2||recentLogs.length>=3)return{label:"Média",note:confirmed+" confirmada(s), "+partial+" parcial(is) e "+recentLogs.length+" bloco(s) locais recentes."};
  return{label:"Baixa",note:"A base ainda está curta; o Mentor evita preencher lacunas por suposição."};
@@ -252,8 +253,10 @@ function initTabs(){
  document.querySelectorAll("[data-mentor-open]").forEach(b=>b.addEventListener("click",()=>{const v=b.dataset.mentorOpen;switchView(v);history.replaceState(null,"","#"+v);document.querySelector(`[data-mentor-view="${v}"]`)?.focus()}));
  window.addEventListener("hashchange",()=>{const view=location.hash.replace("#","");if(VIEWS.includes(view))switchView(view)});
 }
+let clockDay=isoToday();
 function renderClock(){
+ const day=isoToday();if(day!==clockDay){clockDay=day;loadAll()}
  const now=new Date(),time=new Intl.DateTimeFormat("pt-BR",{timeZone:"America/Sao_Paulo",hour:"2-digit",minute:"2-digit",second:"2-digit"}).format(now);$("mentor-clock").textContent="Brasília · "+time;
 }
-document.addEventListener("DOMContentLoaded",()=>{initTabs();renderClock();setInterval(renderClock,1000);$("mentor-refresh").addEventListener("click",loadAll);window.addEventListener("storage",e=>{if([LOG_KEY,SYNC_KEY,FOCUS_KEY].includes(e.key))loadAll()});loadAll()});
+document.addEventListener("DOMContentLoaded",()=>{initTabs();renderClock();setInterval(renderClock,1000);$("mentor-refresh").addEventListener("click",loadAll);window.addEventListener("storage",e=>{if([LOG_KEY,FOCUS_KEY].includes(e.key))loadAll()});loadAll()});
 })();

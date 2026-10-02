@@ -1,4 +1,4 @@
-/* v28.6.2 — Home focused on the next useful action. */
+/* v28.6.3 — Home focused on the next useful action. */
 .command-context{margin-top:12px;padding-top:5px;border-top:1px solid rgba(157,179,210,.12)}
 .command-context>summary{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:48px;padding:5px 2px;color:#c5d1e1;cursor:pointer;list-style:none}
 .command-context>summary::-webkit-details-marker,.week-schedule-details>summary::-webkit-details-marker{display:none}
@@ -74,3 +74,19 @@
   #pro-now-focus-operational{border-left:3px solid CanvasText}
 }
 
+/* Keep the daily actions readable at phone widths. */
+.pro-nav-link{font-size:.875rem}
+.command-actions a{font-size:.875rem}
+.command-context>summary strong,.week-schedule-details>summary strong{font-size:.875rem}
+.command-context>summary small,.week-schedule-details>summary small,.closeout-summary-title small{font-size:.75rem}
+#pro-now-focus-operational,.closeout-quickline,.today-week-preview{font-size:.875rem}
+@media(max-width:719px){
+ .pro-nav-link{min-width:0;font-size:.75rem}
+ .command-shortcuts a{font-size:.875rem;min-height:54px;overflow-wrap:anywhere}
+}
+@media(max-width:359px){
+ .pro-nav{grid-template-columns:repeat(3,minmax(0,1fr))}
+ .pro-nav-link{min-height:44px;font-size:.75rem}
+ body{padding-bottom:calc(132px + env(safe-area-inset-bottom,0px))}
+ .command-open{bottom:calc(126px + env(safe-area-inset-bottom,0px))}
+}

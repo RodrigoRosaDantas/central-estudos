@@ -1,3 +1,12 @@
+## [28.6.3] - 2026-10-02
+- Preserva registros históricos de TCE-GO e SEDES nos lançamentos automáticos, inclusive antes da carga do registry; conclusões repetidas continuam sem duplicar blocos.
+- Usa o dia de Brasília para timestamps de estudo, rejeita datas impossíveis ou sem fuso explícito e mantém datas de calendário publicadas.
+- Corrige a atualização do Mentor entre abas e recalcula seus dados na virada do dia de Brasília.
+- Exclui blocos não confirmados ou inválidos dos totais ativos sem apagar os registros salvos.
+- Alinha os recursos realmente carregados pelo Mentor e pelo registro de horas às URLs do cache da PWA.
+- Corrige o fallback Pré-edital da SEEDF, amplia rótulos pequenos e elimina a rolagem lateral do Mentor em telas de 320 pixels.
+- Mantém P1 SEEDF, P2 TJDFT e P3 PRF Administrativo, com projetos arquivados acessíveis e os sites-filhos somente leitura.
+
 ## [28.6.2] - 2026-10-01
 - Corrige uma tag de fechamento extra que destacava o conteúdo do contêiner principal e empilhava as áreas na Home mobile.
 - Restringe o fechamento diário à tela Hoje e valida a estrutura do HTML para preservar a navegação por telas.
