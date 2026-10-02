@@ -1202,7 +1202,7 @@ function testStudyAnalyticsDashboard() {
   }
   assert.ok(html.includes("Distribuição por projeto") && html.includes("Últimos 7 dias") && html.includes("Composição do tempo") && html.includes("Confiabilidade das fontes"), "dashboard must expose the four analytical views");
   assert.ok(html.includes('./js/study-dashboard-v1.js?v=28.9.0') && html.includes('./css/study-dashboard-v1.css?v=28.9.0'), "dashboard assets must be cache-busted in HTML");
-  assert.ok(sw.includes("'./js/study-dashboard-v1.js?v=28.9.0'") && sw.includes("'./css/study-dashboard-v1.css?v=28.9.0'"), "dashboard assets must be available in the PWA shell");
+  assert.ok(sw.includes("'./js/study-dashboard-v1.js?v=28.9.0'") && sw.includes("'./css/study-dashboard-v1.css?v=28.9.0'") && sw.includes("RUNTIME_ASSETS"), "dashboard assets must use the PWA runtime cache without inflating the core shell");
   assert.ok(source.includes('central:study-log-updated') && source.includes('central:study-log-auto-added') && source.includes('central:contract-state'), "dashboard must react to local study changes and source integrity");
   assert.ok(source.includes('Math.round(minutes/grand*100)') && source.includes('grand?100-readingShare:0'), "dashboard percentages must have an explicit time denominator");
   assert.ok(source.includes('source-newer') && source.includes('partial-check') && source.includes('public-unavailable'), "dashboard must distinguish source-integrity states");
