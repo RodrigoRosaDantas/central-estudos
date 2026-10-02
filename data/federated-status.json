@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-02T19:38:00.000Z",
+  "generatedAt": "2026-10-02T20:10:48.356Z",
   "toleranceSeconds": 120,
   "sources": {
     "seedf": {
@@ -10,11 +10,11 @@
       "sourceUrl": "https://rodrigorosadantas.github.io/seedf-ppge-dashboard/central-status.json",
       "transport": "pages",
       "integrity": {
-        "status": "source-newer",
+        "status": "aligned",
         "coverage": "5/5",
-        "notionLatestEditedAt": "2026-10-02T19:38:00.000Z",
-        "publishedUpdatedAt": "2026-10-02T16:15:32.987Z",
-        "sourceAheadSeconds": 12147,
+        "notionLatestEditedAt": "2026-10-02T19:42:00.000Z",
+        "publishedUpdatedAt": "2026-10-02T20:08:47.857Z",
+        "sourceAheadSeconds": 0,
         "probes": [
           {
             "label": "painel",
@@ -24,7 +24,7 @@
           {
             "label": "dias e execução",
             "status": "ok",
-            "latestEditedAt": "2026-10-02T14:48:00.000Z"
+            "latestEditedAt": "2026-10-02T19:42:00.000Z"
           },
           {
             "label": "questões",
@@ -51,26 +51,24 @@
           "kind": "public-project-state",
           "ref": "data/seedf-snapshot.json#execution.leis_primeiro",
           "status": "synced",
-          "updatedAt": "2026-10-02T16:15:32.987Z"
+          "updatedAt": "2026-10-02T20:08:47.857Z"
         },
         "state": {
           "phase": "Fase 1",
           "cycle": "Leis Primeiro",
-          "currentUnit": "L06",
+          "currentUnit": "L07",
           "nextAction": "L06 — Lei Orgânica do Distrito Federal | Administração + Servidores + Educação",
           "nextActionKind": "planned",
-          "alerts": [
-            "L06: 20 questões e 19 acertos registrados; leitura/material e D0 continuam pendentes."
-          ]
+          "alerts": []
         },
         "study": {
           "evidence": "confirmed",
           "sourceRef": "data/seedf-snapshot.json#execution.leis_primeiro",
-          "updatedAt": "2026-10-02T16:15:32.987Z",
+          "updatedAt": "2026-10-02T20:08:47.857Z",
           "trail": "Leis Primeiro",
           "lastCompletedUnit": "L03",
           "nextUnit": "L06",
-          "lastStudiedAt": "2026-09-30",
+          "lastStudiedAt": "2026-10-02",
           "questionsDone": 165,
           "correct": 142,
           "errors": 23,
@@ -81,9 +79,100 @@
           "activeErrors": 23,
           "completedSessions": 6,
           "totalSessions": 34,
+          "timeCredits": [
+            {
+              "id": "seedf:reading:L01:2026-09-21",
+              "date": "2026-09-21",
+              "kind": "reading",
+              "unit": "L01",
+              "trail": "Leis Primeiro",
+              "minutes": 60,
+              "sourceRef": "data/seedf-snapshot.json#execution.leis_primeiro.sessions"
+            },
+            {
+              "id": "seedf:study:L01:2026-09-21",
+              "date": "2026-09-21",
+              "kind": "study",
+              "unit": "L01",
+              "trail": "Leis Primeiro",
+              "minutes": 60,
+              "sourceRef": "data/seedf-snapshot.json#execution.leis_primeiro.sessions"
+            },
+            {
+              "id": "seedf:reading:L02:2026-09-22",
+              "date": "2026-09-22",
+              "kind": "reading",
+              "unit": "L02",
+              "trail": "Leis Primeiro",
+              "minutes": 60,
+              "sourceRef": "data/seedf-snapshot.json#execution.leis_primeiro.sessions"
+            },
+            {
+              "id": "seedf:study:L02:2026-09-22",
+              "date": "2026-09-22",
+              "kind": "study",
+              "unit": "L02",
+              "trail": "Leis Primeiro",
+              "minutes": 60,
+              "sourceRef": "data/seedf-snapshot.json#execution.leis_primeiro.sessions"
+            },
+            {
+              "id": "seedf:reading:L03:2026-09-23",
+              "date": "2026-09-23",
+              "kind": "reading",
+              "unit": "L03",
+              "trail": "Leis Primeiro",
+              "minutes": 60,
+              "sourceRef": "data/seedf-snapshot.json#execution.leis_primeiro.sessions"
+            },
+            {
+              "id": "seedf:study:L03:2026-09-23",
+              "date": "2026-09-23",
+              "kind": "study",
+              "unit": "L03",
+              "trail": "Leis Primeiro",
+              "minutes": 60,
+              "sourceRef": "data/seedf-snapshot.json#execution.leis_primeiro.sessions"
+            },
+            {
+              "id": "seedf:study:L04:2026-09-28",
+              "date": "2026-09-28",
+              "kind": "study",
+              "unit": "L04",
+              "trail": "Leis Primeiro",
+              "minutes": 60,
+              "sourceRef": "data/seedf-snapshot.json#execution.leis_primeiro.sessions"
+            },
+            {
+              "id": "seedf:study:L05:2026-09-29",
+              "date": "2026-09-29",
+              "kind": "study",
+              "unit": "L05",
+              "trail": "Leis Primeiro",
+              "minutes": 60,
+              "sourceRef": "data/seedf-snapshot.json#execution.leis_primeiro.sessions"
+            },
+            {
+              "id": "seedf:study:C01-D01:2026-09-30",
+              "date": "2026-09-30",
+              "kind": "study",
+              "unit": "C01-D01",
+              "trail": "Execução diária SEEDF",
+              "minutes": 60,
+              "sourceRef": "data/seedf-snapshot.json#execution.c01.days"
+            },
+            {
+              "id": "seedf:study:L06:2026-09-30",
+              "date": "2026-09-30",
+              "kind": "study",
+              "unit": "L06",
+              "trail": "Leis Primeiro",
+              "minutes": 60,
+              "sourceRef": "data/seedf-snapshot.json#execution.leis_primeiro.sessions"
+            }
+          ],
           "notes": [
-            "Próxima lei não iniciada no banco: L06.",
-            "L06: 20 questões e 19 acertos registrados; leitura/material e D0 continuam pendentes."
+            "Próxima lei não iniciada no banco: L06."
           ]
         }
       }
@@ -97,8 +186,8 @@
       "integrity": {
         "status": "aligned",
         "coverage": "7/7",
-        "notionLatestEditedAt": "2026-09-29T19:31:00.000Z",
-        "publishedUpdatedAt": "2026-09-30T11:02:52.100Z",
+        "notionLatestEditedAt": "2026-10-02T19:48:00.000Z",
+        "publishedUpdatedAt": "2026-10-02T20:08:51.541Z",
         "sourceAheadSeconds": 0,
         "probes": [
           {
@@ -109,7 +198,7 @@
           {
             "label": "dias",
             "status": "ok",
-            "latestEditedAt": "2026-09-29T19:31:00.000Z"
+            "latestEditedAt": "2026-10-02T19:48:00.000Z"
           },
           {
             "label": "questões",
@@ -124,12 +213,12 @@
           {
             "label": "execuções",
             "status": "ok",
-            "latestEditedAt": "2026-09-29T19:30:00.000Z"
+            "latestEditedAt": "2026-10-02T19:48:00.000Z"
           },
           {
             "label": "unidades Português + RLM",
             "status": "ok",
-            "latestEditedAt": "2026-09-29T19:31:00.000Z"
+            "latestEditedAt": "2026-10-02T19:47:00.000Z"
           },
           {
             "label": "conteúdos",
@@ -141,17 +230,17 @@
       "contract": {
         "schemaVersion": 1,
         "projectId": "tjdft",
-        "publishedAt": "2026-09-30",
+        "publishedAt": "2026-10-02",
         "source": {
           "kind": "public-project-state",
           "ref": "data/tjdft-snapshot.json#operational",
           "status": "synced",
-          "updatedAt": "2026-09-30T11:02:52.100Z"
+          "updatedAt": "2026-10-02T20:08:51.541Z"
         },
         "state": {
           "phase": "F-TJ-01 — Núcleo comum",
           "cycle": "Português Primeiro + RLM Preventivo",
-          "currentUnit": "P02",
+          "currentUnit": "P03",
           "nextAction": "P03 — Sintaxe I: frase, oração, período, sujeito, predicado e núcleos",
           "nextActionKind": "operational",
           "alerts": []
@@ -159,11 +248,11 @@
         "study": {
           "evidence": "confirmed",
           "sourceRef": "data/tjdft-snapshot.json#operational",
-          "updatedAt": "2026-09-30T11:02:52.100Z",
+          "updatedAt": "2026-10-02T20:08:51.541Z",
           "trail": "Português Primeiro",
-          "lastCompletedUnit": "P02",
+          "lastCompletedUnit": "P03",
           "nextUnit": "P03",
-          "lastStudiedAt": "2026-09-29T00:00:00.000Z",
+          "lastStudiedAt": "2026-10-02T00:00:00.000Z",
           "questionsDone": 61,
           "correct": 41,
           "errors": 20,
@@ -172,8 +261,37 @@
           "reviewsDue": 0,
           "nextReviewAt": "2026-10-05T00:00:00.000Z",
           "activeErrors": 12,
-          "completedSessions": 4,
+          "completedSessions": 6,
           "totalSessions": 37,
+          "timeCredits": [
+            {
+              "id": "tjdft:study:P01:2026-09-28",
+              "date": "2026-09-28",
+              "kind": "study",
+              "unit": "P01",
+              "trail": "Português Primeiro",
+              "minutes": 60,
+              "sourceRef": "data/tjdft-snapshot.json#operational.trail.items"
+            },
+            {
+              "id": "tjdft:study:P02:2026-09-29",
+              "date": "2026-09-29",
+              "kind": "study",
+              "unit": "P02",
+              "trail": "Português Primeiro",
+              "minutes": 60,
+              "sourceRef": "data/tjdft-snapshot.json#operational.trail.items"
+            },
+            {
+              "id": "tjdft:study:P03:2026-10-02",
+              "date": "2026-10-02",
+              "kind": "study",
+              "unit": "P03",
+              "trail": "Português Primeiro",
+              "minutes": 60,
+              "sourceRef": "data/tjdft-snapshot.json#operational.trail.items"
+            }
+          ],
           "notes": [
             "Erros ativos: Particípio e formas nominais · Indicativo × subjuntivo · Pretérito perfeito × pretérito imperfeito"
           ]
@@ -190,7 +308,7 @@
         "status": "aligned",
         "coverage": "5/5",
         "notionLatestEditedAt": "2026-09-30T07:46:00.000Z",
-        "publishedUpdatedAt": "2026-10-02T16:17:03.968Z",
+        "publishedUpdatedAt": "2026-10-02T20:10:48.356Z",
         "sourceAheadSeconds": 0,
         "probes": [
           {
@@ -228,7 +346,7 @@
           "kind": "public-project-state",
           "ref": "content/prf-notion.json#projectState",
           "status": "synced",
-          "updatedAt": "2026-10-02T16:17:03.968Z"
+          "updatedAt": "2026-10-02T20:10:48.356Z"
         },
         "state": {
           "phase": "Roda contínua PRF Administrativo",
@@ -241,7 +359,7 @@
         "study": {
           "evidence": "confirmed",
           "sourceRef": "content/prf-notion.json#projectState.execution",
-          "updatedAt": "2026-10-02T16:17:03.968Z",
+          "updatedAt": "2026-10-02T20:10:48.356Z",
           "trail": "Roda PRFADM",
           "lastCompletedUnit": null,
           "nextUnit": "PRFADM01",
@@ -256,6 +374,7 @@
           "activeErrors": null,
           "completedSessions": 0,
           "totalSessions": 33,
+          "timeCredits": [],
           "notes": [
             "Materiais: 33/33",
             "Questões editoriais: 33/33",
