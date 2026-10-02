@@ -1,3 +1,12 @@
+## [28.7.0] - 2026-10-02
+
+- Home com grade diária de P1 SEEDF, P2 TJDFT e P3 PRF Administrativo, próxima ação publicada, minutos locais e último bloco confirmado apresentados separadamente.
+- Atalhos de material, questões e erros respeitam os destinos existentes de cada projeto.
+- Revisões e erros com ausência de dados e consultas anteriores explícitas; atualização consulta somente estados já publicados.
+- Quatro destinos principais: Hoje, Projetos, Revisões e Mais; navegação lateral no computador e inferior no celular.
+- Registro de tempo seleciona o projeto correto; Home atualiza após salvar/importar/excluir/sincronizar registros e após a virada do dia em Brasília.
+- Sem mudanças no Notion, nos projetos-filhos, no esquema do banco ou na regra de lançamento automático de 1h.
+
 ## [28.6.3] - 2026-10-02
 - Preserva registros históricos de TCE-GO e SEDES nos lançamentos automáticos, inclusive antes da carga do registry; conclusões repetidas continuam sem duplicar blocos.
 - Usa o dia de Brasília para timestamps de estudo, rejeita datas impossíveis ou sem fuso explícito e mantém datas de calendário publicadas.
