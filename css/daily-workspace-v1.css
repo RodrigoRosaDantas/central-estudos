@@ -73,3 +73,20 @@
 .daily-plan-header>div:first-child{min-width:0}@media(min-width:1024px){.pro-nav-link{flex-direction:row}}
 
 .daily-project-card{display:flex;flex-direction:column}.daily-facts{margin-top:auto}
+
+
+/* Mobile clock hotfix — keep Brasília time readable without vertical wrapping. */
+@media(max-width:719px){
+  .daily-plan-header{display:grid;grid-template-columns:minmax(0,1fr);align-items:start;gap:10px}
+  .daily-plan-header .command-clock{width:100%;max-width:none;min-width:0;padding:10px 12px;display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"label time" "zone date";gap:4px 12px;align-items:center;text-align:left;border:1px solid rgba(94,234,212,.16);border-radius:12px;background:rgba(255,255,255,.025)}
+  .daily-plan-header .pro-now-kicker{grid-area:label;white-space:nowrap;font-size:.6rem;line-height:1.2}
+  .daily-plan-header .clock-zone{grid-area:zone;white-space:nowrap;margin:0;font-size:.65rem;line-height:1.2}
+  .daily-plan-header #brasilia-time{grid-area:time;justify-self:end;white-space:nowrap;font-size:1.55rem;line-height:1;letter-spacing:-.035em}
+  .daily-plan-header #brasilia-date{grid-area:date;justify-self:end;max-width:none;white-space:nowrap;text-align:right;font-size:.68rem;line-height:1.2}
+}
+@media(max-width:359px){
+  .daily-plan-header .command-clock{gap:3px 8px;padding:9px 10px}
+  .daily-plan-header .pro-now-kicker{font-size:.56rem}
+  .daily-plan-header .clock-zone,.daily-plan-header #brasilia-date{font-size:.61rem}
+  .daily-plan-header #brasilia-time{font-size:1.42rem}
+}
