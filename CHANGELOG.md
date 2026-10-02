@@ -7,6 +7,16 @@
 - Corrige o fallback Pré-edital da SEEDF, amplia rótulos pequenos e elimina a rolagem lateral do Mentor em telas de 320 pixels.
 - Mantém P1 SEEDF, P2 TJDFT e P3 PRF Administrativo, com projetos arquivados acessíveis e os sites-filhos somente leitura.
 
+## [28.7.0] — Prévia, 2026-10-02
+
+- Home com grade diária de P1 SEEDF, P2 TJDFT e P3 PRF Administrativo, próxima ação publicada, minutos locais e último bloco confirmado apresentados separadamente.
+- Atalhos de material, questões e erros respeitam os destinos existentes de cada projeto.
+- Revisões e erros com ausência de dados e consultas anteriores explícitas; atualização consulta somente estados já publicados.
+- Quatro destinos principais: Hoje, Projetos, Revisões e Mais; navegação lateral no computador e inferior no celular.
+- Registro de tempo seleciona o projeto correto; Home atualiza após salvar/importar/excluir/sincronizar registros e após a virada do dia em Brasília.
+- Sem mudanças no Notion, nos projetos-filhos, no esquema do banco ou na regra de lançamento automático de 1h.
+- Publicação aguarda a revisão da prévia combinada com o usuário.
+
 ## [28.6.2] - 2026-10-01
 - Corrige uma tag de fechamento extra que destacava o conteúdo do contêiner principal e empilhava as áreas na Home mobile.
 - Restringe o fechamento diário à tela Hoje e valida a estrutura do HTML para preservar a navegação por telas.

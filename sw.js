@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'central-shell-v28.6.3-audit-integrity-20261002';
+const CACHE_VERSION = 'central-shell-v28.7.0-daily-workspace-20261002';
 const APP_SHELL = [
 './',
 './index.html',
@@ -12,32 +12,34 @@ const APP_SHELL = [
 './css/pro-v11.css',
 './css/workspace-v24.css',
 './css/workspace-v26.css?v=portfolio-20260930',
-'./css/daily-message-v1.css?v=28.6.3',
+'./css/daily-message-v1.css?v=28.7.0',
 './css/workspace-v27.css',
-'./css/study-log-v1.css?v=28.6.3',
-'./js/app.js?v=28.6.3',
+'./css/study-log-v1.css?v=28.7.0',
+'./js/app.js?v=28.7.0',
 './js/personalization-v5.js',
 './js/pwa-v6.js',
 './js/timeline-v8.js',
-'./js/pro-v11.js',
+'./js/pro-v11.js?v=28.7.0',
 './js/contracts-v12.js',
 './js/command-context-v1.js?v=28.1.0',
-'./js/workspace-v24.js',
-'./js/study-log-v1.js?v=28.6.3',
-'./js/study-dates-v1.js?v=28.6.3',
-'./config/projects.json?v=28.6.3',
+'./js/workspace-v24.js?v=28.7.0',
+'./js/study-log-v1.js?v=28.7.0',
+'./js/study-dates-v1.js?v=28.7.0',
+'./config/projects.json?v=28.7.0',
+'./css/daily-workspace-v1.css?v=28.7.0',
+'./js/daily-workspace-v1.js?v=28.7.0',
 './config/study-schedule-v1.json?v=28.2.0',
 './mentor/index.html',
-'./mentor/mentor.css?v=28.6.3',
-'./mentor/mentor.js?v=28.6.3'
+'./mentor/mentor.css?v=28.7.0',
+'./mentor/mentor.js?v=28.7.0'
 ];
-const RUNTIME_CACHE = 'central-study-runtime-v28.6.3';
+const RUNTIME_CACHE = 'central-study-runtime-v28.7.0';
 const RUNTIME_ASSETS = new Set([
-'./js/study-sync-v1.js?v=28.6.3',
+'./js/study-sync-v1.js?v=28.7.0',
 './js/study-planner-v1.js?v=28.2.0',
 './css/study-planner-v1.css?v=28.2.0',
 './css/home-v1.css?v=home-20260929d',
-'./css/home-v2.css?v=28.6.3',
+'./css/home-v2.css?v=28.7.0',
 './config/study-catalog-v1.json?v=28.2.0'
 ].map((path) => new URL(path, self.registration.scope).href));
 self.addEventListener('install', (event) => {

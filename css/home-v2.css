@@ -1,4 +1,4 @@
-/* v28.6.3 — Home focused on the next useful action. */
+/* v28.7.0 — Home focused on the next useful action. */
 .command-context{margin-top:12px;padding-top:5px;border-top:1px solid rgba(157,179,210,.12)}
 .command-context>summary{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:48px;padding:5px 2px;color:#c5d1e1;cursor:pointer;list-style:none}
 .command-context>summary::-webkit-details-marker,.week-schedule-details>summary::-webkit-details-marker{display:none}

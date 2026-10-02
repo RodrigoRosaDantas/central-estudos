@@ -560,3 +560,11 @@ O foco salvo tcego migra uma única vez para o foco ativo padrão, SEEDF. A chav
 Os logs locais continuam aceitando tcego como ID conhecido para ler, exportar e importar registros históricos; os totais atuais consideram apenas projetos ativos. A sincronização opcional continua restrita à tabela genérica central_study_logs. O Mentor e o painel operacional não consultam tce_progress_state; a Jornada lista projetos arquivados separadamente e só consulta statusUrl de projetos ativos.
 
 Na SEEDF, o normalizador aceita IDs de sessão L, R e Q. Uma sessão de questões L05 pode aparecer como atividade mais recente sem avançar lastCompletedUnit; leitura e D0 permanecem pendentes até serem confirmados na fonte. O workflow de sincronização publica o estado sanitizado a partir do Notion após a alteração do contrato.
+
+## Plano do dia e revisões — v28.7
+
+`daily-workspace-v1.js` deriva a Home e Revisões dos eventos existentes `central:workspace-ready` e `central:contract-state`. O modelo filtra os projetos ativos, valida os registros pelo motor do tracker e mantém números não publicados como ausência de dado. A grade é lida da marcação canônica da agenda, sem uma segunda regra semanal. Nenhuma nova chamada de rede ou escrita em storage é criada pela camada de apresentação. O botão de consulta delega ao carregador de contratos existente.
+
+O router v24 mantém os hashes antigos e adiciona `#revisoes` e `#mais`. As telas secundárias mantêm Mais selecionado. Views locais aceitam também as duas novas telas. O observador antigo de scroll não substitui mais a seleção do router.
+
+`central:study-log-updated` é emitido após uma gravação bem-sucedida do tracker; `central:study-log-select-project` seleciona apenas um projeto ativo para o formulário manual. A regra automática de conclusão e a retenção dos históricos são preservadas.

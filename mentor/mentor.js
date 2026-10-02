@@ -1,5 +1,5 @@
 (()=>{"use strict";
-const REGISTRY_URL="../config/projects.json?v=28.6.3";
+const REGISTRY_URL="../config/projects.json?v=28.7.0";
 const SCHEDULE_URL="../config/study-schedule-v1.json?v=28.2.0";
 const LOG_KEY="central-estudos:study-log-v1";
 const FOCUS_KEY="central-estudos:focus-project";
