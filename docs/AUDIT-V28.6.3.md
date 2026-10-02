@@ -45,4 +45,16 @@ Operações de escrita nesses repositórios: zero. Não houve escrita em Notion 
 
 ## Publicação
 
-O checkpoint de publicação será registrado após os gates do GitHub Actions e a conferência do endereço público. Esta seção não afirma deploy antes da confirmação.
+Publicação validada após a conclusão dos gates e a conferência do endereço público:
+
+- PR: [48](https://github.com/RodrigoRosaDantas/central-estudos/pull/48), integrada por squash.
+- Commit de código: `de0aa5c7ececea5dd246e3b0b932f1420c1d3b9a`.
+- Quality gate da PR: execução `37027283309`, sucesso; step da suíte concluído com sucesso.
+- Pages em `main`: [execução 37027433233](https://github.com/RodrigoRosaDantas/central-estudos/actions/runs/37027433233), sucesso nos jobs Quality gate e Deploy e no step Deploy to GitHub Pages.
+- Artefato `github-pages`: ID `11235826606`, vinculado ao mesmo commit de código.
+- Home pública: versão 28.6.3, foco SEEDF, grade P1–P3 e ausência de overflow desktop (1348px úteis = 1348px de conteúdo).
+- Mentor público: versão 28.6.3, três fontes carregadas, próxima etapa TJDFT P03 e informações da SEEDF/PRF preservadas. Sem erro da aplicação nos logs observados; eventos de metadata da extensão do navegador não pertencem ao site.
+- Atualização da PWA oferecida e aplicada com sucesso no navegador de conferência. O teste offline permanece estrutural, sem simulação de perda de rede.
+- HEADs posteriores dos quatro repositórios de origem iguais aos HEADs anteriores; zero escrita nos sites-filhos.
+
+Checkpoint: `docs/V28.6.3-CHECKPOINT.md`. O registro foi escrito somente após confirmar publicação e comportamento público.
