@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'central-shell-v28.9.0-study-dashboard-20261002';
+const CACHE_VERSION = 'central-shell-v28.7.1-study-dashboard-20261002';
 const APP_SHELL = [
 './',
 './index.html',
