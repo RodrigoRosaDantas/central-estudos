@@ -1,6 +1,7 @@
 (()=>{"use strict";
 const REGISTRY_URL="../config/projects.json?v=28.7.1";
 const SCHEDULE_URL="../config/study-schedule-v1.json?v=28.2.0";
+const FEDERATED_URL="../data/federated-status.json";
 const LOG_KEY="central-estudos:study-log-v1";
 const FOCUS_KEY="central-estudos:focus-project";
 let ORDER=["seedf","tjdft","prf-adm"];
@@ -10,7 +11,7 @@ const VIEWS=["agora","projetos","revisoes","metodo"];
 const WEEKDAYS=["sunday","monday","tuesday","wednesday","thursday","friday","saturday"];
 const WEEKDAY_PT={sunday:"Domingo",monday:"Segunda-feira",tuesday:"Terça-feira",wednesday:"Quarta-feira",thursday:"Quinta-feira",friday:"Sexta-feira",saturday:"Sábado"};
 const $=id=>document.getElementById(id);
-const state={registry:null,schedule:null,logs:[],contracts:new Map,lastRefresh:null,loading:false};
+const state={registry:null,schedule:null,federated:null,logs:[],contracts:new Map,lastRefresh:null,loading:false};
 
 function node(tag,cls,text){const el=document.createElement(tag);if(cls)el.className=cls;if(text!==undefined)el.textContent=text;return el}
 function isoToday(){const parts=new Intl.DateTimeFormat("en-GB",{timeZone:"America/Sao_Paulo",year:"numeric",month:"2-digit",day:"2-digit"}).formatToParts(new Date()),m=Object.fromEntries(parts.map(x=>[x.type,x.value]));return m.year+"-"+m.month+"-"+m.day}
@@ -57,13 +58,13 @@ async function fetchJson(url,timeout=6000){
  }finally{clearTimeout(timer)}
 }
 async function loadRegistry(){
- const [registry,schedule]=await Promise.all([fetchJson(REGISTRY_URL),fetchJson(SCHEDULE_URL)]);
+ const [registry,schedule,federated]=await Promise.all([fetchJson(REGISTRY_URL),fetchJson(SCHEDULE_URL),fetchJson(FEDERATED_URL).catch(()=>null)]);
  if(registry?.schemaVersion!==3||!Array.isArray(registry.projects))throw new Error("registry inválido");
  if(!schedule?.weekdays)throw new Error("cronograma inválido");
  const active=registry.projects.filter(p=>p.status==="active").sort((a,b)=>(a.order??999)-(b.order??999));
  if(!active.length)throw new Error("sem projetos ativos");
  ORDER=active.map(p=>p.id);LABEL=Object.fromEntries(active.map(p=>[p.id,p.shortName||p.name]));PRIORITY=Object.fromEntries(active.map(p=>[p.id,p.code||""]));
- state.registry=registry;state.schedule=schedule;
+ state.registry=registry;state.schedule=schedule;state.federated=federated;
 }
 async function loadContract(p){
  if(!p?.statusUrl)return{status:"unsupported",contract:null,reason:"sem contrato público"};
@@ -73,7 +74,7 @@ async function loadContract(p){
   return{status:data.source?.status==="partial"?"partial":"live",contract:data,reason:null};
  }catch(err){return{status:"unavailable",contract:null,reason:err?.message||"falha ao ler contrato"}}
 }
-function combinedStudy(id){return normalizeStudy(state.contracts.get(id)?.contract?.study)}
+function combinedStudy(id){const study=normalizeStudy(state.contracts.get(id)?.contract?.study),integrity=state.federated?.sources?.[id]?.integrity?.status;return study&&study.evidence==="confirmed"&&["source-newer","partial-check","public-unavailable","unverifiable"].includes(integrity)?{...study,evidence:"partial"}:study}
 
 function scheduleToday(){
  const key=WEEKDAYS[new Date(isoToday()+"T00:00:00Z").getUTCDay()];

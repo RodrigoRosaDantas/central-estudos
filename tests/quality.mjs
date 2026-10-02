@@ -1735,6 +1735,7 @@ const syntaxFiles = [
   "js/study-sync-v1.js",
   "js/study-planner-v1.js",
   "mentor/mentor.js",
+  "scripts/sync-federated-status.mjs",
   "sw.js"
 ];
 
