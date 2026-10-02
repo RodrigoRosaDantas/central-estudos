@@ -1,8 +1,8 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-02T22:04:48.025Z",
-  "checkedAt": "2026-10-02T22:04:48.025Z",
-  "latestSourceAt": "2026-10-02T20:10:48.356Z",
+  "generatedAt": "2026-10-02T22:59:25.138Z",
+  "checkedAt": "2026-10-02T22:59:25.138Z",
+  "latestSourceAt": "2026-10-02T22:19:44.515Z",
   "toleranceSeconds": 120,
   "sources": {
     "seedf": {
@@ -252,7 +252,7 @@
           "sourceRef": "data/tjdft-snapshot.json#operational",
           "updatedAt": "2026-10-02T20:08:51.541Z",
           "trail": "Português Primeiro",
-          "lastCompletedUnit": "P03",
+          "lastCompletedUnit": "P02",
           "nextUnit": "P03",
           "lastStudiedAt": "2026-10-02T00:00:00.000Z",
           "questionsDone": 61,
@@ -263,7 +263,7 @@
           "reviewsDue": 0,
           "nextReviewAt": "2026-10-05T00:00:00.000Z",
           "activeErrors": 12,
-          "completedSessions": 6,
+          "completedSessions": 2,
           "totalSessions": 37,
           "timeCredits": [
             {
@@ -283,19 +283,11 @@
               "trail": "Português Primeiro",
               "minutes": 60,
               "sourceRef": "data/tjdft-snapshot.json#operational.trail.items"
-            },
-            {
-              "id": "tjdft:study:P03:2026-10-02",
-              "date": "2026-10-02",
-              "kind": "study",
-              "unit": "P03",
-              "trail": "Português Primeiro",
-              "minutes": 60,
-              "sourceRef": "data/tjdft-snapshot.json#operational.trail.items"
             }
           ],
           "notes": [
-            "Erros ativos: Particípio e formas nominais · Indicativo × subjuntivo · Pretérito perfeito × pretérito imperfeito"
+            "Erros ativos: Particípio e formas nominais · Indicativo × subjuntivo · Pretérito perfeito × pretérito imperfeito",
+            "P03 em execução; sem crédito de tempo até a conclusão do D0."
           ]
         }
       }
@@ -395,7 +387,7 @@
         "status": "aligned",
         "coverage": "1/1",
         "notionLatestEditedAt": "2026-09-16T20:43:00.000Z",
-        "publishedUpdatedAt": "2026-10-02T12:46:25.844Z",
+        "publishedUpdatedAt": "2026-10-02T22:19:33.449Z",
         "sourceAheadSeconds": 0,
         "probes": [
           {
@@ -406,7 +398,7 @@
         ]
       },
       "state": {
-        "generatedAt": "2026-10-02T12:46:25.844Z",
+        "generatedAt": "2026-10-02T22:19:33.449Z",
         "questionCount": 3697,
         "records": 3766,
         "published": 3697,
@@ -424,7 +416,7 @@
         "status": "aligned",
         "coverage": "3/3",
         "notionLatestEditedAt": "2026-09-30T00:18:00.000Z",
-        "publishedUpdatedAt": "2026-10-02T17:52:43.937Z",
+        "publishedUpdatedAt": "2026-10-02T22:19:44.515Z",
         "sourceAheadSeconds": 0,
         "probes": [
           {
@@ -445,7 +437,7 @@
         ]
       },
       "state": {
-        "generatedAt": "2026-10-02T17:52:43.937Z",
+        "generatedAt": "2026-10-02T22:19:44.515Z",
         "live": true,
         "phase": "post-exam",
         "syncWarnings": 0,
