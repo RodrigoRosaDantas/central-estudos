@@ -19,3 +19,20 @@
 .closeout-footer a{color:#8de8dc;text-underline-offset:3px}
 @media(max-width:719px){.daily-closeout-v1{margin-top:14px;padding:13px}#daily-closeout .command-next.closeout-summary{gap:10px;padding:11px}.closeout-grid{grid-template-columns:1fr}.closeout-item{padding:10px}.closeout-value{font-size:.9rem}}
 .closeout-footer-label{display:inline-block;margin-right:7px;color:#aeb9c9;font-size:.66rem;font-weight:850;letter-spacing:.08em;text-transform:uppercase}
+
+
+.home-study-hours{margin:18px 0;padding:clamp(14px,2.6vw,22px);border:1px solid rgba(94,234,212,.24);border-radius:20px;background:linear-gradient(145deg,rgba(94,234,212,.08),rgba(167,139,250,.045)),var(--surface)}
+.home-study-hours-head{display:flex;align-items:flex-end;justify-content:space-between;gap:14px;margin-bottom:12px}
+.home-study-hours-head h2{margin:2px 0 4px}
+.home-study-hours-head p{margin:0;color:var(--muted);font-size:.78rem;line-height:1.45}
+.home-study-hours-head>a{flex:none;color:#8de8dc;font-size:.78rem;font-weight:750;text-underline-offset:3px}
+.home-study-hours-grid{display:grid;grid-template-columns:1.35fr 1fr 1fr;gap:10px}
+.home-study-hours-card{display:grid;gap:5px;min-width:0;padding:14px;border:1px solid rgba(148,163,184,.16);border-radius:14px;background:rgba(7,11,20,.34)}
+.home-study-hours-card>span{color:#aeb9c9;font-size:.66rem;font-weight:850;letter-spacing:.08em}
+.home-study-hours-card>strong{color:#f4f7fb;font-size:clamp(1.35rem,3vw,2rem);line-height:1.05}
+.home-study-hours-card>small{color:var(--muted);font-size:.68rem;line-height:1.4}
+.home-study-hours-primary{border-color:rgba(94,234,212,.28);background:linear-gradient(135deg,rgba(94,234,212,.11),rgba(7,11,20,.32))}
+.home-study-hours-primary>strong{color:#8de8dc}
+.home-study-projects{margin:12px 0 0;color:#d7e1ec;font-size:.78rem;font-weight:700;line-height:1.5}
+.home-study-hours-note{margin:5px 0 0;color:var(--muted);font-size:.7rem;line-height:1.45}
+@media(max-width:719px){.home-study-hours{margin:14px 0;padding:13px}.home-study-hours-head{align-items:flex-start}.home-study-hours-grid{grid-template-columns:1fr}.home-study-hours-card{padding:12px}.home-study-hours-card>strong{font-size:1.55rem}.home-study-projects{font-size:.74rem}}
