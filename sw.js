@@ -15,7 +15,6 @@ const APP_SHELL = [
 './css/daily-message-v1.css?v=28.7.1',
 './css/workspace-v27.css',
 './css/study-log-v1.css?v=28.8.0',
-'./css/study-dashboard-v1.css?v=28.9.0',
 './js/app.js?v=28.7.1',
 './js/personalization-v5.js',
 './js/pwa-v6.js',
@@ -25,7 +24,6 @@ const APP_SHELL = [
 './js/command-context-v1.js?v=28.1.0',
 './js/workspace-v24.js?v=28.7.1',
 './js/study-log-v1.js?v=28.8.0',
-'./js/study-dashboard-v1.js?v=28.9.0',
 './js/study-dates-v1.js?v=28.7.1',
 './config/projects.json?v=28.7.1',
 './css/daily-workspace-v1.css?v=28.7.1-mobile-clock-2',
@@ -37,6 +35,8 @@ const APP_SHELL = [
 ];
 const RUNTIME_CACHE = 'central-study-runtime-v28.7.1';
 const RUNTIME_ASSETS = new Set([
+'./css/study-dashboard-v1.css?v=28.9.0',
+'./js/study-dashboard-v1.js?v=28.9.0',
 './js/study-sync-v1.js?v=28.7.1',
 './js/study-planner-v1.js?v=28.2.0',
 './css/study-planner-v1.css?v=28.2.0',
