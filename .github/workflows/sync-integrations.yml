@@ -3,7 +3,7 @@ name: Atualizar ponte federada da Central
 on:
   workflow_dispatch:
   schedule:
-    - cron: "*/30 * * * *"
+    - cron: "*/15 * * * *"
   push:
     branches:
       - main
@@ -11,6 +11,7 @@ on:
       - "scripts/sync-federated-status.mjs"
       - ".github/workflows/sync-integrations.yml"
       - "config/projects.json"
+      - "config/integration-sources-v1.json"
 
 permissions:
   contents: write
@@ -23,7 +24,7 @@ jobs:
   sync:
     name: Integrar fontes read-only
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 12
     steps:
       - name: Checkout
         uses: actions/checkout@v7
@@ -36,7 +37,7 @@ jobs:
         with:
           node-version: "22"
 
-      - name: Validar integrações e atualizar snapshot sanitizado
+      - name: Conferir Notion, comparar frescor e atualizar snapshot sanitizado
         env:
           SEEDF: ${{ secrets.SEEDF }}
           TJDFT_NOTION_TOKEN: ${{ secrets.TJDFT_NOTION_TOKEN }}
