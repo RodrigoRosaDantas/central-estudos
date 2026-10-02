@@ -301,9 +301,12 @@ for (const tool of tools) {
 }
 
 const newest = Object.values(sources).map(timestampOf).filter(Boolean).sort((a, b) => b - a)[0];
+const checkedAt = new Date().toISOString();
 const payload = {
   schemaVersion: 2,
-  generatedAt: newest ? new Date(newest).toISOString() : new Date().toISOString(),
+  generatedAt: checkedAt,
+  checkedAt,
+  latestSourceAt: newest ? new Date(newest).toISOString() : null,
   toleranceSeconds,
   sources,
   privacy: {
