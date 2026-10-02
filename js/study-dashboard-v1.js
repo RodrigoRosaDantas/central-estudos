@@ -1,5 +1,6 @@
 (()=>{"use strict";
 const LOG_KEY="central-estudos:study-log-v1";
+const SOURCE_FRESH_MS=45*60*1000;
 const state={
   projects:[
     {id:"seedf",name:"SEEDF",code:"P1"},
@@ -90,7 +91,21 @@ function renderComposition(rows){
   const meter=$("dashboard-composition-progress");
   if(meter){meter.max=100;meter.value=readingShare;meter.setAttribute("aria-valuetext",`Leitura ${readingShare}% · outros estudos ${studyShare}%`)}
 }
-function integrityLabel(status){
+function integrityFresh(info){
+  const checked=Date.parse(info?.checkedAt||"");
+  return Number.isFinite(checked)&&Date.now()-checked<=SOURCE_FRESH_MS;
+}
+function integrityAge(info){
+  const checked=Date.parse(info?.checkedAt||"");
+  if(!Number.isFinite(checked))return null;
+  const minutes=Math.max(0,Math.floor((Date.now()-checked)/60000));
+  if(minutes<60)return minutes<=1?"agora":`há ${minutes} min`;
+  const hours=Math.floor(minutes/60);
+  return hours===1?"há 1h":`há ${hours}h`;
+}
+function integrityLabel(info){
+  const status=info?.status;
+  if(status==="aligned"&&!integrityFresh(info))return["Conferência antiga","warn"];
   if(status==="aligned")return["Alinhado","ok"];
   if(status==="source-newer")return["Origem mais recente","warn"];
   if(status==="partial-check")return["Conferência parcial","warn"];
@@ -104,15 +119,16 @@ function renderIntegrity(){
   let aligned=0;
   for(const project of state.projects){
     const info=state.integrity.get(project.id);
-    const status=info?.status||null,[label,tone]=integrityLabel(status);
-    if(status==="aligned")aligned++;
+    const status=info?.status||null,[label,tone]=integrityLabel(info),age=integrityAge(info);
+    if(status==="aligned"&&integrityFresh(info))aligned++;
     const card=node("div","dashboard-source");
     const top=node("div","dashboard-source-head");
     top.append(node("strong","",project.name),node("span","dashboard-source-status "+tone,label));
-    card.append(top,node("small","",info?.coverage?info.coverage+" pontos conferidos":"Aguardando contrato publicado"));
+    const meta=info?.coverage?info.coverage+" pontos conferidos"+(age?" · "+age:""):"Aguardando contrato publicado";
+    card.append(top,node("small","",meta));
     host.append(card);
   }
-  setText("dashboard-integrity-summary",`${aligned}/${state.projects.length} fontes alinhadas`);
+  setText("dashboard-integrity-summary",`${aligned}/${state.projects.length} fontes recentes e alinhadas`);
 }
 function render(){
   const rows=entries();
@@ -139,4 +155,5 @@ window.addEventListener("storage",e=>{if(e.key===LOG_KEY)render()});
 document.addEventListener("visibilitychange",()=>{if(!document.hidden)render()});
 document.addEventListener("DOMContentLoaded",render,{once:true});
 setTimeout(render,0);
+setInterval(renderIntegrity,60000);
 })();
