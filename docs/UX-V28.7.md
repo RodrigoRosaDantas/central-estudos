@@ -58,3 +58,7 @@ A verificação visual deve usar a aplicação real com contratos publicados. Ne
 - Aplicação online conferida: Hoje, Revisões, Mais, Projetos e Histórico; atualização manual dos contratos concluída e somente a tela solicitada visível.
 - Sem rolagem horizontal nas telas conferidas no viewport desktop de 1348/1363 pixels. Não houve ajuste de viewport para as larguras móveis.
 - A conferência online detectou que Registrar tempo selecionava o projeto, mas mantinha o formulário recolhido. A v28.7.1 abre o painel, atualiza a data e retira o contexto guiado anterior; o novo cenário funcional cobre esse fluxo sem salvar registros.
+- v28.7.1 integrada pela PR #50, commit `b380142d4ea3e3afd73c6a7cc6e77c1401e149e9`. Workflow `37045154849`: Quality gate e Deploy concluídos com sucesso.
+- Fluxo corrigido confirmado online: registro guiado SEEDF, seleção de 29/09, retorno à Home e atalho PRF. O formulário ficou visível, projeto PRF selecionado, data 02/10, contexto anterior oculto, duração vazia e confirmação desmarcada. Nenhum bloco foi salvo.
+- Atualização da PWA aplicada pelo aviso existente; Home carregada na v28.7.1 e atalhos medidos com 44 pixels de altura. Nenhum erro da aplicação observado no console; os erros presentes vieram da extensão do navegador de conferência.
+- Orçamento final: 239.163 bytes bruto / 74.750 bytes gzip. Captura real da Home salva durante a conferência de 02/10/2026, 15:10 em Brasília.
