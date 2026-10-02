@@ -53,9 +53,10 @@ function renderProjects(rows){
     const top=node("div","dashboard-project-row-head");
     const label=node("span","dashboard-project-label");label.append(node("b","",project.code||""),document.createTextNode(" "+project.name));
     top.append(label,node("strong","",duration(minutes)));
-    const track=node("div","dashboard-track"),fill=node("span","dashboard-fill");
-    fill.style.width=share+"%";track.append(fill);
-    row.append(top,track,node("small","",grand?`${share}% do tempo confirmado`:"Sem tempo confirmado"));
+    const meter=node("progress","dashboard-progress");
+    meter.max=100;meter.value=share;
+    meter.setAttribute("aria-label",`${project.name}: ${share}% do tempo confirmado`);
+    row.append(top,meter,node("small","",grand?`${share}% do tempo confirmado`:"Sem tempo confirmado"));
     host.append(row);
   }
 }
@@ -69,8 +70,8 @@ function renderSevenDays(rows){
   for(const item of values){
     const col=node("div","dashboard-day");
     const value=node("span","dashboard-day-value",item.minutes?duration(item.minutes):"0");
-    const barWrap=node("div","dashboard-day-bar-wrap"),bar=node("span","dashboard-day-bar");
-    bar.style.height=(item.minutes?Math.max(10,Math.round(item.minutes/max*100)):3)+"%";
+    const barWrap=node("div","dashboard-day-bar-wrap"),bar=node("progress","dashboard-day-progress");
+    bar.max=max;bar.value=item.minutes;
     bar.setAttribute("aria-label",`${item.date}: ${duration(item.minutes)}`);
     barWrap.append(bar);
     const date=new Date(item.date+"T00:00:00Z");
@@ -86,9 +87,8 @@ function renderComposition(rows){
   setText("dashboard-study",duration(studyMinutes));
   setText("dashboard-reading-share",grand?`${readingShare}%`:"—");
   setText("dashboard-study-share",grand?`${studyShare}%`:"—");
-  const a=$("dashboard-composition-reading"),b=$("dashboard-composition-study");
-  if(a)a.style.width=readingShare+"%";
-  if(b)b.style.width=studyShare+"%";
+  const meter=$("dashboard-composition-progress");
+  if(meter){meter.max=100;meter.value=readingShare;meter.setAttribute("aria-valuetext",`Leitura ${readingShare}% · outros estudos ${studyShare}%`)}
 }
 function integrityLabel(status){
   if(status==="aligned")return["Alinhado","ok"];
