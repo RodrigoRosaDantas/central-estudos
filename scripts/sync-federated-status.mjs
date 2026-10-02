@@ -93,6 +93,14 @@ async function probeLatestEdit(token, version, probe) {
   return typeof container?.last_edited_time === "string" ? container.last_edited_time : null;
 }
 
+function probeFailureReason(error) {
+  const message = String(error?.message || "");
+  const http = message.match(/^http-(\d{3})$/);
+  if (http) return `http-${http[1]}`;
+  if (error?.name === "TimeoutError" || error?.name === "AbortError") return "timeout";
+  return "request-error";
+}
+
 async function inspectNotionSource(sourceId, sourceConfig) {
   const token = process.env[TOKEN_ENV[sourceId]];
   const notionVersion = sourceConfig?.notionVersion || DEFAULT_NOTION_VERSION;
@@ -109,8 +117,13 @@ async function inspectNotionSource(sourceId, sourceConfig) {
           status: latestEditedAt ? "ok" : "empty",
           latestEditedAt: latestEditedAt || null
         });
-      } catch {
-        probes.push({ label: probe.label, status: "error", latestEditedAt: null });
+      } catch (error) {
+        probes.push({
+          label: probe.label,
+          status: "error",
+          latestEditedAt: null,
+          reason: probeFailureReason(error)
+        });
       }
     }
   } else {
