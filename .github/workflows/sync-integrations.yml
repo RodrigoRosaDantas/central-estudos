@@ -1,0 +1,62 @@
+name: Atualizar ponte federada da Central
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "*/30 * * * *"
+  push:
+    branches:
+      - main
+    paths:
+      - "scripts/sync-federated-status.mjs"
+      - ".github/workflows/sync-integrations.yml"
+      - "config/projects.json"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: central-federated-sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    name: Integrar fontes read-only
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: "22"
+
+      - name: Validar integrações e atualizar snapshot sanitizado
+        env:
+          SEEDF: ${{ secrets.SEEDF }}
+          TJDFT_NOTION_TOKEN: ${{ secrets.TJDFT_NOTION_TOKEN }}
+          PRF_ADM_GITHUB: ${{ secrets.PRF_ADM_GITHUB }}
+          PLATAFORMA_DE_QUESTOES: ${{ secrets.PLATAFORMA_DE_QUESTOES }}
+          PLANO_DE_TRANSICAO_GITHUB: ${{ secrets.PLANO_DE_TRANSICAO_GITHUB }}
+        run: node scripts/sync-federated-status.mjs
+
+      - name: Verificar diff
+        run: git diff --check
+
+      - name: Publicar somente o snapshot sanitizado quando mudar
+        run: |
+          git add data/federated-status.json
+          if git diff --cached --quiet; then
+            echo "Sem mudança material nas fontes federadas."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "chore: atualizar ponte federada da Central"
+          git pull --rebase origin main
+          git push origin HEAD:main
