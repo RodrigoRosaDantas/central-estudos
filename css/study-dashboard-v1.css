@@ -1,0 +1,59 @@
+.study-analytics{margin:18px 0;padding:clamp(15px,2.5vw,24px);border:1px solid rgba(94,234,212,.2);border-radius:22px;background:linear-gradient(145deg,rgba(94,234,212,.055),rgba(167,139,250,.035)),var(--surface)}
+.study-analytics-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:14px}
+.study-analytics-head h2{margin:2px 0 4px;font-size:clamp(1.25rem,2.5vw,1.65rem)}
+.study-analytics-head p{margin:0;color:var(--muted);font-size:.78rem;line-height:1.45}
+.study-analytics-head a{flex:none;color:#9cebe1;font-size:.78rem;font-weight:800;text-underline-offset:3px}
+.study-kpis{display:grid;grid-template-columns:1.25fr repeat(3,1fr);gap:10px;margin-bottom:12px}
+.study-kpi{display:grid;gap:5px;min-width:0;padding:14px;border:1px solid rgba(148,163,184,.15);border-radius:15px;background:rgba(7,11,20,.34)}
+.study-kpi>span{color:#aeb9c9;font-size:.64rem;font-weight:850;letter-spacing:.08em}
+.study-kpi>strong{color:#f4f7fb;font-size:clamp(1.3rem,2.6vw,1.9rem);line-height:1.05}
+.study-kpi>small{color:var(--muted);font-size:.67rem;line-height:1.4}
+.study-kpi-primary{border-color:rgba(94,234,212,.3);background:linear-gradient(135deg,rgba(94,234,212,.11),rgba(7,11,20,.32))}
+.study-kpi-primary>strong{color:#93eee2}
+.study-dashboard-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:12px}
+.study-dashboard-card{min-width:0;padding:15px;border:1px solid rgba(148,163,184,.14);border-radius:16px;background:rgba(7,11,20,.28)}
+.study-dashboard-card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:12px}
+.study-dashboard-card-head h3{margin:0;font-size:.92rem}
+.study-dashboard-card-head p{margin:3px 0 0;color:var(--muted);font-size:.68rem;line-height:1.4}
+.study-dashboard-card-head>span{color:#9cebe1;font-size:.68rem;font-weight:800}
+.dashboard-projects{display:grid;gap:12px}
+.dashboard-project-row{display:grid;gap:6px}
+.dashboard-project-row-head{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:.76rem}
+.dashboard-project-label{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#dce6f2}
+.dashboard-project-label b{display:inline-grid;place-items:center;min-width:28px;margin-right:5px;padding:3px 5px;border-radius:7px;background:rgba(94,234,212,.1);color:#92eadd;font-size:.62rem}
+.dashboard-project-row strong{font-size:.76rem;color:#f3f7fb}
+.dashboard-project-row small{color:var(--muted);font-size:.63rem}
+.dashboard-track{height:9px;overflow:hidden;border-radius:999px;background:rgba(148,163,184,.12)}
+.dashboard-fill{display:block;height:100%;min-width:0;border-radius:inherit;background:linear-gradient(90deg,#5eead4,#8b9cf7);transition:width .3s ease}
+.dashboard-seven-days{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:7px;min-height:160px;align-items:end}
+.dashboard-day{display:grid;grid-template-rows:auto 1fr auto;gap:5px;height:160px;text-align:center}
+.dashboard-day-value{color:#b9c5d4;font-size:.58rem;white-space:nowrap}
+.dashboard-day-bar-wrap{position:relative;display:flex;align-items:flex-end;justify-content:center;min-height:105px;border-radius:9px;background:linear-gradient(180deg,rgba(148,163,184,.025),rgba(148,163,184,.07))}
+.dashboard-day-bar{display:block;width:min(22px,65%);border-radius:7px 7px 3px 3px;background:linear-gradient(180deg,#8b9cf7,#5eead4);transition:height .3s ease}
+.dashboard-day-label{color:var(--muted);font-size:.62rem;text-transform:uppercase}
+.dashboard-composition-values{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
+.dashboard-composition-value{padding:10px;border-radius:12px;background:rgba(148,163,184,.055)}
+.dashboard-composition-value span{display:block;color:var(--muted);font-size:.63rem}
+.dashboard-composition-value strong{display:block;margin-top:4px;font-size:1.05rem}
+.dashboard-composition-value small{font-size:.62rem;color:#9cebe1}
+.dashboard-composition-bar{display:flex;height:12px;overflow:hidden;border-radius:999px;background:rgba(148,163,184,.1)}
+.dashboard-composition-reading{background:#5eead4}
+.dashboard-composition-study{background:#8b9cf7}
+.dashboard-composition-legend{display:flex;gap:12px;flex-wrap:wrap;margin-top:8px;color:var(--muted);font-size:.62rem}
+.dashboard-composition-legend span:before{content:"";display:inline-block;width:7px;height:7px;margin-right:5px;border-radius:50%;background:#5eead4}
+.dashboard-composition-legend span+span:before{background:#8b9cf7}
+.dashboard-integrity{display:grid;gap:8px}
+.dashboard-source{padding:10px;border:1px solid rgba(148,163,184,.11);border-radius:12px;background:rgba(255,255,255,.018)}
+.dashboard-source-head{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.dashboard-source-head strong{font-size:.75rem}
+.dashboard-source small{display:block;margin-top:4px;color:var(--muted);font-size:.61rem}
+.dashboard-source-status{padding:4px 7px;border-radius:999px;font-size:.59rem;font-weight:850}
+.dashboard-source-status.ok{background:rgba(94,234,212,.1);color:#91e9dd}
+.dashboard-source-status.warn{background:rgba(246,200,95,.1);color:#f6cf72}
+.dashboard-source-status.bad{background:rgba(248,113,113,.1);color:#fca5a5}
+.dashboard-source-status.idle{background:rgba(148,163,184,.08);color:#aeb9c9}
+.study-dashboard-foot{margin:11px 0 0;color:var(--muted);font-size:.64rem;line-height:1.45}
+@media(max-width:900px){.study-kpis{grid-template-columns:1fr 1fr}.study-dashboard-grid{grid-template-columns:1fr}}
+@media(max-width:560px){.study-analytics{padding:13px;margin:14px 0}.study-analytics-head{align-items:flex-start}.study-kpis{grid-template-columns:1fr 1fr;gap:8px}.study-kpi{padding:11px}.study-kpi>strong{font-size:1.35rem}.study-dashboard-card{padding:12px}.dashboard-seven-days{gap:4px}.dashboard-day-value{font-size:.52rem}.dashboard-day-label{font-size:.55rem}.dashboard-composition-values{grid-template-columns:1fr}}
+@media(max-width:360px){.study-kpis{grid-template-columns:1fr}.dashboard-seven-days{gap:2px}.dashboard-day-bar{width:55%}}
+@media(forced-colors:active){.study-analytics,.study-dashboard-card,.study-kpi,.dashboard-source{border:1px solid CanvasText}.dashboard-track,.dashboard-composition-bar{border:1px solid CanvasText}}
