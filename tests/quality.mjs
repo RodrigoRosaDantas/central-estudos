@@ -1196,7 +1196,7 @@ function testStudyAnalyticsDashboard() {
   for (const id of [
     "dashboard-total","dashboard-today","dashboard-week","dashboard-days",
     "dashboard-projects","dashboard-seven-days","dashboard-reading","dashboard-study",
-    "dashboard-integrity","dashboard-integrity-summary"
+    "dashboard-integrity","dashboard-integrity-summary","dashboard-composition-progress"
   ]) {
     assert.ok(html.includes(`id="${id}"`), `study dashboard missing #${id}`);
   }
@@ -1207,6 +1207,8 @@ function testStudyAnalyticsDashboard() {
   assert.ok(source.includes('Math.round(minutes/grand*100)') && source.includes('grand?100-readingShare:0'), "dashboard percentages must have an explicit time denominator");
   assert.ok(source.includes('source-newer') && source.includes('partial-check') && source.includes('public-unavailable'), "dashboard must distinguish source-integrity states");
   assert.ok(!source.includes("fetch(") && !source.includes("XMLHttpRequest"), "dashboard must reuse trusted local and contract events without adding network calls");
+  assert.ok(!source.includes(".style.") && !source.includes("setAttribute(\"style\""), "dashboard charts must not depend on inline styles blocked by the site CSP");
+  assert.ok(source.includes('node("progress","dashboard-progress")') && source.includes('node("progress","dashboard-day-progress")') && html.includes('<progress id="dashboard-composition-progress"'), "dashboard charts must use semantic native progress elements");
   assert.ok(css.includes("@media(max-width:560px)") && css.includes(".study-dashboard-grid") && css.includes(".dashboard-seven-days"), "dashboard must include responsive analytical layout rules");
   pass("study analytics dashboard: KPIs, project distribution, 7-day rhythm, composition and source health");
 }
@@ -1748,11 +1750,13 @@ function testSecurityAndContracts(registry) {
     "js/workspace-v24.js",
   "js/daily-workspace-v1.js",
     "js/study-log-v1.js",
+    "js/study-dashboard-v1.js",
     "js/study-dates-v1.js",
     "js/study-sync-v1.js",
     "js/study-planner-v1.js",
     "config/study-catalog-v1.json",
     "css/study-log-v1.css",
+    "css/study-dashboard-v1.css",
     "css/study-planner-v1.css",
     "css/operational-v13.css",
     "css/workspace-v24.css",
