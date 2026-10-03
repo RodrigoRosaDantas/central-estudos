@@ -1001,7 +1001,7 @@ function testV27DailySchedule(registry) {
   const mobileCss=css.slice(css.indexOf("@media(max-width:719px)"));
   assert.ok(html.includes("./css/workspace-v27.css")&&html.includes("weekly-schedule-v27")&&mobileCss.includes(".schedule-day-grid{grid-template-columns:1fr")&&mobileCss.includes(".schedule-day-card{grid-template-columns:minmax(82px,.34fr) minmax(0,1fr)")&&mobileCss.includes(".schedule-day-heading>span{display:none}")&&mobileCss.includes(".schedule-day-rest-v27 .schedule-day-heading>span{display:inline-flex}")&&mobileCss.includes(".schedule-day-card .schedule-item-copy{display:block")&&mobileCss.includes("min-width:0"),"v27 mobile schedule must keep seven compact day rows without overflow");
   assert.ok(html.includes('src="./js/command-context-v1.js?v=28.1.0"')&&sw.includes("'./js/command-context-v1.js?v=28.1.0'"),"today marker and change summary must remain in the app shell");
-  assert.ok(sw.includes("central-shell-v28.7.1-manual-refresh-20261003")&&sw.includes("./css/workspace-v27.css"),"PWA shell cache must include the v27 stylesheet and current dashboard cache version");
+  assert.ok(sw.includes("central-shell-v28.7.1-full-refresh-20261003")&&sw.includes("./css/workspace-v27.css"),"PWA shell cache must include the v27 stylesheet and current dashboard cache version");
   assert.ok(html.includes('src="./js/app.js?v=28.7.1"')&&sw.includes("'./js/app.js?v=28.7.1'")&&sw.includes("'./config/projects.json?v=28.7.1'")&&app.includes("./config/projects.json?v=28.7.1"),"registry URL and app cache must use the current release");
   assert.ok(sw.includes("./config/study-schedule-v1.json?v=28.2.0"),"PWA shell must refresh the active schedule");
   assert.ok(html.includes("Mudanças desde a última conferência")&&html.includes("contratos validados neste aparelho")&&html.includes('id="published-changes-list"'),"published changes must show their local/read-only provenance");
@@ -1014,8 +1014,8 @@ function testV27DailySchedule(registry) {
   assert.ok(dailyCss.includes(".daily-message-v1")&&dailyCss.includes(".daily-message-attribution")&&dailyCss.includes("border-left:3px solid #5eead4")&&!dailyCss.includes("#a78bfa"),"quote card must use teal and style source attribution without purple");
   assert.ok(dailyCss.includes("@media(min-width:900px)")&&dailyCss.includes("grid-template-columns:.8fr 1.2fr")&&dailyCss.includes("@media(max-width:899px)")&&dailyCss.includes('grid-template-areas:"eyebrow journey options" "title title title" "greeting greeting greeting" "message message message"')&&dailyCss.includes("width:100%"),"quote card must align on desktop and use full width on mobile");
   assert.ok(studyLogCss.includes(".closeout-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))")&&studyLogCss.includes("@media(max-width:719px)")&&studyLogCss.includes(".closeout-grid{grid-template-columns:1fr}"),"daily closeout must stack its three summary blocks on mobile");
-  assert.ok(dailyWorkspaceCss.includes("Audited mobile clock layout")&&dailyWorkspaceCss.includes('grid-template-areas:"label time" "zone date"')&&dailyWorkspaceCss.includes("min-width:max-content")&&dailyWorkspaceCss.includes("white-space:nowrap")&&!dailyWorkspaceCss.includes("max-width:115px")&&!dailyWorkspaceCss.includes("presence-clock-zone")&&!dailyWorkspaceCss.includes("presence-clock-date")&&html.includes('href="./css/daily-workspace-v1.css?v=28.7.1-mobile-clock-2"')&&sw.includes("'./css/daily-workspace-v1.css?v=28.7.1-mobile-clock-2'")&&sw.includes("central-shell-v28.7.1-manual-refresh-20261003"),"mobile Brasília clock must have one canonical full-width layout, no obsolete 115px constraint, and a fresh PWA cache");
-  assert.ok(html.includes('href="./css/daily-message-v1.css?v=28.7.1"')&&sw.includes("'./css/daily-message-v1.css?v=28.7.1'")&&sw.includes("central-shell-v28.7.1-manual-refresh-20261003"),"current PWA shell must cache and refresh the responsive message");
+  assert.ok(dailyWorkspaceCss.includes("Audited mobile clock layout")&&dailyWorkspaceCss.includes('grid-template-areas:"label time" "zone date"')&&dailyWorkspaceCss.includes("min-width:max-content")&&dailyWorkspaceCss.includes("white-space:nowrap")&&!dailyWorkspaceCss.includes("max-width:115px")&&!dailyWorkspaceCss.includes("presence-clock-zone")&&!dailyWorkspaceCss.includes("presence-clock-date")&&html.includes('href="./css/daily-workspace-v1.css?v=28.7.1-mobile-clock-2"')&&sw.includes("'./css/daily-workspace-v1.css?v=28.7.1-mobile-clock-2'")&&sw.includes("central-shell-v28.7.1-full-refresh-20261003"),"mobile Brasília clock must have one canonical full-width layout, no obsolete 115px constraint, and a fresh PWA cache");
+  assert.ok(html.includes('href="./css/daily-message-v1.css?v=28.7.1"')&&sw.includes("'./css/daily-message-v1.css?v=28.7.1'")&&sw.includes("central-shell-v28.7.1-full-refresh-20261003"),"current PWA shell must cache and refresh the responsive message");
   assert.ok(html.includes('href="./css/home-v2.css?v=28.7.1"')&&sw.includes("'./css/home-v2.css?v=28.7.1'"),"Home refinements must refresh in the installed PWA");
   pass("v28.7.1 active P1–P3 portfolio, Cadar quotes and factual closeout");
 }
@@ -1221,9 +1221,9 @@ function testManualRefresh() {
   const sw = read("sw.js");
   const buttons = [...html.matchAll(/data-manual-refresh(?:[\s>])/g)];
   assert.ok(buttons.length >= 2, "manual refresh must be visible both in the dashboard and in settings");
-  assert.ok(html.includes("Atualização manual") && html.includes("↻ Atualizar agora"), "manual refresh UI must explain and expose the action");
-  assert.ok(html.includes("sync-integrations.yml"), "settings must keep a path to the full server-side GitHub Actions sync");
-  assert.ok(html.includes('./js/manual-refresh-v1.js?v=28.9.2') && sw.includes("'./js/manual-refresh-v1.js?v=28.9.2'"), "manual refresh controller must be loaded and cached by the PWA");
+  assert.ok(html.includes("Atualização manual") && html.includes("↻ Atualizar dados publicados"), "manual refresh UI must explain and expose the action");
+  assert.ok(html.includes("full-refresh.yml"), "settings must keep a path to the full server-side GitHub Actions sync");
+  assert.ok(html.includes('./js/manual-refresh-v1.js?v=28.9.3') && sw.includes("'./js/manual-refresh-v1.js?v=28.9.3'"), "manual refresh controller must be loaded and cached by the PWA");
   assert.ok(source.includes('central:contract-refresh') && source.includes('central:contract-state'), "manual refresh must requery project contracts and wait for their states");
   assert.ok(source.includes('setTimeout(()=>finish(true),12000)') && source.includes('"stale-cache"') && source.includes('"unavailable"'), "manual refresh must have bounded waiting and explicit degraded states");
   assert.ok(!source.includes("fetch(") && !source.includes("XMLHttpRequest"), "manual refresh must reuse the contract transport instead of bypassing its security model");
@@ -1723,6 +1723,29 @@ function testReleaseDocumentationCoherence(registry) {
   pass("release documentation coherence");
 }
 
+function testFullRefreshWorkflow() {
+  const workflow = read(".github/workflows/full-refresh.yml");
+  const sync = read("scripts/sync-federated-status.mjs");
+  const html = read("index.html");
+
+  for (const repo of [
+    "RodrigoRosaDantas/seedf-ppge-dashboard",
+    "RodrigoRosaDantas/tjdft-dashboard",
+    "RodrigoRosaDantas/prf-administrativo-dashboard"
+  ]) {
+    assert.ok(workflow.includes(repo), `full refresh must dispatch ${repo}`);
+  }
+  assert.ok(workflow.includes("secrets.CENTRAL_GITHUB_TOKEN"), "cross-repository workflow dispatch must use a GitHub Actions secret, never a frontend token");
+  assert.ok(workflow.includes("gh workflow run sync-notion.yml") && workflow.includes("gh run watch"), "full refresh must dispatch and wait for each child Notion workflow");
+  assert.ok(workflow.includes("node scripts/sync-federated-status.mjs"), "full refresh must rebuild the federated Central snapshot after child syncs");
+  assert.ok(workflow.includes("gh workflow run pages.yml"), "full refresh must explicitly publish the Central after GITHUB_TOKEN-authored snapshot commits");
+  assert.ok(workflow.includes("needs.atualizar_projetos.result != 'success'"), "full refresh must surface partial child failures instead of silently claiming success");
+  assert.ok(sync.includes("Promise.allSettled") && sync.includes("sourceTimestamp") && sync.includes('"raw-github"'), "federated sync must compare Pages and raw GitHub and prefer the fresher source");
+  assert.ok(html.includes("Sincronização completa") && html.includes("CENTRAL_GITHUB_TOKEN"), "settings must explain the server-side full refresh and its required secret");
+  assert.ok(!html.includes("github_pat_") && !html.includes("ghp_"), "full refresh UI must never embed GitHub credentials");
+  pass("full refresh chain: child workflows, wait, federate, deploy and credential isolation");
+}
+
 function testFederatedIntegrationWorkflow() {
   const workflow = read(".github/workflows/sync-integrations.yml");
   const sync = read("scripts/sync-federated-status.mjs");
@@ -1880,6 +1903,7 @@ testV274PrfSiteAndToolDirectory(registry);
 testCatalogLegacyPriorityOrder();
 testDailyWorkspace();
 testReleaseDocumentationCoherence(registry);
+testFullRefreshWorkflow();
 testFederatedIntegrationWorkflow();
 testSecurityAndContracts(registry);
 

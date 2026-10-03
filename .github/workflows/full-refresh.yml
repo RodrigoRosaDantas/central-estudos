@@ -1,0 +1,127 @@
+name: Atualização completa da Central
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: central-full-refresh
+  cancel-in-progress: false
+
+jobs:
+  preflight:
+    name: Validar credencial entre repositórios
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verificar CENTRAL_GITHUB_TOKEN
+        env:
+          GH_TOKEN: ${{ secrets.CENTRAL_GITHUB_TOKEN }}
+        run: |
+          if [ -z "$GH_TOKEN" ]; then
+            echo "::error::Adicione CENTRAL_GITHUB_TOKEN em Settings > Secrets and variables > Actions. O token deve ter Actions read/write nos repositórios SEEDF, TJDFT e PRF Administrativo."
+            exit 1
+          fi
+          gh api user --jq .login >/dev/null
+
+  atualizar_projetos:
+    name: Atualizar ${{ matrix.label }}
+    needs: preflight
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - label: SEEDF
+            repo: RodrigoRosaDantas/seedf-ppge-dashboard
+          - label: TJDFT
+            repo: RodrigoRosaDantas/tjdft-dashboard
+          - label: PRF Administrativo
+            repo: RodrigoRosaDantas/prf-administrativo-dashboard
+    steps:
+      - name: Disparar sincronização Notion → GitHub
+        env:
+          GH_TOKEN: ${{ secrets.CENTRAL_GITHUB_TOKEN }}
+          TARGET_REPO: ${{ matrix.repo }}
+        run: |
+          set -euo pipefail
+          STARTED_AT="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          echo "Disparando $TARGET_REPO às $STARTED_AT"
+          gh workflow run sync-notion.yml --repo "$TARGET_REPO" --ref main
+
+          RUN_ID=""
+          for attempt in $(seq 1 24); do
+            RUN_ID="$(gh run list --repo "$TARGET_REPO" --workflow sync-notion.yml --event workflow_dispatch --branch main --limit 20 --json databaseId,createdAt | jq -r --arg start "$STARTED_AT" '[.[] | select(.createdAt >= $start)] | sort_by(.createdAt) | last | .databaseId // empty')"
+            if [ -n "$RUN_ID" ]; then
+              break
+            fi
+            sleep 5
+          done
+
+          if [ -z "$RUN_ID" ]; then
+            echo "::error::O workflow de $TARGET_REPO foi solicitado, mas a execução não apareceu dentro do tempo esperado."
+            exit 1
+          fi
+
+          echo "Acompanhando run $RUN_ID em $TARGET_REPO"
+          gh run watch "$RUN_ID" --repo "$TARGET_REPO" --exit-status
+
+  consolidar:
+    name: Consolidar e publicar a Central
+    needs: [preflight, atualizar_projetos]
+    if: ${{ always() && needs.preflight.result == 'success' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout da Central
+        uses: actions/checkout@v7
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: "22"
+
+      - name: Reconstruir ponte federada com as fontes mais recentes
+        env:
+          SEEDF: ${{ secrets.SEEDF }}
+          TJDFT_NOTION_TOKEN: ${{ secrets.TJDFT_NOTION_TOKEN }}
+          PRF_ADM_GITHUB: ${{ secrets.PRF_ADM_GITHUB }}
+          PLATAFORMA_DE_QUESTOES: ${{ secrets.PLATAFORMA_DE_QUESTOES }}
+          PLANO_DE_TRANSICAO_GITHUB: ${{ secrets.PLANO_DE_TRANSICAO_GITHUB }}
+        run: node scripts/sync-federated-status.mjs
+
+      - name: Verificar diff
+        run: git diff --check
+
+      - name: Publicar snapshot federado quando mudar
+        id: publish
+        run: |
+          git add data/federated-status.json
+          if git diff --cached --quiet; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "Sem mudança material no snapshot federado."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "chore: atualização manual completa da Central"
+          git pull --rebase origin main
+          git push origin HEAD:main
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+
+      - name: Publicar a Central no GitHub Pages
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run pages.yml --ref main --repo "$GITHUB_REPOSITORY"
+
+      - name: Validar resultado dos projetos-filhos
+        if: ${{ needs.atualizar_projetos.result != 'success' }}
+        run: |
+          echo "::error::A Central foi reconferida, mas pelo menos um projeto-filho não concluiu a sincronização com sucesso."
+          exit 1

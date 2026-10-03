@@ -32,16 +32,39 @@ async function readJson(url) {
   return response.json();
 }
 
+function sourceTimestamp(value) {
+  const candidates = [
+    value?.source?.updatedAt,
+    value?.study?.updatedAt,
+    value?.generatedAt,
+    value?.meta?.generatedAt,
+    value?.updatedAt
+  ];
+  const parsed = candidates
+    .map(item => Date.parse(item || ""))
+    .filter(Number.isFinite)
+    .sort((a, b) => b - a);
+  return parsed[0] || null;
+}
+
 async function readWithFallback(primary, fallback) {
-  try {
-    return { value: await readJson(primary), via: "pages" };
-  } catch (firstError) {
-    try {
-      return { value: await readJson(fallback), via: "raw-github" };
-    } catch {
-      throw firstError;
+  const [pagesResult, rawResult] = await Promise.allSettled([
+    readJson(primary),
+    readJson(fallback)
+  ]);
+
+  if (pagesResult.status === "fulfilled" && rawResult.status === "fulfilled") {
+    const pagesTime = sourceTimestamp(pagesResult.value);
+    const rawTime = sourceTimestamp(rawResult.value);
+    if (rawTime && (!pagesTime || rawTime > pagesTime)) {
+      return { value: rawResult.value, via: "raw-github" };
     }
+    return { value: pagesResult.value, via: "pages" };
   }
+
+  if (pagesResult.status === "fulfilled") return { value: pagesResult.value, via: "pages" };
+  if (rawResult.status === "fulfilled") return { value: rawResult.value, via: "raw-github" };
+  throw pagesResult.reason || rawResult.reason || new Error("source-unavailable");
 }
 
 async function notionRequest(token, version, endpoint, init = {}) {
