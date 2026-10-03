@@ -1001,7 +1001,7 @@ function testV27DailySchedule(registry) {
   const mobileCss=css.slice(css.indexOf("@media(max-width:719px)"));
   assert.ok(html.includes("./css/workspace-v27.css")&&html.includes("weekly-schedule-v27")&&mobileCss.includes(".schedule-day-grid{grid-template-columns:1fr")&&mobileCss.includes(".schedule-day-card{grid-template-columns:minmax(82px,.34fr) minmax(0,1fr)")&&mobileCss.includes(".schedule-day-heading>span{display:none}")&&mobileCss.includes(".schedule-day-rest-v27 .schedule-day-heading>span{display:inline-flex}")&&mobileCss.includes(".schedule-day-card .schedule-item-copy{display:block")&&mobileCss.includes("min-width:0"),"v27 mobile schedule must keep seven compact day rows without overflow");
   assert.ok(html.includes('src="./js/command-context-v1.js?v=28.1.0"')&&sw.includes("'./js/command-context-v1.js?v=28.1.0'"),"today marker and change summary must remain in the app shell");
-  assert.ok(sw.includes("central-shell-v28.7.1-study-dashboard-freshness-20261002")&&sw.includes("./css/workspace-v27.css"),"PWA shell cache must include the v27 stylesheet and current dashboard cache version");
+  assert.ok(sw.includes("central-shell-v28.7.1-manual-refresh-20261003")&&sw.includes("./css/workspace-v27.css"),"PWA shell cache must include the v27 stylesheet and current dashboard cache version");
   assert.ok(html.includes('src="./js/app.js?v=28.7.1"')&&sw.includes("'./js/app.js?v=28.7.1'")&&sw.includes("'./config/projects.json?v=28.7.1'")&&app.includes("./config/projects.json?v=28.7.1"),"registry URL and app cache must use the current release");
   assert.ok(sw.includes("./config/study-schedule-v1.json?v=28.2.0"),"PWA shell must refresh the active schedule");
   assert.ok(html.includes("Mudanças desde a última conferência")&&html.includes("contratos validados neste aparelho")&&html.includes('id="published-changes-list"'),"published changes must show their local/read-only provenance");
@@ -1014,8 +1014,8 @@ function testV27DailySchedule(registry) {
   assert.ok(dailyCss.includes(".daily-message-v1")&&dailyCss.includes(".daily-message-attribution")&&dailyCss.includes("border-left:3px solid #5eead4")&&!dailyCss.includes("#a78bfa"),"quote card must use teal and style source attribution without purple");
   assert.ok(dailyCss.includes("@media(min-width:900px)")&&dailyCss.includes("grid-template-columns:.8fr 1.2fr")&&dailyCss.includes("@media(max-width:899px)")&&dailyCss.includes('grid-template-areas:"eyebrow journey options" "title title title" "greeting greeting greeting" "message message message"')&&dailyCss.includes("width:100%"),"quote card must align on desktop and use full width on mobile");
   assert.ok(studyLogCss.includes(".closeout-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))")&&studyLogCss.includes("@media(max-width:719px)")&&studyLogCss.includes(".closeout-grid{grid-template-columns:1fr}"),"daily closeout must stack its three summary blocks on mobile");
-  assert.ok(dailyWorkspaceCss.includes("Audited mobile clock layout")&&dailyWorkspaceCss.includes('grid-template-areas:"label time" "zone date"')&&dailyWorkspaceCss.includes("min-width:max-content")&&dailyWorkspaceCss.includes("white-space:nowrap")&&!dailyWorkspaceCss.includes("max-width:115px")&&!dailyWorkspaceCss.includes("presence-clock-zone")&&!dailyWorkspaceCss.includes("presence-clock-date")&&html.includes('href="./css/daily-workspace-v1.css?v=28.7.1-mobile-clock-2"')&&sw.includes("'./css/daily-workspace-v1.css?v=28.7.1-mobile-clock-2'")&&sw.includes("central-shell-v28.7.1-study-dashboard-freshness-20261002"),"mobile Brasília clock must have one canonical full-width layout, no obsolete 115px constraint, and a fresh PWA cache");
-  assert.ok(html.includes('href="./css/daily-message-v1.css?v=28.7.1"')&&sw.includes("'./css/daily-message-v1.css?v=28.7.1'")&&sw.includes("central-shell-v28.7.1-study-dashboard-freshness-20261002"),"current PWA shell must cache and refresh the responsive message");
+  assert.ok(dailyWorkspaceCss.includes("Audited mobile clock layout")&&dailyWorkspaceCss.includes('grid-template-areas:"label time" "zone date"')&&dailyWorkspaceCss.includes("min-width:max-content")&&dailyWorkspaceCss.includes("white-space:nowrap")&&!dailyWorkspaceCss.includes("max-width:115px")&&!dailyWorkspaceCss.includes("presence-clock-zone")&&!dailyWorkspaceCss.includes("presence-clock-date")&&html.includes('href="./css/daily-workspace-v1.css?v=28.7.1-mobile-clock-2"')&&sw.includes("'./css/daily-workspace-v1.css?v=28.7.1-mobile-clock-2'")&&sw.includes("central-shell-v28.7.1-manual-refresh-20261003"),"mobile Brasília clock must have one canonical full-width layout, no obsolete 115px constraint, and a fresh PWA cache");
+  assert.ok(html.includes('href="./css/daily-message-v1.css?v=28.7.1"')&&sw.includes("'./css/daily-message-v1.css?v=28.7.1'")&&sw.includes("central-shell-v28.7.1-manual-refresh-20261003"),"current PWA shell must cache and refresh the responsive message");
   assert.ok(html.includes('href="./css/home-v2.css?v=28.7.1"')&&sw.includes("'./css/home-v2.css?v=28.7.1'"),"Home refinements must refresh in the installed PWA");
   pass("v28.7.1 active P1–P3 portfolio, Cadar quotes and factual closeout");
 }
@@ -1202,8 +1202,8 @@ function testStudyAnalyticsDashboard() {
     assert.ok(html.includes(`id="${id}"`), `study dashboard missing #${id}`);
   }
   assert.ok(html.includes("Distribuição por projeto") && html.includes("Últimos 7 dias") && html.includes("Composição do tempo") && html.includes("Confiabilidade das fontes"), "dashboard must expose the four analytical views");
-  assert.ok(html.includes('./js/study-dashboard-v1.js?v=28.9.1') && html.includes('./css/study-dashboard-v1.css?v=28.9.0'), "dashboard assets must be cache-busted in HTML");
-  assert.ok(sw.includes("'./js/study-dashboard-v1.js?v=28.9.1'") && sw.includes("'./css/study-dashboard-v1.css?v=28.9.0'") && sw.includes("RUNTIME_ASSETS"), "dashboard assets must use the PWA runtime cache without inflating the core shell");
+  assert.ok(html.includes('./js/study-dashboard-v1.js?v=28.9.1') && html.includes('./css/study-dashboard-v1.css?v=28.9.2'), "dashboard assets must be cache-busted in HTML");
+  assert.ok(sw.includes("'./js/study-dashboard-v1.js?v=28.9.1'") && sw.includes("'./css/study-dashboard-v1.css?v=28.9.2'") && sw.includes("RUNTIME_ASSETS"), "dashboard assets must use the PWA runtime cache without inflating the core shell");
   assert.ok(source.includes('central:study-log-updated') && source.includes('central:study-log-auto-added') && source.includes('central:contract-state'), "dashboard must react to local study changes and source integrity");
   assert.ok(source.includes('Math.round(minutes/grand*100)') && source.includes('grand?100-readingShare:0'), "dashboard percentages must have an explicit time denominator");
   assert.ok(source.includes('source-newer') && source.includes('partial-check') && source.includes('public-unavailable'), "dashboard must distinguish source-integrity states");
@@ -1213,6 +1213,22 @@ function testStudyAnalyticsDashboard() {
   assert.ok(source.includes('node("progress","dashboard-progress")') && source.includes('node("progress","dashboard-day-progress")') && html.includes('<progress id="dashboard-composition-progress"'), "dashboard charts must use semantic native progress elements");
   assert.ok(css.includes("@media(max-width:560px)") && css.includes(".study-dashboard-grid") && css.includes(".dashboard-seven-days"), "dashboard must include responsive analytical layout rules");
   pass("study analytics dashboard: KPIs, project distribution, 7-day rhythm, composition and source health");
+}
+
+function testManualRefresh() {
+  const html = read("index.html");
+  const source = read("js/manual-refresh-v1.js");
+  const sw = read("sw.js");
+  const buttons = [...html.matchAll(/data-manual-refresh(?:[\s>])/g)];
+  assert.ok(buttons.length >= 2, "manual refresh must be visible both in the dashboard and in settings");
+  assert.ok(html.includes("Atualização manual") && html.includes("↻ Atualizar agora"), "manual refresh UI must explain and expose the action");
+  assert.ok(html.includes("sync-integrations.yml"), "settings must keep a path to the full server-side GitHub Actions sync");
+  assert.ok(html.includes('./js/manual-refresh-v1.js?v=28.9.2') && sw.includes("'./js/manual-refresh-v1.js?v=28.9.2'"), "manual refresh controller must be loaded and cached by the PWA");
+  assert.ok(source.includes('central:contract-refresh') && source.includes('central:contract-state'), "manual refresh must requery project contracts and wait for their states");
+  assert.ok(source.includes('setTimeout(()=>finish(true),12000)') && source.includes('"stale-cache"') && source.includes('"unavailable"'), "manual refresh must have bounded waiting and explicit degraded states");
+  assert.ok(!source.includes("fetch(") && !source.includes("XMLHttpRequest"), "manual refresh must reuse the contract transport instead of bypassing its security model");
+  assert.ok(!source.includes("NOTION_TOKEN") && !source.includes("Authorization"), "manual refresh frontend must never contain server credentials");
+  pass("manual refresh: visible controls, bounded feedback, contract reuse and no frontend secrets");
 }
 
 function testStudyLog(registry) {
@@ -1744,6 +1760,7 @@ function testSecurityAndContracts(registry) {
     "js/timeline-v8.js",
     "js/pro-v11.js",
     "js/contracts-v12.js",
+    "js/manual-refresh-v1.js",
     "js/command-context-v1.js",
     "css/app.css",
     "css/catalog-v4.css",
@@ -1796,6 +1813,7 @@ const syntaxFiles = [
   "js/timeline-v8.js",
   "js/pro-v11.js",
   "js/contracts-v12.js",
+  "js/manual-refresh-v1.js",
   "js/command-context-v1.js",
   "js/operational-v13.js",
   "js/workspace-v24.js",
@@ -1853,6 +1871,7 @@ testPublishedEditorialReadiness();
 testV281DailyCloseoutHydration();
 testHomeResponsiveLayout();
 testStudyAnalyticsDashboard();
+testManualRefresh();
 testStudyLog(registry);
 testStudySync();
 testStudyPlanner(registry);

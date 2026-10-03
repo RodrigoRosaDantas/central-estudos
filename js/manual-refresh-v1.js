@@ -1,0 +1,16 @@
+(()=>{"use strict";
+const buttons=()=>[...document.querySelectorAll("[data-manual-refresh]")];
+const statuses=()=>[...document.querySelectorAll("[data-manual-refresh-status]")];
+let projectIds=["seedf","tjdft","prf-adm"];
+let running=false,pending=new Set(),results=new Map(),timer=null;
+function brasiliaTime(){return new Intl.DateTimeFormat("pt-BR",{timeZone:"America/Sao_Paulo",hour:"2-digit",minute:"2-digit",hour12:false}).format(new Date())}
+function setStatus(message,tone="info"){for(const el of statuses()){el.textContent=message;el.dataset.tone=tone}}
+function setBusy(value){for(const button of buttons()){button.disabled=value;button.setAttribute("aria-busy",String(value));button.textContent=value?"↻ Atualizando...":"↻ Atualizar agora"}}
+function finish(timedOut=false){if(!running)return;running=false;if(timer){clearTimeout(timer);timer=null}setBusy(false);const total=projectIds.length,answered=results.size,live=[...results.values()].filter(status=>status==="live").length,stale=[...results.values()].filter(status=>status==="stale-cache"||status==="cached").length,failed=[...results.values()].filter(status=>["unavailable","invalid","unsupported"].includes(status)).length,at=brasiliaTime();let message,tone;if(timedOut&&answered<total){message="Conferência parcial às "+at+" · "+answered+"/"+total+" fontes responderam.";tone="warn"}else if(failed||stale){message="Atualizado às "+at+" · "+answered+"/"+total+" consultadas · "+live+" ao vivo"+(stale?" · "+stale+" em cache":"")+".";tone="warn"}else{message="Atualizado às "+at+" · "+answered+"/"+total+" fontes consultadas ao vivo.";tone="ok"}setStatus(message,tone);document.dispatchEvent(new CustomEvent("central:manual-refresh-complete",{detail:{answered,total,live,stale,failed,timedOut,at}}))}
+function refresh(){if(running||!projectIds.length)return;running=true;pending=new Set(projectIds);results=new Map();setBusy(true);setStatus("Consultando "+projectIds.length+" fontes agora...","info");for(const id of projectIds)document.dispatchEvent(new CustomEvent("central:contract-refresh",{detail:{id}}));timer=setTimeout(()=>finish(true),12000)}
+function setProjects(list){if(!Array.isArray(list))return;const ids=list.filter(item=>item&&typeof item.id==="string"&&(item.status==="active"||["seedf","tjdft","prf-adm"].includes(item.id))).map(item=>item.id).filter((id,index,array)=>array.indexOf(id)===index);if(ids.length)projectIds=ids}
+document.addEventListener("central:app-ready",event=>setProjects(event.detail?.projects));
+document.addEventListener("central:workspace-ready",event=>setProjects(event.detail?.projects));
+document.addEventListener("central:contract-state",event=>{if(!running)return;const detail=event.detail;if(!detail?.id||!pending.has(detail.id))return;results.set(detail.id,detail.status||"unavailable");pending.delete(detail.id);if(!pending.size)finish(false)});
+document.addEventListener("DOMContentLoaded",()=>{for(const button of buttons())button.addEventListener("click",refresh)});
+})();
