@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-03T23:39:47.923Z",
-  "checkedAt": "2026-10-03T23:39:47.923Z",
+  "generatedAt": "2026-10-03T23:42:45.150Z",
+  "checkedAt": "2026-10-03T23:42:45.150Z",
   "latestSourceAt": "2026-10-03T23:30:52.048Z",
   "toleranceSeconds": 120,
   "sources": {
@@ -186,53 +186,46 @@
       "sourceUrl": "https://rodrigorosadantas.github.io/tjdft-dashboard/central-status.json",
       "transport": "pages",
       "integrity": {
-        "status": "unverifiable",
-        "coverage": "0/7",
-        "notionLatestEditedAt": null,
+        "status": "aligned",
+        "coverage": "7/7",
+        "notionLatestEditedAt": "2026-10-02T19:48:00.000Z",
         "publishedUpdatedAt": "2026-10-02T20:08:51.541Z",
-        "sourceAheadSeconds": null,
+        "sourceAheadSeconds": 0,
         "probes": [
           {
             "label": "painel",
-            "status": "error",
-            "latestEditedAt": null,
-            "reason": "http-429"
+            "status": "ok",
+            "latestEditedAt": "2026-09-19T22:33:00.000Z"
           },
           {
             "label": "dias",
-            "status": "error",
-            "latestEditedAt": null,
-            "reason": "http-429"
+            "status": "ok",
+            "latestEditedAt": "2026-10-02T19:48:00.000Z"
           },
           {
             "label": "questões",
-            "status": "error",
-            "latestEditedAt": null,
-            "reason": "http-429"
+            "status": "ok",
+            "latestEditedAt": "2026-09-29T19:30:00.000Z"
           },
           {
             "label": "erros",
-            "status": "error",
-            "latestEditedAt": null,
-            "reason": "http-429"
+            "status": "ok",
+            "latestEditedAt": "2026-09-29T19:30:00.000Z"
           },
           {
             "label": "execuções",
-            "status": "error",
-            "latestEditedAt": null,
-            "reason": "http-429"
+            "status": "ok",
+            "latestEditedAt": "2026-10-02T19:48:00.000Z"
           },
           {
             "label": "unidades Português + RLM",
-            "status": "error",
-            "latestEditedAt": null,
-            "reason": "http-429"
+            "status": "ok",
+            "latestEditedAt": "2026-10-02T19:47:00.000Z"
           },
           {
             "label": "conteúdos",
-            "status": "error",
-            "latestEditedAt": null,
-            "reason": "http-429"
+            "status": "ok",
+            "latestEditedAt": "2026-09-09T14:16:00.000Z"
           }
         ]
       },
