@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'central-shell-v28.7.1-manual-refresh-20261003';
+const CACHE_VERSION = 'central-shell-v28.7.1-full-refresh-20261003';
 const APP_SHELL = [
 './',
 './index.html',
@@ -21,7 +21,7 @@ const APP_SHELL = [
 './js/timeline-v8.js',
 './js/pro-v11.js?v=28.7.1',
 './js/contracts-v12.js',
-'./js/manual-refresh-v1.js?v=28.9.2',
+'./js/manual-refresh-v1.js?v=28.9.3',
 './js/command-context-v1.js?v=28.1.0',
 './js/workspace-v24.js?v=28.7.1',
 './js/study-log-v1.js?v=28.8.0',
