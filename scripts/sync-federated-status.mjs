@@ -67,20 +67,37 @@ async function readWithFallback(primary, fallback) {
   throw pagesResult.reason || rawResult.reason || new Error("source-unavailable");
 }
 
+const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
+
 async function notionRequest(token, version, endpoint, init = {}) {
-  const response = await fetch(`https://api.notion.com/v1${endpoint}`, {
-    ...init,
-    headers: {
-      Authorization: `Bearer ${token}`,
-      "Notion-Version": version || DEFAULT_NOTION_VERSION,
-      "Content-Type": "application/json",
-      Accept: "application/json",
-      ...(init.headers || {})
-    },
-    signal: AbortSignal.timeout(7000)
-  });
-  if (!response.ok) throw new Error(`http-${response.status}`);
-  return response.json();
+  for (let attempt = 0; attempt < 4; attempt += 1) {
+    const response = await fetch(`https://api.notion.com/v1${endpoint}`, {
+      ...init,
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Notion-Version": version || DEFAULT_NOTION_VERSION,
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        ...(init.headers || {})
+      },
+      signal: AbortSignal.timeout(7000)
+    });
+
+    if (response.ok) return response.json();
+
+    if (response.status === 429 && attempt < 3) {
+      const retryAfter = Number(response.headers.get("retry-after"));
+      const delay = Number.isFinite(retryAfter) && retryAfter > 0
+        ? Math.min(retryAfter * 1000, 5000)
+        : 800 * (attempt + 1);
+      await wait(delay);
+      continue;
+    }
+
+    throw new Error(`http-${response.status}`);
+  }
+
+  throw new Error("http-429");
 }
 
 async function notionIdentityStatus(token, version) {
@@ -133,6 +150,7 @@ async function inspectNotionSource(sourceId, sourceConfig) {
 
   if (notionStatus === "verified") {
     for (const probe of configured) {
+      await wait(400);
       try {
         const latestEditedAt = await probeLatestEdit(token, notionVersion, probe);
         probes.push({
