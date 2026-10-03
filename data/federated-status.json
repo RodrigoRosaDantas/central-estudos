@@ -1,8 +1,8 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-03T19:18:26.070Z",
-  "checkedAt": "2026-10-03T19:18:26.070Z",
-  "latestSourceAt": "2026-10-03T16:28:12.317Z",
+  "generatedAt": "2026-10-03T22:13:28.150Z",
+  "checkedAt": "2026-10-03T22:13:28.150Z",
+  "latestSourceAt": "2026-10-03T21:23:57.104Z",
   "toleranceSeconds": 120,
   "sources": {
     "seedf": {
@@ -387,7 +387,7 @@
         "status": "aligned",
         "coverage": "1/1",
         "notionLatestEditedAt": "2026-09-16T20:43:00.000Z",
-        "publishedUpdatedAt": "2026-10-03T16:28:12.317Z",
+        "publishedUpdatedAt": "2026-10-03T21:23:57.104Z",
         "sourceAheadSeconds": 0,
         "probes": [
           {
@@ -398,7 +398,7 @@
         ]
       },
       "state": {
-        "generatedAt": "2026-10-03T16:28:12.317Z",
+        "generatedAt": "2026-10-03T21:23:57.104Z",
         "questionCount": 3697,
         "records": 3766,
         "published": 3697,
@@ -416,7 +416,7 @@
         "status": "aligned",
         "coverage": "3/3",
         "notionLatestEditedAt": "2026-09-30T00:18:00.000Z",
-        "publishedUpdatedAt": "2026-10-03T16:19:03.651Z",
+        "publishedUpdatedAt": "2026-10-03T21:17:44.912Z",
         "sourceAheadSeconds": 0,
         "probes": [
           {
@@ -437,7 +437,7 @@
         ]
       },
       "state": {
-        "generatedAt": "2026-10-03T16:19:03.651Z",
+        "generatedAt": "2026-10-03T21:17:44.912Z",
         "live": true,
         "phase": "post-exam",
         "syncWarnings": 0,
