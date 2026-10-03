@@ -1,8 +1,8 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-03T11:58:24.286Z",
-  "checkedAt": "2026-10-03T11:58:24.286Z",
-  "latestSourceAt": "2026-10-03T11:47:24.552Z",
+  "generatedAt": "2026-10-03T16:10:41.407Z",
+  "checkedAt": "2026-10-03T16:10:41.407Z",
+  "latestSourceAt": "2026-10-03T14:44:24.509Z",
   "toleranceSeconds": 120,
   "sources": {
     "seedf": {
@@ -302,7 +302,7 @@
         "status": "aligned",
         "coverage": "5/5",
         "notionLatestEditedAt": "2026-09-30T07:46:00.000Z",
-        "publishedUpdatedAt": "2026-10-02T20:10:48.356Z",
+        "publishedUpdatedAt": "2026-10-03T14:44:24.509Z",
         "sourceAheadSeconds": 0,
         "probes": [
           {
@@ -335,12 +335,12 @@
       "contract": {
         "schemaVersion": 1,
         "projectId": "prf-adm",
-        "publishedAt": "2026-10-02",
+        "publishedAt": "2026-10-03",
         "source": {
           "kind": "public-project-state",
           "ref": "content/prf-notion.json#projectState",
           "status": "synced",
-          "updatedAt": "2026-10-02T20:10:48.356Z"
+          "updatedAt": "2026-10-03T14:44:24.509Z"
         },
         "state": {
           "phase": "Roda contínua PRF Administrativo",
@@ -353,7 +353,7 @@
         "study": {
           "evidence": "confirmed",
           "sourceRef": "content/prf-notion.json#projectState.execution",
-          "updatedAt": "2026-10-02T20:10:48.356Z",
+          "updatedAt": "2026-10-03T14:44:24.509Z",
           "trail": "Roda PRFADM",
           "lastCompletedUnit": null,
           "nextUnit": "PRFADM01",
