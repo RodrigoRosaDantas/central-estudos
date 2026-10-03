@@ -1,8 +1,8 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-03T22:13:28.150Z",
-  "checkedAt": "2026-10-03T22:13:28.150Z",
-  "latestSourceAt": "2026-10-03T21:23:57.104Z",
+  "generatedAt": "2026-10-03T23:39:47.923Z",
+  "checkedAt": "2026-10-03T23:39:47.923Z",
+  "latestSourceAt": "2026-10-03T23:30:52.048Z",
   "toleranceSeconds": 120,
   "sources": {
     "seedf": {
@@ -186,46 +186,53 @@
       "sourceUrl": "https://rodrigorosadantas.github.io/tjdft-dashboard/central-status.json",
       "transport": "pages",
       "integrity": {
-        "status": "aligned",
-        "coverage": "7/7",
-        "notionLatestEditedAt": "2026-10-02T19:48:00.000Z",
+        "status": "unverifiable",
+        "coverage": "0/7",
+        "notionLatestEditedAt": null,
         "publishedUpdatedAt": "2026-10-02T20:08:51.541Z",
-        "sourceAheadSeconds": 0,
+        "sourceAheadSeconds": null,
         "probes": [
           {
             "label": "painel",
-            "status": "ok",
-            "latestEditedAt": "2026-09-19T22:33:00.000Z"
+            "status": "error",
+            "latestEditedAt": null,
+            "reason": "http-429"
           },
           {
             "label": "dias",
-            "status": "ok",
-            "latestEditedAt": "2026-10-02T19:48:00.000Z"
+            "status": "error",
+            "latestEditedAt": null,
+            "reason": "http-429"
           },
           {
             "label": "questões",
-            "status": "ok",
-            "latestEditedAt": "2026-09-29T19:30:00.000Z"
+            "status": "error",
+            "latestEditedAt": null,
+            "reason": "http-429"
           },
           {
             "label": "erros",
-            "status": "ok",
-            "latestEditedAt": "2026-09-29T19:30:00.000Z"
+            "status": "error",
+            "latestEditedAt": null,
+            "reason": "http-429"
           },
           {
             "label": "execuções",
-            "status": "ok",
-            "latestEditedAt": "2026-10-02T19:48:00.000Z"
+            "status": "error",
+            "latestEditedAt": null,
+            "reason": "http-429"
           },
           {
             "label": "unidades Português + RLM",
-            "status": "ok",
-            "latestEditedAt": "2026-10-02T19:47:00.000Z"
+            "status": "error",
+            "latestEditedAt": null,
+            "reason": "http-429"
           },
           {
             "label": "conteúdos",
-            "status": "ok",
-            "latestEditedAt": "2026-09-09T14:16:00.000Z"
+            "status": "error",
+            "latestEditedAt": null,
+            "reason": "http-429"
           }
         ]
       },
@@ -302,7 +309,7 @@
         "status": "aligned",
         "coverage": "5/5",
         "notionLatestEditedAt": "2026-09-30T07:46:00.000Z",
-        "publishedUpdatedAt": "2026-10-03T14:44:24.509Z",
+        "publishedUpdatedAt": "2026-10-03T23:30:52.048Z",
         "sourceAheadSeconds": 0,
         "probes": [
           {
@@ -340,7 +347,7 @@
           "kind": "public-project-state",
           "ref": "content/prf-notion.json#projectState",
           "status": "synced",
-          "updatedAt": "2026-10-03T14:44:24.509Z"
+          "updatedAt": "2026-10-03T23:30:52.048Z"
         },
         "state": {
           "phase": "Roda contínua PRF Administrativo",
@@ -353,7 +360,7 @@
         "study": {
           "evidence": "confirmed",
           "sourceRef": "content/prf-notion.json#projectState.execution",
-          "updatedAt": "2026-10-03T14:44:24.509Z",
+          "updatedAt": "2026-10-03T23:30:52.048Z",
           "trail": "Roda PRFADM",
           "lastCompletedUnit": null,
           "nextUnit": "PRFADM01",
