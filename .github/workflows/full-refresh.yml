@@ -16,15 +16,23 @@ jobs:
     name: Validar credencial entre repositórios
     runs-on: ubuntu-latest
     steps:
-      - name: Verificar CENTRAL_GITHUB_TOKEN
+      - name: Verificar CENTRAL_GITHUB_TOKEN e acesso aos projetos
         env:
           GH_TOKEN: ${{ secrets.CENTRAL_GITHUB_TOKEN }}
         run: |
+          set -euo pipefail
           if [ -z "$GH_TOKEN" ]; then
             echo "::error::Adicione CENTRAL_GITHUB_TOKEN em Settings > Secrets and variables > Actions. O token deve ter Actions read/write nos repositórios SEEDF, TJDFT e PRF Administrativo."
             exit 1
           fi
           gh api user --jq .login >/dev/null
+          for repo in             RodrigoRosaDantas/seedf-ppge-dashboard             RodrigoRosaDantas/tjdft-dashboard             RodrigoRosaDantas/prf-administrativo-dashboard; do
+            state="$(gh api "repos/$repo/actions/workflows/sync-notion.yml" --jq .state)"
+            if [ "$state" != "active" ]; then
+              echo "::error::O workflow sync-notion.yml não está ativo em $repo."
+              exit 1
+            fi
+          done
 
   atualizar_projetos:
     name: Atualizar ${{ matrix.label }}
@@ -87,6 +95,9 @@ jobs:
         with:
           node-version: "22"
 
+      - name: Aguardar respiro das APIs
+        run: sleep 5
+
       - name: Reconstruir ponte federada com as fontes mais recentes
         env:
           SEEDF: ${{ secrets.SEEDF }}
@@ -116,6 +127,7 @@ jobs:
           echo "changed=true" >> "$GITHUB_OUTPUT"
 
       - name: Publicar a Central no GitHub Pages
+        if: steps.publish.outputs.changed == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
         run: gh workflow run pages.yml --ref main --repo "$GITHUB_REPOSITORY"
