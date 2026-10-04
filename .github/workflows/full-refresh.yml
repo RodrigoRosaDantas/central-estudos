@@ -25,7 +25,6 @@ jobs:
             echo "::error::Adicione CENTRAL_GITHUB_TOKEN em Settings > Secrets and variables > Actions. O token deve ter Actions read/write nos repositórios SEEDF, TJDFT e PRF Administrativo."
             exit 1
           fi
-          gh api user --jq .login >/dev/null
           for repo in             RodrigoRosaDantas/seedf-ppge-dashboard             RodrigoRosaDantas/tjdft-dashboard             RodrigoRosaDantas/prf-administrativo-dashboard; do
             state="$(gh api "repos/$repo/actions/workflows/sync-notion.yml" --jq .state)"
             if [ "$state" != "active" ]; then
@@ -80,7 +79,7 @@ jobs:
   consolidar:
     name: Consolidar e publicar a Central
     needs: [preflight, atualizar_projetos]
-    if: ${{ always() && needs.preflight.result == 'success' }}
+    if: ${{ needs.preflight.result == 'success' && needs.atualizar_projetos.result == 'success' }}
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -131,9 +130,3 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: gh workflow run pages.yml --ref main --repo "$GITHUB_REPOSITORY"
-
-      - name: Validar resultado dos projetos-filhos
-        if: ${{ needs.atualizar_projetos.result != 'success' }}
-        run: |
-          echo "::error::A Central foi reconferida, mas pelo menos um projeto-filho não concluiu a sincronização com sucesso."
-          exit 1
