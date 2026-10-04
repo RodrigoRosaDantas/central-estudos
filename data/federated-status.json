@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-03T23:42:45.150Z",
-  "checkedAt": "2026-10-03T23:42:45.150Z",
+  "generatedAt": "2026-10-04T00:12:21.197Z",
+  "checkedAt": "2026-10-04T00:12:21.197Z",
   "latestSourceAt": "2026-10-03T23:30:52.048Z",
   "toleranceSeconds": 120,
   "sources": {
@@ -186,16 +186,17 @@
       "sourceUrl": "https://rodrigorosadantas.github.io/tjdft-dashboard/central-status.json",
       "transport": "pages",
       "integrity": {
-        "status": "aligned",
-        "coverage": "7/7",
+        "status": "partial-check",
+        "coverage": "6/7",
         "notionLatestEditedAt": "2026-10-02T19:48:00.000Z",
         "publishedUpdatedAt": "2026-10-02T20:08:51.541Z",
         "sourceAheadSeconds": 0,
         "probes": [
           {
             "label": "painel",
-            "status": "ok",
-            "latestEditedAt": "2026-09-19T22:33:00.000Z"
+            "status": "error",
+            "latestEditedAt": null,
+            "reason": "http-429"
           },
           {
             "label": "dias",
