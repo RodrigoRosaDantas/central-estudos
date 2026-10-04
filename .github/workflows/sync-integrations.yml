@@ -15,6 +15,7 @@ on:
 
 permissions:
   contents: write
+  actions: write
 
 concurrency:
   group: central-federated-sync
@@ -50,9 +51,11 @@ jobs:
         run: git diff --check
 
       - name: Publicar somente o snapshot sanitizado quando mudar
+        id: publish_snapshot
         run: |
           git add data/federated-status.json
           if git diff --cached --quiet; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
             echo "Sem mudança material nas fontes federadas."
             exit 0
           fi
@@ -61,3 +64,10 @@ jobs:
           git commit -m "chore: atualizar ponte federada da Central"
           git pull --rebase origin main
           git push origin HEAD:main
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+
+      - name: Publicar snapshot federado no GitHub Pages
+        if: steps.publish_snapshot.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run pages.yml --ref main --repo "$GITHUB_REPOSITORY"
