@@ -1740,6 +1740,7 @@ function testFullRefreshWorkflow() {
   assert.ok(workflow.includes('actions/workflows/sync-notion.yml') && workflow.includes('state="$(gh api'), "full refresh preflight must verify that each child workflow is reachable and active before dispatch");
   assert.ok(workflow.includes("Aguardar respiro das APIs") && workflow.includes("sleep 5"), "full refresh must give upstream APIs a short cooldown before federated revalidation");
   assert.ok(workflow.includes("gh workflow run sync-notion.yml") && workflow.includes("gh run watch"), "full refresh must dispatch and wait for each child Notion workflow");
+  assert.ok(workflow.includes("timeout-minutes: 55"), "full refresh child matrix must allow enough time for bounded Notion rate-limit retries");
   assert.ok(workflow.includes("node scripts/sync-federated-status.mjs"), "full refresh must rebuild the federated Central snapshot after child syncs");
   assert.ok(workflow.includes("gh workflow run pages.yml") && workflow.includes("if: steps.publish.outputs.changed == 'true'"), "full refresh must publish the Central only when the federated snapshot actually changed");
   assert.ok(workflow.includes("needs.atualizar_projetos.result == 'success'"), "full refresh must consolidate only when all child project syncs succeeded");
