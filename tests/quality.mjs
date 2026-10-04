@@ -1736,9 +1736,11 @@ function testFullRefreshWorkflow() {
     assert.ok(workflow.includes(repo), `full refresh must dispatch ${repo}`);
   }
   assert.ok(workflow.includes("secrets.CENTRAL_GITHUB_TOKEN"), "cross-repository workflow dispatch must use a GitHub Actions secret, never a frontend token");
+  assert.ok(workflow.includes('actions/workflows/sync-notion.yml') && workflow.includes('state="$(gh api'), "full refresh preflight must verify that each child workflow is reachable and active before dispatch");
+  assert.ok(workflow.includes("Aguardar respiro das APIs") && workflow.includes("sleep 5"), "full refresh must give upstream APIs a short cooldown before federated revalidation");
   assert.ok(workflow.includes("gh workflow run sync-notion.yml") && workflow.includes("gh run watch"), "full refresh must dispatch and wait for each child Notion workflow");
   assert.ok(workflow.includes("node scripts/sync-federated-status.mjs"), "full refresh must rebuild the federated Central snapshot after child syncs");
-  assert.ok(workflow.includes("gh workflow run pages.yml"), "full refresh must explicitly publish the Central after GITHUB_TOKEN-authored snapshot commits");
+  assert.ok(workflow.includes("gh workflow run pages.yml") && workflow.includes("if: steps.publish.outputs.changed == 'true'"), "full refresh must publish the Central only when the federated snapshot actually changed");
   assert.ok(workflow.includes("needs.atualizar_projetos.result != 'success'"), "full refresh must surface partial child failures instead of silently claiming success");
   assert.ok(sync.includes("Promise.allSettled") && sync.includes("sourceTimestamp") && sync.includes('"raw-github"'), "federated sync must compare Pages and raw GitHub and prefer the fresher source");
   assert.ok(html.includes("Sincronização completa") && html.includes("CENTRAL_GITHUB_TOKEN"), "settings must explain the server-side full refresh and its required secret");
@@ -1754,6 +1756,8 @@ function testFederatedIntegrationWorkflow() {
   assert.ok(workflow.includes('cron: "7,22,37,52 * * * *"'), "federated integrity sync must run four offset checks per hour");
   assert.ok(workflow.includes('"config/integration-sources-v1.json"'), "changes to the Notion probe map must trigger a federated refresh");
   assert.ok(workflow.includes("timeout-minutes: 12"), "federated sync must keep an explicit execution budget");
+  assert.ok(workflow.includes("actions: write"), "scheduled federated sync must be allowed to dispatch the Pages workflow after a GITHUB_TOKEN-authored snapshot commit");
+  assert.ok(workflow.includes("id: publish_snapshot") && workflow.includes("steps.publish_snapshot.outputs.changed == 'true'") && workflow.includes("gh workflow run pages.yml"), "changed federated snapshots must be explicitly published to GitHub Pages");
   for (const secretName of ["SEEDF", "TJDFT_NOTION_TOKEN", "PRF_ADM_GITHUB", "PLATAFORMA_DE_QUESTOES", "PLANO_DE_TRANSICAO_GITHUB"]) {
     assert.ok(workflow.includes(`secrets.${secretName}`), `workflow must reference ${secretName} only through GitHub Secrets`);
   }
